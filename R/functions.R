@@ -245,7 +245,7 @@ rki_kw <- brd_timeseries %>% filter(id==0) %>% collect() %>% mutate(kw=isoweek(d
 mylabordaten_kw_plus_rki <- left_join(mylabordaten_kw %>% filter(kw>=11),rki_kw) %>%
   select(id,kw,Bundesland,Einwohner,"Neue Fälle",Tests,Kapazität=kapazitaet) %>%
   mutate(Kapazität=Kapazität*7) %>%
-  gather(Merkmal,Wert,5:7) %>% mutate(Wert_je_1000EW=Wert/(Einwohner/1000))
+  gather(Merkmal,Wert,5:7) %>% mutate(Wert_je_1000EW=round(Wert/(Einwohner/1000),digits=1))
 
 
 plot_trend_labortests <- ggplotly(ggplot(mylabordaten_kw_plus_rki ,
@@ -256,10 +256,10 @@ plot_trend_labortests <- ggplotly(ggplot(mylabordaten_kw_plus_rki ,
 
 
 plot_faelle_zu_tests <- ggplotly(ggplot(mylabordaten_gesamt %>%
-                                 mutate("Fälle je Tsd. Einw."=cases/(Einwohner/1000),
-                                        "Tests je Tsd. Einw."=Tests/(Einwohner/1000)),
+                                 mutate("Fälle je Tsd. Einw."=round(cases/(Einwohner/1000),digits=1),
+                                        "Tests je Tsd. Einw."=round(Tests/(Einwohner/1000),digits=1)),
                                aes(y=`Fälle je Tsd. Einw.`,
-                                   x=Tests/(Einwohner/1000),label=Bundesland)) +
+                                   x=`Tests je Tsd. Einw.`,label=Bundesland)) +
   geom_text(color=zi_cols("zigrey")) +
   geom_point(color=zi_cols("ziblue")) +
   labs( y="Fälle je Tsd. Einw.",x="Tests je Einw.") +
