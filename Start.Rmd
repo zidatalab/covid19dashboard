@@ -44,7 +44,7 @@ DT::datatable(rki_fallzahl_bl(),
 
 # Laboruntersuchungen
 
-Row
+Row{data-height=100}
 -----------------------------------------------------------------------
 
 ### **Hintergrund**
