@@ -249,11 +249,10 @@ mylabordaten_kw_plus_rki <- left_join(mylabordaten_kw %>% filter(kw>=11),rki_kw)
 
 
 plot_trend_labortests <- ggplotly(ggplot(mylabordaten_kw_plus_rki ,
-                                         aes(x=kw,y=Wert_je_1000EW,color=Merkmal)) +
+                                         aes(x=kw,y=Wert_je_1000EW,color=Merkmal,label=Merkmal)) +
                                     geom_line(size=2) +
-                                    labs(x="Kalederwoche",y="Tests/Fälle je Tsd. Einw.") +
-                                    theme_zi_titels() +scale_color_zi())  %>%
-  layout(showlegend = FALSE)
+                                    labs(x="Kalederwoche",y="Tests/Fälle je Tsd. Einw.",color="") +
+                                    theme_zi_titels() +scale_color_zi())
 
 
 plot_faelle_zu_tests <- ggplotly(ggplot(mylabordaten_gesamt %>%
