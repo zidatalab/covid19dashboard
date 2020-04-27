@@ -262,7 +262,7 @@ plot_faelle_zu_tests <- ggplotly(ggplot(mylabordaten_gesamt %>%
                                    x=`Tests je Tsd. Einw.`,label=Bundesland)) +
   geom_text(color=zi_cols("zigrey")) +
   geom_point(color=zi_cols("ziblue")) +
-  labs( y="Fälle je Tsd. Einw.",x="Tests je Einw.") +
+  labs( y="Fälle je Tsd. Einw.",x="Tests je Tsd. Einw.") +
   theme_zi_titels() +
   scale_y_continuous(limits=c(0,1+max(mylabordaten_gesamt$cases/(mylabordaten_gesamt$Einwohner/1000)))))  %>%
   layout(showlegend = FALSE)
