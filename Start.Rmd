@@ -49,12 +49,10 @@ Row
 
 ### **Hintergrund**
 
-Die kassenärztlichen Vereinigungen erheben regelmäßig die Zahl der COVID-19 Testungen in den angeschlossenen Laboren. 
+Die kassenärztlichen Vereinigungen erheben regelmäßig die Zahl der COVID-19 Testungen in den angeschlossenen Laboren. Die wöchentliche Teskapazität dieser Labore betrug zuletzt ca. `r format(round(laborkapazität/1000)*1000,big.mark=".",decimal.mark=",",scientific=F)` Tsd. Tests pro Tag. Bei 7 Arbeitstagen pro Woche wären derzeit also maximal `r format(round((laborkapazität*7)/1000)*1000,big.mark=".",decimal.mark=",",scientific=F)` Tests auf COVID-19 möglich.
 
 
-
-
-Row {data-height=500}
+Row 
 -----------------------------------------------------------------------
 
 ### Entwicklung der Tests und Fallzahlen
@@ -64,7 +62,18 @@ plot_trend_labortests
 
 ```
 
-### Labordaten vs. Fälle
+Row 
+-----------------------------------------------------------------------
+
+### Tests nach KW und Ergebnis
+
+```{r}
+plot_positiv_zu_tests
+```
+
+
+
+### Tests vs. Fälle nach Bundesland
 
 ```{r}
 plot_faelle_zu_tests

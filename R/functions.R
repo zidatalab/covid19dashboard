@@ -251,7 +251,7 @@ mylabordaten_kw_plus_rki <- left_join(mylabordaten_kw %>% filter(kw>=11),rki_kw)
 plot_trend_labortests <- ggplotly(ggplot(mylabordaten_kw_plus_rki ,
                                          aes(x=kw,y=Wert_je_1000EW,color=Merkmal,label=Merkmal)) +
                                     geom_line(size=2) +
-                                    labs(x="Kalederwoche",y="Tests/Fälle je Tsd. Einw.",color="") +
+                                    labs(x="Kalederwoche",y="Wert je Tsd. Einw.",color="") +
                                     theme_zi_titels() +scale_color_zi())
 
 
@@ -267,3 +267,13 @@ plot_faelle_zu_tests <- ggplotly(ggplot(mylabordaten_gesamt %>%
   scale_y_continuous(limits=c(0,1+max(mylabordaten_gesamt$cases/(mylabordaten_gesamt$Einwohner/1000)))))  %>%
   layout(showlegend = FALSE)
 
+plot_positiv_zu_tests <- ggplotly(mylabordaten_kw %>%
+  mutate(Negativ=Tests-Positiv) %>%
+  select(kw,Positiv,Negativ) %>%
+  gather(Merkmal,Wert,2:3) %>% group_by(kw) %>%
+  mutate(Anteil=paste0(round(100*Wert/sum(Wert),digits=0),"%"),
+         Wert=Wert/1000) %>% ungroup() %>%
+  ggplot(aes(x=kw,fill=Merkmal,y=Wert))+
+  geom_bar(post="stack",stat="identity") + scale_fill_zi() +
+  theme_zi_titels() + geom_text(aes(label=Anteil),position = "stack") +
+  labs(x="KW",y="Anzahl Tests in Tsd.",fill="") )
