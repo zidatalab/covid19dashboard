@@ -26,7 +26,7 @@ library(zicolors)
                           sslmode = 'require')
 
   brd_timeseries <- tbl(conn,"brd_timeseries")
-  prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=28) | Tage %in% c(30,60,90,120,150,180))
+  prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90))
   brdprognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90) & ((ebene=="Kreis") | (name=="Berlin")) )
   rki <- tbl(conn,"rki")
   strukturdaten <- tbl(conn,"strukturdaten")
