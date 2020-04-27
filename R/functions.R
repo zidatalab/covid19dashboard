@@ -26,7 +26,7 @@ library(zicolors)
                           sslmode = 'require')
 
   brd_timeseries <- tbl(conn,"brd_timeseries")
-  prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90))
+  prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=28) | Tage %in% c(30,60,90,120,150,180))
   brdprognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90) & ((ebene=="Kreis") | (name=="Berlin")) )
   rki <- tbl(conn,"rki")
   strukturdaten <- tbl(conn,"strukturdaten")
@@ -39,6 +39,7 @@ library(zicolors)
            Szenario=ifelse(Szenario=="Worst Case","Worst Case (R=1,3)",Szenario),
            Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
     filter(Datum<date(now()+weeks(12)))
+  labordaten <- tbl(conn, "Labordaten")
 
 
 rkiall <-  rki %>% select(AnzahlFall,AnzahlTodesfall,Meldedatum,Datenstand,NeuerFall,NeuerTodesfall) %>%
@@ -214,4 +215,56 @@ plot_prognosismap <- function(mySzenario="Trend lokal",shp = Kreise.shp,myDay=1)
 }
 
 
+#  Labordaten
+
+laborkapazität <- labordaten %>% group_by(kw) %>% summarise(kapazitaet=sum(kapazitaet)) %>% arrange(kw) %>% pull() %>% last()
+
+
+mylabordaten_gesamt <-
+  left_join(
+    labordaten %>% group_by(Bundesland) %>%
+      summarise(Tests=sum(gesamt,na.rm=T),
+                Positiv=sum(positiv,na.rm=T)) %>% collect(),
+    aktuell %>% filter(id<17) %>%
+      rename(Bundesland=name) %>% collect())
+
+mylabordaten_kw <-
+  left_join(
+    labordaten %>% group_by(kw) %>%
+      summarise(Tests=sum(gesamt,na.rm=T),
+                Positiv=sum(positiv,na.rm=T),
+                kapazitaet=sum(kapazitaet,na.rm=T),
+                id=0) %>% collect(),
+    aktuell %>% filter(id==0) %>%
+      rename(Bundesland=name) %>% collect())
+
+rki_kw <- brd_timeseries %>% filter(id==0) %>% collect() %>% mutate(kw=isoweek(date(date))) %>%
+  group_by(kw) %>% summarise(Fälle=sum(cases),Todesfälle=sum(deaths)) %>%
+  mutate("Neue Fälle"=`Fälle`-lag(`Fälle`))
+
+mylabordaten_kw_plus_rki <- left_join(mylabordaten_kw %>% filter(kw>=11),rki_kw) %>%
+  select(id,kw,Bundesland,Einwohner,"Neue Fälle",Tests,Kapazität=kapazitaet) %>%
+  mutate(Kapazität=Kapazität*7) %>%
+  gather(Merkmal,Wert,5:7) %>% mutate(Wert_je_1000EW=Wert/(Einwohner/1000))
+
+
+plot_trend_labortests <- ggplotly(ggplot(mylabordaten_kw_plus_rki ,
+                                         aes(x=kw,y=Wert_je_1000EW,color=Merkmal)) +
+                                    geom_line(size=2) +
+                                    labs(x="Kalederwoche",y="Tests/Fälle je Tsd. Einw.") +
+                                    theme_zi_titels() +scale_color_zi())  %>%
+  layout(showlegend = FALSE)
+
+
+plot_faelle_zu_tests <- ggplotly(ggplot(mylabordaten_gesamt %>%
+                                 mutate("Fälle je Tsd. Einw."=cases/(Einwohner/1000),
+                                        "Tests je Tsd. Einw."=Tests/(Einwohner/1000)),
+                               aes(y=`Fälle je Tsd. Einw.`,
+                                   x=Tests/(Einwohner/1000),label=Bundesland)) +
+  geom_text(color=zi_cols("zigrey")) +
+  geom_point(color=zi_cols("ziblue")) +
+  labs( y="Fälle je Tsd. Einw.",x="Tests je Einw.") +
+  theme_zi_titels() +
+  scale_y_continuous(limits=c(0,1+max(mylabordaten_gesamt$cases/(mylabordaten_gesamt$Einwohner/1000)))))  %>%
+  layout(showlegend = FALSE)
 

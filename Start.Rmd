@@ -42,6 +42,35 @@ DT::datatable(rki_fallzahl_bl(),
 
 ```
 
+# Laboruntersuchungen
+
+Row
+-----------------------------------------------------------------------
+
+### **Hintergrund**
+
+Die kassenärztlichen Vereinigungen erheben regelmäßig die Zahl der COVID-19 Testungen in den angeschlossenen Laboren. 
+
+
+
+
+Row {data-height=500}
+-----------------------------------------------------------------------
+
+### Entwicklung der Tests und Fallzahlen
+
+```{r}
+plot_trend_labortests
+
+```
+
+### Labordaten vs. Fälle
+
+```{r}
+plot_faelle_zu_tests
+```
+
+
 # Projektion
 
 Row {data-height=500}
