@@ -53,6 +53,8 @@ aktuell <- tbl(conn,"params") %>% collect()
 # maps
 Kreise.shp <- readRDS("static/Kreise.rds")
 Laender.shp <- readRDS("static/Laender.rds")
+
+# Tables
 table_patienten <- function(myname="Gesamt",myszenario="Italien"){
   prognosen %>% filter((name==myname) & (Szenario==myszenario)) %>%
     select(-ebene,-id,-name,-Neue_Faelle,
@@ -106,11 +108,11 @@ for (theid in seq(0,16,1)){
   blmitidata = bind_rows(blmitidata,mitigation_data(theid) %>% mutate(name=thename,id=theid))
 }
 
-blmitidata <- blmitidata %>%
-  filter(Merkmal=="Fälle" & (date > (date("2020-03-01")) & (date < now()-days(3))) & R_Mean<10)
+myblmitidata <- blmitidata %>%
+  filter(Merkmal=="Fälle"  & R_Mean<10 & date>=date("2020-03-01"))
 
 mitigationsplot_blvergleich <- function(){
-  myplot <- ggplot(blmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
+  myplot <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
                        text=paste("Region: ",name,"<br>"))) +
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
@@ -234,7 +236,7 @@ mylabordaten_kw <-
                 kapazitaet=sum(kapazitaet,na.rm=T),
                 id=0) %>% collect(),
     aktuell %>% filter(id==0) %>%
-      rename(Bundesland=name) %>% collect())
+      rename(Bundesland=name) %>% collect()) %>% filter(!is.na(Tests))
 
 rki_kw <- brd_timeseries %>% filter(id==0) %>% collect() %>% mutate(kw=isoweek(date(date))) %>%
   group_by(kw) %>% summarise(Fälle=sum(cases),Todesfälle=sum(deaths)) %>%
