@@ -10,6 +10,7 @@ git pull
 echo "Starting DB-Update"
 cd ~/covid19dashboard/R/
 /home/jupyter-lekroll/.conda/envs/R_36/bin/R CMD BATCH renderdashboard.R
+cd ~/covid19dashboard/
 git add *
 git commit -m "Auto update Dashboard"
 git push
