@@ -135,7 +135,7 @@ DT::datatable(rki_fallzahl_bl(),
 # Impressum
 
 ```{r include=FALSE}
-# Datenexport für KBV-Import
+# Datenexport Vorbereitung
 
 frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                            "Neue Fälle pro Tag",
@@ -144,10 +144,10 @@ frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                       faelleprotag,
                                       vorwarnzeitaktuell))
 
-write_json(frueindikatoren,"data/frueindikatoren.json")
-write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
-write_json(theoretisch,"data/vorwarnzeiten.json")
-write_json(vorwarndata %>% filter(id==0) %>% select(date,Infected),"data/akutinfiziert.json")
+#write_json(frueindikatoren,"data/frueindikatoren.json")
+#write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
+#write_json(theoretisch,"data/vorwarnzeiten.json")
+#write_json(vorwarndata %>% filter(id==0) %>% select(date,Infected),"data/akutinfiziert.json")
 
 ```
 
