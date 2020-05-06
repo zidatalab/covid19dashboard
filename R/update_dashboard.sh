@@ -4,7 +4,7 @@ source ~/myenv.sh
 echo "Starting conda"
 source /opt/tljh/user/bin/conda
 conda activate "R_36"
-echo "Pulling covid-19 Code from git"
+echo "Pulling Code from git"
 cd ~/covid19dashboard
 git pull
 echo "Starting DB-Update"
