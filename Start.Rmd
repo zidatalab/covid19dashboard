@@ -78,8 +78,13 @@ Row {data-height=400}
 ### **Aktuelle Vorwarnzeiten**
 
 ```{r}
-ggplotly(plot_Anstiegtheor  )
+ggplotly(plot_Anstiegtheor  + theme(legend.position='none') + labs(title=""))
 ```
+
+Row {data-height=100}
+------------------------------------------------------------------------
+
+Dargestellt ist die theoretische und empirische Vorwarnzeit bis zur Überschreitung der Kapazität an Intentsivbetten in Abhängigkeit von der Reproduktionszahl R ausgehend von der durschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 10 Tagen gemittelt, um Schwankungen auszugleichen.
 
 
 Row {data-height=400}
@@ -91,6 +96,12 @@ Row {data-height=400}
 ggplotly(akutinfiziert + labs(title=""))
 ```
 
+Row {data-height=100}
+------------------------------------------------------------------------
+
+Dargestellt ist die Entwicklung der Anzahl von akut Infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hat am 6.4.2020 ihren bisherigen Höhepunkt von ca. 74 Tsd. Personen gehabt. 
+
+
 Row {data-height=400}
 ------------------------------------------------------------------------
 ### **Entwicklung der Reproduktionszahl**
@@ -99,6 +110,11 @@ Row {data-height=400}
 mitigationsplot_blvergleich() 
 
 ```
+
+Row {data-height=100}
+------------------------------------------------------------------------
+
+Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen die von einer Person im Laufe ihrer COVID-19 Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
 
 Row
