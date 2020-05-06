@@ -1,0 +1,247 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-conda_cos6-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> source('~/myenv.R')
+> Sys.setenv("DBHOST"=DBHOST)
+> Sys.setenv("DBNAME"=DBNAME)
+> Sys.setenv("DBUSER"=DBUSER)
+> Sys.setenv("DBPASSWORD"=DBPASSWORD)
+> rmarkdown::render('../Start.Rmd')
+
+
+processing file: Start.Rmd
+  |                                                                         |                                                                 |   0%  |                                                                         |...                                                              |   5%
+  ordinary text without R code
+
+  |                                                                         |.......                                                          |  11%
+label: setup (with options) 
+List of 1
+ $ include: logi FALSE
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+
+Attaching package: 'glue'
+
+The following object is masked from 'package:dplyr':
+
+    collapse
+
+
+Attaching package: 'lubridate'
+
+The following object is masked from 'package:base':
+
+    date
+
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+
+Attaching package: 'plotly'
+
+The following object is masked from 'package:ggplot2':
+
+    last_plot
+
+The following object is masked from 'package:stats':
+
+    filter
+
+The following object is masked from 'package:graphics':
+
+    layout
+
+Loading required package: devtools
+Loading required package: usethis
+Loading required package: ggpubr
+Loading required package: png
+Loading required package: kableExtra
+Registered S3 method overwritten by 'rvest':
+  method            from
+  read_xml.response xml2
+
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows
+
+Loading required package: tidyverse
+── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
+✔ tibble 3.0.1     ✔ readr  1.3.1
+✔ tibble 3.0.1     ✔ purrr  0.3.4
+── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+✖ lubridate::as.difftime() masks base::as.difftime()
+✖ glue::collapse()         masks dplyr::collapse()
+✖ lubridate::date()        masks base::date()
+✖ plotly::filter()         masks dplyr::filter(), stats::filter()
+✖ kableExtra::group_rows() masks dplyr::group_rows()
+✖ lubridate::intersect()   masks base::intersect()
+✖ dplyr::lag()             masks stats::lag()
+✖ lubridate::setdiff()     masks base::setdiff()
+✖ lubridate::union()       masks base::union()
+Loading required package: extrafont
+Registering fonts with R
+Loading required package: knitr
+
+Attaching package: 'jsonlite'
+
+The following object is masked from 'package:purrr':
+
+    flatten
+
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Joining, by = "Bundesland"
+Joining, by = "id"
+Joining, by = "kw"
+Warning: Ignoring unknown parameters: post
+  |                                                                         |..........                                                       |  16%
+   inline R code fragments
+
+  |                                                                         |..............                                                   |  21%
+label: unnamed-chunk-1
+  |                                                                         |.................                                                |  26%
+  ordinary text without R code
+
+  |                                                                         |.....................                                            |  32%
+label: unnamed-chunk-2
+  |                                                                         |........................                                         |  37%
+  ordinary text without R code
+
+  |                                                                         |...........................                                      |  42%
+label: unnamed-chunk-3
+  |                                                                         |...............................                                  |  47%
+   inline R code fragments
+
+  |                                                                         |..................................                               |  53%
+label: unnamed-chunk-4
+  |                                                                         |......................................                           |  58%
+  ordinary text without R code
+
+  |                                                                         |.........................................                        |  63%
+label: unnamed-chunk-5
+  |                                                                         |............................................                     |  68%
+  ordinary text without R code
+
+  |                                                                         |................................................                 |  74%
+label: unnamed-chunk-6
+  |                                                                         |...................................................              |  79%
+  ordinary text without R code
+
+  |                                                                         |.......................................................          |  84%
+label: unnamed-chunk-7
+  |                                                                         |..........................................................       |  89%
+  ordinary text without R code
+
+  |                                                                         |..............................................................   |  95%
+label: unnamed-chunk-8 (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |.................................................................| 100%
+  ordinary text without R code
+
+
+output file: Start.knit.md
+
+/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpPhddKb/rmarkdown-str125f13c22357c.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpPhddKb/file125f12d5a00b9html --highlight-style pygments --include-before-body /tmp/RtmpPhddKb/file125f1462710b0.html --include-after-body /tmp/RtmpPhddKb/file125f1e46dde1.html --css static/styles.css 
+
+Output created: Start.html
+There were 37 warnings (use warnings() to see them)
+> 
+> proc.time()
+   user  system elapsed 
+ 11.812   0.787  15.981 
