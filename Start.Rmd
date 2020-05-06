@@ -36,7 +36,7 @@ Row
 indicatorR <- aktuell %>% filter(id==0) %>% collect() %>% pull(R0)
 valueBox(value= paste("R=",format(indicatorR,digits=2,decimal.mark = ","))  ,
          caption="Reproduktionszahl",
-         color = case_when(indicatorR < 1.0 ~ "green",
+         color = case_when(indicatorR < 1.0 ~ "#B1C800",
                            indicatorR >= 1.0 & 
                              indicatorR < 1.3 ~ "orange",
                            indicatorR >= 1.3 ~ "red"),
@@ -51,7 +51,7 @@ faelleprotag <-  round(infected/10)
 valueBox(faelleprotag,
          caption="Neue Fälle pro Tag (10-Tages-Durchschnitt)",
          icon = "fa-chart-line",
-         color = case_when(faelleprotag < 402*3 ~ "green",
+         color = case_when(faelleprotag < 402*3 ~ "#B1C800",
                            faelleprotag >= 402*3 & 
                              faelleprotag < 402*4 ~ "orange",
                            faelleprotag >= 402*4 ~ "red")
@@ -65,7 +65,7 @@ vorwarnzeitaktuell <-theoretisch %>% filter(Rt==1.3) %>% pull(Effektive_Vorwarnz
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
          caption="Effektive Vorwarnzeit bei R=1,3",
          icon = "fa-calendar-alt",
-         color = case_when(vorwarnzeitaktuell > 60 ~ "green",
+         color = case_when(vorwarnzeitaktuell > 60 ~ "#B1C800",
                            vorwarnzeitaktuell <= 60 & 
                              vorwarnzeitaktuell > 14 ~ "orange",
                            vorwarnzeitaktuell < 14 ~ "red")
