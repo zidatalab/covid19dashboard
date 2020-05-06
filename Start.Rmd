@@ -23,7 +23,9 @@ Row {data-height=100}
 
 ### **Zi Frühindikatoren:** 
 
-Da Zi hat drei Frühindikatoren definiert, die frühzeitig die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 anzeigen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick diese Indikatoren dargestellt. **Mehr Informationen finden Sie [hier](https://www.zi.de/presse/presseinformationen/5-mai-2020-2/)**.
+Da Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick diese Indikatoren dargestellt. **Mehr Informationen finden Sie [hier](https://www.zi.de/presse/presseinformationen/5-mai-2020-2/)**. 
+
+Stand: `r format(now(),format="%d.%m.%Y %H.%M Uhr")`
 
 Row 
 ------------------------------------------------------------------------
