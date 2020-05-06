@@ -8,11 +8,11 @@ library(ggplot2)
 library(DT)
 library(DBI)
 library(forcats)
-library(sf)
-library(leaflet)
 library(EpiEstim)
 library(plotly)
 library(zicolors)
+library(deSolve)
+library(jsonlite)
 
 # Connect to DB
  conn <- DBI::dbConnect(RPostgres::Postgres(),
@@ -169,60 +169,13 @@ mapdata_prognosis <- function(myoutcome="I"){
 }
 
 
-# Maps
-# Make Categorical Labels
-make_labels <- function(df,indicator_name,n=5,ndigits=3){
-  values <- df %>% select("value"=indicator_name) %>% mutate(ntile=ntile(value,n))
-  labels <- values %>% group_by(ntile) %>% summarise(min=min(value,na.rm=T),max=max(value,na.rm=T)) %>% ungroup() %>%
-    mutate(
-      label=(paste0(format(min,digits = ndigits,big.mark = ".",decimal.mark = ","),"-",format(max,digits = ndigits,big.mark = ".",decimal.mark = ","))),
-      label=ifelse(ntile==n,paste0(">",format(min,digits = ndigits,big.mark = ".",decimal.mark = ",")),label)) %>% select(ntile,label)
-  label_vector <- labels %>% pull(label)
-  left_join(values,labels,by="ntile") %>%
-    mutate(label=factor(label,levels = label_vector, ordered = TRUE)) %>% pull(label)
-}
-
-
-# Map Categorical Indicator
-mapcatindicatorleaflet <- function(daten,shp,indicator_name,raw_indicator="Outcome",maplabel=NA,mytitle="") {
-  bbox <- st_bbox(shp) %>%   as.vector()
-  coldata <- daten %>% select("outcome"=indicator_name)
-  mycols <- colorFactor(c( "#0086C5","#889C05","#E49900","#E46252","#E40000"), coldata$outcome, na.color ="#87888A")
-  myindicator<-indicator_name
-  mydata <- left_join(shp,daten %>% select(id,name,"OUTCOME"=indicator_name,"raw_value"=raw_indicator), by=c("id")) %>%
-    mutate(mydatalabel=paste0(
-      "<div>Region:<br><strong>",name,"</strong></div>",
-      "<div>Wert:<br><strong>",raw_value,"</strong></div>"))
-  leaflet(mydata) %>%
-    addProviderTiles(providers$CartoDB.Positron) %>%
-    fitBounds(bbox[1], bbox[2], bbox[3], bbox[4]) %>%
-    addPolygons(color = "black", smoothFactor = 0.2, fillOpacity = .8, fillColor =  ~mycols(OUTCOME),
-                opacity = .4,weight = 1, popup  = ~mydatalabel) %>%
-    addLegend("topright", pal = mycols, values = ~OUTCOME,title =mytitle, opacity = 1)
-}
-
-# Shiny Function for mapping
-prognosedatenfuerkarte   <- mapdata_prognosis(myoutcome = "durchseuchung")
-
-plot_prognosismap <- function(mySzenario="Trend lokal",shp = Kreise.shp,myDay=1) {
-  df <- prognosedatenfuerkarte %>% filter(Szenario==mySzenario)
-  plotdata <- df %>% filter(Tage==myDay)
-  mapcatindicatorleaflet(daten=plotdata,
-                         shp = shp ,
-                         indicator_name = "Label",
-                         raw_indicator = "Outcome",
-                         mytitle = "Jemals<br>infiziert<br>in %")
-}
-
-
 #  Labordaten
-
-laborkapazität <- labordaten %>% group_by(kw) %>% summarise(kapazitaet=sum(kapazitaet)) %>% arrange(kw) %>% pull() %>% last()
+laborkapazität <- labordaten  %>% filter(Testtyp=="PCR-Testung") %>% group_by(kw) %>% summarise(kapazitaet=sum(kapazitaet)) %>% arrange(kw) %>% pull() %>% last()
 
 
 mylabordaten_gesamt <-
   left_join(
-    labordaten %>% group_by(Bundesland) %>%
+    labordaten %>% filter(Testtyp=="PCR-Testung") %>% group_by(Bundesland) %>%
       summarise(Tests=sum(gesamt,na.rm=T),
                 Positiv=sum(positiv,na.rm=T)) %>% collect(),
     aktuell %>% filter(id<17) %>%
@@ -230,7 +183,7 @@ mylabordaten_gesamt <-
 
 mylabordaten_kw <-
   left_join(
-    labordaten %>% group_by(kw) %>%
+    labordaten  %>% filter(Testtyp=="PCR-Testung") %>% group_by(kw) %>%
       summarise(Tests=sum(gesamt,na.rm=T),
                 Positiv=sum(positiv,na.rm=T),
                 kapazitaet=sum(kapazitaet,na.rm=T),
@@ -277,3 +230,117 @@ plot_positiv_zu_tests <- ggplotly(mylabordaten_kw %>%
   geom_bar(post="stack",stat="identity") + scale_fill_zi() +
   theme_zi_titels() + geom_text(aes(label=Anteil),position = "stack") +
   labs(x="KW",y="Anzahl Tests in Tsd.",fill="") )
+
+
+# Akute infizierte Fälle
+vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
+  mutate(
+    cases=floor(zoo::rollmean(cases, 7, fill=NA)),
+    Infected=cases-lag(cases,15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
+  mutate(Rt=(cases-lag(cases,10))/lag(Infected,10)) %>% filter(!is.na(Infected) & !is.na(Rt))  %>%
+  mutate(date=date(date),
+         Neue_faelle=cases-lag(cases),
+         Neue_faelle_Anstieg = Neue_faelle/lag(Neue_faelle),
+         Vorwarnzeit= log(16000/Neue_faelle)/log(Neue_faelle_Anstieg),
+         Situation = case_when(Vorwarnzeit<0 ~ "grün",
+                               (Vorwarnzeit>18 )  ~ "orange",
+                               (Vorwarnzeit>=0 & Vorwarnzeit<18)   ~ "rot"),
+         Situation=factor(Situation,levels=c("grün","orange","rot"),ordered=T),
+         show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
+
+akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
+  geom_vline(aes(xintercept=date("2020-03-16")),color="black",linetype ="dotted") +
+  geom_vline(aes(xintercept=date("2020-03-22")),color="black",linetype ="dotted") +
+  geom_vline(aes(xintercept=date("2020-04-17")),color="black",linetype ="dotted") +
+  geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
+  geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
+  scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
+  theme_zi() + scale_x_date(breaks = "1 week",date_labels = "%d.%m.") +
+  annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
+  annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
+  annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
+  labs(title="Entwicklung der COVID-19-Epidemie in Deutschland",subtitle = "Aktuelle Zahl akut COVID-19-Infizierter") +
+  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
+
+# Vorwarnzeit aktuell
+#####################
+Bund_Faelle_neu_idl10Tagen <- brd_timeseries %>% filter(id==0) %>% collect() %>%
+  mutate(date=date(date)) %>% filter((date>=(now()-days(11)) & id==0) ) %>%
+  summarise(neue_Faelle=round((last(cases)-first(cases))/nrow(.))) %>% pull(neue_Faelle)
+
+Belastungsgrenze <- 16340
+Reaktionszeit <- 14+7
+brdparams <- aktuell %>% filter(id==0) %>% collect()
+ngesamt <- brdparams$Einwohner
+recovered <- brdparams$recovered + brdparams$deaths
+gamma <- 1/10
+Ausgangsfallzahl_bestand <- brd_timeseries %>% filter(id==0) %>% collect() %>% mutate(date=date(date)) %>%
+  filter((date>=(now()-days(7+2)) & id==0) )  %>% collect() %>% mutate(neu=cases-lag(cases))
+Ausgangsfallzahl <-Ausgangsfallzahl_bestand %>%   summarise(neu=round(mean(neu,na.rm = T))) %>% pull(neu)
+# infected <- brdparams$cases - (brdparams$recovered + brdparams$deaths)
+infected <- round(Bund_Faelle_neu_idl10Tagen/gamma)
+recovered <- brdparams$cases - infected
+
+Rt <- seq(1.1, 2, 0.1)
+Vorwarnzeit <- rep(0, length(Rt))
+Anstieg <- rep(0, length(Rt))
+
+SIR <- function(time, state, parameters, ngesamt, gamma) {
+  par <- as.list(c(state, parameters))
+  with(par, {
+    dS <- -beta/ngesamt * I * S
+    dI <- beta/ngesamt * I * S - gamma * I
+    dR <- gamma * I
+    list(c(dS, dI, dR))
+  })
+}
+
+sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
+  # Set parameters
+  ## Infection parameter beta; gamma: recovery parameter
+  params <- c("beta" = R0*gamma)
+  ## Timeframe
+  times      <- seq(0, horizont, by = 1)
+  ## Initial numbers
+  init       <- c("S"=S, "I"=I, "R"=R)
+  ## Time frame
+  times      <- seq(0, horizont, by = 1)
+
+  # Solve using ode (General Solver for Ordinary Differential Equations)
+  out <- ode(y = init, times = times, func = SIR, parms = params, ngesamt=ngesamt, gamma=gamma)
+
+  # change to data frame and reformat
+  out <- as.data.frame(out) %>% select(-time) %>% rename(S=1,I=2,R=3) %>%
+    mutate_at(c("S","I","R"),round)
+  ## Show data
+  return(as_tibble(out))
+}
+
+for (i in seq(Rt)) {
+  mysir <- sirmodel(ngesamt = ngesamt,
+                    S = ngesamt - infected - recovered,
+                    I = infected,
+                    R = recovered,
+                    R0 = Rt[i],
+                    gamma = gamma,
+                    horizont = 365) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
+  Vorwarnzeit[i] <- which.max(mysir$Neue_Faelle>Belastungsgrenze)
+  Anstieg[i] <- mysir$Neue_Faelle[2]/Ausgangsfallzahl
+}
+
+theoretisch <- data.frame(Rt = Rt) %>%
+  mutate(Ausgangsfallzahl=Ausgangsfallzahl, Belastungsgrenze=Belastungsgrenze,
+         Vorwarnzeit=Vorwarnzeit, Anstieg=Anstieg,
+         Reaktionszeit=Reaktionszeit,
+         Effektive_Vorwarnzeit=Vorwarnzeit-Reaktionszeit)
+
+mycolorbreaks <- c(14,30,90)
+plotdata_Anstieg <- theoretisch %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit)  %>% gather(Merkmal,Wert,2:3)
+plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
+  geom_line(size=2, show.legend = F)+
+  theme_zi() + scale_color_zi() +
+  scale_y_continuous(limits=c(0,max(theoretisch$Vorwarnzeit)))+
+  scale_x_continuous(labels =  function(x) paste0("R=",format(x,decimal.mark = ",")), breaks=Rt)  +
+  labs(title="Vorwarnzeit in Tagen nach R(t) ausgehend von aktuell",Bund_Faelle_neu_idl10Tagen, "Neuinfektionen pro Tag")
+
+
