@@ -72,6 +72,14 @@ valueBox(paste(vorwarnzeitaktuell,"Tage"),
         )
 ```
 
+Row {data-height=150}
+------------------------------------------------------------------------
+\
+**Legende:** \
+*Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. 
+*Neue Fälle pro Tag (10-Tages-Durchschnitt)*: Durschnittliche Anzahl neuer Fälle pro Tag in den letzten 10 Meldetagen.
+*Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
+
 Row {data-height=400}
 ------------------------------------------------------------------------
 
