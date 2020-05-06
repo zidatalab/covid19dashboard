@@ -1,5 +1,5 @@
 ---
-title: "Zi Frühindikatoren zur COVID-19 Pandemie"
+title: "Zi-Frühindikatoren zur COVID-19-Pandemie"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -21,9 +21,9 @@ source("R/functions.R", encoding = "UTF-8")
 Row {data-height=125}
 ------------------------------------------------------------------------
 
-### **Zi Frühindikatoren:** 
+### **Zi-Frühindikatoren:** 
 
-Da Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick diese Indikatoren dargestellt. **Nähere Informationen finden Sie [hier](https://www.zi.de/presse/presseinformationen/5-mai-2020-2/)**. 
+Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. **Nähere Informationen finden Sie [hier](https://www.zi.de/presse/presseinformationen/5-mai-2020-2/)**. 
 
 Stand: `r format(now(),format="%d.%m.%Y %H.%M Uhr")`
 
@@ -44,12 +44,12 @@ valueBox(value= paste("R=",format(indicatorR,digits=2,decimal.mark = ","))  ,
         )
 ```
 
-### Neue Fälle pro Tag (10-Tages Mittelwert) 
+### Neue Fälle pro Tag (10-Tages-Mittelwert) 
 
 ```{r}
 faelleprotag <-  round(infected/10)
 valueBox(faelleprotag,
-         caption="Neue Fälle pro Tag (10-Tages Durchschnitt)",
+         caption="Neue Fälle pro Tag (10-Tages-Durchschnitt)",
          icon = "fa-chart-line",
          color = case_when(faelleprotag < 402*3 ~ "green",
                            faelleprotag >= 402*3 & 
@@ -63,7 +63,7 @@ valueBox(faelleprotag,
 ```{r}
 vorwarnzeitaktuell <-theoretisch %>% filter(Rt==1.3) %>% pull(Effektive_Vorwarnzeit)
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
-         caption="Effektive Vorwarnzeit bei R=1.3",
+         caption="Effektive Vorwarnzeit bei R=1,3",
          icon = "fa-calendar-alt",
          color = case_when(vorwarnzeitaktuell > 60 ~ "green",
                            vorwarnzeitaktuell <= 60 & 
@@ -84,7 +84,7 @@ ggplotly(plot_Anstiegtheor  + theme(legend.position='none') + labs(title=""))
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die theoretische und empirische Vorwarnzeit bis zur Überschreitung der Kapazität an Intentsivbetten in Abhängigkeit von der Reproduktionszahl R ausgehend von der durschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 10 Tagen gemittelt, um Schwankungen auszugleichen.
+Dargestellt ist die theoretische und empirische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 10 Tagen gemittelt, um Schwankungen auszugleichen.
 
 
 Row {data-height=400}
@@ -99,7 +99,7 @@ ggplotly(akutinfiziert + labs(title=""))
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die Entwicklung der Anzahl von akut Infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hat am 6.4.2020 ihren bisherigen Höhepunkt von ca. 74 Tsd. Personen gehabt. 
+Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hat am 6.4.2020 ihren bisherigen Höhepunkt von ca. 74 Tsd. Personen gehabt. 
 
 
 Row {data-height=400}
@@ -114,7 +114,7 @@ mitigationsplot_blvergleich()
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen die von einer Person im Laufe ihrer COVID-19 Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
+Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
 
 Row
@@ -152,7 +152,7 @@ write_json(vorwarndata %>% filter(id==0) %>% select(date,Infected),"data/akutinf
 ```
 
 
-**Zentralinstitut für die kassenärztliche Versorgung in der Bundesrepublik Deutschland Stiftung des bürgerlichen Rechts**
+**Zentralinstitut für die kassenärztliche Versorgung in der Bundesrepublik Deutschland (Stiftung des bürgerlichen Rechts)**
 
 Salzufer 8  
 10587 Berlin  
