@@ -132,7 +132,10 @@ mitigationsplot_blvergleich <- function(){
 
 rki_fallzahl_bl <- function(){
   df <- aktuell %>% filter(id<17)
-  result <- df %>%
+  neue_faelle <- brd_timeseries %>% filter(id<=17) %>% collect() %>% group_by(id) %>%
+    arrange(id,-as.numeric(date(date))) %>% filter(row_number()<=10) %>%
+    summarise("Neue Fälle pro Tag"=round((first(cases)-last(cases))/10))
+  result <- df %>% left_join(.,neue_faelle,by="id") %>%
     mutate(cases_je_100Tsd=round((cases/Einwohner)*100000),
            deaths_je_100Tsd=round((deaths/cases)*1000),
            R0=round(R0,digits = 1),
@@ -141,7 +144,8 @@ rki_fallzahl_bl <- function(){
            #                       round(trend_slope,digits = 1)==0 ~ paste0(format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")),
            #                       round(trend_slope,digits = 1)<0 ~ paste0(format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")))
     )
-  result %>% select(Bundesland=name,"Fälle"=cases,
+  result %>% select(Bundesland=name,"Neue Fälle pro Tag",
+                    "Gesamt"=cases,
                     "je 100 Tsd. Einw."=cases_je_100Tsd,
                     "Tote"=deaths,"je 1000 Fälle"=deaths_je_100Tsd,
                     "R(t)"=R0,
