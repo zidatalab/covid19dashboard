@@ -18,12 +18,14 @@ source("R/functions.R", encoding = "UTF-8")
 
 # Dashboard 
 
-Row {data-height=20}
+Row {data-height=100}
 ------------------------------------------------------------------------
 
-**Zi Frühindikatoren:**
+### **Zi Frühindikatoren:** 
 
-Da Zi hat drei Frühindikatoren definiert, die frühzeitig die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 anzeigen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick diese Indikatoren dargestellt.
+Da Zi hat drei Frühindikatoren definiert, die frühzeitig die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 anzeigen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick diese Indikatoren dargestellt. \
+
+Mehr Informationen finden Sie [hier](https://www.zi.de/presse/presseinformationen/5-mai-2020-2/).
 
 Row 
 ------------------------------------------------------------------------
@@ -86,7 +88,7 @@ Row {data-height=400}
 
 ```{r}
 
-ggplotly(akutinfiziert + labs(title))
+ggplotly(akutinfiziert + labs(title=""))
 ```
 
 Row {data-height=400}
