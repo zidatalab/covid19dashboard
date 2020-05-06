@@ -8,8 +8,8 @@ echo "Pulling Code from git"
 cd ~/covid19dashboard
 git pull
 echo "Starting DB-Update"
-cd ~/covid-19/R/
+cd ~/covid19dashboard/R/
 /home/jupyter-lekroll/.conda/envs/R_36/bin/R CMD BATCH renderdashboard.R
 git add *
-git commit -m "Updated Dashboard"
+git commit -m "Auto update Dashboard"
 git push
