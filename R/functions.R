@@ -134,9 +134,10 @@ rki_fallzahl_bl <- function(){
   df <- aktuell %>% filter(id<17)
   neue_faelle <- brd_timeseries %>% filter(id<=17) %>% collect() %>% group_by(id) %>%
     arrange(id,-as.numeric(date(date))) %>% filter(row_number()<=10) %>%
-    summarise("Neue Fälle pro Tag"=round((first(cases)-last(cases))/10))
+    summarise(newperday=round((first(cases)-last(cases))/10))
   result <- df %>% left_join(.,neue_faelle,by="id") %>%
-    mutate(cases_je_100Tsd=round((cases/Einwohner)*100000),
+    mutate(newperday_je100Tsd=round((newperday/Einwohner)*100000),
+           cases_je_100Tsd=round((cases/Einwohner)*100000),
            deaths_je_100Tsd=round((deaths/cases)*1000),
            R0=round(R0,digits = 1),
            trend_slope=round(trend_slope,digits = 2)
@@ -144,12 +145,13 @@ rki_fallzahl_bl <- function(){
            #                       round(trend_slope,digits = 1)==0 ~ paste0(format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")),
            #                       round(trend_slope,digits = 1)<0 ~ paste0(format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")))
     )
-  result %>% select(Bundesland=name,"Neue Fälle pro Tag",
+  result %>% select(Bundesland=name,
+                    "Neue Fälle pro Tag"=newperday,
+                    "Neue Fälle je 100 Tsd. Einw."=newperday_je100Tsd,
                     "Gesamt"=cases,
-                    "je 100 Tsd. Einw."=cases_je_100Tsd,
+                    "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
                     "Tote"=deaths,"je 1000 Fälle"=deaths_je_100Tsd,
-                    "R(t)"=R0,
-                    "Trend R(t) pro Tag"=trend_slope)
+                    "R(t)"=R0)
 }
 
 plot_bundprognose <- ggplot(bundprognose %>% mutate("Fälle"=Jemals_Infiziert/1000),aes(x=Datum,y=`Fälle`,color=Szenario)) +
