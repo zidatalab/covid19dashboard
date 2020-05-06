@@ -34,7 +34,7 @@ Row
 
 ```{r}
 indicatorR <- aktuell %>% filter(id==0) %>% collect() %>% pull(R0)
-valueBox(value= paste("R=",format(indicatorR,digits=2,decimal.mark = ","))  ,
+valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
          caption="Reproduktionszahl",
          color = case_when(indicatorR < 1.0 ~ "#B1C800",
                            indicatorR >= 1.0 & 
