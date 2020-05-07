@@ -136,7 +136,8 @@ rki_fallzahl_bl <- function(){
     arrange(id,-as.numeric(date(date))) %>% filter(row_number()<=10) %>%
     summarise(newperday=round((first(cases)-last(cases))/10))
   result <- df %>% left_join(.,neue_faelle,by="id") %>%
-    mutate(newperday_je100Tsd=round((newperday/Einwohner)*100000),
+    mutate(newperday_je100Tsd=(newperday/Einwohner)*100000,
+           newper7days_je100Tsd=round(newperday_je100Tsd*7),
            cases_je_100Tsd=round((cases/Einwohner)*100000),
            deaths_je_100Tsd=round((deaths/cases)*1000),
            R0=round(R0,digits = 1),
@@ -147,7 +148,7 @@ rki_fallzahl_bl <- function(){
     )
   result %>% select(Bundesland=name,
                     "Neue Fälle pro Tag"=newperday,
-                    "Neue Fälle je 100 Tsd. Einw."=newperday_je100Tsd,
+                    "Neue Fälle je 100 Tsd. Einw. in 7 Tagen"=newper7days_je100Tsd,
                     "Gesamt"=cases,
                     "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
                     "Tote"=deaths,"je 1000 Fälle"=deaths_je_100Tsd,
@@ -270,10 +271,6 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
 
 # Vorwarnzeit aktuell
 #####################
-Bund_Faelle_neu_idl10Tagen <- brd_timeseries %>% filter(id==0) %>% collect() %>%
-  mutate(date=date(date)) %>% filter((date>=(now()-days(11)) & id==0) ) %>%
-  summarise(neue_Faelle=round((last(cases)-first(cases))/nrow(.))) %>% pull(neue_Faelle)
-
 Belastungsgrenze <- 16340
 Reaktionszeit <- 14+7
 brdparams <- aktuell %>% filter(id==0) %>% collect()
@@ -284,7 +281,8 @@ Ausgangsfallzahl_bestand <- brd_timeseries %>% filter(id==0) %>% collect() %>% m
   filter((date>=(now()-days(7+2)) & id==0) )  %>% collect() %>% mutate(neu=cases-lag(cases))
 Ausgangsfallzahl <-Ausgangsfallzahl_bestand %>%   summarise(neu=round(mean(neu,na.rm = T))) %>% pull(neu)
 # infected <- brdparams$cases - (brdparams$recovered + brdparams$deaths)
-infected <- round(Bund_Faelle_neu_idl10Tagen/gamma)
+# Ausgangsfallzahl <- round(50/7*brdparams$Einwohner/100000) # Grenze lt. BK/MP Beschluss vom 6.5.2020
+infected <- round(Ausgangsfallzahl/gamma)
 recovered <- brdparams$cases - infected
 
 Rt <- seq(1.1, 2, 0.1)
@@ -344,9 +342,9 @@ mycolorbreaks <- c(14,30,90)
 plotdata_Anstieg <- theoretisch %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit)  %>% gather(Merkmal,Wert,2:3)
 plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
   geom_line(size=2, show.legend = F)+
+  geom_hline(yintercept = 0) +
   theme_zi() + scale_color_zi() +
-  scale_y_continuous(limits=c(0,max(theoretisch$Vorwarnzeit)))+
   scale_x_continuous(labels =  function(x) paste0("R=",format(x,decimal.mark = ",")), breaks=Rt)  +
-  labs(title="Vorwarnzeit in Tagen nach R(t) ausgehend von aktuell",Bund_Faelle_neu_idl10Tagen, "Neuinfektionen pro Tag")
+  labs(title=paste0("Vorwarnzeit in Tagen nach R(t) ausgehend von ",Ausgangsfallzahl, " Neuinfektionen pro Tag"))
 
 
