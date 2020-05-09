@@ -48,13 +48,14 @@ valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
 
 ```{r}
 faelleprotag <-  round(infected/10)
+gesundheitsamtzahl <- 380
 valueBox(faelleprotag,
          caption="Neue Fälle pro Tag (7-Tages-Durchschnitt)",
          icon = "fa-chart-line",
-         color = case_when(faelleprotag < 402*3 ~ "#B1C800",
-                           faelleprotag >= 402*3 & 
-                             faelleprotag < 402*4 ~ "#E49900",
-                           faelleprotag >= 402*4 ~ "#E40000")
+         color = case_when(faelleprotag < gesundheitsamtzahl*3 ~ "#B1C800",
+                           faelleprotag >= gesundheitsamtzahl*3 & 
+                             faelleprotag < gesundheitsamtzahl*4 ~ "#E49900",
+                           faelleprotag >= gesundheitsamtzahl*4 ~ "#E40000")
         )
 ```
 
@@ -86,7 +87,7 @@ Row {data-height=400}
 ### **Aktuelle Vorwarnzeiten**
 
 ```{r}
-ggplotly(plot_Anstiegtheor  + theme(legend.position='none') + labs(title=""))
+ggplotly(plot_Anstiegtheor  + theme(legend.position='none') + labs(y="Tage",title=""))
 ```
 
 Row {data-height=100}
