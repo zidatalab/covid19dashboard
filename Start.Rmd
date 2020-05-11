@@ -87,14 +87,13 @@ Row {data-height=400}
 ### **Aktuelle Vorwarnzeiten**
 
 ```{r}
-ggplotly(plot_Anstiegtheor  + theme(legend.position='none') + labs(y="Tage",title=""))
+ggplotly(plot_Anstiegtheor  + theme(legend.position='none')+labs(x="R(t)"))
 ```
 
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die theoretische und empirische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen.
-
+Dargestellt ist die theoretische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen. Die effektive Vorwarnzeit ist geringer als die theoretische Vorwarnzeit. Hier wird eine Reaktionszeit von 21 Tagen angenommen, bis ein R-Wert erkannt und Maßmahmen wirksam implementiert sind.
 
 Row {data-height=400}
 ------------------------------------------------------------------------

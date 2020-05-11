@@ -50,37 +50,6 @@ rkiall <-  rki %>% select(AnzahlFall,AnzahlTodesfall,Meldedatum,Datenstand,Neuer
 
 aktuell <- tbl(conn,"params") %>% collect()
 
-# maps
-Kreise.shp <- readRDS("static/Kreise.rds")
-Laender.shp <- readRDS("static/Laender.rds")
-
-# Tables
-table_patienten <- function(myname="Gesamt",myszenario="Italien"){
-  prognosen %>% filter((name==myname) & (Szenario==myszenario)) %>%
-    select(-ebene,-id,-name,-Neue_Faelle,
-           -neue_icu_patienten,-n_kapazitaet,
-           -aezte_ambulant,-durchseuchung) %>%
-    collect()  %>%
-    mutate(auslastung_icu=round(auslastung_icu),
-           auslast_aerzte_covid_ambulant=round(auslast_aerzte_covid_ambulant*100),
-           auslast_aerzte_unter60_covid_ambulant=round(auslast_aerzte_unter60_covid_ambulant*100),
-           Datum=as.Date(Datum,format="%d.%m.%y"),
-           behandlungszeit_pro_Tag_min=round(behandlungszeit_pro_Tag_min/60)) %>%
-    select(Datum,
-           "Nicht infiziert"=S,
-           "Infiziert (symptomatisch)"=I,
-           "Infiziert (genesen,verstorben)"=R,
-           "Infiziert (jemals)"=Jemals_Infiziert,
-           "Veränderung zum Vortrag in %"=Veraenderung_relativ,
-           "ICU\n Patienten"=icu_patienten,
-           "Stationäre Patienten"=kh_patienten,
-           "ICU\n Auslastung in %"=auslastung_icu,
-           "Behandlungszeit ambulant in h/Tag"=behandlungszeit_pro_Tag_min,
-           "Auslastung Vertragsärzte in %"=auslast_aerzte_covid_ambulant,
-           "Auslastung Vertragsärzte unter 60 J. in %"=auslast_aerzte_unter60_covid_ambulant)
-}
-
-
 # Analysis
 mitigation_data <- function(myid=0){
   df <- brd_timeseries %>% filter(id==myid) %>% collect()
@@ -133,8 +102,8 @@ mitigationsplot_blvergleich <- function(){
 rki_fallzahl_bl <- function(){
   df <- aktuell %>% filter(id<17)
   neue_faelle <- brd_timeseries %>% filter(id<=17) %>% collect() %>% group_by(id) %>%
-    arrange(id,-as.numeric(date(date))) %>% filter(row_number()<=10) %>%
-    summarise(newperday=round((first(cases)-last(cases))/10))
+    arrange(id,-as.numeric(date(date))) %>% filter(row_number()<=8) %>%
+    summarise(newperday=round(mean((lag(cases)-cases),na.rm = T)))
   result <- df %>% left_join(.,neue_faelle,by="id") %>%
     mutate(newperday_je100Tsd=(newperday/Einwohner)*100000,
            newper7days_je100Tsd=round(newperday_je100Tsd*7),
@@ -154,90 +123,6 @@ rki_fallzahl_bl <- function(){
                     "Tote"=deaths,"je 1000 Fälle"=deaths_je_100Tsd,
                     "R(t)"=R0)
 }
-
-plot_bundprognose <- ggplot(bundprognose %>% mutate("Fälle"=Jemals_Infiziert/1000),aes(x=Datum,y=`Fälle`,color=Szenario)) +
-  geom_line(size=2.3) + theme_minimal() + scale_color_zi() +
-  theme(legend.position = "bottom") + labs(color="",x="",y="COVID-19-Fälle in Tsd.")+
-  scale_x_date(date_labels = "%d.%m.") +
-  scale_y_continuous(limits=c(0,floor(max(bundprognose$Jemals_Infiziert)/1000)+1))
-
-
-# Karten
-mapdata_prognosis <- function(myoutcome="I"){
-  data<-brdprognosen %>% rename("Outcome"=myoutcome) %>%
-    filter(((ebene=="Kreis")|((ebene=="Land") & (name=="Berlin")) )) %>%
-    filter(Tage %in% c(1,28)) %>%
-    collect() %>%
-    mutate(Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
-    select(Szenario,id,name,Tage,Datum,"Outcome") %>%
-    mutate(Label=make_labels(.,indicator_name = "Outcome"),
-           id=ifelse(name=="Berlin",id*1000,floor(id/1000))) %>% arrange(id,Datum)
-  return(data)
-}
-
-
-#  Labordaten
-laborkapazität <- labordaten  %>% filter(Testtyp=="PCR-Testung") %>% group_by(kw) %>% summarise(kapazitaet=sum(kapazitaet)) %>% arrange(kw) %>% pull() %>% last()
-
-
-mylabordaten_gesamt <-
-  left_join(
-    labordaten %>% filter(Testtyp=="PCR-Testung") %>% group_by(Bundesland) %>%
-      summarise(Tests=sum(gesamt,na.rm=T),
-                Positiv=sum(positiv,na.rm=T)) %>% collect(),
-    aktuell %>% filter(id<17) %>%
-      rename(Bundesland=name) %>% collect())
-
-mylabordaten_kw <-
-  left_join(
-    labordaten  %>% filter(Testtyp=="PCR-Testung") %>% group_by(kw) %>%
-      summarise(Tests=sum(gesamt,na.rm=T),
-                Positiv=sum(positiv,na.rm=T),
-                kapazitaet=sum(kapazitaet,na.rm=T),
-                id=0) %>% collect(),
-    aktuell %>% filter(id==0) %>%
-      rename(Bundesland=name) %>% collect()) %>% filter(!is.na(Tests))
-
-rki_kw <- brd_timeseries %>% filter(id==0) %>% collect() %>% mutate(kw=isoweek(date(date))) %>%
-  group_by(kw) %>% summarise(Fälle=sum(cases),Todesfälle=sum(deaths)) %>%
-  mutate("Neue Fälle"=`Fälle`-lag(`Fälle`))
-
-mylabordaten_kw_plus_rki <- left_join(mylabordaten_kw %>% filter(kw>=11),rki_kw) %>%
-  select(id,kw,Bundesland,Einwohner,"Neue Fälle",Tests,Kapazität=kapazitaet) %>%
-  mutate(Kapazität=Kapazität*7) %>%
-  gather(Merkmal,Wert,5:7) %>% mutate(Wert_je_1000EW=round(Wert/(Einwohner/1000),digits=1))
-
-
-plot_trend_labortests <- ggplotly(ggplot(mylabordaten_kw_plus_rki ,
-                                         aes(x=kw,y=Wert_je_1000EW,color=Merkmal,label=Merkmal)) +
-                                    geom_line(size=2) +
-                                    labs(x="Kalederwoche",y="Wert je Tsd. Einw.",color="") +
-                                    theme_zi_titels() +scale_color_zi())
-
-
-plot_faelle_zu_tests <- ggplotly(ggplot(mylabordaten_gesamt %>%
-                                 mutate("Fälle je Tsd. Einw."=round(cases/(Einwohner/1000),digits=1),
-                                        "Tests je Tsd. Einw."=round(Tests/(Einwohner/1000),digits=1)),
-                               aes(y=`Fälle je Tsd. Einw.`,
-                                   x=`Tests je Tsd. Einw.`,label=Bundesland)) +
-  geom_text(color=zi_cols("zigrey")) +
-  geom_point(color=zi_cols("ziblue")) +
-  labs( y="Fälle je Tsd. Einw.",x="Tests je Tsd. Einw.") +
-  theme_zi_titels() +
-  scale_y_continuous(limits=c(0,1+max(mylabordaten_gesamt$cases/(mylabordaten_gesamt$Einwohner/1000)))))  %>%
-  layout(showlegend = FALSE)
-
-plot_positiv_zu_tests <- ggplotly(mylabordaten_kw %>%
-  mutate(Negativ=Tests-Positiv) %>%
-  select(kw,Positiv,Negativ) %>%
-  gather(Merkmal,Wert,2:3) %>% group_by(kw) %>%
-  mutate(Anteil=paste0(round(100*Wert/sum(Wert),digits=0),"%"),
-         Wert=Wert/1000) %>% ungroup() %>%
-  ggplot(aes(x=kw,fill=Merkmal,y=Wert))+
-  geom_bar(post="stack",stat="identity") + scale_fill_zi() +
-  theme_zi_titels() + geom_text(aes(label=Anteil),position = "stack") +
-  labs(x="KW",y="Anzahl Tests in Tsd.",fill="") )
-
 
 # Akute infizierte Fälle
 vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
@@ -262,11 +147,11 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
-  theme_zi() + scale_x_date(breaks = "1 week",date_labels = "%d.%m.") +
+  theme_minimal() + scale_x_date(breaks = "1 week",date_labels = "%d.%m.") +
   annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
   annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
   annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
-  labs(title="Entwicklung der COVID-19-Epidemie in Deutschland",subtitle = "Aktuelle Zahl akut COVID-19-Infizierter") +
+  labs(y="Anzahl akut infiziert",x = "Datum") +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
 
 # Vorwarnzeit aktuell
@@ -343,8 +228,8 @@ plotdata_Anstieg <- theoretisch %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit
 plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
   geom_line(size=2, show.legend = F)+
   geom_hline(yintercept = 0) +
-  theme_zi() + scale_color_zi() +
+  theme_minimal() + scale_color_zi() +
   scale_x_continuous(labels =  function(x) paste0("R=",format(x,decimal.mark = ",")), breaks=Rt)  +
-  labs(title=paste0("Vorwarnzeit in Tagen nach R(t) ausgehend von ",Ausgangsfallzahl, " Neuinfektionen pro Tag"))
+  labs(y=paste0("Vorwarnzeit in Tagen"))
 
 
