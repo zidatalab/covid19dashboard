@@ -85,7 +85,7 @@ mitigationsplot_blvergleich <- function(){
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
                        text=paste("Region: ",name,"<br>"))) +
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
-  geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
+    geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
     scale_color_zi()  +
     theme_minimal() + scale_x_date(date_labels = "%d.%m.") +
     labs(x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
@@ -96,32 +96,6 @@ mitigationsplot_blvergleich <- function(){
     annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
     annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
-  }
-
-
-rki_fallzahl_bl <- function(){
-  df <- aktuell %>% filter(id<17)
-  neue_faelle <- brd_timeseries %>% filter(id<=17) %>% collect() %>% group_by(id) %>%
-    arrange(id,-as.numeric(date(date))) %>% filter(row_number()<=8) %>%
-    summarise(newperday=round(mean((lag(cases)-cases),na.rm = T)))
-  result <- df %>% left_join(.,neue_faelle,by="id") %>%
-    mutate(newperday_je100Tsd=(newperday/Einwohner)*100000,
-           newper7days_je100Tsd=round(newperday_je100Tsd*7),
-           cases_je_100Tsd=round((cases/Einwohner)*100000),
-           deaths_je_100Tsd=round((deaths/cases)*1000),
-           R0=round(R0,digits = 1),
-           trend_slope=round(trend_slope,digits = 2)
-           # ,trend_slope=case_when(round(trend_slope,digits = 1)>0 ~ paste0("+",format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")),
-           #                       round(trend_slope,digits = 1)==0 ~ paste0(format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")),
-           #                       round(trend_slope,digits = 1)<0 ~ paste0(format(trend_slope,digits =1,decimal.mark = ",",big.mark = ".")))
-    )
-  result %>% select(Bundesland=name,
-                    "Neue Fälle pro Tag"=newperday,
-                    "Neue Fälle je 100 Tsd. Einw. in 7 Tagen"=newper7days_je100Tsd,
-                    "Gesamt"=cases,
-                    "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
-                    "Tote"=deaths,"je 1000 Fälle"=deaths_je_100Tsd,
-                    "R(t)"=R0)
 }
 
 # Akute infizierte Fälle
@@ -156,24 +130,21 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
 
 # Vorwarnzeit aktuell
 #####################
-Belastungsgrenze <- 16340
-Reaktionszeit <- 14+7
-brdparams <- aktuell %>% filter(id==0) %>% collect()
-ngesamt <- brdparams$Einwohner
-recovered <- brdparams$recovered + brdparams$deaths
-gamma <- 1/10
-Ausgangsfallzahl_bestand <- brd_timeseries %>% filter(id==0) %>% collect() %>% mutate(date=date(date)) %>%
-  filter((date>=(now()-days(7+2)) & id==0) )  %>% collect() %>% mutate(neu=cases-lag(cases))
-Ausgangsfallzahl <-Ausgangsfallzahl_bestand %>%   summarise(neu=round(mean(neu,na.rm = T))) %>% pull(neu)
-# infected <- brdparams$cases - (brdparams$recovered + brdparams$deaths)
-# Ausgangsfallzahl <- round(50/7*brdparams$Einwohner/100000) # Grenze lt. BK/MP Beschluss vom 6.5.2020
-infected <- round(Ausgangsfallzahl/gamma)
-recovered <- brdparams$cases - infected
+# Daten
+letzte_7_tage <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
+  group_by(id) %>% arrange(id,-as.numeric(date)) %>%
+  filter(row_number()<=7) %>%
+  summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
+  mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
+ausgangsdaten <- aktuell  %>%
+  select(id,name,ICU_Betten,Einwohner,
+         cases,R0) %>% filter(!is.na(ICU_Betten)) %>%
+  left_join(.,letzte_7_tage,by="id") %>%
+  mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
+         Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
 
-Rt <- seq(1.1, 2, 0.1)
-Vorwarnzeit <- rep(0, length(Rt))
-Anstieg <- rep(0, length(Rt))
 
+# Funktionen
 SIR <- function(time, state, parameters, ngesamt, gamma) {
   par <- as.list(c(state, parameters))
   with(par, {
@@ -205,31 +176,116 @@ sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   return(as_tibble(out))
 }
 
-for (i in seq(Rt)) {
+
+# Funktion zur Vorwarnzeit bei festem Rt
+vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
+  gamma=1/10
+  infected=faelle/gamma
+  recovered= cases-infected
   mysir <- sirmodel(ngesamt = ngesamt,
                     S = ngesamt - infected - recovered,
                     I = infected,
                     R = recovered,
-                    R0 = Rt[i],
+                    R0 = Rt,
                     gamma = gamma,
                     horizont = 365) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
-  Vorwarnzeit[i] <- which.max(mysir$Neue_Faelle>Belastungsgrenze)
-  Anstieg[i] <- mysir$Neue_Faelle[2]/Ausgangsfallzahl
+  myresult <- NA
+  myresult <- mysir %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle>=Kapazitaet) %>% head(1) %>% pull(Tage)
+  return(myresult)
 }
 
-theoretisch <- data.frame(Rt = Rt) %>%
-  mutate(Ausgangsfallzahl=Ausgangsfallzahl, Belastungsgrenze=Belastungsgrenze,
-         Vorwarnzeit=Vorwarnzeit, Anstieg=Anstieg,
-         Reaktionszeit=Reaktionszeit,
-         Effektive_Vorwarnzeit=Vorwarnzeit-Reaktionszeit)
+
+# Ergebnis
+vorwarnzeitergebnis <- ausgangsdaten %>%
+  mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
+         Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
+         Kapazitaet=ICU_Betten*0.25/0.05/10,
+         Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
+
+myTage <- vorwarnzeitergebnis %>% rowwise() %>%
+  do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
+  unnest(cols = c(Tage), keep_empty=TRUE)
+vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
+  mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
+
+
+# Plots
+Auslastungsplot<- ggplot(vorwarnzeitergebnis %>% filter(id<17),
+                         aes(x=forcats::fct_reorder(name,Auslastung_durch_Grenze),y=Auslastung_durch_Grenze,
+                             fill=name=="Gesamt")) +
+  geom_bar(stat="identity",show.legend = F) + coord_flip() +
+  scale_fill_zi() + labs(subtitle="Auslastung ICU",x="",y="") +
+  theme_zi() +
+  geom_text(aes(y=5,label=paste0(round(Auslastung_durch_Grenze),"%")),size=2.5,color="white") +
+  scale_y_continuous(breaks=seq(0,60,20), limits=c(0,65),
+                     labels =  function(x) paste0(x,"%"))
+Vorwarnzeitplot <- ggplot(vorwarnzeitergebnis %>% filter(id<17),aes(x=forcats::fct_reorder(name,Auslastung_durch_Grenze),y=Vorwarnzeit)) +
+  geom_bar(stat="identity",show.legend = F,fill=zi_cols("ziorange")) + coord_flip() +
+  geom_hline(yintercept = 0,color="black") +
+  geom_text(aes(y=5,label=paste(Vorwarnzeit,"Tage")),size=2.5,color="white") +
+  labs(subtitle="Vorwarnzeit ab Interventionsgrenze",x="",y="") + theme_zi() +
+  scale_y_continuous(breaks=seq(0,50,5) #, labels =  function(x) paste0(x," Tage")
+  )
+
+# Theoretische Vorwarnzeit
+make_theoretischedaten <- function(myid=0) {
+fall <- vorwarnzeitergebnis %>% filter(id==myid)
+Rt <- seq(1.1, 2, 0.1)
+Vorwarnzeit <- rep(0, length(Rt))
+Anstieg <- rep(0, length(Rt))
+Reaktionszeit <- 21
+Belastungsgrenze <- fall$Kapazitaet
+gamma=1/10
+for (i in seq(Rt)) {
+  mysir <- sirmodel(ngesamt = fall$Einwohner,
+                    S = fall$Einwohner - fall$cases,
+                    I = (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
+                    R = fall$cases - (fall$Faelle_letzte_7_Tage_pro_Tag)/.1,
+                    R0 = Rt[i],
+                    gamma =gamma,
+                    horizont = 365) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
+  Vorwarnzeit[i] <- which.max(mysir$Neue_Faelle>Belastungsgrenze)
+}
+as_tibble(cbind(Rt,Vorwarnzeit)) %>%
+  mutate(id=myid,Effektive_Vorwarnzeit=Vorwarnzeit-Reaktionszeit) %>%
+  select(id,Rt,Vorwarnzeit,Effektive_Vorwarnzeit)
+}
 
 mycolorbreaks <- c(14,30,90)
-plotdata_Anstieg <- theoretisch %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit)  %>% gather(Merkmal,Wert,2:3)
+plotdata_Anstieg <- make_theoretischedaten(myid=0) %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit)  %>% gather(Merkmal,Wert,2:3)
 plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
-  geom_line(size=2, show.legend = F)+
+  geom_line(size=1.5, show.legend = F)+
+  geom_point(size=3, show.legend = F)+
   geom_hline(yintercept = 0) +
   theme_minimal() + scale_color_zi() +
-  scale_x_continuous(labels =  function(x) paste0("R=",format(x,decimal.mark = ",")), breaks=Rt)  +
+  scale_x_continuous(labels =  function(x) paste0("R=",format(x,decimal.mark = ",")),breaks=seq(1.1, 2, 0.1))  +
   labs(y=paste0("Vorwarnzeit in Tagen"))
+
+
+
+rki_fallzahl_bl <- function(){
+  df <- vorwarnzeitergebnis %>% filter(id<17) %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
+                                                         R0=round(R0,digits = 2))
+  df %>% select(Bundesland=name,
+                "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
+                "Neue Fälle je 100 Tsd. Einw. in 7 Tagen"=Faelle_letzte_7_Tage_je100TsdEinw,
+                "Fälle insgesamt"=cases,
+                "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
+                "R(t)"=R0,
+                "Effektive Vorwarnzeit aktuell"=Vorwarnzeit_effektiv)
+}
+
+rki_fallzahl_kreis <- function(){
+  df <- vorwarnzeitergebnis %>% filter(id>17) %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
+                                                         R0=round(R0,digits = 2))
+  df %>% select(Bundesland=name,
+                "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
+                "Neue Fälle je 100 Tsd. Einw. in 7 Tagen"=Faelle_letzte_7_Tage_je100TsdEinw,
+                "Fälle insgesamt"=cases,
+                "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
+                "R(t)"=R0,
+                # "Effektive Vorwarnzeit aktuell"=Vorwarnzeit_effektiv # needs communication
+                )
+}
 
 

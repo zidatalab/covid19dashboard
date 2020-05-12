@@ -47,7 +47,7 @@ valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
 ### Neue Fälle pro Tag (7-Tages-Mittelwert) 
 
 ```{r}
-faelleprotag <-  round(infected/10)
+faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0) %>% pull(Faelle_letzte_7_Tage_pro_Tag)
 gesundheitsamtzahl <- 380
 valueBox(faelleprotag,
          caption="Neue Fälle pro Tag (7-Tages-Durchschnitt)",
@@ -62,7 +62,7 @@ valueBox(faelleprotag,
 ### Vorwarnzeit bei R=1,3 
 
 ```{r}
-vorwarnzeitaktuell <-theoretisch %>% filter(Rt==1.3) %>% pull(Effektive_Vorwarnzeit)
+vorwarnzeitaktuell <-vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv)
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
          caption="Effektive Vorwarnzeit bei R=1,3",
          icon = "fa-calendar-alt",
@@ -73,12 +73,12 @@ valueBox(paste(vorwarnzeitaktuell,"Tage"),
         )
 ```
 
-Row {data-height=100}
+Row {data-height=125}
 ------------------------------------------------------------------------
 \
 **Legende:** \
-*Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. 
-*Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.
+*Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
+*Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\
 *Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
 
 Row {data-height=170}
@@ -148,6 +148,24 @@ DT::datatable(rki_fallzahl_bl(),
 
 ```
 
+# Kreise
+
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zu den Kennzahlen der Kreise**
+
+```{r}
+DT::datatable(rki_fallzahl_kreis(),
+              options = list(paging = TRUE,
+                             searching = TRUE,
+                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
+                             server = FALSE,
+                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
+
+```
+
+
 # Impressum
 
 ```{r include=FALSE}
@@ -163,8 +181,6 @@ frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
 write_json(frueindikatoren,"data/frueindikatoren.json")
 #write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
 #write_json(theoretisch,"data/vorwarnzeiten.json")
-#write_json(vorwarndata %>% filter(id==0) %>% select(date,Infected),"data/akutinfiziert.json")
-
 ```
 
 
