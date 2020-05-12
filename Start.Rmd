@@ -73,13 +73,19 @@ valueBox(paste(vorwarnzeitaktuell,"Tage"),
         )
 ```
 
-Row {data-height=150}
+Row {data-height=100}
 ------------------------------------------------------------------------
 \
 **Legende:** \
 *Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. 
 *Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.
 *Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
+
+Row {data-height=170}
+------------------------------------------------------------------------
+\
+**Methodischer Hinweis zum R-Wert:** \
+*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an. Kurzfristig ist das RKI-Vorgehen sensibler gegenüber Änderungen im Infektionsgeschehen, während das Zi-Vorgehen robuster zeitliche Trends abbildet.*
 
 Row {data-height=400}
 ------------------------------------------------------------------------
@@ -94,6 +100,8 @@ Row {data-height=100}
 ------------------------------------------------------------------------
 
 Dargestellt ist die theoretische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen. Die effektive Vorwarnzeit ist geringer als die theoretische Vorwarnzeit. Hier wird eine Reaktionszeit von 21 Tagen angenommen, bis ein R-Wert erkannt und Maßmahmen wirksam implementiert sind.
+
+
 
 Row {data-height=400}
 ------------------------------------------------------------------------
