@@ -160,7 +160,7 @@ frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                       faelleprotag,
                                       vorwarnzeitaktuell))
 
-#write_json(frueindikatoren,"data/frueindikatoren.json")
+write_json(frueindikatoren,"data/frueindikatoren.json")
 #write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
 #write_json(theoretisch,"data/vorwarnzeiten.json")
 #write_json(vorwarndata %>% filter(id==0) %>% select(date,Infected),"data/akutinfiziert.json")
