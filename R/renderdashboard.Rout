@@ -34,7 +34,7 @@ processing file: Start.Rmd
   |                                                                         |                                                                 |   0%  |                                                                         |...                                                              |   5%
   ordinary text without R code
 
-  |                                                                         |.......                                                          |  11%
+  |                                                                         |......                                                           |  10%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -186,46 +186,51 @@ Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
-  |                                                                         |..........                                                       |  16%
+  |                                                                         |.........                                                        |  14%
    inline R code fragments
 
-  |                                                                         |..............                                                   |  21%
+  |                                                                         |............                                                     |  19%
 label: unnamed-chunk-1
-  |                                                                         |.................                                                |  26%
+  |                                                                         |...............                                                  |  24%
   ordinary text without R code
 
-  |                                                                         |.....................                                            |  32%
+  |                                                                         |...................                                              |  29%
 label: unnamed-chunk-2
-  |                                                                         |........................                                         |  37%
+  |                                                                         |......................                                           |  33%
   ordinary text without R code
 
-  |                                                                         |...........................                                      |  42%
+  |                                                                         |.........................                                        |  38%
 label: unnamed-chunk-3
-  |                                                                         |...............................                                  |  47%
+  |                                                                         |............................                                     |  43%
    inline R code fragments
 
-  |                                                                         |..................................                               |  53%
+  |                                                                         |...............................                                  |  48%
 label: unnamed-chunk-4
-  |                                                                         |......................................                           |  58%
+  |                                                                         |..................................                               |  52%
   ordinary text without R code
 
-  |                                                                         |.........................................                        |  63%
+  |                                                                         |.....................................                            |  57%
 label: unnamed-chunk-5
-  |                                                                         |............................................                     |  68%
+  |                                                                         |........................................                         |  62%
   ordinary text without R code
 
-  |                                                                         |................................................                 |  74%
+  |                                                                         |...........................................                      |  67%
 label: unnamed-chunk-6
-  |                                                                         |...................................................              |  79%
+  |                                                                         |..............................................                   |  71%
   ordinary text without R code
 
-  |                                                                         |.......................................................          |  84%
+  |                                                                         |..................................................               |  76%
 label: unnamed-chunk-7
-  |                                                                         |..........................................................       |  89%
+  |                                                                         |.....................................................            |  81%
+  ordinary text without R code
+
+  |                                                                         |........................................................         |  86%
+label: unnamed-chunk-8
+  |                                                                         |...........................................................      |  90%
   ordinary text without R code
 
   |                                                                         |..............................................................   |  95%
-label: unnamed-chunk-8 (with options) 
+label: unnamed-chunk-9 (with options) 
 List of 1
  $ include: logi FALSE
 
@@ -235,11 +240,11 @@ List of 1
 
 output file: Start.knit.md
 
-/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpErt64m/rmarkdown-str3c4b68858ad0.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpErt64m/file3c4b7f4b1e0html --highlight-style pygments --include-before-body /tmp/RtmpErt64m/file3c4b396a687e.html --include-after-body /tmp/RtmpErt64m/file3c4b2922389b.html --css static/styles.css 
+/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpKrC4kL/rmarkdown-strc94a3a70d628.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpKrC4kL/filec94a32cc87cdhtml --highlight-style pygments --include-before-body /tmp/RtmpKrC4kL/filec94a2032cbc6.html --include-after-body /tmp/RtmpKrC4kL/filec94a610e3e47.html --css static/styles.css 
 
 Output created: Start.html
-There were 36 warnings (use warnings() to see them)
+There were 38 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
- 10.699   0.786  36.901 
+ 21.388   0.679  50.132 
