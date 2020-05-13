@@ -137,8 +137,8 @@ letzte_7_tage <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
   summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
   mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
 ausgangsdaten <- aktuell  %>%
-  select(id,name,ICU_Betten,Einwohner,
-         cases,R0) %>% filter(!is.na(ICU_Betten)) %>%
+  select(id,name,ICU_Betten,Einwohner,ebene,
+         cases,R0) %>% filter(ebene!="Staaten" & !is.na(ebene)) %>% select(-ebene) %>%
   left_join(.,letzte_7_tage,by="id") %>%
   mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
          Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
@@ -199,6 +199,7 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
 vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
+         R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
          Kapazitaet=ICU_Betten*0.25/0.05/10,
          Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
 
@@ -276,15 +277,18 @@ rki_fallzahl_bl <- function(){
 }
 
 rki_fallzahl_kreis <- function(){
-  df <- vorwarnzeitergebnis %>% filter(id>17) %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
+  df <- vorwarnzeitergebnis %>% filter(id>17 | name=="Berlin") %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
                                                          R0=round(R0,digits = 2))
-  df %>% select(Bundesland=name,
+  bundeslaender <- aktuell %>% filter(id>0 & id<17) %>% select(blid=id,Bundesland=name)
+  df <- df %>% mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>% left_join(.,bundeslaender) %>% arrange(blid,id)
+  df %>% select(Kreis=name,
+                Bundesland,
                 "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
                 "Neue Fälle je 100 Tsd. Einw. in 7 Tagen"=Faelle_letzte_7_Tage_je100TsdEinw,
                 "Fälle insgesamt"=cases,
                 "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
                 "R(t)"=R0,
-                # "Effektive Vorwarnzeit aktuell"=Vorwarnzeit_effektiv # needs communication
+                "Vorwarnzeit aktuell lokal*"=Vorwarnzeit # needs communication
                 )
 }
 

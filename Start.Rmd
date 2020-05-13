@@ -150,10 +150,16 @@ DT::datatable(rki_fallzahl_bl(),
 
 # Kreise
 
-Row
+Row {data-height=100}
 -----------------------------------------------------------------------
 
 ### **Überblick zu den Kennzahlen der Kreise**
+
+Nachfolgend erhalten Sie einen Überblick zur Situation der einzelnen Kreise. Bitte beachten Sie, dass der Indikator Vorwarnzeit auf Ebene der Kreise und Städte nicht losgelöst von der Situation im jeweiligen Bundesland betrachtet werden sollte. Sofern die lokale Vorwarnzeit sehr gering ist, die Vorwarnzeit im Bundesland zugehörigen Bundesland aber vergleichsweise hoch ist, besteht unseres Erachtens noch keine kritische Situation.
+
+Row
+-----------------------------------------------------------------------
+
 
 ```{r}
 DT::datatable(rki_fallzahl_kreis(),
