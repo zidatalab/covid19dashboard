@@ -226,6 +226,7 @@ label: unnamed-chunk-7
 
   |                                                                         |........................................................         |  86%
 label: unnamed-chunk-8
+Joining, by = "blid"
   |                                                                         |...........................................................      |  90%
   ordinary text without R code
 
@@ -240,11 +241,11 @@ List of 1
 
 output file: Start.knit.md
 
-/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpKrC4kL/rmarkdown-strc94a3a70d628.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpKrC4kL/filec94a32cc87cdhtml --highlight-style pygments --include-before-body /tmp/RtmpKrC4kL/filec94a2032cbc6.html --include-after-body /tmp/RtmpKrC4kL/filec94a610e3e47.html --css static/styles.css 
+/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpLKHHMV/rmarkdown-str180883eea8090.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpLKHHMV/file1808810643f82html --highlight-style pygments --include-before-body /tmp/RtmpLKHHMV/file1808863cc7b52.html --include-after-body /tmp/RtmpLKHHMV/file180884c6512e1.html --css static/styles.css 
 
 Output created: Start.html
-There were 38 warnings (use warnings() to see them)
+There were 36 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
- 21.388   0.679  50.132 
+ 21.434   0.742  50.003 
