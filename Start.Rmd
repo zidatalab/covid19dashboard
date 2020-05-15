@@ -1,5 +1,5 @@
 ---
-title: "Zi-Frühindikatoren zur COVID-19-Pandemie"
+title: "Zi-Frühindikatoren zu COVID-19"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows

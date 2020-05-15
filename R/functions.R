@@ -84,6 +84,7 @@ mitigationsplot_blvergleich <- function(){
   myplot <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
                        text=paste("Region: ",name,"<br>"))) +
+    geom_hline(yintercept = 1) +
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
     geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
     scale_color_zi()  +
@@ -94,7 +95,8 @@ mitigationsplot_blvergleich <- function(){
     geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
     annotate("text", x = date("2020-03-16"), y = 3.3, label = "Schulschließungen\n16.3.",color="black",size=3) +
     annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
-    annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3)
+    annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
+    theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
 
@@ -128,6 +130,7 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
   annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
   labs(y="Anzahl akut infiziert",x = "Datum") +
+  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
 
 # Vorwarnzeit aktuell
@@ -262,7 +265,8 @@ plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
   geom_hline(yintercept = 0) +
   theme_minimal() + scale_color_zi() +
   scale_x_continuous(labels =  function(x) paste0(format(x,decimal.mark = ",")),breaks=seq(1.1, 2, 0.1))  +
-  labs(y=paste0("Vorwarnzeit in Tagen"))
+  labs(y=paste0("Vorwarnzeit in Tagen"))+
+  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
 
 
 
