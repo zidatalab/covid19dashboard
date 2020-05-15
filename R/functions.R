@@ -87,7 +87,7 @@ mitigationsplot_blvergleich <- function(){
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
     geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
     scale_color_zi()  +
-    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="3 weeks") +
+    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 weeks") +
     labs(x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
     geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
     geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
@@ -121,7 +121,8 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
-  theme_minimal() + scale_x_date(breaks = "1 week",date_labels = "%d.%m.") +
+  theme_minimal() +
+  scale_x_date(breaks = "2 weeks",date_labels = "%d.%m.") +
   annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
   annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
   annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
