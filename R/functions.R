@@ -87,7 +87,7 @@ mitigationsplot_blvergleich <- function(){
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
     geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
     scale_color_zi()  +
-    theme_minimal() + scale_x_date(date_labels = "%d.%m.") +
+    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="3 weeks") +
     labs(x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
     geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
     geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
@@ -253,13 +253,13 @@ as_tibble(cbind(Rt,Vorwarnzeit)) %>%
 }
 
 mycolorbreaks <- c(14,30,90)
-plotdata_Anstieg <- make_theoretischedaten(myid=0) %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit)  %>% gather(Merkmal,Wert,2:3)
+plotdata_Anstieg <- make_theoretischedaten(myid=0) %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit) %>% filter(`Effektive Vorwarnzeit`>=0)  %>% gather(Merkmal,Wert,2:3)
 plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
   geom_line(size=1.5, show.legend = F)+
   geom_point(size=3, show.legend = F)+
   geom_hline(yintercept = 0) +
   theme_minimal() + scale_color_zi() +
-  scale_x_continuous(labels =  function(x) paste0("R=",format(x,decimal.mark = ",")),breaks=seq(1.1, 2, 0.1))  +
+  scale_x_continuous(labels =  function(x) paste0(format(x,decimal.mark = ",")),breaks=seq(1.1, 2, 0.1))  +
   labs(y=paste0("Vorwarnzeit in Tagen"))
 
 
