@@ -93,7 +93,8 @@ Row {data-height=400}
 ### **Aktuelle Vorwarnzeiten**
 
 ```{r}
-ggplotly(plot_Anstiegtheor  + theme(legend.position='none')+labs(x="R(t)"))
+ggplotly(plot_Anstiegtheor  + theme(legend.position='none')+labs(x="R(t)")) %>%
+   config(displayModeBar = FALSE, responsive=T)
 ```
 
 Row {data-height=100}
@@ -109,7 +110,8 @@ Row {data-height=400}
 
 ```{r}
 
-ggplotly(akutinfiziert + labs(title=""))
+ggplotly(akutinfiziert + labs(title="")) %>%
+   config(displayModeBar = FALSE, responsive=T)
 ```
 
 Row {data-height=100}
@@ -123,7 +125,8 @@ Row {data-height=400}
 ### **Entwicklung der Reproduktionszahl**
 
 ```{r}
-mitigationsplot_blvergleich() 
+mitigationsplot_blvergleich() %>%
+   config(displayModeBar = FALSE, responsive=T)
 
 ```
 
@@ -140,6 +143,7 @@ Row
 
 ```{r}
 DT::datatable(rki_fallzahl_bl(),
+              extensions = 'Responsive',
               options = list(paging = FALSE,
                              searching = FALSE,
                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
@@ -163,6 +167,7 @@ Row
 
 ```{r}
 DT::datatable(rki_fallzahl_kreis(),
+              extensions = 'Responsive',
               options = list(paging = TRUE,
                              searching = TRUE,
                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
