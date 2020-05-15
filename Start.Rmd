@@ -191,7 +191,7 @@ DT::datatable(rki_fallzahl_kreis(),
 frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                            "Neue Fälle pro Tag",
                                            "Vorwarnzeit aktuell in Tagen"),
-                             "Wert"=c(indicatorR,
+                             "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
                                       faelleprotag,
                                       vorwarnzeitaktuell))
 
