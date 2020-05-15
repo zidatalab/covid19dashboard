@@ -115,6 +115,7 @@ vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
          show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
 
 akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
+  geom_area(fill="#0086C530") +
   geom_vline(aes(xintercept=date("2020-03-16")),color="black",linetype ="dotted") +
   geom_vline(aes(xintercept=date("2020-03-22")),color="black",linetype ="dotted") +
   geom_vline(aes(xintercept=date("2020-04-17")),color="black",linetype ="dotted") +
