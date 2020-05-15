@@ -97,8 +97,10 @@ Row {data-height=400}
 ### **Aktuelle Vorwarnzeiten**
 
 ```{r}
-ggplotly(plot_Anstiegtheor  + theme(legend.position='none')+labs(x="R(t)")) %>%
-   config(displayModeBar = FALSE, responsive=T)
+ggplotly(plot_Anstiegtheor  + labs(x="R(t)")) %>%
+   config(displayModeBar = FALSE, responsive=T) %>%
+layout(legend = list(x = 0.8, y = 0.9))
+  
 ```
 
 Row {data-height=100}
