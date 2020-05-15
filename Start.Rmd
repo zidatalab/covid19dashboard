@@ -98,7 +98,7 @@ Row {data-height=400}
 
 ```{r}
 ggplotly(plot_Anstiegtheor  + theme(legend.position='none')+labs(x="R(t)")) %>%
-   config(displayModeBar = FALSE, responsive=T,staticPlot=T)
+   config(displayModeBar = FALSE, responsive=T)
 ```
 
 Row {data-height=100}
@@ -115,7 +115,7 @@ Row {data-height=400}
 ```{r}
 
 ggplotly(akutinfiziert + labs(title="")) %>%
-   config(displayModeBar = FALSE, responsive=T,staticPlot=T)
+   config(displayModeBar = FALSE, responsive=T)
 ```
 
 Row {data-height=100}
@@ -130,7 +130,7 @@ Row {data-height=400}
 
 ```{r}
 mitigationsplot_blvergleich() %>%
-   config(displayModeBar = FALSE, responsive=T,staticPlot=T)
+   config(displayModeBar = FALSE, responsive=T)
 
 ```
 
