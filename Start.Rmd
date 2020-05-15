@@ -193,7 +193,7 @@ frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                            "Vorwarnzeit aktuell in Tagen"),
                              "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
                                       faelleprotag,
-                                      vorwarnzeitaktuell))
+                                      paste(vorwarnzeitaktuell,"Tage")))
 
 write_json(frueindikatoren,"data/frueindikatoren.json")
 #write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
