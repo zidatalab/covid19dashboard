@@ -228,5 +228,5 @@ vwz_vs_date <- as_tibble(datevsvorwarnzeit) %>%
 Vorwarnzeit_derletztentage <- ggplot(vwz_vs_date,
                                      aes(x=date,y=vorwarnzeit-21)) +
   geom_line(color=zi_cols("ziblue"), size=2) +
-  ylim(0, 110) +
-  labs(subtitle="Zi-Vorwarnzeit (effektiv) der letzten vier Wochen",x="",y="") + theme_zi()
+  ylim(0, 120) +
+  labs(subtitle="Zi-Vorwarnzeit (effektiv) im Zeitverlauf",x="",y="") + theme_zi()
