@@ -2,6 +2,7 @@
 library(dplyr)
 library(glue)
 library(lubridate)
+library(tidyverse)
 library(tidyr)
 library(stringr)
 library(ggplot2)
@@ -13,6 +14,7 @@ library(plotly)
 library(zicolors)
 library(deSolve)
 library(jsonlite)
+library(readxl)
 
 # parameters from literature
 icu_days <- 10.1 # aok/divi paper lancet
@@ -42,9 +44,34 @@ share_icu <- (266+15395)/207828 # divi intensivregister and rki daily report 30 
            Szenario=ifelse(Szenario=="Worst Case","Worst Case (R=1,3)",Szenario),
            Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
     filter(Datum<date(now()+weeks(12)))
-  labordaten <- tbl(conn, "Labordaten")
+  # labordaten <- tbl(conn, "Labordaten")
 
-
+  # read and update RKI-R-estimates
+RKI_R <- tryCatch(
+  {
+    mytemp = tempfile()
+    rki_r_data = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting_Zahlen.xlsx?__blob=publicationFile"
+    download.file(rki_r_data, mytemp, quiet=TRUE)
+    Nowcasting_Zahlen <- read_excel(mytemp, 
+                                    sheet = "Nowcast_R", col_types = c("date", 
+                                                                       "numeric", "numeric", "numeric", 
+                                                                       "numeric", "numeric", "numeric", 
+                                                                       "numeric", "numeric", "numeric", 
+                                                                       "numeric", "numeric", "numeric"))
+    if (dim(Nowcasting_Zahlen)[2] != 13){ 
+      stop("RKI changed their R table")
+    } else {
+      write_csv(Nowcasting_Zahlen, "./data/nowcasting_r_rki.csv")
+      Nowcasting_Zahlen
+    }
+  },
+  error=function(e) {
+    # read old data
+    Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv")
+    return(Nowcasting_Zahlen)
+  }
+)
+  
 rkiall <-  rki %>% select(AnzahlFall,AnzahlTodesfall,Meldedatum,Datenstand,NeuerFall,NeuerTodesfall) %>%
   mutate(NeuerFall=ifelse(NeuerFall==1,"Neue Meldung","Alte Meldung")) %>%
   group_by(Meldedatum,NeuerFall) %>% summarise(AnzahlFall=sum(AnzahlFall,na.rm=T)) %>%
@@ -219,6 +246,63 @@ myTage <- vorwarnzeitergebnis %>% rowwise() %>%
 vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
 
+## vorwarnzeitverlauf Ergebnis
+horizont <- as.integer(date(max(brd_timeseries %>% collect() %>% pull(date))) - date("2020-03-13"))
+datevsvorwarnzeit <- matrix(0, nrow=horizont+1, ncol=2, dimnames=list(date=0:horizont, cols=c("stichtag", "vorwarnzeit")))
+for (h in 0:horizont) {
+  stichtag <- date(max(brd_timeseries %>% collect() %>% pull(date)))-h
+  letzte_7_tage_h <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
+    filter(date<=stichtag) %>%
+    group_by(id) %>% arrange(id,-as.numeric(date)) %>%
+    filter(row_number()<=7) %>%
+    summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
+    mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
+  ausgangsdaten_h <- aktuell  %>%
+    select(id,name,ICU_Betten,Einwohner,ebene,
+           cases,R0) %>% filter(ebene!="Staaten" & !is.na(ebene)) %>% select(-ebene) %>%
+    left_join(.,letzte_7_tage_h,by="id") %>%
+    mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
+           Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
+  
+  vorwarnzeitergebnis_h <- ausgangsdaten_h %>%
+    mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
+           Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
+           R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
+           Kapazitaet=ICU_Betten*0.25/0.05/10,
+           Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
+    filter(id==0)
+  
+  myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
+    do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
+    unnest(cols = c(Tage), keep_empty=TRUE)
+  vorwarnzeitergebnis_h <- vorwarnzeitergebnis_h %>%
+    mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
+  datevsvorwarnzeit[h+1, ] <- c(h, vorwarnzeitergebnis_h$Vorwarnzeit[1])
+}
+
+write.csv(datevsvorwarnzeit, "./data/datevsvorwarnzeit4plot.csv")
+vorwarnzeitverlauf <- as_tibble(datevsvorwarnzeit) %>%
+  mutate(date=date(max(brd_timeseries %>% collect() %>% pull(date)))-stichtag)
+
+zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
+                                      mutate(Vorwarnzeit=vorwarnzeit-21) %>%
+                                      dplyr::select(-vorwarnzeit),
+                                    RKI_R %>%
+                                      dplyr::select(contains("Datum"), contains("Punktschätzer des")) %>%
+                                      mutate(`RKI-R-Wert`=`Punktschätzer des 7-Tage-R Wertes`),
+                                    by=c("date"="Datum des Erkrankungsbeginns")) %>%
+  pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
+
+# plotfunction for vorwarnzeitverlauf
+vorwarnzeitverlauf_plot <- function(){
+  myplot <- ggplot(zivwz_vs_rkir_verlauf,
+                                   aes(x=date, y=Wert)) +
+    facet_wrap(~Variable, scales = "free_y") +
+    geom_line(color=zi_cols("ziblue"), size=2) +
+    ylim(0, NA) +
+    labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") + theme_zi()
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+}
 
 # Plots
 Auslastungsplot<- ggplot(vorwarnzeitergebnis %>% filter(id<17),

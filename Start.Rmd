@@ -82,14 +82,14 @@ Row {data-height=125}
 \
 **Legende:** \
 *Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
-*Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\
+*Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\
 *Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
 
 Row {data-height=170}
 ------------------------------------------------------------------------
 \
 **Methodischer Hinweis zum R-Wert:** \
-*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an.*
+*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma-Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an.*
 
 Row {data-height=400}
 ------------------------------------------------------------------------
@@ -141,6 +141,22 @@ Row {data-height=100}
 
 Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
+
+Row
+-----------------------------------------------------------------------
+
+### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)**
+
+```{r}
+vorwarnzeitverlauf_plot() %>%
+   config(displayModeBar = FALSE, responsive=T)
+
+```
+
+Row {data-height=100}
+------------------------------------------------------------------------
+
+Dargestellt ist die Entwicklung der Zi-Vorwarnzeit für die BRD, ebenso zum Vergleich die Entwicklung des (7-Tage-)R-Wertes, wie er vom RKI gemeldet wird.
 
 Row
 -----------------------------------------------------------------------
