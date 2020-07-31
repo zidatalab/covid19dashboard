@@ -14,6 +14,10 @@ library(zicolors)
 library(deSolve)
 library(jsonlite)
 
+# parameters from literature
+icu_days <- 10.1 # aok/divi paper lancet
+share_icu <- (266+15395)/207828 # divi intensivregister and rki daily report 30 july 2020
+
 # Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
  conn <- DBI::dbConnect(RPostgres::Postgres(),
@@ -206,7 +210,7 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
          R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-         Kapazitaet=ICU_Betten*0.25/0.05/10,
+         Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
          Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
 
 myTage <- vorwarnzeitergebnis %>% rowwise() %>%
