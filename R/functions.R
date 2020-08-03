@@ -52,13 +52,13 @@ RKI_R <- tryCatch(
     mytemp = tempfile()
     rki_r_data = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting_Zahlen.xlsx?__blob=publicationFile"
     download.file(rki_r_data, mytemp, quiet=TRUE)
-    Nowcasting_Zahlen <- read_excel(mytemp, 
-                                    sheet = "Nowcast_R", col_types = c("date", 
-                                                                       "numeric", "numeric", "numeric", 
-                                                                       "numeric", "numeric", "numeric", 
-                                                                       "numeric", "numeric", "numeric", 
+    Nowcasting_Zahlen <- read_excel(mytemp,
+                                    sheet = "Nowcast_R", col_types = c("date",
+                                                                       "numeric", "numeric", "numeric",
+                                                                       "numeric", "numeric", "numeric",
+                                                                       "numeric", "numeric", "numeric",
                                                                        "numeric", "numeric", "numeric"))
-    if (dim(Nowcasting_Zahlen)[2] != 13){ 
+    if (dim(Nowcasting_Zahlen)[2] != 13){
       stop("RKI changed their R table")
     } else {
       write_csv(Nowcasting_Zahlen, "./data/nowcasting_r_rki.csv")
@@ -103,8 +103,11 @@ mitigation_data <- function(myid=0){
   result <- bind_rows(res_parametric_si$R %>% mutate(Merkmal="Fälle"),
                       res_parametric_si_deaths$R %>% mutate(Merkmal="Todesfälle"))
   as_tibble(result) %>% mutate(date=mindate+days(round(t_start+t_end)/2)) %>%
-    select(date,Merkmal,R_Mean=`Mean(R)`,R_std= `Std(R)`)
+    select(date,Merkmal,R_Mean=`Mean(R)`,R_std= `Std(R)`) %>% left_join(.,df,by="date")
 }
+
+
+# hier Vorwarnzeit nach BL joinen
 
 blmitidata <- tibble()
 for (theid in seq(0,16,1)){
@@ -112,13 +115,16 @@ for (theid in seq(0,16,1)){
   blmitidata = bind_rows(blmitidata,mitigation_data(theid) %>% mutate(name=thename,id=theid))
 }
 
+
+
 myblmitidata <- blmitidata %>%
   filter(Merkmal=="Fälle"  & R_Mean<10 & date>=date("2020-03-13"))
 
+# ALLE Bundesländer
 mitigationsplot_blvergleich <- function(){
   myplot <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
-                       text=paste("Region: ",name,"<br>"))) +
+                       text=paste("Region: ",name,"<br>","Neue Fälle:",I_cases))) +
     geom_hline(yintercept = 1) +
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
     geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
@@ -132,6 +138,29 @@ mitigationsplot_blvergleich <- function(){
     annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
     annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+}
+
+# Einzelne Länder
+# Hier neue Datenreihe Vorwarnzeit!
+mitigationsplot_bl <- function(myid){
+  myname <- myblmitidata %>% filter(id==myid) %>% head(1) %>% pull(name)
+  myplot <- ggplot(myblmitidata %>% filter(id==myid) %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
+                   aes(x=date,y=R,group=name,color=name=="Gesamt",
+                       text=paste("Region: ",name,"<br>","Neue Fälle:",I_cases))) +
+    geom_hline(yintercept = 1) +
+    geom_line(size=2,show.legend = F, color=zi_cols("ziblue"))+
+    scale_color_zi()  +
+    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 weeks") +
+    labs(subtitle=myname,x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
+    geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
+    geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
+    geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
+    annotate("text", x = date("2020-03-16"), y = 3.3, label = "Schulschließungen\n16.3.",color="black",size=3) +
+    annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
+    annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
+    theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
+    ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
 
@@ -267,7 +296,7 @@ for (h in 0:horizont) {
     left_join(.,letzte_7_tage_h,by="id") %>%
     mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
            Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
-  
+
   vorwarnzeitergebnis_h <- ausgangsdaten_h %>%
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
@@ -275,7 +304,7 @@ for (h in 0:horizont) {
            Kapazitaet=ICU_Betten*0.25/0.05/10,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
     filter(id==0)
-  
+
   myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
     do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
     unnest(cols = c(Tage), keep_empty=TRUE)
@@ -305,7 +334,7 @@ vorwarnzeitverlauf_plot <- function(){
     facet_wrap(~Variable, scales = "free_y") +
     geom_line(color=zi_cols("ziblue"), size=2) +
     ylim(0, NA) +
-    labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") + 
+    labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
     theme_zi()
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
