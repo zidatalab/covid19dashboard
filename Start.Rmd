@@ -174,6 +174,130 @@ DT::datatable(rki_fallzahl_bl(),
 
 ```
 
+# Bundesländer
+
+Row {data-height=100}
+-----------------------------------------------------------------------
+
+### **Überblick zum Verlauf des R-Wertes und der Vorwarnzeit in den Bundesländern**
+
+Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Einzelne Ausschläge des R-Wertes bedeuten noch keine kritische Situation, aber ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland.
+
+Row {.tabset .tabset-fade}
+-------------------------------------
+   
+### Schleswig-Holstein {#bl01}
+
+```{r}
+mitigationsplot_bl(1) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Hamburg {#bl02}
+    
+```{r}
+mitigationsplot_bl(2) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Niedersachsen {#bl03}
+
+```{r}
+mitigationsplot_bl(3) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Bremen {#bl04}
+    
+```{r}
+mitigationsplot_bl(4) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Nordrhein-Westfalen {#bl05}
+
+```{r}
+mitigationsplot_bl(5) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Hessen {#bl06}
+    
+```{r}
+mitigationsplot_bl(6) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Rheinland-Pfalz {#bl07}
+
+```{r}
+mitigationsplot_bl(7) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Baden-Württemberg {#bl08}
+    
+```{r}
+mitigationsplot_bl(8) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Bayern {#bl09}
+
+```{r}
+mitigationsplot_bl(9) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Saarland {#bl10}
+    
+```{r}
+mitigationsplot_bl(10) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Berlin {#bl11}
+
+```{r}
+mitigationsplot_bl(11) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Brandenburg {#bl12}
+    
+```{r}
+mitigationsplot_bl(12) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Mecklenburg-Vorpommern {#bl13}
+
+```{r}
+mitigationsplot_bl(13) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Sachsen {#bl14}
+    
+```{r}
+mitigationsplot_bl(14) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Sachsen-Anhalt {#bl15}
+
+```{r}
+mitigationsplot_bl(15) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Thüringen {#bl16}
+    
+```{r}
+mitigationsplot_bl(16) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
 # Kreise
 
 Row {data-height=100}

@@ -29,6 +29,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                           password        = Sys.getenv("DBPASSWORD"),
                           port     = 5432,
                           sslmode = 'require')
+
 # get data
 ## get data from db
 brd_timeseries <- tbl(conn,"brd_timeseries")
@@ -251,18 +252,21 @@ mitigationsplot_blvergleich <- function(){
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
 mitigationsplot_bl <- function(myid){
   myname <- myblmitidata %>% filter(id==myid) %>% head(1) %>% pull(name)
-  myplot <- ggplot(myblmitidata %>% filter(id==myid) %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
-                   aes(x=date,y=R,group=name,color=name=="Gesamt",
-                       text=paste("Region: ",name,"<br>Neue Fälle:",I_cases, "<br>Vorwarnzeit:", Vorwarnzeit_effektiv))) +
-    geom_hline(yintercept = 1) +
-    geom_line(size=2,show.legend = F, color=zi_cols("ziblue"))+
+  my_r_vwz_data <- myblmitidata %>% filter(id==myid) %>% rename(R=R_Mean, Vorwarnzeit=Vorwarnzeit_effektiv) %>% mutate(R=round(R,digits = 1)) %>%
+    pivot_longer(c("Vorwarnzeit", "R"), names_to="Variable", values_to="Wert")
+  myplot <- ggplot(my_r_vwz_data,
+                   aes(x=date,y=Wert,group=name,color=Variable,
+                       text=paste("Region: ",name,"<br>Neue Fälle:",I_cases))) +
+    facet_grid(Variable~., scales = "free_y") +
+    geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
+    geom_line(size=2, show.legend = F)+
     scale_color_zi()  +
-    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 weeks") +
-    labs(subtitle=myname,x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
-    geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
-    geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
-    geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
-    theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
+    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="4 weeks") +
+    labs(x="", y="") +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          legend.position='none',
+          panel.spacing = unit(2, "lines")) +
     ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
@@ -311,15 +315,17 @@ zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
                                     by=c("date")) %>%
   pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
 
-## plotfunction for vorwarnzeitverlauf
+## plotfunction for vorwarnzeitverlauf brd
 vorwarnzeitverlauf_plot <- function(){
   myplot <- ggplot(zivwz_vs_rkir_verlauf,
-                                   aes(x=date, y=Wert)) +
+                                   aes(x=date, y=Wert, color=Variable)) +
     facet_wrap(~Variable, scales = "free_y") +
-    geom_line(color=zi_cols("ziblue"), size=2) +
+    geom_line(size=2) +
     ylim(0, NA) +
+    scale_color_zi() +
     labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
-    theme_zi()
+    theme_zi() +
+    theme(legend.position='none')
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
 
