@@ -156,9 +156,6 @@ mitigationsplot_bl <- function(myid){
     geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
     geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
     geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
-    annotate("text", x = date("2020-03-16"), y = 3.3, label = "Schulschließungen\n16.3.",color="black",size=3) +
-    annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
-    annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
     ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
