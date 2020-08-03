@@ -71,7 +71,10 @@ RKI_R <- tryCatch(
     return(Nowcasting_Zahlen)
   }
 )
-  
+
+# fix for break
+Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv")
+
 rkiall <-  rki %>% select(AnzahlFall,AnzahlTodesfall,Meldedatum,Datenstand,NeuerFall,NeuerTodesfall) %>%
   mutate(NeuerFall=ifelse(NeuerFall==1,"Neue Meldung","Alte Meldung")) %>%
   group_by(Meldedatum,NeuerFall) %>% summarise(AnzahlFall=sum(AnzahlFall,na.rm=T)) %>%
@@ -247,11 +250,12 @@ vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
 
 ## vorwarnzeitverlauf Ergebnis
-horizont <- as.integer(date(max(brd_timeseries %>% collect() %>% pull(date))) - date("2020-03-13"))
+offline_timeseries = brd_timeseries %>% collect() %>% mutate(date=as.Date(date))
+horizont <- as.integer(date(max(offline_timeseries %>% pull(date))) - date("2020-03-13"))
 datevsvorwarnzeit <- matrix(0, nrow=horizont+1, ncol=2, dimnames=list(date=0:horizont, cols=c("stichtag", "vorwarnzeit")))
 for (h in 0:horizont) {
-  stichtag <- date(max(brd_timeseries %>% collect() %>% pull(date)))-h
-  letzte_7_tage_h <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
+  stichtag <- date(max(offline_timeseries %>% pull(date)))-h
+  letzte_7_tage_h <-  offline_timeseries %>% mutate(date=date(date)) %>%
     filter(date<=stichtag) %>%
     group_by(id) %>% arrange(id,-as.numeric(date)) %>%
     filter(row_number()<=7) %>%
@@ -282,15 +286,16 @@ for (h in 0:horizont) {
 
 write.csv(datevsvorwarnzeit, "./data/datevsvorwarnzeit4plot.csv")
 vorwarnzeitverlauf <- as_tibble(datevsvorwarnzeit) %>%
-  mutate(date=date(max(brd_timeseries %>% collect() %>% pull(date)))-stichtag)
-
+  mutate(date=date(max(offline_timeseries %>% pull(date)))-stichtag)
+rki_reformat_r_ts <- RKI_R %>%
+  dplyr::select(contains("Datum"), contains("Punktschätzer des"))
+colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
+rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date))
 zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
                                       mutate(Vorwarnzeit=vorwarnzeit-21) %>%
                                       dplyr::select(-vorwarnzeit),
-                                    RKI_R %>%
-                                      dplyr::select(contains("Datum"), contains("Punktschätzer des")) %>%
-                                      mutate(`RKI-R-Wert`=`Punktschätzer des 7-Tage-R Wertes`),
-                                    by=c("date"="Datum des Erkrankungsbeginns")) %>%
+                                    rki_reformat_r_ts,
+                                    by=c("date")) %>%
   pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
 
 # plotfunction for vorwarnzeitverlauf
@@ -300,7 +305,8 @@ vorwarnzeitverlauf_plot <- function(){
     facet_wrap(~Variable, scales = "free_y") +
     geom_line(color=zi_cols("ziblue"), size=2) +
     ylim(0, NA) +
-    labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") + theme_zi()
+    labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") + 
+    theme_zi()
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
 
