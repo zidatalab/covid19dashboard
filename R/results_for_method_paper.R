@@ -54,3 +54,19 @@ zicolors::finalise_plot(plot_2,height=15,width=3*9,
                         source_name = paste0("Datenbasis: Robert Koch-Institut (RKI), Stand ",
                                              format(now(),format="%d.%m.%Y")))
 
+# Plot 3 
+plot_3 <- ggplot(zivwz_vs_rkir_verlauf %>% filter(Variable=="Vorwarnzeit"),aes(x=date,y=Wert,color="Wert"))+ geom_line(size=2.5, show.legend = F) + theme_zi() + scale_color_zi() + scale_x_date(date_labels = "%d.%m.", breaks="2 weeks") +
+  geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
+  geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
+  geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
+  annotate("text", x = date("2020-03-16"), y = 90, label = "Schulschließungen\n16.3.",color="black",size=3) +
+  annotate("text", x = date("2020-03-22"), y = 60, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
+  annotate("text", x = date("2020-04-17"), y = 90, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
+  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) + 
+  geom_hline(yintercept = 0) + scale_y_continuous(limits=c(0,120)) + 
+  labs(title="Zeitliche Entwicklung der Vorwarnzeit in Deutschland",subtitle = "Effektive Vorwarnzeit bis Kapazitätsgrenze in Tagen ab Stichtag")
+plot_3
+zicolors::finalise_plot(plot_3,height=15,width=3*9,
+                        save_filepath="./data/methodpaperresults/plot3.png",
+                        source_name = paste0("Datenbasis: Robert Koch-Institut (RKI), Stand ",
+                                             format(now(),format="%d.%m.%Y"),", Berechnungen des Zi auf Basis von Daten des RKI und des DIVI-Intensivregisters."))
