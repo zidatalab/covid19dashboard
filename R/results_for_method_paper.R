@@ -20,6 +20,7 @@ zicolors::finalise_plot(plot_1,height=15,width=3*9,
 
 # Kapazitätsrechnungen
 no_aktuell_ICU <- aktuell %>% filter(id==0) %>% pull(ICU_Betten)  * .25
+no_aktuell_ICU <- 33335  * .25
 paste("Verfügbare COVID-Betten", round(no_aktuell_ICU))
 no_akutell_kapazitaet <- no_aktuell_ICU/share_icu
 paste("Fallkazaitaet", round(no_akutell_kapazitaet))
@@ -29,7 +30,9 @@ no_aktuell_anteil_ambulant <- 6/7
 bedarf_ambulant_ersteinschaetzung <- .8*no_akutell_kapazitaet*no_aktuell_anteil_ambulant
 bedarf_ambulant_ersteinschaetzung_risiken <- .2*no_akutell_kapazitaet*no_aktuell_anteil_ambulant
 aerzte_pro_tag <- (no_akutell_kapazitaet*no_aktuell_anteil_ambulant *.2) / 7
-
+aerzte_pro_tag
+(no_akutell_kapazitaet*no_aktuell_anteil_ambulant *.2)
+aerzte_pro_tag/170000
 # Plot 2 Trend Reproduktionszahl
 plot_2 <- ggplot(blmitidata %>% filter(id==0 & Merkmal=="Fälle" & date>=date("2020-03-01")) %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
@@ -59,12 +62,12 @@ plot_3 <- ggplot(zivwz_vs_rkir_verlauf %>% filter(Variable=="Vorwarnzeit"),aes(x
   geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
   geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
   geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
-  annotate("text", x = date("2020-03-16"), y = 90, label = "Schulschließungen\n16.3.",color="black",size=3) +
-  annotate("text", x = date("2020-03-22"), y = 60, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
-  annotate("text", x = date("2020-04-17"), y = 90, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
+  annotate("text", x = date("2020-03-16"), y = 90, label = "Schulschließungen",color="black",size=3) +
+  annotate("text", x = date("2020-03-22"), y = 60, label = "Kontakteinschränkungen",color="black",size=3) +
+  annotate("text", x = date("2020-04-17"), y = 90, label = "Lockerung der \nMaßnahmen",color="black",size=3) +
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) + 
   geom_hline(yintercept = 0) + scale_y_continuous(limits=c(0,120)) + 
-  labs(title="Zeitliche Entwicklung der Vorwarnzeit in Deutschland",subtitle = "Effektive Vorwarnzeit bis Kapazitätsgrenze in Tagen ab Stichtag")
+  labs(title="Zeitliche Entwicklung der Vorwarnzeit in Deutschland",subtitle = "Effektive Vorwarnzeit bis Erreichen der Kapazitätsgrenze in Tagen ab Stichtag")
 plot_3
 zicolors::finalise_plot(plot_3,height=15,width=3*9,
                         save_filepath="./data/methodpaperresults/plot3.png",
