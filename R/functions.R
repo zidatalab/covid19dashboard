@@ -250,18 +250,25 @@ mitigationsplot_blvergleich <- function(){
 }
 
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
+range_r <- range(myblmitidata$R_Mean)
+range_vwz <- range(myblmitidata$Vorwarnzeit_effektiv, na.rm = TRUE)
 mitigationsplot_bl <- function(myid){
   myname <- myblmitidata %>% filter(id==myid) %>% head(1) %>% pull(name)
-  my_r_vwz_data <- myblmitidata %>% filter(id==myid) %>% rename(R=R_Mean, Vorwarnzeit=Vorwarnzeit_effektiv) %>% mutate(R=round(R,digits = 1)) %>%
-    pivot_longer(c("Vorwarnzeit", "R"), names_to="Variable", values_to="Wert")
+  my_r_vwz_data <- myblmitidata %>% filter(id==myid) %>% rename(Datum=date, R=R_Mean, Vorwarnzeit=Vorwarnzeit_effektiv) %>% mutate(R=round(R,digits = 1)) %>%
+    pivot_longer(c("Vorwarnzeit", "R"), names_to="Variable", values_to="Wert") %>%
+    mutate(y_min=ifelse(Variable=="R", range_r[1], range_vwz[1]),
+           y_max=ifelse(Variable=="R", range_r[2], range_vwz[2]))
   myplot <- ggplot(my_r_vwz_data,
-                   aes(x=date,y=Wert,group=name,color=Variable,
+                   aes(x=Datum,y=Wert,group=name,color=Variable,
                        text=paste("Region: ",name,"<br>Neue Fälle:",I_cases))) +
-    facet_grid(Variable~., scales = "free_y") +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
-    geom_line(size=2, show.legend = F)+
+    geom_line(size=2, show.legend = F) +
+    scale_x_date(date_labels = "%d.%m.", breaks="4 weeks") +
+    facet_grid(Variable~., scales = "free") +
+    geom_blank(aes(y = y_min)) +
+    geom_blank(aes(y = y_max)) +
     scale_color_zi()  +
-    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="4 weeks") +
+    theme_minimal() + 
     labs(x="", y="") +
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank(),
