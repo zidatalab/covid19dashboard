@@ -102,10 +102,10 @@ sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   init       <- c("S"=S, "I"=I, "R"=R)
   ## Time frame
   times      <- seq(0, horizont, by = 1)
-  
+
   # Solve using ode (General Solver for Ordinary Differential Equations)
   out <- ode(y = init, times = times, func = SIR, parms = params, ngesamt=ngesamt, gamma=gamma)
-  
+
   # change to data frame and reformat
   out <- as.data.frame(out) %>% select(-time) %>% rename(S=1,I=2,R=3) %>%
     mutate_at(c("S","I","R"),round)
@@ -177,7 +177,7 @@ for (h in 0:horizont) {
     left_join(.,letzte_7_tage_h,by="id") %>%
     mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
            Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
-  
+
   vorwarnzeitergebnis_h <- ausgangsdaten_h %>%
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
@@ -185,7 +185,7 @@ for (h in 0:horizont) {
            Kapazitaet=ICU_Betten*0.25/0.05/10,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
     filter(id<=16)
-  
+
   myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
     do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
     unnest(cols = c(Tage), keep_empty=TRUE)
@@ -268,7 +268,7 @@ mitigationsplot_bl <- function(myid){
     geom_blank(aes(y = y_min)) +
     geom_blank(aes(y = y_max)) +
     scale_color_zi()  +
-    theme_minimal() + 
+    theme_minimal() +
     labs(x="", y="") +
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank(),
@@ -385,7 +385,7 @@ rki_fallzahl_kreis <- function(){
                 "Fälle insgesamt"=cases,
                 "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
                 "R(t)"=R0,
-                "Vorwarnzeit aktuell lokal*"=Vorwarnzeit_effektiv # needs communication
+                "Effektive Vorwarnzeit lokal*"=Vorwarnzeit_effektiv # needs communication
                 )
 }
 
