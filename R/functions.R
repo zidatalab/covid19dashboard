@@ -385,7 +385,7 @@ rki_fallzahl_kreis <- function(){
                 "Fälle insgesamt"=cases,
                 "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
                 "R(t)"=R0,
-                "Vorwarnzeit aktuell lokal*"=Vorwarnzeit # needs communication
+                "Vorwarnzeit aktuell lokal*"=Vorwarnzeit_effektiv # needs communication
                 )
 }
 
