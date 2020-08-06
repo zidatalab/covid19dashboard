@@ -342,11 +342,11 @@ List of 1
 
 output file: Start.knit.md
 
-/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmptAB4EF/rmarkdown-str16b534336df6a.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmptAB4EF/file16b535d3d3462html --highlight-style pygments --include-before-body /tmp/RtmptAB4EF/file16b5351b983cc.html --include-after-body /tmp/RtmptAB4EF/file16b535b8d4083.html --css static/styles.css 
+/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpKKhl8b/rmarkdown-str1b0fe6261e1b5.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpKKhl8b/file1b0fe6d9c265html --highlight-style pygments --include-before-body /tmp/RtmpKKhl8b/file1b0fe7a4d8110.html --include-after-body /tmp/RtmpKKhl8b/file1b0fe14c075fc.html --css static/styles.css 
 
 Output created: Start.html
 There were 36 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-111.600   1.131 141.119 
+112.772   1.099 147.890 
