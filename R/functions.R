@@ -53,7 +53,7 @@ RKI_R <- tryCatch(
   {
     mytemp = tempfile()
     rki_r_data = "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting_Zahlen.xlsx?__blob=publicationFile"
-    download.file(rki_r_data, mytemp, quiet=TRUE)
+    download.file(rki_r_data, mytemp, method = "curl")
     Nowcasting_Zahlen <- read_excel(mytemp,
                                     sheet = "Nowcast_R", col_types = c("date",
                                                                        "numeric", "numeric", "numeric",
@@ -311,19 +311,23 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
 
-rki_reformat_r_ts <- RKI_R %>%
-  dplyr::select(contains("Datum"), contains("Punktschätzer des"))
-colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
-rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date))
-zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
-                                      filter(id==0) %>%
-                                      mutate(Vorwarnzeit=Vorwarnzeit_effektiv),
-                                    rki_reformat_r_ts,
-                                    by=c("date")) %>%
-  pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
-
 ## plotfunction for vorwarnzeitverlauf brd
 vorwarnzeitverlauf_plot <- function(){
+  # change to function to avoid full breaks
+  rki_reformat_r_ts <- RKI_R %>%
+    dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
+  colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
+  rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date))
+  zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
+                                        filter(id==0) %>%
+                                        mutate(Vorwarnzeit=Vorwarnzeit_effektiv),
+                                      rki_reformat_r_ts,
+                                      by=c("date")) %>%
+    pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
+
+  # handle errors
+  myplot <- ggplot()
+  tryCatch(
   myplot <- ggplot(zivwz_vs_rkir_verlauf,
                                    aes(x=date, y=Wert, color=Variable)) +
     facet_wrap(~Variable, scales = "free_y") +
@@ -332,7 +336,7 @@ vorwarnzeitverlauf_plot <- function(){
     scale_color_zi() +
     labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
     theme_zi() +
-    theme(legend.position='none')
+    theme(legend.position='none'))
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
 
