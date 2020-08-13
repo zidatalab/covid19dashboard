@@ -39,6 +39,7 @@ rki <- tbl(conn,"rki")
 strukturdaten <- tbl(conn,"strukturdaten")
 aktuell <- tbl(conn,"params") %>% collect()
 trends <- tbl(conn,"trends")
+brd_testungen <- tbl(conn,"brd_testungen") %>% collect()
 Datenstand <- tbl(conn,"Stand") %>% collect()
 bundprognose <- prognosen %>% filter(id==0) %>% collect() %>%
   filter(Szenario!="Trend D") %>%
