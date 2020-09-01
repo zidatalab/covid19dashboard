@@ -18,7 +18,7 @@ library(readxl)
 
 # parameters from literature
 icu_days <- 10.1 # aok/divi paper lancet
-share_icu <- (266+15395)/207828 # divi intensivregister and rki daily report 30 july 2020
+share_icu <- (246+16605)/243599 # divi intensivregister and rki daily report 31 august 2020
 
 # Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
