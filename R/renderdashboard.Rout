@@ -120,7 +120,7 @@ The following object is masked from 'package:purrr':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 24102  100 24102    0     0   127k      0 --:--:-- --:--:-- --:--:--  127k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 24141  100 24141    0     0   126k      0 --:--:-- --:--:-- --:--:--  126k
 Parsed with column specification:
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
@@ -345,11 +345,11 @@ List of 1
 
 output file: Start.knit.md
 
-/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpiiALMk/rmarkdown-str1854e2587d2d0.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpiiALMk/file1854e66e00b5fhtml --highlight-style pygments --include-before-body /tmp/RtmpiiALMk/file1854e5e48499b.html --include-after-body /tmp/RtmpiiALMk/file1854e2682e57d.html --css static/styles.css 
+/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpZ6jwMG/rmarkdown-strf9b6202b5422.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpZ6jwMG/filef9b64755f187html --highlight-style pygments --include-before-body /tmp/RtmpZ6jwMG/filef9b6406348a9.html --include-after-body /tmp/RtmpZ6jwMG/filef9b64a929d4e.html --css static/styles.css 
 
 Output created: Start.html
-There were 36 warnings (use warnings() to see them)
+There were 37 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-131.515   1.270 157.491 
+131.583   1.535 160.998 
