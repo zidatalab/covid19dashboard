@@ -18,7 +18,7 @@ library(readxl)
 
 # parameters from literature
 icu_days <- 10.1 # aok/divi paper lancet
-share_icu <- (246+17145)/267773 # divi intensivregister and rki daily report 18 september 2020
+share_icu <- (355+17578)/289219 # divi intensivregister and rki daily report 30 september 2020
 
 # Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
@@ -319,7 +319,7 @@ vorwarnzeitverlauf_plot <- function(){
   rki_reformat_r_ts <- RKI_R %>%
     dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
   colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
-  rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date))
+  rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date)+5)
   zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
                                         filter(id==0) %>%
                                         mutate(Vorwarnzeit=Vorwarnzeit_effektiv),
@@ -356,7 +356,7 @@ for (i in seq(Rt)) {
   mysir <- sirmodel(ngesamt = fall$Einwohner,
                     S = fall$Einwohner - fall$cases,
                     I = (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
-                    R = fall$cases - (fall$Faelle_letzte_7_Tage_pro_Tag)/.1,
+                    R = fall$cases - (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
                     R0 = Rt[i],
                     gamma =gamma,
                     horizont = 365) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
