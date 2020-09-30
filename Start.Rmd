@@ -121,7 +121,7 @@ layout(legend = list(x = 0.6, y = 0.9))
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die theoretische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen. Die effektive Vorwarnzeit ist geringer als die theoretische Vorwarnzeit. Hier wird eine Reaktionszeit von 21 Tagen angenommen, bis ein R-Wert erkannt und Maßmahmen wirksam implementiert sind.
+Dargestellt ist die theoretische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen. Die effektive Vorwarnzeit ist geringer als die theoretische Vorwarnzeit. Hier wird eine Reaktionszeit von 21 Tagen angenommen, bis ein R-Wert erkannt und Maßnahmen wirksam implementiert sind.
 
 
 
