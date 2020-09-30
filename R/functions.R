@@ -183,7 +183,7 @@ for (h in 0:horizont) {
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-           Kapazitaet=ICU_Betten*0.25/0.05/10,
+           Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
     filter(id<=16)
 
