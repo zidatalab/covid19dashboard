@@ -134,7 +134,7 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
 ### Vorwarnzeit aktuell
 letzte_7_tage <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
   group_by(id) %>% arrange(id,-as.numeric(date)) %>%
-  filter(row_number()<=7) %>%
+  filter(row_number()<=8) %>% # fuer die anzahl der neuen faelle der letzten 7 tage muessen wir die letzten 8 tage ziehen
   summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
   mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
 ausgangsdaten <- aktuell  %>%
