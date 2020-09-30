@@ -282,7 +282,8 @@ mitigationsplot_bl <- function(myid){
 ### Akute infizierte Fälle
 vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
   mutate(
-    cases=floor(zoo::rollmean(cases, 7, fill=NA)),
+    cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
+    cases=ifelse(is.na(cases_rm), cases, cases_rm),
     Infected=cases-lag(cases,15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
   mutate(Rt=(cases-lag(cases,10))/lag(Infected,10)) %>% filter(!is.na(Infected) & !is.na(Rt))  %>%
   mutate(date=date(date),
