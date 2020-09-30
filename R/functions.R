@@ -222,7 +222,7 @@ mitigation_data <- function(myid=0){
 blmitidata <- tibble()
 for (theid in seq(0,16,1)){
   thename<-strukturdaten %>% filter(id==theid) %>% collect() %>% head(1) %>% pull(name)
-  blmitidata = bind_rows(blmitidata,mitigation_data(theid) %>% mutate(name=thename,id=theid) %>%
+  blmitidata = bind_rows(blmitidata,mitigation_data(theid) %>% mutate(name=thename,id=theid, date=date+4) %>%
                            left_join(., vorwarnzeitverlauf %>% filter(id==theid) %>% select(date, Vorwarnzeit_effektiv), by="date"))
 }
 
