@@ -43,11 +43,14 @@ valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
          icon = "fa-users"
         )
 ```
+
 Row 
 ------------------------------------------------------------------------
+
 ### Neue Fälle je 100.000 Einwohnende in 7 Tagen
 
 ```{r}
+faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0) %>% pull(Faelle_letzte_7_Tage_pro_Tag)
 faelle7tage100kEW <-  vorwarnzeitergebnis %>% filter(id==0) %>% pull(Faelle_letzte_7_Tage_je100TsdEinw)
 valueBox(faelle7tage100kEW,
          caption="Neue Fälle je 100.000 Einwohnende in 7 Tagen",
@@ -78,10 +81,11 @@ valueBox(faelle7tage100kEW,
 
 Row 
 ------------------------------------------------------------------------
+
 ### Vorwarnzeit bei R=1,3 
 
 ```{r}
-vorwarnzeitaktuell <-vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv)
+vorwarnzeitaktuell <- vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv)
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
          caption="Effektive Vorwarnzeit bei R=1,3",
          icon = "fa-calendar-alt",
@@ -97,7 +101,8 @@ Row {data-height=125}
 \
 **Legende:** \
 *Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
-*Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\
+<!-- *Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\ -->
+*Neue Fälle je 100.000 Einwohnende in 7 Tagen*: Auch als "Handlungsgrenze" bezeichnet.
 *Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
 
 Row {data-height=170}
