@@ -169,7 +169,7 @@ for (h in 0:horizont) {
   letzte_7_tage_h <-  offline_timeseries %>% mutate(date=date(date)) %>%
     filter(date<=stichtag) %>%
     group_by(id) %>% arrange(id,-as.numeric(date)) %>%
-    filter(row_number()<=7) %>%
+    filter(row_number()<=8) %>% # genau wie oben, 8 statt 7!
     summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
     mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
   ausgangsdaten_h <- aktuell  %>%
@@ -209,7 +209,7 @@ mitigation_data <- function(myid=0){
     mutate(I_cases=cases-lag(cases),I_dead=deaths-lag(deaths)) %>%
     filter(!is.na(I_cases) & (date<now()-days(3))) %>%
     filter(I_cases>=0 & I_dead>=0)
-    mindate <- min(df$date)
+  mindate <- min(df$date)
   myconfig <- make_config(list(mean_si = 5,std_si = 4))
   res_parametric_si <- estimate_R(df$I_cases, method="parametric_si", config = myconfig)
   res_parametric_si_deaths <- estimate_R(df$I_dead, method="parametric_si", config = myconfig)
