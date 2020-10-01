@@ -46,7 +46,7 @@ bundprognose <- prognosen %>% filter(id==0) %>% collect() %>%
   mutate(Szenario=ifelse(Szenario=="Trend lokal","aktueller Trend",Szenario),
          Szenario=ifelse(Szenario=="Worst Case","Worst Case (R=1,3)",Szenario),
          Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
-  filter(Datum<date(now()+weeks(12)))
+  filter(Datum<date(max(Datum)+weeks(12)))
 # labordaten <- tbl(conn, "Labordaten")
 
 ## read and update RKI-R-estimates
@@ -207,7 +207,7 @@ mitigation_data <- function(myid=0){
   }
   df <- df %>% mutate(date=date(date)) %>%
     mutate(I_cases=cases-lag(cases),I_dead=deaths-lag(deaths)) %>%
-    filter(!is.na(I_cases) & (date<now()-days(3))) %>%
+    filter(!is.na(I_cases) & (date<max(date)-days(3))) %>%
     filter(I_cases>=0 & I_dead>=0)
   mindate <- min(df$date)
   myconfig <- make_config(list(mean_si = 5,std_si = 4))
@@ -222,7 +222,7 @@ mitigation_data <- function(myid=0){
 blmitidata <- tibble()
 for (theid in seq(0,16,1)){
   thename<-strukturdaten %>% filter(id==theid) %>% collect() %>% head(1) %>% pull(name)
-  blmitidata = bind_rows(blmitidata,mitigation_data(theid) %>% mutate(name=thename,id=theid, date=date+4) %>%
+  blmitidata = bind_rows(blmitidata,mitigation_data(theid) %>% mutate(name=thename,id=theid, date=date+5) %>%
                            left_join(., vorwarnzeitverlauf %>% filter(id==theid) %>% select(date, Vorwarnzeit_effektiv), by="date"))
 }
 
