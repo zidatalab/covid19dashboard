@@ -105,11 +105,6 @@ Row {data-height=125}
 *Neue Fälle je 100.000 Einwohnende in 7 Tagen*: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet.\
 *Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
 
-Row {data-height=170}
-------------------------------------------------------------------------
-\
-**Methodischer Hinweis zum R-Wert:** \
-*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma-Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an. Sowohl das Zi als auch das RKI schließen bei der Berechnung der R-Werte die Fallzahlen der letzten 4 Tage aus, da diese noch zu unverlässlich wegen Meldeverzügen sind.*
 
 Row {data-height=400}
 ------------------------------------------------------------------------
@@ -123,7 +118,7 @@ layout(legend = list(x = 0.6, y = 0.9))
   
 ```
 
-Row {data-height=100}
+Row {data-height=110}
 ------------------------------------------------------------------------
 
 Dargestellt ist die theoretische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen. Die effektive Vorwarnzeit ist geringer als die theoretische Vorwarnzeit. Hier wird eine Reaktionszeit von 21 Tagen angenommen, bis ein R-Wert erkannt und Maßnahmen wirksam implementiert sind.
@@ -143,7 +138,7 @@ ggplotly(akutinfiziert + labs(title="")) %>%
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hat am 6.4.2020 ihren bisherigen Höhepunkt von ca. 74 Tsd. Personen gehabt. 
+Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hatte am 6.4.2020 ihren bisherigen Höhepunkt von ca. 74 Tsd. Personen. 
 
 
 Row {data-height=400}
@@ -193,6 +188,12 @@ DT::datatable(rki_fallzahl_bl(),
                              initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
 
 ```
+
+Row {data-height=250}
+------------------------------------------------------------------------
+\
+**Methodischer Hinweis zum R-Wert:** \
+*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma-Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an. Sowohl das Zi als auch das RKI schließen bei der Berechnung der R-Werte die Fallzahlen der letzten 4 Tage aus, da diese noch zu unverlässlich wegen Meldeverzügen sind.*
 
 # Bundesländer
 
