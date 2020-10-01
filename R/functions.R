@@ -215,7 +215,7 @@ mitigation_data <- function(myid=0){
   res_parametric_si_deaths <- estimate_R(df$I_dead, method="parametric_si", config = myconfig)
   result <- bind_rows(res_parametric_si$R %>% mutate(Merkmal="Fälle"),
                       res_parametric_si_deaths$R %>% mutate(Merkmal="Todesfälle"))
-  as_tibble(result) %>% mutate(date=mindate+days(round(t_start+t_end)/2)) %>%
+  as_tibble(result) %>% mutate(date=mindate+days(round(t_start+t_end)/2)+1) %>%
     select(date,Merkmal,R_Mean=`Mean(R)`,R_std= `Std(R)`) %>% left_join(.,df,by="date")
 }
 
