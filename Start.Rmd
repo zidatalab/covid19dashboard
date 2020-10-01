@@ -350,9 +350,11 @@ DT::datatable(rki_fallzahl_kreis(),
 
 frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                            "Neue Fälle pro Tag",
+                                           "Handlungsgrenze",
                                            "Vorwarnzeit aktuell in Tagen"),
                              "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
                                       faelleprotag,
+                                      faelle7tage100kEW,
                                       paste(vorwarnzeitaktuell,"Tage")))
 
 write_json(frueindikatoren,"data/frueindikatoren.json")
