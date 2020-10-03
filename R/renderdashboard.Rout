@@ -120,12 +120,12 @@ The following object is masked from 'package:purrr':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 25034  100 25034    0     0   144k      0 --:--:-- --:--:-- --:--:--  145k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 25191  100 25191    0     0   139k      0 --:--:-- --:--:-- --:--:--  139k
 Parsed with column specification:
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
   `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glätung)` = col_double(),
   `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
   `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
   `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
@@ -345,11 +345,11 @@ List of 1
 
 output file: Start.knit.md
 
-/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpvmVmhJ/rmarkdown-str1118f4d650412.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpvmVmhJ/file1118f1b84ee0chtml --highlight-style pygments --include-before-body /tmp/RtmpvmVmhJ/file1118f6494ac0a.html --include-after-body /tmp/RtmpvmVmhJ/file1118f74c8aa04.html --css static/styles.css 
+/usr/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --smart --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-lekroll/.conda/envs/R_36/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpGiuaZ9/rmarkdown-str113156271d9d.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpGiuaZ9/file11312534ecb5html --highlight-style pygments --include-before-body /tmp/RtmpGiuaZ9/file113130c2501e.html --include-after-body /tmp/RtmpGiuaZ9/file11316ea5d6b3.html --css static/styles.css 
 
 Output created: Start.html
 There were 36 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-148.600   1.046 180.552 
+147.075   1.188 168.739 
