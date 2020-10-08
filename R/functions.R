@@ -277,10 +277,10 @@ mitigationsplot_blvergleich <- function(){
 ### Plot on Age of cases and case fatality 
 age_plot_fatality <- function(){
 myplot <- ggplot(rki_n_alter %>% 
-                   select(Meldedatum,"Alter 60+ an Fällen"=`60+`, "Todesfälle"= `Todesfälle`) %>% 
+                   select(Meldedatum,"Alter 60+ an Fällen"=`60+`, "Todesfälle an Fällen"= `Todesfälle`) %>% 
                    gather(Merkmal,Anteil,2:3) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
                  aes(x=Meldedatum,y=Anteil,color=Merkmal)) + geom_line() + theme_minimal() + 
-  scale_color_zi() + labs(y="Anteil",x="Datum",color="") + 
+  scale_color_zi() + labs(y="Anteil in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
 myplot %>% ggplotly(tooltip = c("x", "y"))
