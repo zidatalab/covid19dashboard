@@ -100,10 +100,11 @@ Row {data-height=125}
 ------------------------------------------------------------------------
 \
 **Legende:** \
-*Reproduktionszahl R*: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
+***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
 <!-- *Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\ -->
-*Neue Fälle je 100.000 Einwohnende in 7 Tagen*: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet.\
-*Effektive Vorwarnzeit bei R=1,3*: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
+***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet.\
+***Effektive Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung von 25% der stationären Behandlungskapazitäten (Annahme 25% der Kapazität steht für COVID-19 zur Verfügung) ab heute (Annahme **Reaktionszeit von 21 Tagen bis Wirkung neuer Maßnahmen**), falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
+
 
 
 Row {data-height=400}
@@ -139,6 +140,24 @@ Row {data-height=100}
 ------------------------------------------------------------------------
 
 Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hatte am 6.4.2020 ihren bisherigen Höhepunkt von ca. 74 Tsd. Personen. 
+
+
+
+Row {data-height=400}
+------------------------------------------------------------------------
+### **Entwicklung des Alters der Infizierten und des Anteils von Todesfällen**
+
+```{r}
+age_plot_fatality() %>%
+   config(displayModeBar = FALSE, responsive=T)
+
+```
+
+
+Row {data-height=100}
+------------------------------------------------------------------------
+
+Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird der Anteil von Todesfällen an den gemeldeten Fällen dargestellt. Während beide Anteilswerte zu Beginn der Pandemie gleichlautend verlaufen sind, hat sich die Entwicklung zuletzt entkoppelt.
 
 
 Row {data-height=400}

@@ -36,6 +36,30 @@ brd_timeseries <- tbl(conn,"brd_timeseries")
 prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=28) | Tage %in% c(30,60,90,120,150,180))
 brdprognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90) & ((ebene=="Kreis") | (name=="Berlin")) )
 rki <- tbl(conn,"rki")
+divi <- tbl(conn,"divi")
+rki_n_alter <- rki  %>% group_by(Meldedatum,Altersgruppe) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T)) %>% 
+  arrange(Meldedatum,Altersgruppe) %>% collect() %>%
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
+                             Altersgruppe,"0-59")) %>%
+  group_by(Meldedatum,Altersgruppe) %>% 
+  summarise("Fälle"=sum(AnzahlFall , na.rm = T),
+            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T)) %>% 
+  arrange(Meldedatum,Altersgruppe) %>% 
+  pivot_wider(id_cols = Meldedatum,
+              names_from = Altersgruppe,
+              values_from = c("Fälle","Todesfälle"),
+              values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
+  mutate("Fälle gesamt"= `Fälle_0-59`+ `Fälle_60-79`+ `Fälle_80+` , 
+         "Todesfälle gesamt" = `Todesfälle_0-59`+ `Todesfälle_60-79`+ `Todesfälle_80+`,
+         "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`, 
+         'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`,
+         Meldedatum=lubridate::as_date(Meldedatum)) 
+
+
+
 strukturdaten <- tbl(conn,"strukturdaten")
 aktuell <- tbl(conn,"params") %>% collect()
 trends <- tbl(conn,"trends")
@@ -238,7 +262,7 @@ mitigationsplot_blvergleich <- function(){
     geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
     geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
     scale_color_zi()  +
-    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 weeks") +
+    theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
     labs(x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
     geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
     geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
@@ -248,6 +272,18 @@ mitigationsplot_blvergleich <- function(){
     annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+}
+
+### Plot on Age of cases and case fatality 
+age_plot_fatality <- function(){
+myplot <- ggplot(rki_n_alter %>% 
+                   select(Meldedatum,"Alter 60+ an Fällen"=`60+`, "Todesfälle"= `Todesfälle`) %>% 
+                   gather(Merkmal,Anteil,2:3) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
+                 aes(x=Meldedatum,y=Anteil,color=Merkmal)) + geom_line() + theme_minimal() + 
+  scale_color_zi() + labs(y="Anteil",x="Datum",color="") + 
+  scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
+  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
+myplot %>% ggplotly(tooltip = c("x", "y"))
 }
 
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
@@ -264,7 +300,7 @@ mitigationsplot_bl <- function(myid){
                        text=paste("Region: ",name,"<br>Neue Fälle:",I_cases))) +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=2, show.legend = F) +
-    scale_x_date(date_labels = "%d.%m.", breaks="4 weeks") +
+    scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
     facet_grid(Variable~., scales = "free") +
     geom_blank(aes(y = y_min)) +
     geom_blank(aes(y = y_max)) +
@@ -305,7 +341,7 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
   theme_minimal() +
-  scale_x_date(breaks = "2 weeks",date_labels = "%d.%m.") +
+  scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
   annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
   annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
   annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
@@ -337,7 +373,7 @@ vorwarnzeitverlauf_plot <- function(){
     ylim(0, NA) +
     scale_color_zi() +
     labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
-    theme_zi() +
+    theme_minimal() +
     theme(legend.position='none'))
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
@@ -402,7 +438,7 @@ Auslastungsplot<- ggplot(vorwarnzeitergebnis %>% filter(id<17),
                              fill=name=="Gesamt")) +
   geom_bar(stat="identity",show.legend = F) + coord_flip() +
   scale_fill_zi() + labs(subtitle="Auslastung ICU",x="",y="") +
-  theme_zi() +
+  theme_minimal() +
   geom_text(aes(y=5,label=paste0(round(Auslastung_durch_Grenze),"%")),size=2.5,color="white") +
   scale_y_continuous(breaks=seq(0,60,20), limits=c(0,65),
                      labels =  function(x) paste0(x,"%"))
