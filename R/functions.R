@@ -283,7 +283,8 @@ myplot <- ggplot(rki_n_alter %>%
   scale_color_zi() + labs(y="Anteil in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
-myplot %>% ggplotly(tooltip = c("x", "y"))
+myplot %>% ggplotly(tooltip = c("x", "y")) %>% 
+  layout(legend = list(orientation = "h", x = 0.1, y = 1.2))
 }
 
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
