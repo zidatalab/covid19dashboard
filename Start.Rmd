@@ -157,7 +157,7 @@ age_plot_fatality() %>%
 Row {data-height=100}
 ------------------------------------------------------------------------
 
-Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird der Anteil von Todesfällen an den gemeldeten Fällen dargestellt. Während beide Anteilswerte zu Beginn der Pandemie gleichlautend verlaufen sind, hat sich die Entwicklung zuletzt entkoppelt.
+Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird der Anteil von Todesfällen an den gemeldeten Fällen dargestellt. Während beide Anteilswerte zu Beginn der Pandemie gleichlautend verlaufen sind, hat sich die Entwicklung zuletzt entkoppelt. Der Anteil der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
 Row {data-height=400}
