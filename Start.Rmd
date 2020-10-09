@@ -145,7 +145,7 @@ Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deut
 
 Row {data-height=400}
 ------------------------------------------------------------------------
-### **Entwicklung des Alters der Infizierten und des Anteils von Todesfällen**
+### **Entwicklung des Alters der Infizierten sowie des Anteils von Intensivstations- und Todesfällen**
 
 ```{r}
 age_plot_fatality() %>%
@@ -154,10 +154,10 @@ age_plot_fatality() %>%
 ```
 
 
-Row {data-height=100}
+Row {data-height=150}
 ------------------------------------------------------------------------
 
-Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird der Anteil von Todesfällen an den gemeldeten Fällen dargestellt. Während beide Anteilswerte zu Beginn der Pandemie gleichlautend verlaufen sind, hat sich die Entwicklung zuletzt entkoppelt. Der Anteil der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
+Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird der Anteil von Todesfällen an den gemeldeten Fällen dargestellt, sowie der Anteil der auf der Intensivstation behandelten Fälle (ITS) an den zum entsprechenden Zeitpunkt akut Infizierten. Während alle Anteilswerte zu Beginn der Pandemie gleichlautend verlaufen sind (Daten für ITS-Fälle ab Ende April), hat sich die Entwicklung zuletzt entkoppelt. Der Anteil der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
 Row {data-height=400}
