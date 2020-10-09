@@ -200,7 +200,7 @@ vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
 
 ## vorwarnzeitverlauf daten
-offline_timeseries = brd_timeseries %>% collect() %>% mutate(date=as.Date(date))
+offline_timeseries <- brd_timeseries %>% collect() %>% mutate(date=as.Date(date))
 horizont <- as.integer(date(max(offline_timeseries %>% pull(date))) - date("2020-03-13"))
 # datevsvorwarnzeit <- matrix(0, nrow=horizont+1, ncol=2, dimnames=list(date=0:horizont, cols=c("stichtag", "vorwarnzeit")))
 vorwarnzeitverlauf <- tibble()
