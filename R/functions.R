@@ -321,7 +321,8 @@ mitigationsplot_bl <- function(myid){
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=2, show.legend = F) +
     scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
-    facet_grid(Variable~., scales = "free") +
+    # facet_grid(Variable~., scales = "free") +
+    facet_wrap(~Variable, scales = "free") +
     geom_blank(aes(y = y_min)) +
     geom_blank(aes(y = y_max)) +
     scale_color_zi()  +
