@@ -33,11 +33,27 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 # get data
 ## get data from db
 brd_timeseries <- tbl(conn,"brd_timeseries")
+vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
+  mutate(
+    cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
+    cases=ifelse(is.na(cases_rm), cases, cases_rm),
+    Infected=cases-lag(cases,15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
+  mutate(Rt=(cases-lag(cases,10))/lag(Infected,10)) %>% filter(!is.na(Infected) & !is.na(Rt))  %>%
+  mutate(date=date(date),
+         Neue_faelle=cases-lag(cases),
+         Neue_faelle_Anstieg = Neue_faelle/lag(Neue_faelle),
+         Vorwarnzeit= log(16000/Neue_faelle)/log(Neue_faelle_Anstieg),
+         Situation = case_when(Vorwarnzeit<0 ~ "grün",
+                               (Vorwarnzeit>18 )  ~ "orange",
+                               (Vorwarnzeit>=0 & Vorwarnzeit<18)   ~ "rot"),
+         Situation=factor(Situation,levels=c("grün","orange","rot"),ordered=T),
+         show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
 prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=28) | Tage %in% c(30,60,90,120,150,180))
 brdprognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90) & ((ebene=="Kreis") | (name=="Berlin")) )
 rki <- tbl(conn,"rki")
-divi <- tbl(conn,"divi")
-rki_n_alter <- rki  %>% group_by(Meldedatum,Altersgruppe) %>% 
+divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
+divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
+rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T)) %>% 
   arrange(Meldedatum,Altersgruppe) %>% collect() %>%
@@ -52,14 +68,14 @@ rki_n_alter <- rki  %>% group_by(Meldedatum,Altersgruppe) %>%
               names_from = Altersgruppe,
               values_from = c("Fälle","Todesfälle"),
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
+  left_join(divi_all %>% filter(id==0), by=c('Meldedatum'='daten_stand')) %>%
+  left_join(vorwarndata %>% select(date, Infected), by=c('Meldedatum'='date')) %>%
   mutate("Fälle gesamt"= `Fälle_0-59`+ `Fälle_60-79`+ `Fälle_80+` , 
          "Todesfälle gesamt" = `Todesfälle_0-59`+ `Todesfälle_60-79`+ `Todesfälle_80+`,
          "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`, 
-         'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`,
-         Meldedatum=lubridate::as_date(Meldedatum)) 
-
-
-
+         "itsfaelle"=`faelle_covid_aktuell`/`Infected`,
+         'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`) 
 strukturdaten <- tbl(conn,"strukturdaten")
 aktuell <- tbl(conn,"params") %>% collect()
 trends <- tbl(conn,"trends")
@@ -276,9 +292,12 @@ mitigationsplot_blvergleich <- function(){
 
 ### Plot on Age of cases and case fatality 
 age_plot_fatality <- function(){
-myplot <- ggplot(rki_n_alter %>% 
-                   select(Meldedatum,"Alter 60+ an Fällen"=`60+`, "Todesfälle an Fällen"= `Todesfälle`) %>% 
-                   gather(Merkmal,Anteil,2:3) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
+myplot <- ggplot(rki_divi_n_alter %>%
+                   select(Meldedatum,
+                          "Alter 60+ an Fällen"=`60+`,
+                          "ITS-Fälle an Fällen"=`itsfaelle`, 
+                          "Todesfälle an Fällen"= `Todesfälle`) %>% 
+                   gather(Merkmal,Anteil,2:4) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
                  aes(x=Meldedatum,y=Anteil,color=Merkmal)) + geom_line() + theme_minimal() + 
   scale_color_zi() + labs(y="Anteil in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
@@ -317,22 +336,6 @@ mitigationsplot_bl <- function(myid){
 }
 
 ### Akute infizierte Fälle
-vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
-  mutate(
-    cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
-    cases=ifelse(is.na(cases_rm), cases, cases_rm),
-    Infected=cases-lag(cases,15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
-  mutate(Rt=(cases-lag(cases,10))/lag(Infected,10)) %>% filter(!is.na(Infected) & !is.na(Rt))  %>%
-  mutate(date=date(date),
-         Neue_faelle=cases-lag(cases),
-         Neue_faelle_Anstieg = Neue_faelle/lag(Neue_faelle),
-         Vorwarnzeit= log(16000/Neue_faelle)/log(Neue_faelle_Anstieg),
-         Situation = case_when(Vorwarnzeit<0 ~ "grün",
-                               (Vorwarnzeit>18 )  ~ "orange",
-                               (Vorwarnzeit>=0 & Vorwarnzeit<18)   ~ "rot"),
-         Situation=factor(Situation,levels=c("grün","orange","rot"),ordered=T),
-         show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
-
 akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   geom_area(fill="#0086C530") +
   geom_vline(aes(xintercept=date("2020-03-16")),color="black",linetype ="dotted") +
