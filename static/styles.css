@@ -6,3 +6,7 @@
 #dashboard-container {
     max-width: 850px;
 }
+
+.value-box .caption {
+    white-space: pre-line;
+}
