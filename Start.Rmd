@@ -90,14 +90,14 @@ Row
 ### Vorwarnzeit bei R=1,3 
 
 ```{r}
-vorwarnzeitaktuell <- vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv)
+vorwarnzeitaktuell <- vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit) # pull(Vorwarnzeit_effektiv)
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
-         caption="Effektive Vorwarnzeit bei R=1,3",
+         caption=paste0("Vorwarnzeit bis Erreichen der Kapazitätsgrenze \n effektive Vorwarnzeit: ", vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv), " Tage"), # "Effektive Vorwarnzeit bei R=1,3",
          icon = "fa-calendar-alt",
-         color = case_when(vorwarnzeitaktuell > 60 ~ "#B1C800",
-                           vorwarnzeitaktuell <= 60 & 
-                             vorwarnzeitaktuell > 14 ~ "#E49900",
-                           vorwarnzeitaktuell < 14 ~ "#E40000")
+         color = case_when(vorwarnzeitaktuell > 81 ~ "#B1C800",
+                           vorwarnzeitaktuell <= 81 & # 60
+                             vorwarnzeitaktuell >= 22 ~ "#E49900",
+                           vorwarnzeitaktuell < 22 ~ "#E40000") # 14
         )
 ```
 
@@ -108,7 +108,8 @@ Row {data-height=175}
 ***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
 <!-- *Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\ -->
 ***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet.\
-***Effektive Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung von 25% der stationären Behandlungskapazitäten (Annahme 25% der Kapazität steht für COVID-19 zur Verfügung) ab heute (Annahme **Reaktionszeit von 21 Tagen bis Wirkung neuer Maßnahmen**), falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`.
+***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung von 25% der stationären Behandlungskapazitäten (Annahme 25% der Kapazität steht für COVID-19 zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Die "effektive Vorwarnzeit" ist Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken.
+<!-- ***Effektive Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung von 25% der stationären Behandlungskapazitäten (Annahme 25% der Kapazität steht für COVID-19 zur Verfügung) ab heute (Annahme **Reaktionszeit von 21 Tagen bis Wirkung neuer Maßnahmen**), falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. -->
 
 
 
