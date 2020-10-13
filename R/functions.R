@@ -1,11 +1,4 @@
 # Packages
-library(dplyr)
-library(glue)
-library(lubridate)
-library(tidyverse)
-library(tidyr)
-library(stringr)
-library(ggplot2)
 library(DT)
 library(DBI)
 library(forcats)
@@ -15,6 +8,15 @@ library(zicolors)
 library(deSolve)
 library(jsonlite)
 library(readxl)
+library(data.table)
+library(dplyr)
+library(glue)
+library(lubridate)
+library(tidyverse)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(dtplyr)
 
 # parameters from literature
 icu_days <- 10.1 # aok/divi paper lancet
@@ -78,8 +80,9 @@ rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
          "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`, 
          "itsfaelle"=`faelle_covid_aktuell`/`Infected`,
          'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`) 
-rki_alter_destatis <- rki %>% 
-  group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately...
+
+rki_alter_destatis <- rki %>% lazy_dt() %>%
+  group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately... but much faster with dtplyr!
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
   # arrange(Meldedatum,Altersgruppe) %>%
@@ -100,7 +103,9 @@ rki_alter_destatis <- rki %>%
               names_from = Altersgruppe,
               values_from = c("Fälle","Todesfälle"),
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
-  mutate(Meldedatum=lubridate::as_date(Meldedatum), blid=floor(id/1000000))
+  mutate(Meldedatum=lubridate::as_date(Meldedatum), blid=floor(id/1000000)) %>%
+  as_tibble()
+
 rki_alter_destatis <- bind_rows(rki_alter_destatis,
                                  rki_alter_destatis %>%
                                    group_by(Meldedatum, blid) %>%
@@ -123,6 +128,7 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis,
                                             `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
                                             `Todesfälle_60+`=sum(`Todesfälle_60+`), .groups="drop") %>%
                                    mutate(id=0))
+
 rki_alter_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
