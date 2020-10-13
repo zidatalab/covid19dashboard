@@ -57,15 +57,15 @@ divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stan
 divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
-            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T)) %>% 
-  arrange(Meldedatum,Altersgruppe) %>% collect() %>%
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+  arrange(Meldedatum, Altersgruppe) %>% collect() %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
          Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
                              Altersgruppe,"0-59")) %>%
-  group_by(Meldedatum,Altersgruppe) %>% 
+  group_by(Meldedatum, Altersgruppe) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
-            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T)) %>% 
-  arrange(Meldedatum,Altersgruppe) %>% 
+            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
+  arrange(Meldedatum, Altersgruppe) %>% 
   pivot_wider(id_cols = Meldedatum,
               names_from = Altersgruppe,
               values_from = c("Fälle","Todesfälle"),
@@ -81,7 +81,7 @@ rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
 rki_alter_destatis <- rki %>% 
   group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately...
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
-            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T)) %>% 
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
   # arrange(Meldedatum,Altersgruppe) %>%
   collect() %>%
   filter(Altersgruppe!="unbekannt") %>%
@@ -94,7 +94,7 @@ rki_alter_destatis <- rki %>%
                                              "0-15", Altersgruppe))) %>%
   group_by(Meldedatum,Altersgruppe, id) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
-            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T)) %>% 
+            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
   # arrange(Meldedatum,Altersgruppe, id) %>% 
   pivot_wider(id_cols = c(Meldedatum, id),
               names_from = Altersgruppe,
@@ -129,7 +129,7 @@ rki_alter_bund <- rki %>%
   filter(!is.na(id)) %>%
   group_by(Meldedatum, Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
-            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T)) %>% 
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
   arrange(Meldedatum,Altersgruppe) %>% collect() %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
          Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
@@ -137,7 +137,7 @@ rki_alter_bund <- rki %>%
                                   "0-59")) %>%
   group_by(Meldedatum, Altersgruppe) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
-            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T)) %>% 
+            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
   arrange(Meldedatum, Altersgruppe) %>% 
   pivot_wider(id_cols =  c(Meldedatum),
               names_from = Altersgruppe,
