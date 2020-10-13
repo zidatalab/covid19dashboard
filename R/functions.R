@@ -324,7 +324,7 @@ for (h in 0:horizont) {
     mutate(date=date(Meldedatum)) %>%
     filter(date<=stichtag) %>%
     group_by(id) %>% arrange(id,-as.numeric(date)) %>%
-    filter(row_number()<=7) %>% # hier sind tatsächliche Fälle und nicht cumsum
+    filter(date>=stichtag-6) %>%
     summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-15`),
               `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
               `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
