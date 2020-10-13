@@ -111,7 +111,7 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis,
                                              `Todesfälle_15-34`=sum(`Todesfälle_15-34`),
                                              `Todesfälle_35-59`=sum(`Todesfälle_35-59`),
                                              `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
-                                             `Todesfälle_60+`=sum(`Todesfälle_60+`)) %>%
+                                             `Todesfälle_60+`=sum(`Todesfälle_60+`), .groups="drop") %>%
                                    mutate(id=blid),
                                  rki_alter_destatis %>% group_by(Meldedatum) %>%
                                   summarise(`Fälle_15-34`=sum(`Fälle_15-34`),
@@ -121,7 +121,7 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis,
                                             `Todesfälle_15-34`=sum(`Todesfälle_15-34`),
                                             `Todesfälle_35-59`=sum(`Todesfälle_35-59`),
                                             `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
-                                            `Todesfälle_60+`=sum(`Todesfälle_60+`)) %>%
+                                            `Todesfälle_60+`=sum(`Todesfälle_60+`), .groups="drop") %>%
                                    mutate(id=0))
 rki_alter_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
@@ -185,8 +185,8 @@ RKI_R <- tryCatch(
 Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv") # fix for break
 rkiall <-  rki %>% select(AnzahlFall,AnzahlTodesfall,Meldedatum,Datenstand,NeuerFall,NeuerTodesfall) %>%
   mutate(NeuerFall=ifelse(NeuerFall==1,"Neue Meldung","Alte Meldung")) %>%
-  group_by(Meldedatum,NeuerFall) %>% summarise(AnzahlFall=sum(AnzahlFall,na.rm=T)) %>%
-  ungroup() %>% collect() %>%
+  group_by(Meldedatum,NeuerFall) %>% summarise(AnzahlFall=sum(AnzahlFall,na.rm=T), .groups="drop") %>%
+  collect() %>%
   mutate(Meldedatum=date(Meldedatum),
          Wochenende=ifelse(wday(Meldedatum)==1 |wday(Meldedatum)==7,"Wochenende",NA))
 
@@ -240,23 +240,23 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
 }
 
 ### Vorwarnzeit aktuell
+maxdatum <- max(as_date(rki_alter_destatis$Meldedatum))
 letzte_7_tage <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
   group_by(id) %>% arrange(id,-as.numeric(date)) %>%
   filter(row_number()<=8) %>% # fuer die anzahl der neuen faelle der letzten 7 tage muessen wir die letzten 8 tage ziehen
-  summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
+  summarise(Faelle_letzte_7_Tage=first(cases)-last(cases), .groups="drop") %>%
   mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
 letzte_7_tage_altersgruppen_bund <-  rki_alter_bund %>%
   mutate(date=date(Meldedatum)) %>%
-  arrange(-as.numeric(date)) %>%
-  filter(row_number()<=7) %>% # hier sind tatsächliche Fälle und nicht cumsum
+  filter(date>=maxdatum-6) %>%
   summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
-            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`)) %>%
+            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
   # mutate(`Faelle_letzte_7_Tage_pro_Tag_0-59`=round(`Faelle_letzte_7_Tage_0-59`/7),
   #        `Faelle_letzte_7_Tage_pro_Tag_60-79`=round(`Faelle_letzte_7_Tage_60-79`/7),
   #        `Faelle_letzte_7_Tage_pro_Tag_80+`=round(`Faelle_letzte_7_Tage_80+`/7)) %>%
   bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
-  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`=round(`Faelle_letzte_7_Tage_0-59`/(sum(select_(., "`unter 20`:`40 bis 60`"))/100000)),
+  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`=round(`Faelle_letzte_7_Tage_0-59`/(sum(select(., `unter 20`:`40 bis 60`))/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/(`60 bis 80`/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)))
 
@@ -266,13 +266,13 @@ letzte_7_tage_altersgruppen_bund <-  rki_alter_bund %>%
   #        `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(sum(select_(., "`unter 3 Jahre`:`55 bis unter 60 Jahre`"))/100000)))
 letzte_7_tage_altersgruppen_destatis <- rki_alter_destatis %>%
   mutate(date=date(Meldedatum)) %>%
-  group_by(id) %>% arrange(id,-as.numeric(date)) %>%
-  filter(row_number()<=7) %>% # hier sind tatsächliche Fälle und nicht cumsum
+  filter(date>=maxdatum-6) %>%
+  group_by(id) %>% # arrange(id,-as.numeric(date)) %>%
   summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-15`),
             `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
             `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
-            `Faelle_letzte_7_Tage_60+`=sum(`Fälle_60+`)) %>%
-  ungroup() %>%
+            `Faelle_letzte_7_Tage_60+`=sum(`Fälle_60+`), .groups="drop") %>%
+  # ungroup() %>%
   left_join(., strukturdaten, by="id") %>%
   mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((`unter 3 Jahre`+`3 bis unter 6 Jahre`+`6 bis unter 10 Jahre`+`10 bis unter 15 Jahre`)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_15-34`=round(`Faelle_letzte_7_Tage_15-34`/((`15 bis unter 18 Jahre`+`18 bis unter 20 Jahre`+`20 bis unter 25 Jahre`+`25 bis unter 30 Jahre`+`30 bis unter 35 Jahre`)/100000)),
@@ -318,7 +318,7 @@ for (h in 0:horizont) {
     filter(date<=stichtag) %>%
     group_by(id) %>% arrange(id,-as.numeric(date)) %>%
     filter(row_number()<=8) %>% # genau wie oben, 8 statt 7!
-    summarise(Faelle_letzte_7_Tage=first(cases)-last(cases)) %>%
+    summarise(Faelle_letzte_7_Tage=first(cases)-last(cases), .groups="drop") %>%
     mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7))
   letzte_7_tage_altersgruppen_destatis_h <- rki_alter_destatis %>%
     mutate(date=date(Meldedatum)) %>%
@@ -328,7 +328,7 @@ for (h in 0:horizont) {
     summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-15`),
               `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
               `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
-              `Faelle_letzte_7_Tage_60+`=sum(`Fälle_60+`)) %>%
+              `Faelle_letzte_7_Tage_60+`=sum(`Fälle_60+`), .groups="drop") %>%
     ungroup() %>%
     left_join(., strukturdaten, by="id") %>%
     mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((`unter 3 Jahre`+`3 bis unter 6 Jahre`+`6 bis unter 10 Jahre`+`10 bis unter 15 Jahre`)/100000)),
