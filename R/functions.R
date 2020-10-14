@@ -1,5 +1,3 @@
-install.packages("dtplyr", dependencies = TRUE)
-
 # Packages
 library(DT)
 library(DBI)
@@ -157,12 +155,12 @@ aktuell <- tbl(conn,"params") %>% collect()
 trends <- tbl(conn,"trends")
 brd_testungen <- tbl(conn,"brd_testungen") %>% collect()
 Datenstand <- tbl(conn,"Stand") %>% collect()
-bundprognose <- prognosen %>% filter(id==0) %>% collect() %>%
-  filter(Szenario!="Trend D") %>%
-  mutate(Szenario=ifelse(Szenario=="Trend lokal","aktueller Trend",Szenario),
-         Szenario=ifelse(Szenario=="Worst Case","Worst Case (R=1,3)",Szenario),
-         Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
-  filter(Datum<date(max(Datum)+weeks(12)))
+# bundprognose <- prognosen %>% filter(id==0) %>% collect() %>%
+#   filter(Szenario!="Trend D") %>%
+#   mutate(Szenario=ifelse(Szenario=="Trend lokal","aktueller Trend",Szenario),
+#          Szenario=ifelse(Szenario=="Worst Case","Worst Case (R=1,3)",Szenario),
+#          Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
+#   filter(Datum<date(max(Datum)+weeks(12)))
 # labordaten <- tbl(conn, "Labordaten")
 
 ## read and update RKI-R-estimates
@@ -288,7 +286,7 @@ letzte_7_tage_altersgruppen_destatis <- rki_alter_destatis %>%
          `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+`75 Jahre und mehr`)/100000)))
 
 ausgangsdaten <- aktuell  %>%
-  select(id,name,ICU_Betten,EW_insgesamt,ebene,
+  select(id,name,ICU_Betten,Einwohner,ebene, # EW_insgesamt
          cases,R0) %>% filter(ebene!="Staaten" & !is.na(ebene)) %>% select(-ebene) %>% collect() %>%
   left_join(.,letzte_7_tage,by="id") %>%
   left_join(., letzte_7_tage_altersgruppen_destatis %>% select(
@@ -297,20 +295,20 @@ ausgangsdaten <- aktuell  %>%
     `Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
     `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
     `Faelle_letzte_7_Tage_je100TsdEinw_60+`), by="id") %>%
-  mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(EW_insgesamt/100000)),
+  mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
          Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
 
 
 # vorwarnzeit aktueller tag daten
 vorwarnzeitergebnis <- ausgangsdaten %>%
-  mutate(Handlungsgrenze_7_tage=50*(EW_insgesamt/100000),
+  mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
          R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
          Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
          Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
 
 myTage <- vorwarnzeitergebnis %>% rowwise() %>%
-  do(Tage = vorwarnzeit_berechnen(.$EW_insgesamt, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
+  do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
@@ -345,7 +343,7 @@ for (h in 0:horizont) {
            `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+`75 Jahre und mehr`)/100000)))
   
   ausgangsdaten_h <- aktuell  %>%
-    select(id,name,ICU_Betten,EW_insgesamt,ebene,
+    select(id,name,ICU_Betten,Einwohner,ebene, # EW_insgesamt
            cases,R0) %>% filter(ebene!="Staaten" & !is.na(ebene)) %>% select(-ebene) %>% collect() %>%
     left_join(.,letzte_7_tage_h,by="id") %>%
     left_join(., letzte_7_tage_altersgruppen_destatis_h %>% select(
@@ -354,11 +352,11 @@ for (h in 0:horizont) {
       `Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
       `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
       `Faelle_letzte_7_Tage_je100TsdEinw_60+`), by="id") %>%
-    mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(EW_insgesamt/100000)),
+    mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
            Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
 
   vorwarnzeitergebnis_h <- ausgangsdaten_h %>%
-    mutate(Handlungsgrenze_7_tage=50*(EW_insgesamt/100000),
+    mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
            Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
@@ -366,7 +364,7 @@ for (h in 0:horizont) {
     filter(id<=16)
 
   myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
-    do(Tage = vorwarnzeit_berechnen(.$EW_insgesamt, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
+    do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
     unnest(cols = c(Tage), keep_empty=TRUE)
   vorwarnzeitergebnis_h <- vorwarnzeitergebnis_h %>%
     mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21, date=stichtag)
@@ -533,8 +531,8 @@ Reaktionszeit <- 21
 Belastungsgrenze <- fall$Kapazitaet
 gamma=1/10
 for (i in seq(Rt)) {
-  mysir <- sirmodel(ngesamt = fall$EW_insgesamt,
-                    S = fall$EW_insgesamt - fall$cases,
+  mysir <- sirmodel(ngesamt = fall$Einwohner,
+                    S = fall$Einwohner - fall$cases,
                     I = (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
                     R = fall$cases - (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
                     R0 = Rt[i],
@@ -548,7 +546,7 @@ as_tibble(cbind(Rt,Vorwarnzeit)) %>%
 }
 
 rki_fallzahl_bl <- function(){
-  df <- vorwarnzeitergebnis %>% filter(id<17) %>% mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
+  df <- vorwarnzeitergebnis %>% filter(id<17) %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
                                                          R0=round(R0,digits = 2))
   df %>% select(Bundesland=name,
                 "R(t)"=R0,
@@ -566,7 +564,7 @@ rki_fallzahl_bl <- function(){
 }
 
 rki_fallzahl_kreis <- function(){
-  df <- vorwarnzeitergebnis %>% filter(id>17 | name=="Berlin") %>% mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
+  df <- vorwarnzeitergebnis %>% filter(id>17 | name=="Berlin") %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
                                                          R0=round(R0,digits = 2))
   bundeslaender <- aktuell %>% filter(id>0 & id<17) %>% select(blid=id,Bundesland=name) %>% collect()
   df <- df %>% mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>% left_join(.,bundeslaender) %>% arrange(blid,id)
