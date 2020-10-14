@@ -1,3 +1,5 @@
+install.packages("dtplyr", dependencies = TRUE)
+
 # Packages
 library(DT)
 library(DBI)
