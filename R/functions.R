@@ -23,6 +23,7 @@ icu_days <- 10.1 # aok/divi paper lancet
 share_icu <- (449+17838)/303258 # divi intensivregister and rki daily report 6. oktober 2020
 altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
                         "60 bis 80"=21.7,	"80+"=6.8)/100 # destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
+busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896, "Hosp6079"=1621+2158, "Hosp80"=3346)
 
 # Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
@@ -91,10 +92,8 @@ rki_alter_destatis <- rki %>% lazy_dt() %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
   filter(!is.na(id)) %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
-         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
-                                      "60+",
-                                      ifelse(Altersgruppe %in% c("00-04", "05-14"),
-                                             "0-15", Altersgruppe))) %>%
+         Altersgruppe=ifelse(Altersgruppe %in% c("00-04", "05-14"),
+                                             "0-15", Altersgruppe)) %>%
   group_by(Meldedatum,Altersgruppe, id) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
             "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
@@ -103,31 +102,54 @@ rki_alter_destatis <- rki %>% lazy_dt() %>%
               names_from = Altersgruppe,
               values_from = c("Fälle","Todesfälle"),
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
-  mutate(Meldedatum=lubridate::as_date(Meldedatum), blid=floor(id/1000000)) %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum), blid=floor(id/1000000),
+         `Fälle_60+`=`Fälle_60-79`+`Fälle_80+`) %>%
+  right_join(., expand_grid(Meldedatum=seq(min(.$Meldedatum), max(.$Meldedatum), by="days"), id=unique(.$id)), by=c("Meldedatum", "id")) %>%
+  replace(is.na(.), 0) %>%
+  group_by(id) %>%
+  arrange(Meldedatum) %>%
+  mutate(cases059=cumsum(`Fälle_0-15`+`Fälle_15-34`+`Fälle_35-59`),
+         cases6079=cumsum(`Fälle_60-79`),
+         cases80=cumsum(`Fälle_80+`)) %>% ungroup() %>%
+  mutate(blid=floor(id/1000000)) %>%
   as_tibble()
 
 rki_alter_destatis <- bind_rows(rki_alter_destatis,
                                  rki_alter_destatis %>%
                                    group_by(Meldedatum, blid) %>%
-                                   summarise(`Fälle_15-34`=sum(`Fälle_15-34`),
+                                   summarise(cases059=sum(cases059),
+                                             cases6079=sum(cases6079),
+                                             cases80=sum(cases80),
+                                             `Fälle_15-34`=sum(`Fälle_15-34`),
                                              `Fälle_35-59`=sum(`Fälle_35-59`),
                                              `Fälle_0-15`=sum(`Fälle_0-15`),
                                              `Fälle_60+`=sum(`Fälle_60+`),
+                                             `Fälle_60-79`=sum(`Fälle_60-79`),
+                                             `Fälle_80+`=sum(`Fälle_80+`),
                                              `Todesfälle_15-34`=sum(`Todesfälle_15-34`),
                                              `Todesfälle_35-59`=sum(`Todesfälle_35-59`),
                                              `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
-                                             `Todesfälle_60+`=sum(`Todesfälle_60+`), .groups="drop") %>%
+                                             `Todesfälle_60-79`=sum(`Todesfälle_60-79`),
+                                             `Todesfälle_80+`=sum(`Todesfälle_80+`),
+                                             `Todesfälle_60+`=sum(`Todesfälle_60-79`+`Todesfälle_80+`), .groups="drop") %>%
                                    mutate(id=blid),
                                  rki_alter_destatis %>% group_by(Meldedatum) %>%
-                                  summarise(`Fälle_15-34`=sum(`Fälle_15-34`),
+                                  summarise(cases059=sum(cases059),
+                                            cases6079=sum(cases6079),
+                                            cases80=sum(cases80),
+                                            `Fälle_15-34`=sum(`Fälle_15-34`),
                                             `Fälle_35-59`=sum(`Fälle_35-59`),
                                             `Fälle_0-15`=sum(`Fälle_0-15`),
                                             `Fälle_60+`=sum(`Fälle_60+`),
+                                            `Fälle_60-79`=sum(`Fälle_60-79`),
+                                            `Fälle_80+`=sum(`Fälle_80+`),
                                             `Todesfälle_15-34`=sum(`Todesfälle_15-34`),
                                             `Todesfälle_35-59`=sum(`Todesfälle_35-59`),
                                             `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
-                                            `Todesfälle_60+`=sum(`Todesfälle_60+`), .groups="drop") %>%
-                                   mutate(id=0))
+                                            `Todesfälle_60-79`=sum(`Todesfälle_60-79`),
+                                            `Todesfälle_80+`=sum(`Todesfälle_80+`),
+                                            `Todesfälle_60+`=sum(`Todesfälle_60-79`+`Todesfälle_80+`), .groups="drop") %>%
+                                   mutate(id=0, blid=0))
 
 rki_alter_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
@@ -162,6 +184,36 @@ Datenstand <- tbl(conn,"Stand") %>% collect()
 #          Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
 #   filter(Datum<date(max(Datum)+weeks(12)))
 # labordaten <- tbl(conn, "Labordaten")
+## 
+rki_cases_infected <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T), .groups="drop") %>% 
+  arrange(Meldedatum, Altersgruppe) %>% collect() %>%
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
+                             Altersgruppe,"0-59")) %>%
+  group_by(Meldedatum, Altersgruppe) %>% 
+  summarise("Fälle"=sum(AnzahlFall , na.rm = T), .groups="drop") %>% 
+  arrange(Meldedatum, Altersgruppe) %>% 
+  pivot_wider(id_cols = Meldedatum,
+              names_from = Altersgruppe,
+              values_from = c("Fälle"),
+              values_fill = list("Fälle"=0)) %>% ungroup() %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
+  arrange(Meldedatum) %>%
+  mutate(cases059=cumsum(`0-59`),
+         cases6079=cumsum(`60-79`),
+         cases80=cumsum(`80+`)) %>%
+  mutate(Infected059=cases059-lag(cases059,15),
+         Infected6079=cases6079-lag(cases6079,15),
+         Infected80=cases80-lag(cases80,15),
+         Infected2=Infected059+Infected6079+Infected80)
+cases_ag <- rki_cases_infected %>% filter(Meldedatum=="2020-04-20") %>%
+  select(cases059, cases6079, cases80) # 20.4.2020 siehe unten
+busselancet_altersgruppen_hospital_anteile <- busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
+# divi_abg <- 18278  # divi tagesbericht 13.10.2020
+divi_abg <- 6785 # divi tagesbericht 20.4.2020
+busse_auf_divi <- busselancet_altersgruppen_hospital_anteile*divi_abg
+hospquote <- busse_auf_divi/cases_ag
 
 ## read and update RKI-R-estimates
 RKI_R <- tryCatch(
@@ -245,6 +297,26 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
   return(myresult)
 }
 
+vorwarnzeit_berechnen_AG <- function(ngesamt,cases,faelle,Kapazitaet_Betten,Rt=1.3, hospquote){
+  # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 3 (AG 0-59, 60-79, 80+)
+  gamma <- 1/10
+  infected <- faelle/gamma
+  recovered <- cases-infected
+  mysir_AG <- vector("list", 3)
+  for (i in 1:3) {
+    mysir <- sirmodel(ngesamt = ngesamt[i],
+                      S = ngesamt[i] - infected[i] - recovered[i],
+                      I = infected[i],
+                      R = recovered[i],
+                      R0 = Rt,
+                      gamma = gamma,
+                      horizont = 365) %>% mutate(Neue_Faelle_hq=hospquote[i]*(I-lag(I)+R-lag(R)))
+    mysir_AG[[i]] <- mysir
+  }
+  myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle_hq>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
+  return(myresult)
+}
+
 ### Vorwarnzeit aktuell
 maxdatum <- max(as_date(rki_alter_destatis$Meldedatum))
 letzte_7_tage <-  brd_timeseries %>% collect() %>% mutate(date=date(date)) %>%
@@ -277,13 +349,23 @@ letzte_7_tage_altersgruppen_destatis <- rki_alter_destatis %>%
   summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-15`),
             `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
             `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
+            `Faelle_letzte_7_Tage_0-59`=`Faelle_letzte_7_Tage_0-14`+`Faelle_letzte_7_Tage_15-34`+`Faelle_letzte_7_Tage_35-59`,
+            `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
+            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`),
             `Faelle_letzte_7_Tage_60+`=sum(`Fälle_60+`), .groups="drop") %>%
   # ungroup() %>%
   left_join(., strukturdaten, by="id") %>%
-  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((`unter 3 Jahre`+`3 bis unter 6 Jahre`+`6 bis unter 10 Jahre`+`10 bis unter 15 Jahre`)/100000)),
+  mutate(Faelle_letzte_7_Tage_pro_Tag_059=round(`Faelle_letzte_7_Tage_0-59`/7),
+         Faelle_letzte_7_Tage_pro_Tag_6079=round(`Faelle_letzte_7_Tage_60-79`/7),
+         Faelle_letzte_7_Tage_pro_Tag_80=round(`Faelle_letzte_7_Tage_80+`/7),
+         `Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((`unter 3 Jahre`+`3 bis unter 6 Jahre`+`6 bis unter 10 Jahre`+`10 bis unter 15 Jahre`)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_15-34`=round(`Faelle_letzte_7_Tage_15-34`/((`15 bis unter 18 Jahre`+`18 bis unter 20 Jahre`+`20 bis unter 25 Jahre`+`25 bis unter 30 Jahre`+`30 bis unter 35 Jahre`)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_35-59`=round(`Faelle_letzte_7_Tage_35-59`/((`35 bis unter 40 Jahre`+`40 bis unter 45 Jahre`+`45 bis unter 50 Jahre`+`50 bis unter 55 Jahre`+`55 bis unter 60 Jahre`)/100000)),
-         `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+`75 Jahre und mehr`)/100000)))
+         `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+`75 Jahre und mehr`)/100000))) %>%
+  left_join(., rki_alter_destatis %>% filter(Meldedatum==maxdatum) %>% select(cases059, cases6079, cases80, id), by="id") %>%
+  mutate(EW059=rowSums(select(., `unter 3 Jahre`:`55 bis unter 60 Jahre`)),
+         EW6079=`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+round(0.4*`75 Jahre und mehr`),
+         EW80=round(0.6*`75 Jahre und mehr`))
 
 ausgangsdaten <- aktuell  %>%
   select(id,name,ICU_Betten,Einwohner,ebene, # EW_insgesamt
@@ -291,6 +373,14 @@ ausgangsdaten <- aktuell  %>%
   left_join(.,letzte_7_tage,by="id") %>%
   left_join(., letzte_7_tage_altersgruppen_destatis %>% select(
     id,
+    cases059, cases6079, cases80,
+    EW059, EW6079, EW80,
+    `Faelle_letzte_7_Tage_pro_Tag_059`,
+    `Faelle_letzte_7_Tage_pro_Tag_6079`,
+    `Faelle_letzte_7_Tage_pro_Tag_80`,
+    `Faelle_letzte_7_Tage_0-59`,
+    `Faelle_letzte_7_Tage_60-79`,
+    `Faelle_letzte_7_Tage_80+`,
     `Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
     `Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
     `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
@@ -304,11 +394,15 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
          R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
+         Kapazitaet_Betten=ICU_Betten*0.25/icu_days,
          Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
          Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
 
 myTage <- vorwarnzeitergebnis %>% rowwise() %>%
-  do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
+  do(Tage = vorwarnzeit_berechnen_AG(c(.$EW059, .$EW6079, .$EW80),
+                                  c(.$cases059, .$cases6079, .$cases80),
+                                  c(.$Faelle_letzte_7_Tage_pro_Tag_059, .$Faelle_letzte_7_Tage_pro_Tag_6079, .$Faelle_letzte_7_Tage_pro_Tag_80),
+                                  .$Kapazitaet_Betten, 1.3, hospquote%>%slice(1)%>%as.numeric())) %>% 
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
@@ -331,16 +425,27 @@ for (h in 0:horizont) {
     filter(date<=stichtag) %>%
     group_by(id) %>% arrange(id,-as.numeric(date)) %>%
     filter(date>=stichtag-6) %>%
+    group_by(id) %>% # arrange(id,-as.numeric(date)) %>%
     summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-15`),
               `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
               `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
+              `Faelle_letzte_7_Tage_0-59`=`Faelle_letzte_7_Tage_0-14`+`Faelle_letzte_7_Tage_15-34`+`Faelle_letzte_7_Tage_35-59`,
+              `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
+              `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`),
               `Faelle_letzte_7_Tage_60+`=sum(`Fälle_60+`), .groups="drop") %>%
-    ungroup() %>%
+    # ungroup() %>%
     left_join(., strukturdaten, by="id") %>%
-    mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((`unter 3 Jahre`+`3 bis unter 6 Jahre`+`6 bis unter 10 Jahre`+`10 bis unter 15 Jahre`)/100000)),
+    mutate(Faelle_letzte_7_Tage_pro_Tag_059=round(`Faelle_letzte_7_Tage_0-59`/7),
+           Faelle_letzte_7_Tage_pro_Tag_6079=round(`Faelle_letzte_7_Tage_60-79`/7),
+           Faelle_letzte_7_Tage_pro_Tag_80=round(`Faelle_letzte_7_Tage_80+`/7),
+           `Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((`unter 3 Jahre`+`3 bis unter 6 Jahre`+`6 bis unter 10 Jahre`+`10 bis unter 15 Jahre`)/100000)),
            `Faelle_letzte_7_Tage_je100TsdEinw_15-34`=round(`Faelle_letzte_7_Tage_15-34`/((`15 bis unter 18 Jahre`+`18 bis unter 20 Jahre`+`20 bis unter 25 Jahre`+`25 bis unter 30 Jahre`+`30 bis unter 35 Jahre`)/100000)),
            `Faelle_letzte_7_Tage_je100TsdEinw_35-59`=round(`Faelle_letzte_7_Tage_35-59`/((`35 bis unter 40 Jahre`+`40 bis unter 45 Jahre`+`45 bis unter 50 Jahre`+`50 bis unter 55 Jahre`+`55 bis unter 60 Jahre`)/100000)),
-           `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+`75 Jahre und mehr`)/100000)))
+           `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+`75 Jahre und mehr`)/100000))) %>%
+    left_join(., rki_alter_destatis %>% filter(Meldedatum==maxdatum) %>% select(cases059, cases6079, cases80, id), by="id") %>%
+    mutate(EW059=rowSums(select(., `unter 3 Jahre`:`55 bis unter 60 Jahre`)),
+           EW6079=`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+round(0.4*`75 Jahre und mehr`),
+           EW80=round(0.6*`75 Jahre und mehr`))
   
   ausgangsdaten_h <- aktuell  %>%
     select(id,name,ICU_Betten,Einwohner,ebene, # EW_insgesamt
@@ -348,23 +453,35 @@ for (h in 0:horizont) {
     left_join(.,letzte_7_tage_h,by="id") %>%
     left_join(., letzte_7_tage_altersgruppen_destatis_h %>% select(
       id,
+      cases059, cases6079, cases80,
+      EW059, EW6079, EW80,
+      `Faelle_letzte_7_Tage_pro_Tag_059`,
+      `Faelle_letzte_7_Tage_pro_Tag_6079`,
+      `Faelle_letzte_7_Tage_pro_Tag_80`,
+      `Faelle_letzte_7_Tage_0-59`,
+      `Faelle_letzte_7_Tage_60-79`,
+      `Faelle_letzte_7_Tage_80+`,
       `Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
       `Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
       `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
       `Faelle_letzte_7_Tage_je100TsdEinw_60+`), by="id") %>%
     mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
            Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
-
+  
   vorwarnzeitergebnis_h <- ausgangsdaten_h %>%
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
+           Kapazitaet_Betten=ICU_Betten*0.25/icu_days,
            Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
-    filter(id<=16)
+  filter(id<=16)
 
   myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
-    do(Tage = vorwarnzeit_berechnen(.$Einwohner, .$cases,.$Faelle_letzte_7_Tage_pro_Tag,.$Kapazitaet,1.3)) %>%
+    do(Tage = vorwarnzeit_berechnen_AG(c(.$EW059, .$EW6079, .$EW80),
+                                       c(.$cases059, .$cases6079, .$cases80),
+                                       c(.$Faelle_letzte_7_Tage_pro_Tag_059, .$Faelle_letzte_7_Tage_pro_Tag_6079, .$Faelle_letzte_7_Tage_pro_Tag_80),
+                                       .$Kapazitaet_Betten, 1.3, hospquote%>%slice(1)%>%as.numeric())) %>% 
     unnest(cols = c(Tage), keep_empty=TRUE)
   vorwarnzeitergebnis_h <- vorwarnzeitergebnis_h %>%
     mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21, date=stichtag)
