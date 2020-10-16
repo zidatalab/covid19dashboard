@@ -720,7 +720,8 @@ Vorwarnzeitplot <- ggplot(vorwarnzeitergebnis %>% filter(id<17),aes(x=forcats::f
   )
 
 mycolorbreaks <- c(14,30,90)
-plotdata_Anstieg <- make_theoretischedaten(myid=0) %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit) %>% filter(`Effektive Vorwarnzeit`>=0)  %>% gather(Merkmal,Wert,2:3)
+plotdata_Anstieg <- make_theoretischedaten(myid=0) %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit) %>% gather(Merkmal,Wert,2:3) # %>% filter(`Effektive Vorwarnzeit`>=0) 
+plotdata_Anstieg <- plotdata_Anstieg %>% mutate(Wert = replace(Wert, Wert < 0, 0))
 plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
   geom_line(size=1.5, show.legend = F)+
   geom_point(size=3, show.legend = F)+
