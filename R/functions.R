@@ -690,13 +690,13 @@ rki_fallzahl_kreis <- function(){
                 "R(t)"=R0,
                 "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
                 # "Effektive Vorwarnzeit lokal*"=Vorwarnzeit_effektiv, # needs communication
-                "Vorwarnzeit lokal*"=Vorwarnzeit, # needs communication
                 "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
                 "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
                 "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
                 "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
                 "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
-                "Fälle insgesamt"=cases#, "Fälle je 100 Tsd. Einw."=cases_je_100Tsd
+                "Fälle insgesamt"=cases, # "Fälle je 100 Tsd. Einw."=cases_je_100Tsd
+                "Vorwarnzeit lokal*"=Vorwarnzeit #, # needs communication
                 )
 }
 
