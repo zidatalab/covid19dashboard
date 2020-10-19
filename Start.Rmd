@@ -113,17 +113,17 @@ Row {data-height=175}
 
 
 
-Row {data-height=400}
-------------------------------------------------------------------------
+<!-- Row {data-height=400} -->
+<!-- ------------------------------------------------------------------------ -->
 
-### **Aktuelle Vorwarnzeiten**
+<!-- ### **Aktuelle Vorwarnzeiten** -->
 
-```{r}
-ggplotly(plot_Anstiegtheor  + labs(x="R(t)")) %>%
-   config(displayModeBar = FALSE, responsive=T) %>%
-layout(legend = list(x = 0.6, y = 0.9))
-  
-```
+<!-- ```{r} -->
+<!-- ggplotly(plot_Anstiegtheor  + labs(x="R(t)")) %>% -->
+<!--    config(displayModeBar = FALSE, responsive=T) %>% -->
+<!-- layout(legend = list(x = 0.6, y = 0.9)) -->
+
+<!-- ``` -->
 
 Row {data-height=110}
 ------------------------------------------------------------------------
