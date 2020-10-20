@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 echo "Read Env Variables"
-source ~/myenv.sh
+source ~/zi_covid/myenvs.sh
 echo "Starting conda"
 source /opt/tljh/user/bin/conda
-conda activate "R_36"
+conda activate "edgar_covid_r"
 echo "Pulling Code from git"
-cd ~/covid19dashboard
+cd ~/zi_covid/covid19dashboard/
 git pull
 echo "Starting DB-Update"
 cd ~/covid19dashboard/R/
-/home/jupyter-lekroll/.conda/envs/R_36/bin/R CMD BATCH renderdashboard.R
-cd ~/covid19dashboard/
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/R CMD BATCH renderdashboard.R
+cd ~/zi_covid/covid19dashboard/
 git add *
 git commit -m "Auto update Dashboard"
 git push
