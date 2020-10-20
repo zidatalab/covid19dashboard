@@ -8,7 +8,7 @@ echo "Pulling Code from git"
 cd ~/zi_covid/covid19dashboard/
 git pull
 echo "Starting DB-Update"
-cd ~/covid19dashboard/R/
+cd ~/zi_covid/covid19dashboard/R/
 /home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/R CMD BATCH renderdashboard.R
 cd ~/zi_covid/covid19dashboard/
 git add *
