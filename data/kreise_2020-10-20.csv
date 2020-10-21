@@ -1,0 +1,402 @@
+Kreis;Bundesland;R(t);7-Tage-Inzidenz;7-Tage-Inzidenz 60+;7-Tage-Inzidenz 35-59;7-Tage-Inzidenz 15-34;7-Tage-Inzidenz 0-14;Neue Fälle pro Tag;Fälle insgesamt;Vorwarnzeit lokal*
+Flensburg, Stadt;Schleswig-Holstein;1.26;19;0;36;26;0;2;157;120
+Kiel, Stadt;Schleswig-Holstein;1.73;13;7;11;17;16;4;519;149
+Lübeck, Stadt;Schleswig-Holstein;1.1;15;11;14;27;4;5;372;113
+Neumünster, Stadt;Schleswig-Holstein;1.83;35;13;37;47;55;4;215;65
+Dithmarschen;Schleswig-Holstein;1.32;28;46;20;25;6;5;289;35
+Herzogtum Lauenburg;Schleswig-Holstein;1.49;16;9;21;28;4;5;410;28
+Nordfriesland;Schleswig-Holstein;0.95;12;10;18;14;0;3;179;59
+Ostholstein;Schleswig-Holstein;1.49;31;15;11;36;13;9;224;63
+Pinneberg;Schleswig-Holstein;1.4;26;12;32;37;25;12;1031;13
+Plön;Schleswig-Holstein;2.02;5;5;7;4;0;1;179;83
+Rendsburg-Eckernförde;Schleswig-Holstein;1.07;11;8;12;15;8;4;421;58
+Schleswig-Flensburg;Schleswig-Holstein;1.26;11;6;9;20;18;3;237;72
+Segeberg;Schleswig-Holstein;1.02;23;10;26;29;34;9;610;78
+Steinburg;Schleswig-Holstein;1.36;12;3;19;18;0;2;256;113
+Stormarn;Schleswig-Holstein;1.55;28;12;26;60;20;10;775;50
+Hamburg, Stadt;Hamburg;1.18;40;23;40;65;21;106;10002;56
+Braunschweig, Stadt;Niedersachsen;1.08;22;6;24;38;13;8;608;89
+Salzgitter, Stadt;Niedersachsen;2.33;30;3;44;30;50;4;307;70
+Wolfsburg, Stadt;Niedersachsen;2.19;22;20;26;28;6;4;491;52
+Gifhorn;Niedersachsen;2.31;31;25;25;64;8;8;324;39
+Goslar;Niedersachsen;2.41;16;6;31;10;13;3;347;101
+Helmstedt;Niedersachsen;2.15;14;11;25;11;0;2;191;124
+Northeim;Niedersachsen;6.63;105;7;59;381;55;20;338;6
+Peine;Niedersachsen;1.19;26;31;16;46;10;5;352;33
+Wolfenbüttel;Niedersachsen;1.78;15;13;17;24;0;3;264;28
+Göttingen;Niedersachsen;2.16;23;10;18;50;17;11;1574;77
+Region Hannover;Niedersachsen;1.26;34;20;38;53;21;57;5253;59
+Diepholz;Niedersachsen;1.43;36;5;54;68;7;11;775;14
+Hameln-Pyrmont;Niedersachsen;1.37;10;14;6;10;10;2;265;85
+Hildesheim;Niedersachsen;1.09;20;10;18;32;26;8;695;70
+Holzminden;Niedersachsen;1.52;6;4;0;14;12;1;144;NA
+Nienburg (Weser);Niedersachsen;1.52;40;28;52;46;30;7;209;28
+Schaumburg;Niedersachsen;1.66;17;10;20;31;5;4;363;33
+Celle;Niedersachsen;1.92;42;46;33;66;20;11;425;11
+Cuxhaven;Niedersachsen;1.96;18;12;16;36;11;5;489;13
+Harburg;Niedersachsen;1.14;21;8;23;45;5;7;999;61
+Lüchow-Dannenberg;Niedersachsen;NA;0;0;0;0;0;0;48;NA
+Lüneburg;Niedersachsen;0.91;9;4;6;16;12;2;287;114
+Osterholz;Niedersachsen;1.11;29;11;41;55;0;5;247;49
+Rotenburg (Wümme);Niedersachsen;0.94;21;9;31;24;18;5;392;48
+Heidekreis;Niedersachsen;1.45;14;0;14;41;0;3;158;69
+Stade;Niedersachsen;1.63;9;5;4;24;3;3;413;97
+Uelzen;Niedersachsen;0.67;2;3;0;5;0;0;107;NA
+Verden;Niedersachsen;1.48;39;27;40;83;0;8;464;10
+Delmenhorst, Stadt;Niedersachsen;1.4;211;77;242;367;158;23;451;1
+Emden, Stadt;Niedersachsen;3.12;26;7;30;39;29;2;63;81
+Oldenburg (Oldenburg), Stadt;Niedersachsen;1.49;15;5;14;33;0;4;362;141
+Osnabrück, Stadt;Niedersachsen;1.5;30;5;19;62;24;7;878;106
+Wilhelmshaven, Stadt;Niedersachsen;NA;4;4;4;5;0;0;72;NA
+Ammerland;Niedersachsen;0.63;2;5;0;4;0;0;253;NA
+Aurich;Niedersachsen;1.33;25;21;32;27;16;7;345;34
+Cloppenburg;Niedersachsen;1.14;146;72;186;226;32;35;1229;1
+Emsland;Niedersachsen;1.21;61;36;64;91;45;28;1271;29
+Friesland;Niedersachsen;1.45;10;6;15;15;0;1;137;126
+Grafschaft Bentheim;Niedersachsen;0.99;77;61;96;97;30;15;578;2
+Leer;Niedersachsen;1.17;29;19;37;36;17;7;362;49
+Oldenburg;Niedersachsen;1.16;56;27;65;109;5;10;658;1
+Osnabrück;Niedersachsen;1.34;37;28;36;64;17;19;1833;42
+Vechta;Niedersachsen;1.34;111;62;143;143;52;22;970;5
+Wesermarsch;Niedersachsen;0.67;16;7;16;26;17;2;267;73
+Wittmund;Niedersachsen;0.44;2;0;0;8;0;0;84;NA
+Bremen, Stadt;Bremen;1.22;87;34;110;136;34;71;3316;20
+Bremerhaven, Stadt;Bremen;1.47;18;15;16;36;0;3;311;105
+Düsseldorf, Stadt;Nordrhein-Westfalen;1.33;81;43;88;132;30;71;4192;39
+Duisburg, Stadt;Nordrhein-Westfalen;1.52;94;48;110;140;61;67;3765;31
+Essen, Stadt;Nordrhein-Westfalen;1.18;66;38;80;97;33;55;2924;53
+Krefeld, Stadt;Nordrhein-Westfalen;1.73;61;29;61;101;58;20;1258;36
+Mönchengladbach, Stadt;Nordrhein-Westfalen;1.48;49;33;38;91;30;18;1326;43
+Mülheim an der Ruhr, Stadt;Nordrhein-Westfalen;1.67;71;59;69;103;52;17;845;9
+Oberhausen, Stadt;Nordrhein-Westfalen;1.3;53;21;75;78;21;16;804;46
+Remscheid, Stadt;Nordrhein-Westfalen;1.19;81;62;103;102;26;13;721;21
+Solingen, Stadt;Nordrhein-Westfalen;1.59;109;27;113;206;112;25;981;41
+Wuppertal, Stadt;Nordrhein-Westfalen;1.43;86;53;93;139;41;44;2419;29
+Kleve;Nordrhein-Westfalen;1.31;43;33;52;50;26;19;1402;23
+Mettmann;Nordrhein-Westfalen;1.36;75;53;81;109;55;52;2735;1
+Rhein-Kreis Neuss;Nordrhein-Westfalen;1.39;67;48;69;108;35;43;1913;13
+Viersen;Nordrhein-Westfalen;1.22;27;15;30;39;23;11;1209;29
+Wesel;Nordrhein-Westfalen;1.81;51;20;60;84;48;33;1835;50
+Bonn, Stadt;Nordrhein-Westfalen;1.26;46;29;57;54;29;22;1646;67
+Köln, Stadt;Nordrhein-Westfalen;1.29;98;78;100;141;37;152;7219;20
+Leverkusen, Stadt;Nordrhein-Westfalen;1.17;84;46;87;145;51;20;861;42
+Städteregion Aachen;Nordrhein-Westfalen;1.7;107;48;120;163;72;85;3777;30
+Düren;Nordrhein-Westfalen;1.78;85;67;81;128;54;32;1365;3
+Rhein-Erft-Kreis;Nordrhein-Westfalen;1.11;59;35;64;101;35;40;2330;5
+Euskirchen;Nordrhein-Westfalen;1.69;22;11;26;39;11;6;866;38
+Heinsberg;Nordrhein-Westfalen;1.67;44;26;56;61;25;16;2366;12
+Oberbergischer Kreis;Nordrhein-Westfalen;1.17;39;29;40;63;15;15;1117;52
+Rheinisch-Bergischer Kreis;Nordrhein-Westfalen;1.33;57;29;64;107;31;23;1085;6
+Rhein-Sieg-Kreis;Nordrhein-Westfalen;1.31;45;28;57;60;21;38;2779;10
+Bottrop, Stadt;Nordrhein-Westfalen;1.71;51;14;56;109;26;9;473;58
+Gelsenkirchen, Stadt;Nordrhein-Westfalen;1.49;104;47;134;173;36;39;1683;21
+Münster, Stadt;Nordrhein-Westfalen;1.13;30;26;36;37;5;14;1329;82
+Borken;Nordrhein-Westfalen;1.56;45;21;51;85;13;24;1700;27
+Coesfeld;Nordrhein-Westfalen;0.94;34;11;41;70;6;11;1141;28
+Recklinghausen;Nordrhein-Westfalen;1.39;91;51;94;155;58;80;3297;20
+Steinfurt;Nordrhein-Westfalen;1.07;27;27;30;35;12;18;2143;37
+Warendorf;Nordrhein-Westfalen;1.49;64;28;70;111;45;25;1387;25
+Bielefeld, Stadt;Nordrhein-Westfalen;1.48;62;30;63;103;38;29;1292;43
+Gütersloh;Nordrhein-Westfalen;1.57;52;34;61;72;30;27;3358;1
+Herford;Nordrhein-Westfalen;1.05;32;26;33;48;20;12;826;49
+Höxter;Nordrhein-Westfalen;1.5;25;21;23;37;21;5;495;65
+Lippe;Nordrhein-Westfalen;1.68;46;18;40;75;72;23;1285;23
+Minden-Lübbecke;Nordrhein-Westfalen;1.37;24;13;26;38;18;11;1099;106
+Paderborn;Nordrhein-Westfalen;1.76;21;22;16;29;13;9;1008;74
+Bochum, Stadt;Nordrhein-Westfalen;1.39;70;24;83;108;56;36;1790;51
+Dortmund, Stadt;Nordrhein-Westfalen;1.55;72;35;82;110;43;60;2829;43
+Hagen, Stadt;Nordrhein-Westfalen;1.05;60;27;54;99;59;16;1094;44
+Hamm, Stadt;Nordrhein-Westfalen;1.18;75;32;82;109;81;19;1447;43
+Herne, Stadt;Nordrhein-Westfalen;1.47;114;62;134;177;67;26;912;13
+Ennepe-Ruhr-Kreis;Nordrhein-Westfalen;1.61;61;45;53;111;41;28;1204;31
+Hochsauerlandkreis;Nordrhein-Westfalen;1.66;23;6;24;52;6;8;1000;81
+Märkischer Kreis;Nordrhein-Westfalen;1.22;42;21;49;82;12;25;1454;33
+Olpe;Nordrhein-Westfalen;1.6;60;30;60;110;43;12;954;33
+Siegen-Wittgenstein;Nordrhein-Westfalen;1.03;40;13;40;72;40;16;961;72
+Soest;Nordrhein-Westfalen;1.1;28;21;28;51;7;12;762;37
+Unna;Nordrhein-Westfalen;1.31;84;47;86;138;66;47;2023;13
+Darmstadt, Stadt;Hessen;1.56;68;39;82;85;46;16;639;55
+Frankfurt am Main, Stadt;Hessen;1.42;123;72;135;166;57;133;5252;15
+Offenbach am Main, Stadt;Hessen;1.48;129;92;123;182;93;24;902;34
+Wiesbaden, Stadt;Hessen;1.64;75;50;70;134;33;30;1450;18
+Bergstraße;Hessen;2.22;73;37;77;126;55;28;921;2
+Darmstadt-Dieburg;Hessen;1.52;53;27;67;82;16;22;980;1
+Groß-Gerau;Hessen;1.55;82;50;75;94;34;32;1586;1
+Hochtaunuskreis;Hessen;1.61;66;41;72;132;14;22;785;1
+Main-Kinzig-Kreis;Hessen;1.47;55;16;68;102;26;33;1813;28
+Main-Taunus-Kreis;Hessen;1.46;68;45;87;102;14;23;1089;1
+Odenwaldkreis;Hessen;1.98;36;16;30;69;48;5;548;97
+Offenbach;Hessen;1.43;66;69;67;85;29;33;1770;1
+Rheingau-Taunus-Kreis;Hessen;1.54;57;18;59;95;84;15;708;1
+Wetteraukreis;Hessen;1.43;37;18;39;64;21;16;852;45
+Gießen;Hessen;1.76;55;20;68;72;53;21;731;78
+Lahn-Dill-Kreis;Hessen;1.34;41;16;50;79;17;15;757;35
+Limburg-Weilburg;Hessen;1.23;37;22;36;61;34;9;601;50
+Marburg-Biedenkopf;Hessen;1.42;70;31;76;101;65;25;789;49
+Vogelsbergkreis;Hessen;2.58;28;9;46;48;0;4;227;79
+Kassel, Stadt;Hessen;2.14;108;33;98;192;92;31;887;56
+Fulda;Hessen;1.74;28;19;29;30;42;9;724;70
+Hersfeld-Rotenburg;Hessen;2.5;16;18;19;16;0;3;407;84
+Kassel;Hessen;1.83;29;12;36;58;7;10;679;28
+Schwalm-Eder-Kreis;Hessen;1.66;37;25;41;59;17;10;785;33
+Waldeck-Frankenberg;Hessen;1.78;32;19;35;49;24;7;341;79
+Werra-Meißner-Kreis;Hessen;0.65;16;9;27;19;0;2;327;102
+Koblenz, Stadt;Rheinland-Pfalz;1.43;25;16;34;34;7;4;422;104
+Ahrweiler;Rheinland-Pfalz;0.96;22;14;23;41;12;4;429;28
+Altenkirchen (Westerwald);Rheinland-Pfalz;3.42;83;26;58;180;119;15;391;1
+Bad Kreuznach;Rheinland-Pfalz;1.04;28;14;35;42;23;6;430;60
+Birkenfeld;Rheinland-Pfalz;5.37;110;30;85;309;48;13;230;10
+Cochem-Zell;Rheinland-Pfalz;3.4;39;30;14;119;0;3;202;13
+Mayen-Koblenz;Rheinland-Pfalz;1.61;28;19;29;47;14;9;603;28
+Neuwied;Rheinland-Pfalz;1.05;54;33;65;78;35;14;662;35
+Rhein-Hunsrück-Kreis;Rheinland-Pfalz;1.66;25;35;22;28;7;4;266;28
+Rhein-Lahn-Kreis;Rheinland-Pfalz;1.6;24;26;26;24;12;4;267;57
+Westerwaldkreis;Rheinland-Pfalz;1.48;28;14;36;44;14;8;695;43
+Trier, Stadt;Rheinland-Pfalz;0.86;23;8;31;25;22;4;283;138
+Bernkastel-Wittlich;Rheinland-Pfalz;1.92;56;41;58;77;47;9;364;2
+Eifelkreis Bitburg-Prüm;Rheinland-Pfalz;1.61;115;32;114;246;50;16;540;1
+Vulkaneifel;Rheinland-Pfalz;1.96;86;55;111;144;0;7;216;19
+Trier-Saarburg;Rheinland-Pfalz;1.49;29;9;36;52;14;6;488;35
+Frankenthal (Pfalz), Stadt;Rheinland-Pfalz;1.32;25;7;31;54;0;2;115;72
+Kaiserslautern, Stadt;Rheinland-Pfalz;1.34;20;15;10;40;8;3;355;NA
+Landau in der Pfalz, Stadt;Rheinland-Pfalz;1.6;41;8;13;116;0;3;117;83
+Ludwigshafen am Rhein, Stadt;Rheinland-Pfalz;1.41;38;19;44;55;26;9;770;81
+Mainz, Stadt;Rheinland-Pfalz;1.23;75;36;75;111;48;23;1394;38
+Neustadt an der Weinstraße, Stadt;Rheinland-Pfalz;1.61;19;6;17;35;28;1;173;110
+Pirmasens, Stadt;Rheinland-Pfalz;1.58;10;0;8;23;20;1;61;98
+Speyer, Stadt;Rheinland-Pfalz;1.46;18;26;17;18;0;1;186;153
+Worms, Stadt;Rheinland-Pfalz;2.08;28;13;32;44;16;3;368;102
+Zweibrücken, Stadt;Rheinland-Pfalz;2.54;82;95;36;174;0;4;95;13
+Alzey-Worms;Rheinland-Pfalz;1.64;43;49;40;54;16;8;484;1
+Bad Dürkheim;Rheinland-Pfalz;1.36;41;21;44;79;24;8;495;13
+Donnersbergkreis;Rheinland-Pfalz;1.33;20;4;34;6;39;2;209;69
+Germersheim;Rheinland-Pfalz;1.06;29;31;21;45;16;5;461;13
+Kaiserslautern;Rheinland-Pfalz;0.76;21;9;22;45;6;3;323;55
+Kusel;Rheinland-Pfalz;1.52;11;4;17;21;0;1;150;104
+Südliche Weinstraße;Rheinland-Pfalz;1.81;24;20;25;28;21;4;226;19
+Rhein-Pfalz-Kreis;Rheinland-Pfalz;1.72;32;19;31;68;14;7;496;NA
+Mainz-Bingen;Rheinland-Pfalz;1.17;34;22;44;37;30;10;806;9
+Südwestpfalz;Rheinland-Pfalz;2.51;32;12;42;66;0;4;185;2
+Stuttgart, Stadt;Baden-Württemberg;1.29;81;72;72;109;56;73;3989;22
+Böblingen;Baden-Württemberg;1.16;55;22;68;79;42;31;2574;12
+Esslingen;Baden-Württemberg;1.29;80;41;82;127;44;61;3739;1
+Göppingen;Baden-Württemberg;1.42;61;31;69;99;36;22;1485;31
+Ludwigsburg;Baden-Württemberg;1.32;68;51;73;99;34;53;3553;11
+Rems-Murr-Kreis;Baden-Württemberg;1.6;51;18;55;90;41;31;2773;11
+Heilbronn, Stadt;Baden-Württemberg;1.96;105;34;104;186;76;19;943;43
+Heilbronn;Baden-Württemberg;1.4;35;24;41;49;14;17;1598;23
+Hohenlohekreis;Baden-Württemberg;1.17;30;37;30;41;0;5;927;1
+Schwäbisch Hall;Baden-Württemberg;1.25;58;36;75;51;66;16;1357;30
+Main-Tauber-Kreis;Baden-Württemberg;1.06;38;42;22;62;23;7;685;61
+Heidenheim;Baden-Württemberg;1.35;32;13;44;50;11;6;684;57
+Ostalbkreis;Baden-Württemberg;1.66;39;30;40;54;30;18;2107;23
+Baden-Baden, Stadt;Baden-Württemberg;1.49;60;27;79;62;90;5;292;69
+Karlsruhe, Stadt;Baden-Württemberg;1.3;27;9;36;33;24;12;889;82
+Karlsruhe;Baden-Württemberg;1.35;32;25;37;41;18;20;1744;1
+Rastatt;Baden-Württemberg;1.63;36;27;38;64;6;12;881;1
+Heidelberg, Stadt;Baden-Württemberg;1.43;42;37;42;50;30;10;663;112
+Mannheim, Stadt;Baden-Württemberg;1.31;62;33;70;73;64;27;1526;40
+Neckar-Odenwald-Kreis;Baden-Württemberg;1.71;54;57;60;63;16;11;666;1
+Rhein-Neckar-Kreis;Baden-Württemberg;1.17;29;22;29;51;9;23;2004;2
+Pforzheim, Stadt;Baden-Württemberg;0.91;28;12;36;49;0;5;724;107
+Calw;Baden-Württemberg;2.13;56;49;62;50;58;13;1063;5
+Enzkreis;Baden-Württemberg;1.05;41;18;48;68;25;12;1047;1
+Freudenstadt;Baden-Württemberg;1.86;43;39;50;52;18;7;739;10
+Freiburg im Breisgau, Stadt;Baden-Württemberg;1.4;47;31;30;87;16;16;1492;75
+Breisgau-Hochschwarzwald;Baden-Württemberg;1.89;50;33;61;66;32;19;1728;26
+Emmendingen;Baden-Württemberg;1.49;43;23;39;88;21;10;846;56
+Ortenaukreis;Baden-Württemberg;1.04;44;29;45;69;29;27;2043;28
+Rottweil;Baden-Württemberg;1.86;23;13;25;38;15;5;841;2
+Schwarzwald-Baar-Kreis;Baden-Württemberg;1.91;59;43;62;94;27;18;900;25
+Tuttlingen;Baden-Württemberg;1.11;47;13;54;83;32;9;753;1
+Konstanz;Baden-Württemberg;1.28;23;13;23;44;3;9;923;73
+Lörrach;Baden-Württemberg;1.77;29;10;37;47;21;10;1017;23
+Waldshut;Baden-Württemberg;2.08;26;18;39;29;8;6;517;28
+Reutlingen;Baden-Württemberg;1.6;56;30;61;75;61;23;2239;6
+Tübingen;Baden-Württemberg;1.7;65;33;75;76;66;21;1823;41
+Zollernalbkreis;Baden-Württemberg;1.83;25;20;26;47;0;7;1491;34
+Ulm, Stadt;Baden-Württemberg;1.47;52;20;51;88;35;9;730;90
+Alb-Donau-Kreis;Baden-Württemberg;2.11;79;101;78;71;54;22;1137;1
+Biberach;Baden-Württemberg;1.03;25;18;32;29;10;7;978;5
+Bodenseekreis;Baden-Württemberg;1.76;26;25;27;37;7;8;641;54
+Ravensburg;Baden-Württemberg;1.33;19;21;21;22;7;8;1008;40
+Sigmaringen;Baden-Württemberg;1.21;22;14;20;49;0;4;952;34
+Ingolstadt, Stadt;Bayern;1.27;54;18;53;78;72;11;949;40
+München, Stadt;Bayern;1.25;73;42;76;112;30;154;13781;34
+Rosenheim, Stadt;Bayern;1.29;82;6;124;71;138;7;836;79
+Altötting;Bayern;2.79;18;9;33;8;13;3;781;95
+Berchtesgadener Land;Bayern;2.41;236;134;320;330;87;36;769;1
+Bad Tölz-Wolfratshausen;Bayern;1.71;33;36;33;36;22;6;712;25
+Dachau;Bayern;1.79;53;42;47;78;44;12;1418;18
+Ebersberg;Bayern;1.14;52;25;44;103;36;11;928;11
+Eichstätt;Bayern;2.78;42;19;23;94;38;8;504;50
+Erding;Bayern;1.51;28;0;32;55;20;6;946;47
+Freising;Bayern;2.01;56;15;52;97;42;14;1483;1
+Fürstenfeldbruck;Bayern;1.13;90;26;105;140;96;28;1729;1
+Garmisch-Partenkirchen;Bayern;2.78;26;4;43;47;0;3;465;134
+Landsberg am Lech;Bayern;2.12;57;19;54;120;40;10;586;1
+Miesbach;Bayern;1.04;40;17;66;43;15;6;841;34
+Mühldorf a.Inn;Bayern;2.55;103;22;160;145;42;17;812;2
+München;Bayern;1.1;46;33;47;75;21;23;2447;1
+Neuburg-Schrobenhausen;Bayern;1.59;62;35;60;103;49;9;540;48
+Pfaffenhofen a.d.Ilm;Bayern;2.18;57;34;87;50;32;10;618;1
+Rosenheim;Bayern;1.63;74;49;73;142;19;28;2938;14
+Starnberg;Bayern;1.27;48;50;43;62;40;9;918;43
+Traunstein;Bayern;1.43;37;19;51;51;17;9;1576;54
+Weilheim-Schongau;Bayern;2.63;58;39;44;122;31;11;587;24
+Landshut, Stadt;Bayern;1.21;19;10;28;21;10;2;490;143
+Passau, Stadt;Bayern;1.83;50;21;38;97;17;4;264;115
+Straubing, Stadt;Bayern;3.11;59;15;72;110;17;4;536;95
+Deggendorf;Bayern;1.32;46;12;52;92;19;8;572;60
+Freyung-Grafenau;Bayern;1.62;29;38;29;29;10;3;299;42
+Kelheim;Bayern;1.6;25;16;27;41;6;4;724;63
+Landshut;Bayern;2.02;48;27;39;100;21;11;981;1
+Passau;Bayern;1.92;78;68;86;105;28;21;1035;1
+Regen;Bayern;1.29;86;13;108;164;51;10;379;21
+Rottal-Inn;Bayern;1.73;135;83;139;191;117;23;1124;1
+Straubing-Bogen;Bayern;1.93;30;7;43;49;7;4;672;40
+Dingolfing-Landau;Bayern;1.18;37;12;40;65;30;5;1055;43
+Amberg, Stadt;Bayern;0.84;21;0;7;61;38;1;160;149
+Regensburg, Stadt;Bayern;1.03;45;32;30;80;11;10;1068;98
+Weiden i.d.OPf., Stadt;Bayern;2.2;118;86;97;224;38;7;468;60
+Amberg-Sulzbach;Bayern;1.36;16;30;14;9;0;2;577;31
+Cham;Bayern;1.29;48;37;64;56;18;9;642;1
+Neumarkt i.d.OPf.;Bayern;1.71;37;20;45;64;0;7;649;23
+Neustadt a.d.Waldnaab;Bayern;1.68;65;26;83;111;24;9;1024;NA
+Regensburg;Bayern;0.93;19;8;20;38;11;5;843;37
+Schwandorf;Bayern;1.19;19;15;17;30;15;4;655;66
+Tirschenreuth;Bayern;1.32;51;45;55;58;44;5;1296;6
+Bamberg, Stadt;Bayern;0.81;15;10;12;25;10;2;294;150
+Bayreuth, Stadt;Bayern;1;23;5;31;38;0;2;316;129
+Coburg, Stadt;Bayern;1.82;17;16;15;20;21;1;158;145
+Hof, Stadt;Bayern;2.61;24;14;27;37;17;2;204;137
+Bamberg;Bayern;1.09;29;33;31;34;5;6;598;3
+Bayreuth;Bayern;1.89;20;22;13;29;22;3;485;2
+Coburg;Bayern;1.43;13;7;10;34;0;2;465;NA
+Forchheim;Bayern;1.5;23;6;38;36;0;4;353;44
+Hof;Bayern;2.04;20;9;24;22;36;3;582;75
+Kronach;Bayern;1.21;13;14;17;15;0;1;207;94
+Kulmbach;Bayern;2.82;33;13;23;56;83;3;349;79
+Lichtenfels;Bayern;1.15;37;54;34;21;24;4;419;48
+Wunsiedel i.Fichtelgebirge;Bayern;0.98;44;40;28;92;23;5;830;22
+Ansbach, Stadt;Bayern;1.06;12;0;0;50;0;1;212;121
+Erlangen, Stadt;Bayern;1.54;37;8;41;62;13;6;471;123
+Fürth, Stadt;Bayern;1.32;24;13;25;41;11;4;689;94
+Nürnberg, Stadt;Bayern;1.2;56;41;57;79;34;41;2644;46
+Schwabach, Stadt;Bayern;1.83;39;17;54;68;0;2;156;46
+Ansbach;Bayern;1.47;27;18;29;48;8;7;793;2
+Erlangen-Höchstadt;Bayern;1.48;27;10;18;77;10;5;458;3
+Fürth;Bayern;1.13;24;17;26;38;12;4;684;NA
+Nürnberger Land;Bayern;1.85;35;18;40;63;17;9;907;27
+Neustadt a.d.Aisch-Bad Windsheim;Bayern;2.85;19;10;22;36;0;3;325;120
+Roth;Bayern;2.17;39;20;41;73;17;7;442;2
+Weißenburg-Gunzenhausen;Bayern;4.8;35;18;37;62;23;5;495;15
+Aschaffenburg, Stadt;Bayern;1.15;26;5;12;69;21;3;227;131
+Schweinfurt, Stadt;Bayern;1.53;104;110;113;115;55;8;345;34
+Würzburg, Stadt;Bayern;1.51;59;30;43;93;59;11;931;90
+Aschaffenburg;Bayern;1.7;34;20;48;43;17;9;815;1
+Bad Kissingen;Bayern;1.8;11;9;14;14;0;2;316;136
+Rhön-Grabfeld;Bayern;0.72;14;8;14;29;0;2;328;170
+Haßberge;Bayern;1.47;39;12;36;99;9;5;281;36
+Kitzingen;Bayern;2.33;42;16;58;63;16;5;345;18
+Miltenberg;Bayern;2;57;38;41;119;46;11;559;1
+Main-Spessart;Bayern;1.12;19;8;27;34;0;3;289;36
+Schweinfurt;Bayern;1.63;98;67;81;155;116;16;866;1
+Würzburg;Bayern;1.91;46;21;49;77;40;11;768;1
+Augsburg, Stadt;Bayern;2.01;100;66;99;125;112;42;1556;26
+Kaufbeuren, Stadt;Bayern;1.24;36;23;34;77;0;2;230;100
+Kempten (Allgäu), Stadt;Bayern;1.83;39;15;36;83;11;4;227;98
+Memmingen, Stadt;Bayern;1.19;84;48;106;105;33;5;218;42
+Aichach-Friedberg;Bayern;1.57;46;28;47;67;45;9;617;28
+Augsburg;Bayern;1.61;50;27;65;60;38;18;995;1
+Dillingen a.d.Donau;Bayern;2.51;32;8;50;41;22;4;430;64
+Günzburg;Bayern;1.46;49;42;48;70;22;9;525;44
+Neu-Ulm;Bayern;1.09;41;15;32;94;24;10;973;13
+Lindau (Bodensee);Bayern;1.33;50;33;62;56;45;6;387;13
+Ostallgäu;Bayern;2.25;69;30;95;88;49;14;841;1
+Unterallgäu;Bayern;1.33;53;57;63;30;14;11;620;1
+Donau-Ries;Bayern;1.25;43;39;44;71;5;8;592;2
+Oberallgäu;Bayern;1.85;35;30;38;47;14;8;375;1
+Regionalverband Saarbrücken;Saarland;2.41;55;33;52;108;20;26;1644;48
+Merzig-Wadern;Saarland;1.73;82;77;98;85;47;12;435;1
+Neunkirchen;Saarland;2.2;88;28;108;155;89;17;514;31
+Saarlouis;Saarland;1.94;51;33;36;74;104;14;881;27
+Saarpfalz-Kreis;Saarland;1.27;48;25;60;75;35;10;573;93
+St. Wendel;Saarland;1.9;122;99;102;158;180;15;390;1
+Berlin;Berlin;1.3;85;36;88;136;57;442;21898;24
+Brandenburg an der Havel, Stadt;Brandenburg;1.17;7;8;8;7;0;1;92;NA
+Cottbus, Stadt;Brandenburg;1.19;24;33;22;28;0;3;116;71
+Frankfurt (Oder), Stadt;Brandenburg;1.91;40;35;48;51;14;3;111;13
+Potsdam, Stadt;Brandenburg;1.98;26;31;24;40;0;7;821;68
+Barnim;Brandenburg;1.51;19;15;17;41;0;5;560;59
+Dahme-Spreewald;Brandenburg;1.23;19;16;25;20;4;5;423;70
+Elbe-Elster;Brandenburg;2;29;39;22;39;8;4;154;39
+Havelland;Brandenburg;1.34;17;14;10;45;4;4;334;28
+Märkisch-Oderland;Brandenburg;1.44;23;12;31;42;0;6;378;13
+Oberhavel;Brandenburg;1.36;23;14;20;51;14;7;510;65
+Oberspreewald-Lausitz;Brandenburg;1.3;25;17;37;18;31;4;131;13
+Oder-Spree;Brandenburg;1.2;45;35;50;74;26;12;371;51
+Ostprignitz-Ruppin;Brandenburg;2.41;21;6;20;43;41;3;141;113
+Potsdam-Mittelmark;Brandenburg;1.62;19;24;8;45;0;6;757;53
+Prignitz;Brandenburg;1.34;33;17;34;56;46;4;88;13
+Spree-Neiße;Brandenburg;1.43;33;32;37;31;29;5;148;2
+Teltow-Fläming;Brandenburg;1.34;21;18;20;38;4;5;359;21
+Uckermark;Brandenburg;1.21;6;7;2;16;0;1;73;124
+Rostock, Stadt;Mecklenburg-Vorpommern;1.76;20;20;34;11;4;6;263;79
+Schwerin, Stadt;Mecklenburg-Vorpommern;2.38;7;9;3;15;0;1;142;155
+Mecklenburgische Seenplatte;Mecklenburg-Vorpommern;1.5;31;29;32;39;25;12;333;40
+Landkreis Rostock;Mecklenburg-Vorpommern;1.46;8;3;10;20;3;3;134;119
+Vorpommern-Rügen;Mecklenburg-Vorpommern;1.97;11;10;15;8;4;3;164;80
+Nordwestmecklenburg;Mecklenburg-Vorpommern;1.05;7;6;9;3;10;2;165;97
+Vorpommern-Greifswald;Mecklenburg-Vorpommern;1.1;13;11;10;18;20;4;260;115
+Ludwigslust-Parchim;Mecklenburg-Vorpommern;2.13;27;8;33;53;25;8;256;84
+Chemnitz, Stadt;Sachsen;1.65;42;41;42;56;25;15;522;56
+Erzgebirgskreis;Sachsen;1.39;117;102;124;193;58;56;1582;1
+Mittelsachsen;Sachsen;1.93;34;24;39;51;26;15;590;23
+Vogtlandkreis;Sachsen;2.11;33;37;32;53;4;11;853;27
+Zwickau;Sachsen;1.22;48;44;57;51;34;22;1301;22
+Dresden, Stadt;Sachsen;1.14;33;28;45;37;10;26;1251;60
+Bautzen;Sachsen;1.5;45;29;61;50;42;19;881;25
+Görlitz;Sachsen;1.29;23;11;30;48;13;8;560;58
+Meißen;Sachsen;0.99;31;39;38;24;3;11;473;28
+Sächsische Schweiz-Osterzgebirge;Sachsen;1.18;54;68;56;50;15;19;687;39
+Leipzig, Stadt;Sachsen;1.4;16;18;15;23;1;14;1118;86
+Leipzig;Sachsen;1.65;26;18;31;37;23;10;353;28
+Nordsachsen;Sachsen;2.01;25;28;21;22;35;7;349;40
+Dessau-Roßlau, Stadt;Sachsen-Anhalt;0.71;12;22;4;8;11;1;146;67
+Halle (Saale), Stadt;Sachsen-Anhalt;1.14;26;30;22;34;12;9;640;100
+Magdeburg, Stadt;Sachsen-Anhalt;1.88;19;12;27;20;13;6;469;112
+Altmarkkreis Salzwedel;Sachsen-Anhalt;1.73;5;4;7;7;0;1;64;NA
+Anhalt-Bitterfeld;Sachsen-Anhalt;2.57;11;10;16;8;5;3;134;118
+Börde;Sachsen-Anhalt;1.64;6;0;6;17;4;1;228;120
+Burgenlandkreis;Sachsen-Anhalt;1.63;19;14;21;27;23;5;282;62
+Harz;Sachsen-Anhalt;1.58;15;10;18;31;4;5;342;73
+Jerichower Land;Sachsen-Anhalt;4.29;36;10;40;113;0;5;106;70
+Mansfeld-Südharz;Sachsen-Anhalt;4.51;11;15;9;15;0;2;106;51
+Saalekreis;Sachsen-Anhalt;1.81;17;14;15;33;8;4;243;42
+Salzlandkreis;Sachsen-Anhalt;1.34;14;9;24;13;0;4;176;61
+Stendal;Sachsen-Anhalt;2.2;13;8;10;21;29;2;144;86
+Wittenberg;Sachsen-Anhalt;1.1;7;2;7;15;14;1;254;139
+Erfurt, Stadt;Thüringen;1.99;15;5;18;31;3;5;299;110
+Gera, Stadt;Thüringen;1.19;38;42;23;61;35;5;361;45
+Jena, Stadt;Thüringen;1.11;22;17;30;24;7;3;274;97
+Suhl, Stadt;Thüringen;0.94;9;7;8;17;0;0;40;NA
+Weimar, Stadt;Thüringen;0.21;2;5;0;0;0;0;145;NA
+Eisenach, Stadt;Thüringen;NA;5;0;14;0;0;0;49;NA
+Eichsfeld;Thüringen;1.71;72;90;68;89;21;10;288;1
+Nordhausen;Thüringen;3.29;5;0;4;19;0;1;82;160
+Wartburgkreis;Thüringen;1.72;11;19;7;10;7;2;165;89
+Unstrut-Hainich-Kreis;Thüringen;2.44;38;11;14;168;0;6;162;42
+Kyffhäuserkreis;Thüringen;2.09;8;7;12;8;0;1;77;76
+Schmalkalden-Meiningen;Thüringen;2.39;29;25;30;37;20;5;257;47
+Gotha;Thüringen;1.38;16;9;19;33;0;3;417;88
+Sömmerda;Thüringen;2.31;65;56;87;70;22;6;129;1
+Hildburghausen;Thüringen;1.5;6;9;4;9;0;1;103;NA
+Ilm-Kreis;Thüringen;2.22;19;31;28;0;0;3;250;28
+Weimarer Land;Thüringen;1.74;17;11;13;22;34;2;172;154
+Sonneberg;Thüringen;2.96;12;0;20;21;16;1;332;86
+Saalfeld-Rudolstadt;Thüringen;1.07;8;8;14;0;0;1;122;106
+Saale-Holzland-Kreis;Thüringen;1.81;43;66;47;22;0;5;161;1
+Saale-Orla-Kreis;Thüringen;0.9;19;7;21;54;0;2;233;35
+Greiz;Thüringen;1.67;21;29;24;14;0;3;734;13
+Altenburger Land;Thüringen;1.3;23;17;33;22;20;3;148;69
