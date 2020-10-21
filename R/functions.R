@@ -540,7 +540,7 @@ mitigationsplot_blvergleich <- function(){
     annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
     annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"), width=800, height=400)
 }
 
 ### Plot on Age of cases and case fatality 
@@ -555,7 +555,7 @@ myplot <- ggplot(rki_divi_n_alter %>%
   scale_color_zi() + labs(y="Verhältnis in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
-myplot %>% ggplotly(tooltip = c("x", "y")) %>% 
+myplot %>% ggplotly(tooltip = c("x", "y"), width=800, height=400) %>% 
   layout(legend = list(orientation = "h", x = 0.1, y = 1.2))
 }
 
@@ -587,7 +587,7 @@ mitigationsplot_bl <- function(myid){
           legend.position='none',
           panel.spacing = unit(2, "lines")) +
     ggtitle(myname)
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"), width=800, height=400)
 }
 
 ### Akute infizierte Fälle
@@ -634,7 +634,7 @@ vorwarnzeitverlauf_plot <- function(){
     labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
     theme_minimal() +
     theme(legend.position='none'))
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"), width=800, height=400)
 }
 
 #  functions for data generation

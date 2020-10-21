@@ -15,6 +15,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > # source('~/myenv.R')
 > # Sys.setenv("DBHOST"=DBHOST)
 > # Sys.setenv("DBNAME"=DBNAME)
@@ -102,7 +104,7 @@ The following object is masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 26551  100 26551    0     0   167k      0 --:--:-- --:--:-- --:--:--  167k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 26551  100 26551    0     0   157k      0 --:--:-- --:--:-- --:--:--  157k
 Parsed with column specification:
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
@@ -207,10 +209,131 @@ label: unnamed-chunk-3
 
   |                                                                              |.............                                                         |  18%
 label: unnamed-chunk-4
-Quitting from lines 140-143 (Start.Rmd) 
-Error in validateCssUnit(sizeInfo$width) : 
-  CSS units must be a single-element numeric or character vector
-Calls: <Anonymous> ... <Anonymous> -> need_screenshot -> toHTML -> validateCssUnit
-In addition: There were 46 warnings (use warnings() to see them)
+  |                                                                              |..............                                                        |  20%
+  ordinary text without R code
 
-Execution halted
+  |                                                                              |...............                                                       |  22%
+label: unnamed-chunk-5
+  |                                                                              |.................                                                     |  24%
+  ordinary text without R code
+
+  |                                                                              |..................                                                    |  25%
+label: unnamed-chunk-6
+  |                                                                              |...................                                                   |  27%
+  ordinary text without R code
+
+  |                                                                              |....................                                                  |  29%
+label: unnamed-chunk-7
+  |                                                                              |......................                                                |  31%
+  ordinary text without R code
+
+  |                                                                              |.......................                                               |  33%
+label: unnamed-chunk-8
+  |                                                                              |........................                                              |  35%
+  ordinary text without R code
+
+  |                                                                              |.........................                                             |  36%
+label: unnamed-chunk-9
+  |                                                                              |...........................                                           |  38%
+  ordinary text without R code
+
+  |                                                                              |............................                                          |  40%
+label: unnamed-chunk-10
+  |                                                                              |.............................                                         |  42%
+  ordinary text without R code
+
+  |                                                                              |...............................                                       |  44%
+label: unnamed-chunk-11
+  |                                                                              |................................                                      |  45%
+  ordinary text without R code
+
+  |                                                                              |.................................                                     |  47%
+label: unnamed-chunk-12
+  |                                                                              |..................................                                    |  49%
+  ordinary text without R code
+
+  |                                                                              |....................................                                  |  51%
+label: unnamed-chunk-13
+  |                                                                              |.....................................                                 |  53%
+  ordinary text without R code
+
+  |                                                                              |......................................                                |  55%
+label: unnamed-chunk-14
+  |                                                                              |.......................................                               |  56%
+  ordinary text without R code
+
+  |                                                                              |.........................................                             |  58%
+label: unnamed-chunk-15
+  |                                                                              |..........................................                            |  60%
+  ordinary text without R code
+
+  |                                                                              |...........................................                           |  62%
+label: unnamed-chunk-16
+  |                                                                              |.............................................                         |  64%
+  ordinary text without R code
+
+  |                                                                              |..............................................                        |  65%
+label: unnamed-chunk-17
+  |                                                                              |...............................................                       |  67%
+  ordinary text without R code
+
+  |                                                                              |................................................                      |  69%
+label: unnamed-chunk-18
+  |                                                                              |..................................................                    |  71%
+  ordinary text without R code
+
+  |                                                                              |...................................................                   |  73%
+label: unnamed-chunk-19
+  |                                                                              |....................................................                  |  75%
+  ordinary text without R code
+
+  |                                                                              |.....................................................                 |  76%
+label: unnamed-chunk-20
+  |                                                                              |.......................................................               |  78%
+  ordinary text without R code
+
+  |                                                                              |........................................................              |  80%
+label: unnamed-chunk-21
+  |                                                                              |.........................................................             |  82%
+  ordinary text without R code
+
+  |                                                                              |...........................................................           |  84%
+label: unnamed-chunk-22
+  |                                                                              |............................................................          |  85%
+  ordinary text without R code
+
+  |                                                                              |.............................................................         |  87%
+label: unnamed-chunk-23
+  |                                                                              |..............................................................        |  89%
+  ordinary text without R code
+
+  |                                                                              |................................................................      |  91%
+label: unnamed-chunk-24
+  |                                                                              |.................................................................     |  93%
+  ordinary text without R code
+
+  |                                                                              |..................................................................    |  95%
+label: unnamed-chunk-25
+Joining, by = "blid"
+  |                                                                              |...................................................................   |  96%
+  ordinary text without R code
+
+  |                                                                              |..................................................................... |  98%
+label: unnamed-chunk-26 (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                              |......................................................................| 100%
+  ordinary text without R code
+
+
+output file: Start.knit.md
+
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpmCgnWm/rmarkdown-str177785965a60a.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpmCgnWm/file1777848122009html --highlight-style pygments --include-before-body /tmp/RtmpmCgnWm/file177782fb78b93.html --include-after-body /tmp/RtmpmCgnWm/file177786df33b65.html --css static/styles.css 
+
+Output created: Start.html
+There were 46 warnings (use warnings() to see them)
+> 
+> proc.time()
+   user  system elapsed 
+409.689   1.366 415.963 

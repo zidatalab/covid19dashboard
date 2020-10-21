@@ -138,7 +138,7 @@ Row {data-height=400}
 
 ```{r}
 
-ggplotly(akutinfiziert + labs(title="")) %>%
+ggplotly(akutinfiziert + labs(title=""), width=800, height=400) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
@@ -182,7 +182,7 @@ Row {data-height=100}
 Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
 
-Row
+Row {data-height=400}
 -----------------------------------------------------------------------
 
 ### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)**
@@ -229,7 +229,7 @@ Row {data-height=100}
 
 Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Einzelne Ausschläge des R-Wertes bedeuten noch keine kritische Situation, aber ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland.
 
-Row {.tabset .tabset-fade}
+Row {.tabset .tabset-fade data-height=500}
 -------------------------------------
    
 ### Schleswig-Holstein {#bl01}
