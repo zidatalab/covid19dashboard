@@ -104,7 +104,7 @@ The following object is masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 26551  100 26551    0     0   157k      0 --:--:-- --:--:-- --:--:--  157k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 26551  100 26551    0     0   194k      0 --:--:-- --:--:-- --:--:--  194k
 Parsed with column specification:
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
@@ -329,11 +329,11 @@ List of 1
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpmCgnWm/rmarkdown-str177785965a60a.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpmCgnWm/file1777848122009html --highlight-style pygments --include-before-body /tmp/RtmpmCgnWm/file177782fb78b93.html --include-after-body /tmp/RtmpmCgnWm/file177786df33b65.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --variable 'theme:bootstrap' --include-in-header /tmp/Rtmp2DbLHc/rmarkdown-stra06835f9caed.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/Rtmp2DbLHc/filea0684e8347abhtml --highlight-style pygments --include-before-body /tmp/Rtmp2DbLHc/filea068e6d74d8.html --include-after-body /tmp/Rtmp2DbLHc/filea0685b9680b.html --css static/styles.css 
 
 Output created: Start.html
 There were 46 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-409.689   1.366 415.963 
+436.323   1.468 449.564 
