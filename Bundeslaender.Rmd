@@ -1,0 +1,140 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impressum", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    
+    
+---
+
+Row {data-height=100}
+-----------------------------------------------------------------------
+
+### **Überblick zum Verlauf des R-Wertes und der Vorwarnzeit in den Bundesländern**
+
+Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Einzelne Ausschläge des R-Wertes bedeuten noch keine kritische Situation, aber ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland.
+
+Row {.tabset .tabset-fade data-height=500}
+-------------------------------------
+   
+### Schleswig-Holstein {#bl01}
+
+```{r plotsBL01}
+mitigationsplot_bl(1) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Hamburg {#bl02}
+    
+```{r plotsBL02}
+mitigationsplot_bl(2) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Niedersachsen {#bl03}
+
+```{r plotsBL03}
+mitigationsplot_bl(3) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Bremen {#bl04}
+    
+```{r plotsBL04}
+mitigationsplot_bl(4) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Nordrhein-Westfalen {#bl05}
+
+```{r plotsBL05}
+mitigationsplot_bl(5) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Hessen {#bl06}
+    
+```{r plotsBL06}
+mitigationsplot_bl(6) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Rheinland-Pfalz {#bl07}
+
+```{r plotsBL07}
+mitigationsplot_bl(7) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Baden-Württemberg {#bl08}
+    
+```{r plotsBL08}
+mitigationsplot_bl(8) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Bayern {#bl09}
+
+```{r plotsBL09}
+mitigationsplot_bl(9) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Saarland {#bl10}
+    
+```{r plotsBL10}
+mitigationsplot_bl(10) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Berlin {#bl11}
+
+```{r plotsBL11}
+mitigationsplot_bl(11) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Brandenburg {#bl12}
+    
+```{r plotsBL12}
+mitigationsplot_bl(12) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Mecklenburg-Vorpommern {#bl13}
+
+```{r plotsBL13}
+mitigationsplot_bl(13) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Sachsen {#bl14}
+    
+```{r plotsBL14}
+mitigationsplot_bl(14) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Sachsen-Anhalt {#bl15}
+
+```{r plotsBL15}
+mitigationsplot_bl(15) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Thüringen {#bl16}
+    
+```{r plotsBL16}
+mitigationsplot_bl(16) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
