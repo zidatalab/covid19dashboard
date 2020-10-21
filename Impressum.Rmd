@@ -1,0 +1,66 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impressum", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    
+    
+---
+
+```{r jsonzide, include=FALSE}
+# Datenexport Vorbereitung
+
+frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
+                                           "Neue Fälle pro Tag",
+                                           "Vorwarnzeit aktuell in Tagen",
+                                           "Handlungsgrenze"),
+                             "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
+                                      faelleprotag,
+                                      paste(vorwarnzeitaktuell,"Tage"),
+                                      faelle7tage100kEW))
+
+write_json(frueindikatoren,"data/frueindikatoren.json")
+#write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
+#write_json(theoretisch,"data/vorwarnzeiten.json")
+```
+
+
+**Zentralinstitut für die kassenärztliche Versorgung in der Bundesrepublik Deutschland (Stiftung des bürgerlichen Rechts)**
+
+Salzufer 8  
+10587 Berlin  
+Telefon: (030) 4005-2450  
+Fax: (030) 4005-2490
+
+E-Mail: [zi(at)zi.de](mailto:zi(at)zi.de)  
+Internet: [www.zi.de](http://www.zi.de)
+
+**Vertretung der Stiftung:**
+
+Die Stiftung wird gerichtlich und außergerichtlich durch den Vorstand vertreten. Der Vorstand handelt durch seinen Vorsitzenden allein. Im Falle der Verhinderung des Vorsitzenden wird die Stiftung durch den Stellvertretenden Vorstandsvorsitzenden allein vertreten.
+
+**Vorstandsvorsitzender:**
+
+Dr. Dominik von Stillfried  
+
+**Stellvertretender Vorstandsvorsitzender:**
+
+Thomas Czihal
+
+**Verantwortlicher für redaktionelle Inhalte:**
+
+Dr. Dominik Graf von Stillfried
+
+*USt-IdNr.: DE239451993*
+  
+Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen.
+

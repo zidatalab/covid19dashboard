@@ -2,6 +2,11 @@
 title: "Zi-Frühindikatoren zu COVID-19"
 output: 
   flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impressum", href: "Impressum.html", align: left }
     orientation: rows
     vertical_layout: scroll 
     logo: static/logo.png
@@ -15,8 +20,6 @@ output:
 library(flexdashboard)
 source("R/functions.R", encoding = "UTF-8")
 ```
-
-# Dashboard 
 
 Row {data-height=125}
 ------------------------------------------------------------------------
@@ -32,7 +35,7 @@ Row
 
 ### Reproduktionszahl 
 
-```{r}
+```{r indicatorR}
 indicatorR <- aktuell %>% filter(id==0) %>% collect() %>% pull(R0)
 valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
          caption="Reproduktionszahl",
@@ -49,7 +52,7 @@ Row
 
 ### Neue Fälle je 100.000 Einwohnende in 7 Tagen
 
-```{r}
+```{r indicator7TI}
 faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0) %>% pull(Faelle_letzte_7_Tage_pro_Tag)
 faelle7tage100kEW <-  vorwarnzeitergebnis %>% filter(id==0) %>% pull(Faelle_letzte_7_Tage_je100TsdEinw)
 valueBox(faelle7tage100kEW,
@@ -89,7 +92,7 @@ Row
 
 ### Vorwarnzeit bei R=1,3 
 
-```{r}
+```{r indicatorVWZ}
 vorwarnzeitaktuell <- vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit) # pull(Vorwarnzeit_effektiv)
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
          caption=paste0("Vorwarnzeit bis Erreichen der Kapazitätsgrenze \n effektive Vorwarnzeit: ", vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv), " Tage"), # "Effektive Vorwarnzeit bei R=1,3",
@@ -136,7 +139,7 @@ Row {data-height=400}
 ------------------------------------------------------------------------
 ### **Entwicklung der akut Infizierten**
 
-```{r}
+```{r plotakutinfiziert}
 
 ggplotly(akutinfiziert + labs(title=""), width=800, height=400) %>%
    config(displayModeBar = FALSE, responsive=T)
@@ -153,7 +156,7 @@ Row {data-height=400}
 ------------------------------------------------------------------------
 ### **Entwicklung des Alters der Infizierten sowie des Verhältnis von ITS- und Todesfällen zu gemeldeten Fällen**
 
-```{r}
+```{r plotagefatality}
 age_plot_fatality() %>%
    config(displayModeBar = FALSE, responsive=T)
 
@@ -170,7 +173,7 @@ Row {data-height=400}
 ------------------------------------------------------------------------
 ### **Entwicklung der Reproduktionszahl**
 
-```{r}
+```{r plotBLR}
 mitigationsplot_blvergleich() %>%
    config(displayModeBar = FALSE, responsive=T)
 
@@ -187,7 +190,7 @@ Row {data-height=400}
 
 ### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)**
 
-```{r}
+```{r plotVWZR}
 vorwarnzeitverlauf_plot() %>%
    config(displayModeBar = FALSE, responsive=T)
 
@@ -203,7 +206,7 @@ Row
 
 ### **Überblick zu den Kennzahlen der Bundesländer**
 
-```{r}
+```{r tableBL}
 DT::datatable(rki_fallzahl_bl(),
               extensions = 'Responsive',
               options = list(paging = FALSE,
@@ -220,202 +223,9 @@ Row {data-height=250}
 **Methodischer Hinweis zum R-Wert:** \
 *In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma-Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an. Sowohl das Zi als auch das RKI schließen bei der Berechnung der R-Werte die Fallzahlen der letzten 4 Tage aus, da diese noch zu unverlässlich wegen Meldeverzügen sind.*
 
-# Bundesländer
-
-Row {data-height=100}
------------------------------------------------------------------------
-
-### **Überblick zum Verlauf des R-Wertes und der Vorwarnzeit in den Bundesländern**
-
-Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Einzelne Ausschläge des R-Wertes bedeuten noch keine kritische Situation, aber ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland.
-
-Row {.tabset .tabset-fade data-height=500}
--------------------------------------
-   
-### Schleswig-Holstein {#bl01}
-
-```{r}
-mitigationsplot_bl(1) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Hamburg {#bl02}
-    
-```{r}
-mitigationsplot_bl(2) %>%
-   config(displayModeBar = FALSE, responsive=T)
+```{r renderothersites, include=FALSE}
+rmarkdown::render('Bundeslaender.Rmd')
+rmarkdown::render('Kreise.Rmd')
+rmarkdown::render('Impressum.Rmd')
 ```
-
-### Niedersachsen {#bl03}
-
-```{r}
-mitigationsplot_bl(3) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Bremen {#bl04}
-    
-```{r}
-mitigationsplot_bl(4) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-### Nordrhein-Westfalen {#bl05}
-
-```{r}
-mitigationsplot_bl(5) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Hessen {#bl06}
-    
-```{r}
-mitigationsplot_bl(6) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-### Rheinland-Pfalz {#bl07}
-
-```{r}
-mitigationsplot_bl(7) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Baden-Württemberg {#bl08}
-    
-```{r}
-mitigationsplot_bl(8) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-### Bayern {#bl09}
-
-```{r}
-mitigationsplot_bl(9) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Saarland {#bl10}
-    
-```{r}
-mitigationsplot_bl(10) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-### Berlin {#bl11}
-
-```{r}
-mitigationsplot_bl(11) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Brandenburg {#bl12}
-    
-```{r}
-mitigationsplot_bl(12) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-### Mecklenburg-Vorpommern {#bl13}
-
-```{r}
-mitigationsplot_bl(13) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Sachsen {#bl14}
-    
-```{r}
-mitigationsplot_bl(14) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-### Sachsen-Anhalt {#bl15}
-
-```{r}
-mitigationsplot_bl(15) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```   
- 
-### Thüringen {#bl16}
-    
-```{r}
-mitigationsplot_bl(16) %>%
-   config(displayModeBar = FALSE, responsive=T)
-```
-
-# Kreise
-
-Row {data-height=100}
------------------------------------------------------------------------
-
-### **Überblick zu den Kennzahlen der Kreise**
-
-Nachfolgend erhalten Sie einen Überblick zur Situation der einzelnen Kreise. Bitte beachten Sie, dass der Indikator Vorwarnzeit auf Ebene der Kreise und Städte nicht losgelöst von der Situation im jeweiligen Bundesland betrachtet werden sollte. Sofern die lokale Vorwarnzeit sehr gering ist, die Vorwarnzeit im Bundesland zugehörigen Bundesland aber vergleichsweise hoch ist, besteht unseres Erachtens noch keine kritische Situation.
-
-Row
------------------------------------------------------------------------
-
-
-```{r}
-DT::datatable(rki_fallzahl_kreis(),
-              extensions = 'Responsive',
-              options = list(paging = TRUE,
-                             searching = TRUE,
-                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
-                             server = FALSE,
-                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
-
-```
-
-
-# Impressum
-
-```{r include=FALSE}
-# Datenexport Vorbereitung
-
-frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
-                                           "Neue Fälle pro Tag",
-                                           "Vorwarnzeit aktuell in Tagen",
-                                           "Handlungsgrenze"),
-                             "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
-                                      faelleprotag,
-                                      paste(vorwarnzeitaktuell,"Tage"),
-                                      faelle7tage100kEW))
-
-write_json(frueindikatoren,"data/frueindikatoren.json")
-#write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
-#write_json(theoretisch,"data/vorwarnzeiten.json")
-```
-
-
-**Zentralinstitut für die kassenärztliche Versorgung in der Bundesrepublik Deutschland (Stiftung des bürgerlichen Rechts)**
-
-Salzufer 8  
-10587 Berlin  
-Telefon: (030) 4005-2450  
-Fax: (030) 4005-2490
-
-E-Mail: [zi(at)zi.de](mailto:zi(at)zi.de)  
-Internet: [www.zi.de](http://www.zi.de)
-
-**Vertretung der Stiftung:**
-
-Die Stiftung wird gerichtlich und außergerichtlich durch den Vorstand vertreten. Der Vorstand handelt durch seinen Vorsitzenden allein. Im Falle der Verhinderung des Vorsitzenden wird die Stiftung durch den Stellvertretenden Vorstandsvorsitzenden allein vertreten.
-
-**Vorstandsvorsitzender:**
-
-Dr. Dominik von Stillfried  
-
-**Stellvertretender Vorstandsvorsitzender:**
-
-Thomas Czihal
-
-**Verantwortlicher für redaktionelle Inhalte:**
-
-Dr. Dominik Graf von Stillfried
-
-*USt-IdNr.: DE239451993*
-  
-Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen.
 
