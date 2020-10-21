@@ -2,7 +2,7 @@
 echo "Read Env Variables"
 source ~/zi_covid/myenvs.sh
 echo "Starting conda"
-source /opt/tljh/user/bin/conda
+# source /opt/tljh/user/bin/conda
 conda activate "edgar_covid_r"
 echo "Pulling Code from git"
 cd ~/zi_covid/covid19dashboard/
