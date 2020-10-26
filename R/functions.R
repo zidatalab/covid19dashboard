@@ -325,7 +325,7 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
                     R = recovered,
                     R0 = Rt,
                     gamma = gamma,
-                    horizont = 120) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
+                    horizont = 180) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
   myresult <- NA
   myresult <- mysir %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle>=Kapazitaet) %>% head(1) %>% pull(Tage)
   return(myresult)
@@ -344,7 +344,7 @@ vorwarnzeit_berechnen_AG <- function(ngesamt,cases,faelle,Kapazitaet_Betten,Rt=1
                       R = recovered[i],
                       R0 = Rt,
                       gamma = gamma,
-                      horizont = 120) %>% mutate(Neue_Faelle_hq=icurate_altersgruppen[i]*(I-lag(I)+R-lag(R)))
+                      horizont = 180) %>% mutate(Neue_Faelle_hq=icurate_altersgruppen[i]*(I-lag(I)+R-lag(R)))
     mysir_AG[[i]] <- mysir
   }
   myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle_hq>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)

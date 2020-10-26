@@ -21,7 +21,7 @@ Row {data-height=100}
 
 ### **Überblick zum Verlauf des R-Wertes und der Vorwarnzeit in den Bundesländern**
 
-Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Einzelne Ausschläge des R-Wertes bedeuten noch keine kritische Situation, aber ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland.
+Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Einzelne Ausschläge des R-Wertes bedeuten noch keine kritische Situation, aber ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland oder Vorwarnzeiten größer als 180 Tage.
 
 Row {.tabset .tabset-fade data-height=500}
 -------------------------------------

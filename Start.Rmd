@@ -21,12 +21,12 @@ library(flexdashboard)
 source("R/functions.R", encoding = "UTF-8")
 ```
 
-Row {data-height=125}
+Row {data-height=150}
 ------------------------------------------------------------------------
 
 ### **Zi-Frühindikatoren:** 
 
-Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. **Nähere Informationen finden Sie [hier](https://www.zi.de/fileadmin/images/content/PMs/Fruehindikator_fuer_ein_Management_des_Pandemiegeschehens_2020-10-15.pdf)**. Hinweis: Das Methodenpapier wird derzeit aktualisiert und zeitnah bereitgestellt.
+Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie [hier](https://www.zi.de/fileadmin/images/content/PMs/Fruehindikator_fuer_ein_Management_des_Pandemiegeschehens_2020-10-15.pdf). **Hinweis: Die Berechnung der Vorwarnzeit wurde am 26.10.2020 angepasst (Berücksichtigung der gemeldeten freien Kapazitäten auf Intensivstationen sowie Anpassung der altersspezifischen ITS-Fall-Raten).** Das Methodenpapier wird derzeit aktualisiert und zeitnah bereitgestellt.
 
 Stand: `r format(now(),format="%d.%m.%Y %H.%M Uhr")`
 
