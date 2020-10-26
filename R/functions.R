@@ -25,8 +25,8 @@ altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4
 
 ## icu quoten nach busse-lancetpaper, divi-reports und rki-fallzahlen
 share_icu <- (19632+1296)/429181  # divi intensivregister 25.10.2020 and rki daily report 25.10.2020 # (14 days delay?)
-divi_behandlungen_aktuell <- 19632+1296 # divi intensivregister 25.10.2020 # SIEHE UNTEN rki_cases_infected
-divi_abgeschlossen <- 19632 # divi report 25.10.2020
+divi_behandlungen_aktuell <- (19632+1296)/1.27 # (16961+237)/1.27# divi intensivregister 25.10.2020 # SIEHE UNTEN rki_cases_infected
+divi_abgeschlossen <- 19632/1.27 # 16961/1.27 # divi report 25.10.2020
 deaths_divi <- 4500 # divi report 25.10.2020
 busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896, "Hosp6079"=1621+2158, "Hosp80"=3346)
 busselancet_altersgruppen_deaths <- tibble("Mort059"=0.007*2474+0.277*422,
@@ -37,7 +37,13 @@ deathrate_icu <- deaths_divi/divi_abgeschlossen
 deathrate_busselancet <- sum(busselancet_altersgruppen_deaths)/sum(busselancet_altersgruppen_hospital)
 # deshalb hochrechnung altersverteilung mortalität gesamt von divi auf icu möglich:
 icu_altersgruppen <- divi_behandlungen_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
-  
+
+# divi_diff_behandlungen <- divi_behandlungen_aktuell-(9300+2189)/1.27 # stichtag 1. mai ende erste welle
+# deaths_divi_diff <- deaths_divi-3512 # stichtag
+# # deshalb hochrechnung altersverteilung mortalität gesamt von divi auf icu möglich:
+# icu_altersgruppen_diff <- divi_diff_behandlungen*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
+
+
 # Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
 conn <- DBI::dbConnect(RPostgres::Postgres(),
@@ -225,16 +231,22 @@ rki_cases_infected <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
          Infected6079=cases6079-lag(cases6079,15),
          Infected80=cases80-lag(cases80,15),
          Infected2=Infected059+Infected6079+Infected80)
+## delay für fälle-->icu:
 rkidivi <- rki_cases_infected %>% left_join(., divi_all %>% filter(id==0), by=c("Meldedatum"="daten_stand")) %>% drop_na()
 lengthrkidivi <- dim(rkidivi)[1]
 autocorhorizont <- 30
 autocors <- rep(0, lengthrkidivi-autocorhorizont+1)
 for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(lengthrkidivi-autocorhorizont)], rkidivi$faelle_covid_aktuell[(1+lag):(lengthrkidivi-autocorhorizont+lag)]) }
 iculag <- which.max(autocors)-1
-cases_ag <- rki_cases_infected %>% filter(Meldedatum==max(Meldedatum)-iculag) %>% # hier je nach divi datum? 2020-10-25
+# icurates nach erster welle
+iculag <- 0
+cases_ag <- rki_cases_infected %>% filter(Meldedatum==max(Meldedatum)-iculag) %>% # filter(Meldedatum==as_date("2020-09-14")-iculag) %>% # hier je nach divi datum? 2020-10-25
   select(cases059, cases6079, cases80) # mit 14 tage verzug abgeschlossene behandlungen
+cases_ag_stichtag <- rki_cases_infected %>% filter(Meldedatum==as_date("2020-05-01")-iculag) %>% # hier je nach divi datum? 2020-10-25
+  select(cases059, cases6079, cases80)
 icurate_altersgruppen <- icu_altersgruppen/cases_ag
-## delay für fälle-->icu:
+# icurate_altersgruppen_diff <- icu_altersgruppen_diff/(cases_ag-cases_ag_stichtag)
+# icurate_altersgruppen <- tibble("Hosp059"=0.0191, "Hosp6079"=0.091, "Hosp80"=0.145)
 
 
 ## read and update RKI-R-estimates
@@ -313,7 +325,7 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
                     R = recovered,
                     R0 = Rt,
                     gamma = gamma,
-                    horizont = 365) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
+                    horizont = 120) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
   myresult <- NA
   myresult <- mysir %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle>=Kapazitaet) %>% head(1) %>% pull(Tage)
   return(myresult)
@@ -332,7 +344,7 @@ vorwarnzeit_berechnen_AG <- function(ngesamt,cases,faelle,Kapazitaet_Betten,Rt=1
                       R = recovered[i],
                       R0 = Rt,
                       gamma = gamma,
-                      horizont = 365) %>% mutate(Neue_Faelle_hq=icurate_altersgruppen[i]*(I-lag(I)+R-lag(R)))
+                      horizont = 120) %>% mutate(Neue_Faelle_hq=icurate_altersgruppen[i]*(I-lag(I)+R-lag(R)))
     mysir_AG[[i]] <- mysir
   }
   myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle_hq>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
@@ -392,7 +404,8 @@ letzte_7_tage_altersgruppen_destatis <- rki_alter_destatis %>%
 ausgangsdaten <- aktuell  %>%
   select(id,name,ICU_Betten,Einwohner,ebene, # EW_insgesamt
          cases,R0) %>% filter(ebene!="Staaten" & !is.na(ebene)) %>% select(-ebene) %>% collect() %>%
-  left_join(.,letzte_7_tage,by="id") %>%
+  left_join(., letzte_7_tage,by="id") %>%
+  left_join(., divi %>% select(id, betten_frei, faelle_covid_aktuell) %>% mutate(id=ifelse(id>16, id*1000, id)), by="id") %>%
   left_join(., letzte_7_tage_altersgruppen_destatis %>% select(
     id,
     cases059, cases6079, cases80,
@@ -416,8 +429,8 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
          R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-         Kapazitaet_Betten=ICU_Betten*0.25/icu_days,
-         Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
+         Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
+         Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
          Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
 
 myTage <- vorwarnzeitergebnis %>% rowwise() %>%
@@ -473,6 +486,7 @@ for (h in 0:horizont) {
     select(id,name,ICU_Betten,Einwohner,ebene, # EW_insgesamt
            cases,R0) %>% filter(ebene!="Staaten" & !is.na(ebene)) %>% select(-ebene) %>% collect() %>%
     left_join(.,letzte_7_tage_h,by="id") %>%
+    left_join(., divi %>% select(id, betten_frei, faelle_covid_aktuell) %>% mutate(id=ifelse(id>16, id*1000, id)), by="id") %>%
     left_join(., letzte_7_tage_altersgruppen_destatis_h %>% select(
       id,
       cases059, cases6079, cases80,
@@ -494,8 +508,8 @@ for (h in 0:horizont) {
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-           Kapazitaet_Betten=ICU_Betten*0.25/icu_days,
-           Kapazitaet=ICU_Betten*0.25/share_icu/icu_days,
+           Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
+           Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
   filter(id<=16)
 
