@@ -20,7 +20,8 @@ library(dtplyr)
 
 # parameters from literature
 icu_days <- 10.1 # aok/divi paper lancet
-share_icu <- (449+17838)/303258 # divi intensivregister and rki daily report 6. oktober 2020
+share_icu <- (19632+1296)/429181  # divi intensivregister 25.10.2020 and rki daily report 25.10.2020 # (14 days delay?)
+divi_behandlungen <- 19632+1296 # divi intensivregister 25.10.2020 # SIEHE UNTEN rki_cases_infected
 altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
                         "60 bis 80"=21.7,	"80+"=6.8)/100 # destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896, "Hosp6079"=1621+2158, "Hosp80"=3346)
@@ -207,12 +208,12 @@ rki_cases_infected <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
          Infected6079=cases6079-lag(cases6079,15),
          Infected80=cases80-lag(cases80,15),
          Infected2=Infected059+Infected6079+Infected80)
-cases_ag <- rki_cases_infected %>% filter(Meldedatum=="2020-04-20") %>%
+cases_ag <- rki_cases_infected %>% filter(Meldedatum=="2020-04-20") %>% # hier je nach divi datum? 2020-10-25
   select(cases059, cases6079, cases80) # 20.4.2020 siehe unten
 busselancet_altersgruppen_hospital_anteile <- busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
 # divi_abg <- 18278  # divi tagesbericht 13.10.2020
 divi_abg <- 6785 # divi tagesbericht 20.4.2020
-busse_auf_divi <- busselancet_altersgruppen_hospital_anteile*divi_abg
+busse_auf_divi <- busselancet_altersgruppen_hospital_anteile*divi_abg# divi_behandlungen #
 hospquote <- busse_auf_divi/cases_ag
 
 ## read and update RKI-R-estimates
@@ -405,7 +406,7 @@ myTage <- vorwarnzeitergebnis %>% rowwise() %>%
                                   .$Kapazitaet_Betten, 1.3, hospquote%>%slice(1)%>%as.numeric())) %>% 
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
-  mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21)
+  mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(0, Vorwarnzeit-21))
 
 ## vorwarnzeitverlauf daten
 offline_timeseries <- brd_timeseries %>% collect() %>% mutate(date=as.Date(date))
@@ -484,7 +485,7 @@ for (h in 0:horizont) {
                                        .$Kapazitaet_Betten, 1.3, hospquote%>%slice(1)%>%as.numeric())) %>% 
     unnest(cols = c(Tage), keep_empty=TRUE)
   vorwarnzeitergebnis_h <- vorwarnzeitergebnis_h %>%
-    mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=Vorwarnzeit-21, date=stichtag)
+    mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(Vorwarnzeit-21, 0), date=stichtag)
   # datevsvorwarnzeit[h+1, ] <- c(h, vorwarnzeitergebnis_h$Vorwarnzeit[1])
   vorwarnzeitverlauf <- bind_rows(vorwarnzeitverlauf, vorwarnzeitergebnis_h)
 }
@@ -658,7 +659,7 @@ for (i in seq(Rt)) {
   Vorwarnzeit[i] <- which.max(mysir$Neue_Faelle>Belastungsgrenze)
 }
 as_tibble(cbind(Rt,Vorwarnzeit)) %>%
-  mutate(id=myid,Effektive_Vorwarnzeit=Vorwarnzeit-Reaktionszeit) %>%
+  mutate(id=myid,Effektive_Vorwarnzeit=pmax(0, Vorwarnzeit-Reaktionszeit)) %>%
   select(id,Rt,Vorwarnzeit,Effektive_Vorwarnzeit)
 }
 
