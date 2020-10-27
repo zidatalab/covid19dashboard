@@ -578,13 +578,18 @@ mitigationsplot_blvergleich <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% muta
 
 ### Plot on Age of cases and case fatality 
 age_plot_fatality <- ggplot(rki_divi_n_alter %>%
-                   select(Meldedatum,
-                          "Alter 60+ an Fällen"=`60+`,
-                          "ITS-Fälle an Fällen"=`itsfaelle`, 
-                          "Todesfälle an Fällen"= `Todesfälle`) %>% 
-                   gather(Merkmal,Anteil,2:4) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
-                 aes(x=Meldedatum,y=Anteil,color=Merkmal)) + geom_line() + theme_minimal() + 
-  scale_color_zi() + labs(y="Verhältnis in %",x="Datum",color="") + 
+                              filter(Meldedatum>=as_date("2020-03-01")) %>%
+                              select(Meldedatum,
+                                     "Alter 60+ an Fällen"=`60+`,
+                                     "ITS-Fälle an Fällen"=`itsfaelle`, 
+                                     "Todesfälle an Fällen"= `Todesfälle`) %>% 
+                              gather(Merkmal,Anteil,2:4) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
+                            aes(x=Meldedatum,y=Anteil,color=Merkmal)) +
+  # geom_smooth(span=0.1, se=FALSE, n=tally(rki_divi_n_alter)/3) +
+  geom_line() +
+  theme_minimal() + 
+  scale_color_zi() +
+  labs(y="Verhältnis in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
 
@@ -622,17 +627,17 @@ mitigationsplot_bl <- function(myid){
 ### Akute infizierte Fälle
 akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   geom_area(fill="#0086C530") +
-  geom_vline(aes(xintercept=date("2020-03-16")),color="black",linetype ="dotted") +
-  geom_vline(aes(xintercept=date("2020-03-22")),color="black",linetype ="dotted") +
-  geom_vline(aes(xintercept=date("2020-04-17")),color="black",linetype ="dotted") +
+  # geom_vline(aes(xintercept=date("2020-03-16")),color="black",linetype ="dotted") +
+  # geom_vline(aes(xintercept=date("2020-03-22")),color="black",linetype ="dotted") +
+  # geom_vline(aes(xintercept=date("2020-04-17")),color="black",linetype ="dotted") +
   geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
   theme_minimal() +
   scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
-  annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
-  annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
-  annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
+  # annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
+  # annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
+  # annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
   labs(y="Anzahl akut infiziert",x = "Datum") +
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
