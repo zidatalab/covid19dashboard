@@ -11,7 +11,7 @@
   and (max-device-width: 600px)
   and (orientation: portrait) {
     #dashboard-container {
-    width: auto;
+    width: 350px;
 }
 
 }
