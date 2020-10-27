@@ -37,8 +37,8 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(dtplyr)
-source("R/functions.R", encoding = "UTF-8")
-# load("~/covid19dashboard/testforknit.RData")
+# source("R/functions.R", encoding = "UTF-8")
+load("~/covid19dashboard/testforknit.RData")
 ```
 
 Row {data-height=150}
@@ -205,15 +205,15 @@ Row {data-height=150}
 Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an den zum entsprechenden Zeitpunkt akut Infizierten. Während alle Werte zu Beginn der Pandemie gleichlautend verlaufen sind (Daten für ITS-Fälle ab Ende April), hat sich die Entwicklung zuletzt entkoppelt. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
-Row {data-height=400}
-------------------------------------------------------------------------
-### **Entwicklung der Reproduktionszahl**
+<!-- Row {data-height=400} -->
+<!-- ------------------------------------------------------------------------ -->
+<!-- ### **Entwicklung der Reproduktionszahl** -->
 
-```{r plotBLR}
-ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , width=800, height=400
-  config(displayModeBar = FALSE, responsive=TRUE)
+<!-- ```{r plotBLR} -->
+<!-- ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , width=800, height=400 -->
+<!--   config(displayModeBar = FALSE, responsive=TRUE) -->
 
-```
+<!-- ``` -->
 
 <!-- ### **Entwicklung der Reproduktionszahl** {.mobile} -->
 
@@ -221,10 +221,10 @@ ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , wid
 <!-- mitigationsplot_blvergleich -->
 <!-- ``` -->
 
-Row {data-height=100}
-------------------------------------------------------------------------
+<!-- Row {data-height=100} -->
+<!-- ------------------------------------------------------------------------ -->
 
-Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
+<!-- Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt. -->
 
 
 Row {data-height=400}

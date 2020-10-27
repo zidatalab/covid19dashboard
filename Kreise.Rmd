@@ -26,7 +26,7 @@ Nachfolgend erhalten Sie einen Überblick zur Situation der einzelnen Kreise. Bi
 Row
 -----------------------------------------------------------------------
 
-
+<div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableKreise}
 DT::datatable(rki_fallzahl_kreis(),
               extensions = 'Responsive',
@@ -37,5 +37,5 @@ DT::datatable(rki_fallzahl_kreis(),
                              initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
 
 ```
-
+</div>
 
