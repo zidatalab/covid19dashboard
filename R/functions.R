@@ -559,8 +559,7 @@ myblmitidata <- blmitidata %>%
   filter(Merkmal=="Fälle"  & R_Mean<10 & date>=date("2020-03-13"))
 
 ### ALLE Bundesländer
-mitigationsplot_blvergleich <- function(){
-  myplot <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
+mitigationsplot_blvergleich <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
                        text=paste("Region: ",name,"<br>","Neue Fälle:",I_cases))) +
     geom_hline(yintercept = 1) +
@@ -576,12 +575,9 @@ mitigationsplot_blvergleich <- function(){
     annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
     annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"), width=800, height=400)
-}
 
 ### Plot on Age of cases and case fatality 
-age_plot_fatality <- function(){
-myplot <- ggplot(rki_divi_n_alter %>%
+age_plot_fatality <- ggplot(rki_divi_n_alter %>%
                    select(Meldedatum,
                           "Alter 60+ an Fällen"=`60+`,
                           "ITS-Fälle an Fällen"=`itsfaelle`, 
@@ -591,9 +587,6 @@ myplot <- ggplot(rki_divi_n_alter %>%
   scale_color_zi() + labs(y="Verhältnis in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
-myplot %>% ggplotly(tooltip = c("x", "y"), width=800, height=400) %>% 
-  layout(legend = list(orientation = "h", x = 0.1, y = 1.2))
-}
 
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
 range_r <- range(myblmitidata$R_Mean)
@@ -645,23 +638,21 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
 
 ## plotfunction for vorwarnzeitverlauf brd
-vorwarnzeitverlauf_plot <- function(){
-  # change to function to avoid full breaks
-  rki_reformat_r_ts <- RKI_R %>%
-    dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
-  colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
-  rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date)+5)
-  zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
-                                        filter(id==0) %>%
-                                        mutate(Vorwarnzeit=Vorwarnzeit), # _effektiv
-                                      rki_reformat_r_ts,
-                                      by=c("date")) %>%
-    pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
-
-  # handle errors
-  myplot <- ggplot()
-  tryCatch(
-  myplot <- ggplot(zivwz_vs_rkir_verlauf,
+# change to function to avoid full breaks
+rki_reformat_r_ts <- RKI_R %>%
+  dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
+colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
+rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date)+5)
+zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
+                                      filter(id==0) %>%
+                                      mutate(Vorwarnzeit=Vorwarnzeit), # _effektiv
+                                    rki_reformat_r_ts,
+                                    by=c("date")) %>%
+  pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
+vorwarnzeitverlauf_plot <- ggplot()
+# # handle errors
+# tryCatch(
+  vorwarnzeitverlauf_plot <- ggplot(zivwz_vs_rkir_verlauf,
                                    aes(x=date, y=Wert, color=Variable)) +
     facet_wrap(~Variable, scales = "free_y") +
     geom_line(size=2) +
@@ -669,9 +660,7 @@ vorwarnzeitverlauf_plot <- function(){
     scale_color_zi() +
     labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
     theme_minimal() +
-    theme(legend.position='none'))
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"), width=800, height=400)
-}
+    theme(legend.position='none') #)
 
 #  functions for data generation
 
