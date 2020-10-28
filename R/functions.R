@@ -66,7 +66,7 @@ vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
   mutate(date=date(date),
          Neue_faelle=cases-lag(cases),
          Neue_faelle_Anstieg = Neue_faelle/lag(Neue_faelle),
-         Vorwarnzeit= log(16000/Neue_faelle)/log(Neue_faelle_Anstieg),
+         Vorwarnzeit= log(16000/Neue_faelle)/log(Neue_faelle_Anstieg), # obsolete, we calculate it differently now
          Situation = case_when(Vorwarnzeit<0 ~ "grün",
                                (Vorwarnzeit>18 )  ~ "orange",
                                (Vorwarnzeit>=0 & Vorwarnzeit<18)   ~ "rot"),
@@ -74,7 +74,40 @@ vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
          show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
 prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=28) | Tage %in% c(30,60,90,120,150,180))
 brdprognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90) & ((ebene=="Kreis") | (name=="Berlin")) )
-rki <- tbl(conn,"rki")
+rki <- tbl(conn,"rki") %>% collect()
+
+# rki imputation because of delayed gesundheitsamt-meldungen
+rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)),maxdate=max(date(Meldedatum)))
+rkidays <- date(rkitimeframe$maxdate)-date(rkitimeframe$mindate)
+rkidates <- date(rkitimeframe$maxdate)-seq(0,rkidays-1)
+rkiidkreise <- unique(rki$IdLandkreis)
+rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+") # unique(rki$Altersgruppe)
+rkigender <- c("M", "W") # unique(rki$Geschlecht)
+Kreise_allvalues <- expand_grid(Meldedatum=rkitimeframe$maxdate, IdLandkreis=rkiidkreise) #, Geschlecht=rkigender, Altersgruppe=rkiagegroups)
+Kreise <- rki %>%  mutate(Meldedatum=date(Meldedatum)) %>%
+  full_join(., Kreise_allvalues, by=c("Meldedatum", "IdLandkreis"))
+n_missingkreise <- 0
+for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g. Hamburg 02000)
+  if (is.na((Kreise %>% filter(Meldedatum==rkitimeframe$maxdate & IdLandkreis==idkreis) %>% pull(AnzahlFall))[1])) {
+    n_missingkreise <- n_missingkreise+1
+    sixdaysbefore <- Kreise %>% filter(Meldedatum>=rkitimeframe$maxdate-6 & IdLandkreis==idkreis)
+    for (ag in rkiagegroups) {
+      Kreise <- Kreise %>%
+        add_row(IdBundesland=sixdaysbefore$IdBundesland[1],
+                Bundesland=sixdaysbefore$Bundesland[1],
+                Landkreis=sixdaysbefore$Landkreis[1],
+                Altersgruppe=ag,
+                Geschlecht="unbekannt",
+                AnzahlFall=round(sum(sixdaysbefore$AnzahlFall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
+                AnzahlTodesfall=round(sum(sixdaysbefore$AnzahlTodesfall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
+                Meldedatum=rkitimeframe$maxdate,
+                IdLandkreis=idkreis,
+                AnzahlGenesen=round(sum(sixdaysbefore$AnzahlGenesen[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6))
+    }
+  }
+}
+cat("Kreise ohne aktuelle Meldung: ", n_missingkreise, "\n")
+rki <- Kreise
 divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
