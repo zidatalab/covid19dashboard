@@ -458,6 +458,7 @@ ausgangsdaten <- aktuell  %>%
 
 
 # vorwarnzeit aktueller tag daten
+R_aktuell_Bund <- ausgangsdaten$R0[ausgangsdaten$id==0]
 vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
@@ -470,7 +471,7 @@ myTage <- vorwarnzeitergebnis %>% rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_AG(c(.$EW059, .$EW6079, .$EW80),
                                   c(.$cases059, .$cases6079, .$cases80),
                                   c(.$Faelle_letzte_7_Tage_pro_Tag_059, .$Faelle_letzte_7_Tage_pro_Tag_6079, .$Faelle_letzte_7_Tage_pro_Tag_80),
-                                  .$Kapazitaet_Betten, 1.3, icurate_altersgruppen%>%slice(1)%>%as.numeric())) %>% 
+                                  .$Kapazitaet_Betten, 1.3, icurate_altersgruppen%>%slice(1)%>%as.numeric())) %>% # max(1.3, R_aktuell_Bund)
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(0, Vorwarnzeit-21))
@@ -654,7 +655,7 @@ mitigationsplot_bl <- function(myid){
           legend.position='none',
           panel.spacing = unit(2, "lines")) +
     ggtitle(myname)
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"), width=800, height=400)
+  myplot %>% ggplotly(tooltip = c("x", "y", "text")) # , width=800, height=400
 }
 
 ### Akute infizierte Fälle

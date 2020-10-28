@@ -1,0 +1,22 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impressum", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+---
+
+### **Entwicklung der akut Infizierten**
+
+```{r plotakutinfiziert}
+ggplotly(akutinfiziert + labs(title="")) %>% # , width=800, height=400
+   config(displayModeBar = FALSE, responsive=TRUE)
+```
