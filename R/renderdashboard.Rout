@@ -26,10 +26,10 @@ Type 'q()' to quit R.
 
 
 processing file: Start.Rmd
-  |                                                                              |                                                                      |   0%  |                                                                              |...                                                                   |   5%
+  |                                                                              |                                                                      |   0%  |                                                                              |...                                                                   |   4%
   ordinary text without R code
 
-  |                                                                              |.......                                                               |  10%
+  |                                                                              |......                                                                |   8%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -62,8 +62,8 @@ Registered S3 method overwritten by 'rvest':
 ✔ tidyr   1.1.2     ✔ dplyr   1.0.2
 ✔ readr   1.3.1     ✔ stringr 1.4.0
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks plotly::filter(), stats::filter()
-✖ dplyr::lag()    masks stats::lag()
+✖ dplyr::filter()   masks plotly::filter(), stats::filter()
+✖ .GlobalEnv::lag() masks dplyr::lag(), stats::lag()
 Loading required package: png
 
 Attaching package: 'jsonlite'
@@ -102,190 +102,12 @@ The following object is masked from 'package:base':
 
     date
 
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  9543    0  9543    0     0   122k      0 --:--:-- --:--:-- --:--:--  122k
-Parsed with column specification:
-cols(
-  `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
-  `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Punktschätzer der Reproduktionszahl R` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Punktschätzer des 7-Tage-R Wertes` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
-)
-Parsed with column specification:
-cols(
-  `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
-  `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Punktschätzer der Reproduktionszahl R` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Punktschätzer des 7-Tage-R Wertes` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
-)
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-  |                                                                              |..........                                                            |  14%
-   inline R code fragments
+Quitting from lines 20-42 (Start.Rmd) 
+Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
+Calls: <Anonymous> ... withCallingHandlers -> withVisible -> eval -> eval -> load -> readChar
+In addition: Warning messages:
+1: package 'DBI' was built under R version 3.6.3 
+2: In readChar(con, 5L, useBytes = TRUE) :
+  cannot open compressed file '/home/jupyter-esteiger/covid19dashboard/testforknit.RData', probable reason 'No such file or directory'
 
-  |                                                                              |.............                                                         |  19%
-label: indicatorR
-  |                                                                              |.................                                                     |  24%
-  ordinary text without R code
-
-  |                                                                              |....................                                                  |  29%
-label: indicator7TI
-  |                                                                              |.......................                                               |  33%
-  ordinary text without R code
-
-  |                                                                              |...........................                                           |  38%
-label: indicatorVWZ
-  |                                                                              |..............................                                        |  43%
-   inline R code fragments
-
-  |                                                                              |.................................                                     |  48%
-label: plotakutinfiziert
-  |                                                                              |.....................................                                 |  52%
-  ordinary text without R code
-
-  |                                                                              |........................................                              |  57%
-label: plotagefatality
-  |                                                                              |...........................................                           |  62%
-  ordinary text without R code
-
-  |                                                                              |...............................................                       |  67%
-label: plotBLR
-  |                                                                              |..................................................                    |  71%
-  ordinary text without R code
-
-  |                                                                              |.....................................................                 |  76%
-label: plotVWZR
-  |                                                                              |.........................................................             |  81%
-  ordinary text without R code
-
-  |                                                                              |............................................................          |  86%
-label: tableBL
-  |                                                                              |...............................................................       |  90%
-  ordinary text without R code
-
-  |                                                                              |...................................................................   |  95%
-label: renderothersites (with options) 
-List of 1
- $ include: logi FALSE
-
-
-
-processing file: Bundeslaender.Rmd
-output file: Bundeslaender.knit.md
-
-
-Output created: Bundeslaender.html
-
-
-processing file: Kreise.Rmd
-Joining, by = "blid"
-output file: Kreise.knit.md
-
-
-Output created: Kreise.html
-
-
-processing file: Impressum.Rmd
-output file: Impressum.knit.md
-
-
-Output created: Impressum.html
-  |                                                                              |......................................................................| 100%
-  ordinary text without R code
-
-
-output file: Start.knit.md
-
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash --output Start.html --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpZFS4OV/rmarkdown-strd9743f125498.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpZFS4OV/rmarkdown-strd97455388e71.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpZFS4OV/filed974512c9698html --highlight-style pygments --include-before-body /tmp/RtmpZFS4OV/filed974736a4c87.html --include-after-body /tmp/RtmpZFS4OV/filed9745f83383b.html --css static/styles.css 
-
-Output created: Start.html
-There were 42 warnings (use warnings() to see them)
-> 
-> proc.time()
-   user  system elapsed 
-361.783   1.660 378.808 
+Execution halted
