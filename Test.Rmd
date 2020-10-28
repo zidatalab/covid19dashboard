@@ -18,9 +18,9 @@ output:
 Row
 -----------------------------------------------------------------------
 
-### **Überblick zu den Kennzahlen der Bundesländer** {style = "width:99% !important"}
+### **Überblick zu den Kennzahlen der Bundesländer**
 
-<!-- <div style = "width:99% !important; height:auto; margin: auto;"> -->
+<div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableBL}
 DT::datatable(rki_fallzahl_bl(),
               extensions = 'Responsive',
@@ -31,7 +31,7 @@ DT::datatable(rki_fallzahl_bl(),
                              initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
 
 ```
-<!-- </div> -->
+</div>
 
 Row
 -------------------------------------
