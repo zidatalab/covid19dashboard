@@ -16,7 +16,26 @@ output:
     
 ---
 
-Row {data-height=100}
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zu den aktuellen Kennzahlen der Bundesländer**
+
+<!-- <div style = "width:99%; height:ato; margin: 0px; padding-right:2rem;"> -->
+<div style = "width:99% !important; height:auto; margin: auto;">
+```{r tableBL}
+DT::datatable(rki_fallzahl_bl(),
+              extensions = 'Responsive',
+              options = list(paging = FALSE,
+                             searching = FALSE,
+                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
+                             server = FALSE,
+                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
+
+```
+</div>
+
+Row <!--{data-height=100}-->
 -----------------------------------------------------------------------
 
 ### **Überblick zum Verlauf des R-Wertes und der Vorwarnzeit in den Bundesländern**

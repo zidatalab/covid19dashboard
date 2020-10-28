@@ -12,11 +12,9 @@ output:
     logo: static/logo.png
     theme: bootstrap
     css: static/styles.css
-    
-    
 ---
 
-Row {data-height=100}
+Row <!--{data-height=100}-->
 -----------------------------------------------------------------------
 
 ### **Überblick zu den Kennzahlen der Kreise**
