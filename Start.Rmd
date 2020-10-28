@@ -37,8 +37,8 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(dtplyr)
-# source("R/functions.R", encoding = "UTF-8")
-load("~/covid19dashboard/testforknit.RData")
+source("R/functions.R", encoding = "UTF-8")
+# load("~/covid19dashboard/testforknit.RData")
 ```
 
 Row {data-height=150}
