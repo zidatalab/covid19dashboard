@@ -12,6 +12,7 @@ output:
     logo: static/logo.png
     theme: bootstrap
     css: static/styles.css
+    resize_reload: false
 ---
 
 Row
