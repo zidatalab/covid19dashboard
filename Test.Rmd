@@ -18,7 +18,7 @@ output:
 Row
 -----------------------------------------------------------------------
 
-### **Überblick zu den Kennzahlen der Bundesländer**
+### **Überblick zu den Kennzahlen der Bundesländer** {style = "width:99% !important"}
 
 <!-- <div style = "width:99% !important; height:auto; margin: auto;"> -->
 ```{r tableBL}
