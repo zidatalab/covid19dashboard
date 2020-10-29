@@ -595,7 +595,7 @@ myblmitidata <- blmitidata %>%
 ### ALLE Bundesländer
 plot_rwert_bund_data <- myblmitidata %>%
   rename(R=R_Mean) %>%
-  mutate(R=round(R,digits = 1)) %>%
+  mutate(R=round(R,digits = 2)) %>%
   select(date, R, name, I_cases)
 plot_rwert_bund <- ggplot(plot_rwert_bund_data,
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
