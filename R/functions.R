@@ -597,17 +597,17 @@ mitigationsplot_blvergleich <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% muta
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
                        text=paste("Region: ",name,"<br>","Neue Fälle:",I_cases))) +
     geom_hline(yintercept = 1) +
-    geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
+    # geom_line(data = . %>% filter(name!="Gesamt"),size=1,show.legend = F,color="lightgrey")+
     geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
     scale_color_zi()  +
     theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
-    labs(x="",y="Reproduktionszahl R(t)",caption="Vergleich Bund vs. Bundesländer") +
-    geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
-    geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
-    geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
-    annotate("text", x = date("2020-03-16"), y = 3.3, label = "Schulschließungen\n16.3.",color="black",size=3) +
-    annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
-    annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
+    labs(x="",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
+    # geom_vline(aes(xintercept=date("2020-03-16")),color="grey") +
+    # geom_vline(aes(xintercept=date("2020-03-22")),color="grey") +
+    # geom_vline(aes(xintercept=date("2020-04-17")),color="grey") +
+    # annotate("text", x = date("2020-03-16"), y = 3.3, label = "Schulschließungen\n16.3.",color="black",size=3) +
+    # annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
+    # annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
 
 ### Plot on Age of cases and case fatality 

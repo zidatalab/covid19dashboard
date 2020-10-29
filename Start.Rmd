@@ -130,7 +130,7 @@ Row <!--{data-height=260}-->
 
 ***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
 <!-- *Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\ -->
-***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet. Wegen Meldeverzügen fehlen für einige Kreise/Bundesländer die Fallzahlen des Vortages. Fehlende Werte imputieren wir mit dem Mittelwert der vorhergehenden 6 Tage, um die 7-Tage-Inzidenz vergleichbarer zu machen.\
+***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet. Wegen Meldeverzügen fehlen für einige Kreise/Bundesländer die Fallzahlen des Vortages. Fehlende Werte imputieren wir mit dem Mittelwert der vorhergehenden 6 Tage, um die 7-Tage-Inzidenz vergleichbarer zu machen. \
 ***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten (Annahme: für zukünftige COVID-19-Fälle stehen die derzeit freien Betten sowie bereits mit COVID-19-Fällen belegte Betten zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Wir berücksichtigen die aktuelle Altersstruktur der Infizierten und unterschiedliche Raten der Intensivfälle: 1,37% für Unter-60-Jährige, 10,2% für 60-bis-79-Jährige, sowie 18,3% für Über-80-Jährige. Diese Quoten wurden auf Basis der im Intensivregister gemeldeten Fälle mit Korrektur für Doppelzählungen auf Grund von Verlegungen (27%) sowie COVID-19-Charakteristiken aus der Literatur bestimmt. Die "effektive Vorwarnzeit" ist die Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken. Vgl. Methodenpapier.
 
 <!-- ***Effektive Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung von 25% der stationären Behandlungskapazitäten (Annahme 25% der Kapazität steht für COVID-19 zur Verfügung) ab heute (Annahme **Reaktionszeit von 21 Tagen bis Wirkung neuer Maßnahmen**), falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. -->
@@ -202,15 +202,15 @@ Row <!--{data-height=150}-->
 Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an den zum entsprechenden Zeitpunkt akut Infizierten. Während alle Werte zu Beginn der Pandemie gleichlautend verlaufen sind (Daten für ITS-Fälle ab Ende April), hat sich die Entwicklung zuletzt entkoppelt. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
-<!-- Row {data-height=400} -->
-<!-- ------------------------------------------------------------------------ -->
-<!-- ### **Entwicklung der Reproduktionszahl** -->
+Row <!--{data-height=400}-->
+------------------------------------------------------------------------
+### **Entwicklung der Reproduktionszahl**
 
-<!-- ```{r plotBLR} -->
-<!-- ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , width=800, height=400 -->
-<!--   config(displayModeBar = FALSE, responsive=TRUE) -->
+```{r plotBLR}
+ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , width=800, height=400
+  config(displayModeBar = FALSE, responsive=TRUE)
 
-<!-- ``` -->
+```
 
 <!-- ### **Entwicklung der Reproduktionszahl** {.mobile} -->
 
@@ -221,7 +221,7 @@ Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten 
 <!-- Row {data-height=100} -->
 <!-- ------------------------------------------------------------------------ -->
 
-<!-- Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene der Bundesländer. Der Wert für den Bund ist blau dargestellt. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt. -->
+Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene des Bundes. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
 
 Row <!--{data-height=400}-->
@@ -267,7 +267,7 @@ Row <!--{data-height=250}-->
 ------------------------------------------------------------------------
 ### Methodischer Hinweis zum R-Wert:
 
-*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma-Verteilung mit MW=4, SD=5). Beide Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an. Sowohl das Zi als auch das RKI schließen bei der Berechnung der R-Werte die Fallzahlen der letzten 4 Tage aus, da diese noch zu unverlässlich wegen Meldeverzügen sind.*
+*In die Berechnung des R-Wertes gehen verschiedene Annahmen ein, da der Wert aufgrund unvollständiger Informationen zu Infektionsketten in der Regel geschätzt werden muss. Die Methodik des Zi und des RKI unterscheiden sich dabei in zwei zentralen Punkten. Das RKI betrachtet die neuen Erkrankten nach Erkrankungsdatum im Vergleich von zwei 4-Tages-Perioden und nimmt dadurch eine 4-tägige-Ansteckungsperiode an. Dabei müssen für etwa ein Drittel der Infizierten das Erkrankungsdatum geschätzt und Nachmeldungen durch das sog. Nowcasting interpoliert werden. Zusätzlich berechnet das RKI einen 7-Tage-R-Wert, bei dem vor der Betrachtung mit 4-Tages-Perioden zunächst für jeden Tag ein rollender 7-Tage-Mittelwert berechnet wird, um wochentägliche Schwankungen auszugleichen. Das Zi verwendet das Meldedatum als Infektionsbeginn und berücksichtigt eine längere Infektionsperiode, in der die meisten Ereignisse am 4. Tag auftreten, Ansteckungen aber auch später auftreten können (Gamma-Verteilung mit MW=4, SD=5). Alle Ansätze haben Vor- und Nachteile und zeigen langfristig die gleiche Tendenz an. Sowohl das Zi als auch das RKI schließen bei der Berechnung der R-Werte die Fallzahlen der letzten 4 Tage aus, da diese noch zu unverlässlich wegen Meldeverzügen sind.*
 
 ```{r renderothersites, include=FALSE}
 rmarkdown::render('Bundeslaender.Rmd')
