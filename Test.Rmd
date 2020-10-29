@@ -22,7 +22,7 @@ Row
 
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableBLtest}
-DT::datatable(rki_fallzahl_bl(),
+DT::datatable(bundeslaender_table,
               extensions = 'Responsive',
               options = list(paging = FALSE,
                              searching = FALSE,

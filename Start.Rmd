@@ -207,7 +207,7 @@ Row <!--{data-height=400}-->
 ### **Entwicklung der Reproduktionszahl**
 
 ```{r plotBLR}
-ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , width=800, height=400
+ggplotly(plot_rwert_bund, tooltip = c("x", "y", "text")) %>% # , width=800, height=400
   config(displayModeBar = FALSE, responsive=TRUE)
 
 ```
@@ -218,8 +218,10 @@ ggplotly(mitigationsplot_blvergleich, tooltip = c("x", "y", "text")) %>% # , wid
 <!-- mitigationsplot_blvergleich -->
 <!-- ``` -->
 
-<!-- Row {data-height=100} -->
-<!-- ------------------------------------------------------------------------ -->
+Row <!--{data-height=100}-->
+------------------------------------------------------------------------
+
+### Erläuterung
 
 Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene des Bundes. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
@@ -273,6 +275,6 @@ Row <!--{data-height=250}-->
 rmarkdown::render('Bundeslaender.Rmd')
 rmarkdown::render('Kreise.Rmd')
 rmarkdown::render('Impressum.Rmd')
-rmarkdown::render('Test.Rmd')
+# rmarkdown::render('Test.Rmd')
 ```
 

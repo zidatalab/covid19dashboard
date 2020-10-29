@@ -26,7 +26,7 @@ Row
 
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableKreise}
-DT::datatable(rki_fallzahl_kreis(),
+DT::datatable(kreise_table,
               extensions = 'Responsive',
               options = list(paging = TRUE,
                              searching = TRUE,

@@ -593,7 +593,11 @@ myblmitidata <- blmitidata %>%
   filter(Merkmal=="Fälle"  & R_Mean<10 & date>=date("2020-03-13"))
 
 ### ALLE Bundesländer
-mitigationsplot_blvergleich <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% mutate(R=round(R,digits = 1)),
+plot_rwert_bund_data <- myblmitidata %>%
+  rename(R=R_Mean) %>%
+  mutate(R=round(R,digits = 1)) %>%
+  select(date, R, name, I_cases)
+plot_rwert_bund <- ggplot(plot_rwert_bund_data,
                    aes(x=date,y=R,group=name,color=name=="Gesamt",
                        text=paste("Region: ",name,"<br>","Neue Fälle:",I_cases))) +
     geom_hline(yintercept = 1) +
@@ -609,15 +613,17 @@ mitigationsplot_blvergleich <- ggplot(myblmitidata %>% rename(R=R_Mean) %>% muta
     # annotate("text", x = date("2020-03-22"), y = 2.5, label = "Kontakteinschränkungen\n22.3.",color="black",size=3) +
     # annotate("text", x = date("2020-04-17"), y = 2.0, label = "Lockerung der \nMaßnahmen\n17.4.",color="black",size=3) +
     theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
+write_json(plot_rwert_bund_data, "./data/plotdata/plot_rwert_bund.json")
 
 ### Plot on Age of cases and case fatality 
-age_plot_fatality <- ggplot(rki_divi_n_alter %>%
-                              filter(Meldedatum>=as_date("2020-03-01")) %>%
-                              select(Meldedatum,
-                                     "Alter 60+ an Fällen"=`60+`,
-                                     "ITS-Fälle an Fällen"=`itsfaelle`, 
-                                     "Todesfälle an Fällen"= `Todesfälle`) %>% 
-                              gather(Merkmal,Anteil,2:4) %>% mutate(Anteil=round(Anteil*100,digits=2)) ,
+age_plot_fatality_data <- rki_divi_n_alter %>%
+  filter(Meldedatum>=as_date("2020-03-01")) %>%
+  select(Meldedatum,
+         "Alter 60+ an Fällen"=`60+`,
+         "ITS-Fälle an Fällen"=`itsfaelle`, 
+         "Todesfälle an Fällen"= `Todesfälle`) %>% 
+  gather(Merkmal,Anteil,2:4) %>% mutate(Anteil=round(Anteil*100,digits=2))
+age_plot_fatality <- ggplot(age_plot_fatality_data,
                             aes(x=Meldedatum,y=Anteil,color=Merkmal)) +
   # geom_smooth(span=0.1, se=FALSE, n=tally(rki_divi_n_alter)/3) +
   geom_line() +
@@ -626,17 +632,21 @@ age_plot_fatality <- ggplot(rki_divi_n_alter %>%
   labs(y="Verhältnis in %",x="Datum",color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
+write_json(age_plot_fatality_data, "./data/plotdata/age_plot_fatality.json")
 
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
 range_r <- range(myblmitidata$R_Mean)
-range_vwz <- range(myblmitidata$Vorwarnzeit_effektiv, na.rm = TRUE)
+range_vwz <- range(myblmitidata$Vorwarnzeit, na.rm = TRUE) #_effektiv
+mitigationsplot_bl_data <- myblmitidata %>%
+  rename(Datum=date, R=R_Mean) %>% # , Vorwarnzeit=Vorwarnzeit_effektiv
+  mutate(R=round(R,digits = 1)) %>%
+  pivot_longer(c("Vorwarnzeit", "R"), names_to="Variable", values_to="Wert") %>%
+  mutate(y_min=ifelse(Variable=="R", 0, 0), # range_r[1], range_vwz[1]
+         y_max=ifelse(Variable=="R", range_r[2], range_vwz[2])) %>%
+  select(id, name, Datum, Wert, Variable, I_cases, y_min, y_max)
 mitigationsplot_bl <- function(myid){
-  myname <- myblmitidata %>% filter(id==myid) %>% head(1) %>% pull(name)
-  my_r_vwz_data <- myblmitidata %>% filter(id==myid) %>% rename(Datum=date, R=R_Mean) %>% # , Vorwarnzeit=Vorwarnzeit_effektiv
-    mutate(R=round(R,digits = 1)) %>%
-    pivot_longer(c("Vorwarnzeit", "R"), names_to="Variable", values_to="Wert") %>%
-    mutate(y_min=ifelse(Variable=="R", range_r[1], range_vwz[1]),
-           y_max=ifelse(Variable=="R", range_r[2], range_vwz[2]))
+  myname <- mitigationsplot_bl_data %>% filter(id==myid) %>% head(1) %>% pull(name)
+  my_r_vwz_data <- mitigationsplot_bl_data %>% filter(id==myid)
   myplot <- ggplot(my_r_vwz_data,
                    aes(x=Datum,y=Wert,group=name,color=Variable,
                        text=paste("Region: ",name,"<br>Neue Fälle:",I_cases))) +
@@ -657,6 +667,8 @@ mitigationsplot_bl <- function(myid){
     ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text")) # , width=800, height=400
 }
+write_json(mitigationsplot_bl_data,
+           "./data/plotdata/mitigationsplot_bl.json")
 
 ### Akute infizierte Fälle
 akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
@@ -675,6 +687,7 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   labs(y="Anzahl akut infiziert",x = "Datum") +
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
+write_json(vorwarndata %>% select(date, Infected), "./data/plotdata/akutinfiziert.json")
 
 ## plotfunction for vorwarnzeitverlauf brd
 # change to function to avoid full breaks
@@ -687,7 +700,8 @@ zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
                                       mutate(Vorwarnzeit=Vorwarnzeit), # _effektiv
                                     rki_reformat_r_ts,
                                     by=c("date")) %>%
-  pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert")
+  pivot_longer(c("Vorwarnzeit", "RKI-R-Wert"), names_to="Variable", values_to="Wert") %>%
+  select(date, Wert, Variable)
 vorwarnzeitverlauf_plot <- ggplot()
 # # handle errors
 # tryCatch(
@@ -700,6 +714,7 @@ vorwarnzeitverlauf_plot <- ggplot()
     labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
     theme_minimal() +
     theme(legend.position='none') #)
+write_json(zivwz_vs_rkir_verlauf, "./data/plotdata/vorwarnzeitverlauf_plot.json")
 
 #  functions for data generation
 
@@ -726,43 +741,50 @@ as_tibble(cbind(Rt,Vorwarnzeit)) %>%
   select(id,Rt,Vorwarnzeit,Effektive_Vorwarnzeit)
 }
 
-rki_fallzahl_bl <- function(){
-  df <- vorwarnzeitergebnis %>% filter(id<17) %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
-                                                         R0=round(R0,digits = 2))
-  df %>% select(Bundesland=name,
-                "R(t)"=R0,
-                "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
-                # "Effektive Vorwarnzeit aktuell"=Vorwarnzeit_effektiv,
-                "Vorwarnzeit aktuell"=Vorwarnzeit,
-                "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
-                "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
-                "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
-                "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
-                "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
-                "Fälle insgesamt"=cases #,
-                # "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
+bundeslaender_table <- vorwarnzeitergebnis %>%
+  filter(id<17) %>%
+  mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
+         R0=round(R0,digits = 2)) %>%
+  select(Bundesland=name,
+         "R(t)"=R0,
+         "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
+         # "Effektive Vorwarnzeit aktuell"=Vorwarnzeit_effektiv,
+         "Vorwarnzeit aktuell"=Vorwarnzeit,
+         "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
+         "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
+         "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
+         "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
+         "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
+         "Fälle insgesamt"=cases #,
+         # "Fälle je 100 Tsd. Einw."=cases_je_100Tsd,
   )
-}
+write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
 
-rki_fallzahl_kreis <- function(){
-  df <- vorwarnzeitergebnis %>% filter(id>17 | name=="Berlin") %>% mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
-                                                         R0=round(R0,digits = 2))
-  bundeslaender <- aktuell %>% filter(id>0 & id<17) %>% select(blid=id,Bundesland=name) %>% collect()
-  df <- df %>% mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>% left_join(.,bundeslaender) %>% arrange(blid,id)
-  df %>% select(Kreis=name,
-                Bundesland,
-                "R(t)"=R0,
-                "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
-                # "Effektive Vorwarnzeit lokal*"=Vorwarnzeit_effektiv, # needs communication
-                "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
-                "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
-                "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
-                "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
-                "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
-                "Fälle insgesamt"=cases, # "Fälle je 100 Tsd. Einw."=cases_je_100Tsd
-                "Vorwarnzeit lokal*"=Vorwarnzeit #, # needs communication
-                )
-}
+kreise_table <- vorwarnzeitergebnis %>%
+  filter(id>17 | name=="Berlin") %>%
+  mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
+         R0=round(R0,digits = 2))
+bundeslaender <- aktuell %>%
+  filter(id>0 & id<17) %>%
+  select(blid=id,Bundesland=name) %>% collect()
+kreise_table <- kreise_table %>%
+  mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
+  left_join(.,bundeslaender) %>%
+  arrange(blid,id) %>%
+  select(Kreis=name,
+         Bundesland,
+         "R(t)"=R0,
+         "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
+         # "Effektive Vorwarnzeit lokal*"=Vorwarnzeit_effektiv, # needs communication
+         "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
+         "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
+         "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
+         "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
+         "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
+         "Fälle insgesamt"=cases, # "Fälle je 100 Tsd. Einw."=cases_je_100Tsd
+         "Vorwarnzeit lokal*"=Vorwarnzeit #, # needs communication
+  )
+write_json(kreise_table, "./data/tabledata/kreise_table.json")
 
 # plots direkt
 
