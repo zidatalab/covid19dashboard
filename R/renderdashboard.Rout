@@ -26,10 +26,10 @@ Type 'q()' to quit R.
 
 
 processing file: Start.Rmd
-  |                                                                              |                                                                      |   0%  |                                                                              |...                                                                   |   4%
+  |                                                                              |                                                                      |   0%  |                                                                              |....                                                                  |   6%
   ordinary text without R code
 
-  |                                                                              |......                                                                |   8%
+  |                                                                              |........                                                              |  12%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -102,12 +102,133 @@ The following object is masked from 'package:base':
 
     date
 
-Quitting from lines 20-42 (Start.Rmd) 
-Error in readChar(con, 5L, useBytes = TRUE) : cannot open the connection
-Calls: <Anonymous> ... withCallingHandlers -> withVisible -> eval -> eval -> load -> readChar
-In addition: Warning messages:
-1: package 'DBI' was built under R version 3.6.3 
-2: In readChar(con, 5L, useBytes = TRUE) :
-  cannot open compressed file '/home/jupyter-esteiger/covid19dashboard/testforknit.RData', probable reason 'No such file or directory'
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  9543    0  9543    0     0   122k      0 --:--:-- --:--:-- --:--:--  121k
+Parsed with column specification:
+cols(
+  `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
+  `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
+  `Punktschätzer der Reproduktionszahl R` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
+  `Punktschätzer des 7-Tage-R Wertes` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
+)
+Parsed with column specification:
+cols(
+  `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
+  `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
+  `Punktschätzer der Reproduktionszahl R` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
+  `Punktschätzer des 7-Tage-R Wertes` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
+)
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+  |                                                                              |............                                                          |  18%
+   inline R code fragments
+
+  |                                                                              |................                                                      |  24%
+label: indicatorR
+  |                                                                              |.....................                                                 |  29%
+  ordinary text without R code
+
+  |                                                                              |.........................                                             |  35%
+label: indicator7TI
+  |                                                                              |.............................                                         |  41%
+  ordinary text without R code
+
+  |                                                                              |.................................                                     |  47%
+label: indicatorVWZ
+  |                                                                              |.....................................                                 |  53%
+   inline R code fragments
+
+  |                                                                              |.........................................                             |  59%
+label: plotakutinfiziert
+Quitting from lines 162-164 (Start.Rmd) 
+Error in validateCssUnit(sizeInfo$width) : 
+  CSS units must be a single-element numeric or character vector
+Calls: <Anonymous> ... <Anonymous> -> need_screenshot -> toHTML -> validateCssUnit
+In addition: There were 41 warnings (use warnings() to see them)
 
 Execution halted
