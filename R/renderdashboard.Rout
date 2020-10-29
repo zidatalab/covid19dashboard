@@ -1,7 +1,7 @@
 
-R version 3.6.1 (2019-07-05) -- "Action of the Toes"
-Copyright (C) 2019 The R Foundation for Statistical Computing
-Platform: x86_64-conda_cos6-linux-gnu (64-bit)
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-conda-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -26,10 +26,10 @@ Type 'q()' to quit R.
 
 
 processing file: Start.Rmd
-  |                                                                              |                                                                      |   0%  |                                                                              |....                                                                  |   6%
+  |                                                                              |                                                                      |   0%  |                                                                              |....                                                                  |   5%
   ordinary text without R code
 
-  |                                                                              |........                                                              |  12%
+  |                                                                              |.......                                                               |  11%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -54,16 +54,13 @@ Loading required package: devtools
 Loading required package: usethis
 Loading required package: ggpubr
 Loading required package: tidyverse
-Registered S3 method overwritten by 'rvest':
-  method            from
-  read_xml.response xml2
-── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
 ✔ tibble  3.0.4     ✔ purrr   0.3.4
 ✔ tidyr   1.1.2     ✔ dplyr   1.0.2
-✔ readr   1.3.1     ✔ stringr 1.4.0
+✔ readr   1.4.0     ✔ stringr 1.4.0
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter()   masks plotly::filter(), stats::filter()
-✖ .GlobalEnv::lag() masks dplyr::lag(), stats::lag()
+✖ dplyr::filter() masks plotly::filter(), stats::filter()
+✖ dplyr::lag()    masks stats::lag()
 Loading required package: png
 
 Attaching package: 'jsonlite'
@@ -98,14 +95,15 @@ The following objects are masked from 'package:data.table':
     hour, isoweek, mday, minute, month, quarter, second, wday, week,
     yday, year
 
-The following object is masked from 'package:base':
+The following objects are masked from 'package:base':
 
-    date
+    date, intersect, setdiff, union
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  9543    0  9543    0     0   122k      0 --:--:-- --:--:-- --:--:--  121k
-Parsed with column specification:
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  9627    0  9627    0     0   159k      0 --:--:-- --:--:-- --:--:--  159k
+
+── Column specification ────────────────────────────────────────────────────────
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
   `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
@@ -121,7 +119,9 @@ cols(
   `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
   `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
 )
-Parsed with column specification:
+
+
+── Column specification ────────────────────────────────────────────────────────
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
   `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
@@ -137,6 +137,7 @@ cols(
   `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
   `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
 )
+
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -205,30 +206,82 @@ Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
-  |                                                                              |............                                                          |  18%
+Joining, by = "blid"
+  |                                                                              |...........                                                           |  16%
    inline R code fragments
 
-  |                                                                              |................                                                      |  24%
+  |                                                                              |...............                                                       |  21%
 label: indicatorR
-  |                                                                              |.....................                                                 |  29%
+  |                                                                              |..................                                                    |  26%
   ordinary text without R code
 
-  |                                                                              |.........................                                             |  35%
+  |                                                                              |......................                                                |  32%
 label: indicator7TI
-  |                                                                              |.............................                                         |  41%
+  |                                                                              |..........................                                            |  37%
   ordinary text without R code
 
-  |                                                                              |.................................                                     |  47%
+  |                                                                              |.............................                                         |  42%
 label: indicatorVWZ
-  |                                                                              |.....................................                                 |  53%
+  |                                                                              |.................................                                     |  47%
    inline R code fragments
 
-  |                                                                              |.........................................                             |  59%
+  |                                                                              |.....................................                                 |  53%
 label: plotakutinfiziert
-Quitting from lines 162-164 (Start.Rmd) 
-Error in validateCssUnit(sizeInfo$width) : 
-  CSS units must be a single-element numeric or character vector
-Calls: <Anonymous> ... <Anonymous> -> need_screenshot -> toHTML -> validateCssUnit
-In addition: There were 41 warnings (use warnings() to see them)
+  |                                                                              |.........................................                             |  58%
+  ordinary text without R code
 
-Execution halted
+  |                                                                              |............................................                          |  63%
+label: plotagefatality
+  |                                                                              |................................................                      |  68%
+  ordinary text without R code
+
+  |                                                                              |....................................................                  |  74%
+label: plotBLR
+  |                                                                              |.......................................................               |  79%
+  ordinary text without R code
+
+  |                                                                              |...........................................................           |  84%
+label: plotVWZR
+  |                                                                              |...............................................................       |  89%
+  ordinary text without R code
+
+  |                                                                              |..................................................................    |  95%
+label: renderothersites (with options) 
+List of 1
+ $ include: logi FALSE
+
+
+
+processing file: Bundeslaender.Rmd
+output file: Bundeslaender.knit.md
+
+
+Output created: Bundeslaender.html
+
+
+processing file: Kreise.Rmd
+output file: Kreise.knit.md
+
+
+Output created: Kreise.html
+
+
+processing file: Impressum.Rmd
+output file: Impressum.knit.md
+
+
+Output created: Impressum.html
+  |                                                                              |......................................................................| 100%
+  ordinary text without R code
+
+
+output file: Start.knit.md
+
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmprDnate/rmarkdown-str16f9661799611.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmprDnate/rmarkdown-str16f96586d9e6.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmprDnate/file16f9624983ee5html --highlight-style pygments --include-before-body /tmp/RtmprDnate/file16f96759985b8.html --include-after-body /tmp/RtmprDnate/file16f9674105812.html --css static/styles.css 
+
+Output created: Start.html
+There were 35 warnings (use warnings() to see them)
+> 
+> proc.time()
+   user  system elapsed 
+401.369   2.166 412.383 
