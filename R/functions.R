@@ -131,7 +131,7 @@ rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
   mutate("Fälle gesamt"= `Fälle_0-59`+ `Fälle_60-79`+ `Fälle_80+` , 
          "Todesfälle gesamt" = `Todesfälle_0-59`+ `Todesfälle_60-79`+ `Todesfälle_80+`,
          "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`, 
-         "itsfaelle"=`faelle_covid_aktuell`/`Infected`,
+         "itsfaelle"=`faelle_covid_aktuell`/lag(`Infected`, 14),
          'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`) 
 
 rki_alter_destatis <- rki %>% lazy_dt() %>%
