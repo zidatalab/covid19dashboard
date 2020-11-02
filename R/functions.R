@@ -326,6 +326,17 @@ SIR <- function(time, state, parameters, ngesamt, gamma) {
   })
 }
 
+SIHR <- function(time, state, parameters, ngesamt, gamma, delta, zeta) {
+  par <- as.list(c(state, parameters))
+  with(par, {
+    dS <- -beta/ngesamt * I * S
+    dI <- beta/ngesamt * I * S - gamma * I
+    dH <- delta * gamma * I - zeta * H
+    dR <- (1 - delta) * gamma * I + zeta * H
+    list(c(dS, dI, dH, dR))
+  })
+}
+
 sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   # Set parameters
   ## Infection parameter beta; gamma: recovery parameter
@@ -343,6 +354,27 @@ sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   # change to data frame and reformat
   out <- as.data.frame(out) %>% select(-time) %>% rename(S=1,I=2,R=3) %>%
     mutate_at(c("S","I","R"),round)
+  ## Show data
+  return(as_tibble(out))
+}
+
+sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, delta, zeta, horizont=365) {
+  # Set parameters
+  ## Infection parameter beta; gamma: recovery parameter
+  params <- c("beta" = R0*gamma)
+  ## Timeframe
+  times      <- seq(0, horizont, by = 1)
+  ## Initial numbers
+  init       <- c("S"=S, "I"=I, "H"=H, "R"=R)
+  ## Time frame
+  times      <- seq(0, horizont, by = 1)
+  
+  # Solve using ode (General Solver for Ordinary Differential Equations)
+  out <- ode(y = init, times = times, func = SIHR, parms = params, ngesamt=ngesamt, gamma=gamma, delta=delta, zeta=zeta)
+  
+  # change to data frame and reformat
+  out <- as.data.frame(out) %>% select(-time) %>% rename(S=1, I=2, H=3, R=4) %>%
+    mutate_at(c("S", "I", "H", "R"), round)
   ## Show data
   return(as_tibble(out))
 }
