@@ -37,7 +37,7 @@ rki_w_id <- bind_rows(rki_local %>% select(date,cases,deaths,age) %>% mutate(id=
             mutate(id=ifelse(round(id/1000000)==11,11000000,id))
 
 alldates <- date(min(rki_w_id$date)+days(seq(0,-as.numeric(min(rki_w_id$date)-max(rki_w_id$date)))))
-andata <- tibble(expand.grid(id=unique(rki_w_id$id) ,date=alldates )) %>% 
+andata <- tibble(expand.grid(id=unique(rki_w_id$id),date=alldates,age=unique(rki_w_id$age) )) %>% 
     left_join(.,rki_w_id) %>% mutate(cases=ifelse(is.na(cases),0,cases)) %>%
   select(ebene,id,name,date,age,cases)
 andata <- andata %>% filter(date>=(now()-days(30))) %>%
@@ -80,10 +80,14 @@ for (id in unique(andata$id)) {
     
 }
 
-
-
+# Special for Hessen
 hessen <- theresult %>%  mutate(kw=isoweek(date)) %>% filter(kw==43) %>% group_by(id,age) %>% 
   summarise(R_t=mean(R_t))   %>%
   left_join(strukturdaten_local) %>% mutate(KW=43) %>%  spread(age,R_t) %>% ungroup() %>% select(-id)
 
+hessen_incidence <- 
+  bind_rows(as_tibble(jsonlite::fromJSON("https://www.zidatasciencelab.de/covid19dashboard/data/tabledata/bundeslaender_table.json"))  %>% filter(Bundesland %in% c("Gesamt","Hessen")),
+  as_tibble(jsonlite::fromJSON("https://www.zidatasciencelab.de/covid19dashboard/data/tabledata/kreise_table.json")) %>% filter(Bundesland=="Hessen")) %>%
+  relocate(Bundesland,Kreis) %>% mutate(`Vorwarnzeit aktuell`=(ifelse(!is.na(`Vorwarnzeit lokal*`),`Vorwarnzeit lokal*`,`Vorwarnzeit aktuell`))) %>% select(-`Vorwarnzeit lokal*`)
 
+write.csv2(hessen_incidence,file = paste0("hessen_incidence_",as.character(date(now())-days(1)),".csv"))
