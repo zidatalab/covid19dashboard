@@ -37,7 +37,7 @@ rki_w_id <- bind_rows(rki_local %>% select(date,cases,deaths,age) %>% mutate(id=
             mutate(id=ifelse(round(id/1000000)==11,11000000,id))
 
 alldates <- date(min(rki_w_id$date)+days(seq(0,-as.numeric(min(rki_w_id$date)-max(rki_w_id$date)))))
-andata <- tibble(expand.grid(id=unique(rki_w_id$id) ,date=alldates )) %>% 
+andata <- tibble(expand.grid(id=unique(rki_w_id$id),date=alldates,age=unique(rki_w_id$age) )) %>% 
     left_join(.,rki_w_id) %>% mutate(cases=ifelse(is.na(cases),0,cases)) %>%
   select(ebene,id,name,date,age,cases)
 andata <- andata %>% filter(date>=(now()-days(30))) %>%
