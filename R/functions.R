@@ -849,3 +849,26 @@ plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
   labs(y=paste0("Vorwarnzeit in Tagen"))+
   theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
 
+### Plot aktuelle ITS-Faelle
+its_betten_plotdata <- divi_all %>%
+  filter(id==0) %>%
+  select(ICU_Betten, faelle_covid_aktuell, betten_belegt, daten_stand) %>%
+  pivot_longer(cols = c("ICU_Betten", "faelle_covid_aktuell", "betten_belegt"),
+               names_to = "Betten",
+               values_to = "Anzahl")
+verlauf_its <- ggplot(its_betten_plotdata %>%
+                        filter(Betten=="faelle_covid_aktuell"),
+                      aes(x=daten_stand, y=Anzahl, color=Betten)) +
+ geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
+  geom_line(size=2, show.legend = FALSE, color=zi_cols("ziblue")) +
+  # scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
+  theme_minimal() +
+  scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
+  # annotate("text", x = date("2020-03-16"), y = 22000, label = "Schulschließungen",color="black",size=3) +
+  # annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
+  # annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
+  labs(y="COVID-19-Fälle ITS", x = "Datum") +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
+  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
+write_json(its_betten_plotdata, "./data/plotdata/verlauf_its.json")
+
