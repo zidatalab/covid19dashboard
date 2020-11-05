@@ -727,7 +727,7 @@ rki_reformat_r_ts <- RKI_R %>%
   dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
 colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
 rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date)+5)
-zivwz_vs_rkir_verlauf <- inner_join(vorwarnzeitverlauf %>%
+zivwz_vs_rkir_verlauf <- full_join(vorwarnzeitverlauf %>%
                                       filter(id==0) %>%
                                       mutate(Vorwarnzeit=Vorwarnzeit), # _effektiv
                                     rki_reformat_r_ts,
