@@ -38,15 +38,15 @@ totalmysir_AG$S[2]-totalmysir_AG$S[3]
 myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% 
   filter(Neue_Faelle_hq>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
 
-
-aa <- c((divi_all%>%filter(id==0)%>%arrange(desc(daten_stand))%>%pull(faelle_covid_aktuell))[100:1],
+par(mfrow=c(1,3))
+aa <- c((divi_all%>%filter(id==0)%>%arrange(desc(daten_stand))%>%pull(faelle_covid_aktuell))[50:1],
         totalmysir_AG$Neue_Faelle_hq[1:50]*icu_days)
-plot(1:150, aa)
+plot(1:100, aa, main="Belegung ICU")
 
-aa <- c((offline_timeseries%>%filter(id==0)%>%arrange(desc(date))%>%pull(cases))[100:1],
+aa <- c((offline_timeseries%>%filter(id==0)%>%arrange(desc(date))%>%pull(cases))[50:1],
         totalmysir_AG$I[1:50]+totalmysir_AG$R[1:50])
-plot(1:150, aa)
+plot(1:100, aa, main="Gesamtfallzahl")
 
-aa <- c((offline_timeseries%>%filter(id==0)%>%arrange(desc(date))%>%pull(cases))[100:1]-(offline_timeseries%>%filter(id==0)%>%arrange(desc(date))%>%pull(recovered))[100:1],
-        totalmysir_AG$I[1:50])
-plot(1:150, aa)
+aa <- c((offline_timeseries%>%filter(id==0)%>%arrange(desc(date))%>%pull(cases))[50:1]-(offline_timeseries%>%filter(id==0)%>%arrange(desc(date))%>%pull(cases))[51:2],
+        totalmysir_AG$S[1:50]-totalmysir_AG$S[2:51])
+plot(1:100, aa, main="Neue Fälle")
