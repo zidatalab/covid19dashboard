@@ -12,7 +12,6 @@ output:
     logo: static/logo.png
     theme: bootstrap
     css: static/styles.css
-    # resize_reload: false
 ---
 
 ```{r setup, include=FALSE}
@@ -40,7 +39,7 @@ source("R/functions.R", encoding = "UTF-8")
 # load("test.RData")
 ```
 
-Row <!--{data-height=150}-->
+Row
 ------------------------------------------------------------------------
 
 ### **Zi-Frühindikatoren:** 
@@ -91,136 +90,76 @@ valueBox(faelle7tage100kEW,
         )
 ```
 
-<!-- Row  -->
-<!-- ------------------------------------------------------------------------ -->
-<!-- ### Neue Fälle pro Tag (7-Tages-Mittelwert)  -->
-
-<!-- ```{r} -->
-<!-- faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0) %>% pull(Faelle_letzte_7_Tage_pro_Tag) -->
-<!-- gesundheitsamtzahl <- 380 -->
-<!-- valueBox(faelleprotag, -->
-<!--          caption="Neue Fälle pro Tag (7-Tages-Durchschnitt)", -->
-<!--          icon = "fa-chart-line", -->
-<!--          color = case_when(faelleprotag < gesundheitsamtzahl*3 ~ "#B1C800", -->
-<!--                            faelleprotag >= gesundheitsamtzahl*3 &  -->
-<!--                              faelleprotag < gesundheitsamtzahl*4 ~ "#E49900", -->
-<!--                            faelleprotag >= gesundheitsamtzahl*4 ~ "#E40000") -->
-<!--         ) -->
-<!-- ``` -->
-
 Row 
 ------------------------------------------------------------------------
 
 ### Vorwarnzeit bei R=1,3 
 
 ```{r indicatorVWZ}
-vorwarnzeitaktuell <- vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit) # pull(Vorwarnzeit_effektiv)
+vorwarnzeitaktuell <- vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit)
 valueBox(paste(vorwarnzeitaktuell,"Tage"),
-         caption=paste0("Vorwarnzeit bis Erreichen der Kapazitätsgrenze \n effektive Vorwarnzeit: ", vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv), " Tage"), # "Effektive Vorwarnzeit bei R=1,3",
+         caption=paste0("Vorwarnzeit bis Erreichen der Kapazitätsgrenze \n effektive Vorwarnzeit: ", vorwarnzeitergebnis %>% filter(id==0) %>% pull(Vorwarnzeit_effektiv), " Tage"),
          icon = "fa-calendar-alt",
          color = case_when(vorwarnzeitaktuell > 81 ~ "#B1C800",
-                           vorwarnzeitaktuell <= 81 & # 60
+                           vorwarnzeitaktuell <= 81 & 
                              vorwarnzeitaktuell >= 22 ~ "#E49900",
-                           vorwarnzeitaktuell < 22 ~ "#E40000") # 14
+                           vorwarnzeitaktuell < 22 ~ "#E40000") 
         )
 ```
 
-Row <!--{data-height=260}-->
+Row
 ------------------------------------------------------------------------
 
 ### Legende:
 
 ***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
-<!-- *Neue Fälle pro Tag (7-Tages-Durchschnitt)*: Durchschnittliche Anzahl neuer Fälle pro Tag in den letzten 7 Meldetagen.\ -->
 ***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet. Wegen Meldeverzügen fehlen für einige Kreise/Bundesländer die Fallzahlen des Vortages. Fehlende Werte imputieren wir mit dem Mittelwert der vorhergehenden 6 Tage, um die 7-Tage-Inzidenz vergleichbarer zu machen. \
 ***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten (Annahme: für zukünftige COVID-19-Fälle stehen die derzeit freien Betten sowie bereits mit COVID-19-Fällen belegte Betten zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Wir berücksichtigen die aktuelle Altersstruktur der Infizierten und unterschiedliche Raten der Intensivfälle: 1,37% für Unter-60-Jährige, 10,2% für 60-bis-79-Jährige, sowie 18,3% für Über-80-Jährige. Diese Quoten wurden auf Basis der im Intensivregister gemeldeten Fälle mit Korrektur für Doppelzählungen auf Grund von Verlegungen (27%) sowie COVID-19-Charakteristiken aus der Literatur bestimmt. Die "effektive Vorwarnzeit" ist die Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken. Vgl. Methodenpapier.
 
-<!-- ***Effektive Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung von 25% der stationären Behandlungskapazitäten (Annahme 25% der Kapazität steht für COVID-19 zur Verfügung) ab heute (Annahme **Reaktionszeit von 21 Tagen bis Wirkung neuer Maßnahmen**), falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. -->
-
-
-
-<!-- Row {data-height=400} -->
-<!-- ------------------------------------------------------------------------ -->
-
-<!-- ### **Aktuelle Vorwarnzeiten** -->
-
-<!-- ```{r} -->
-<!-- ggplotly(plot_Anstiegtheor  + labs(x="R(t)")) %>% -->
-<!--    config(displayModeBar = FALSE, responsive=T) %>% -->
-<!-- layout(legend = list(x = 0.6, y = 0.9)) -->
-
-<!-- ``` -->
-
-<!-- Row {data-height=110} -->
-<!-- ------------------------------------------------------------------------ -->
-
-<!-- Dargestellt ist die theoretische Vorwarnzeit bis zur Überschreitung der Kapazität an Intensivbetten abhängig von der Reproduktionszahl R, ausgehend von der durchschnittlichen aktuellen Zahl an Neuinfektionen in Deutschland. Die Neuinfektionen wurden über einen Zeitraum von 7 Tagen gemittelt, um Schwankungen auszugleichen. Die effektive Vorwarnzeit ist geringer als die theoretische Vorwarnzeit. Hier wird eine Reaktionszeit von 21 Tagen angenommen, bis ein R-Wert erkannt und Maßnahmen wirksam implementiert sind. -->
-
-Row <!--{data-height=400}-->
+Row
 ------------------------------------------------------------------------
 ### **Entwicklung der akut Infizierten**
 
 ```{r plotakutinfiziert}
-ggplotly(akutinfiziert + labs(title="")) %>% # , width=800, height=400
+ggplotly(akutinfiziert + labs(title="")) %>% 
    config(displayModeBar = FALSE, responsive=TRUE)
 ```
 
-<!-- ### **Entwicklung der akut Infizierten** {.mobile} -->
-
-<!-- ```{r plotakutinfiziert_mobile, out.width = "100%"} -->
-<!-- ggplotly(akutinfiziert + labs(title=""), width=350, height=400) %>% #  -->
-<!--    config(displayModeBar = FALSE, responsive=TRUE) -->
-<!-- ``` -->
-
-Row <!--{data-height=100}-->
+Row
 ------------------------------------------------------------------------
 ### Erläuterung
 
 Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 15 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind. Die Zahl hatte am 6.4.2020 ihren bisherigen Höhepunkt in der ersten Welle von ca. 74 Tsd. Personen. 
 
-Row <!--{data-height=400}-->
+Row
 ------------------------------------------------------------------------
 
 ### **Entwicklung des Alters der Infizierten sowie des Verhältnis von ITS- und Todesfällen zu gemeldeten Fällen**
 
 ```{r plotagefatality}
-ggplotly(age_plot_fatality, tooltip = c("x", "y")) %>% # , width=800, height=400
+ggplotly(age_plot_fatality, tooltip = c("x", "y")) %>%
   layout(legend = list(orientation = "h", x = 0.1, y = 1.2), autosize=TRUE) %>%
   config(displayModeBar = FALSE, responsive=TRUE)
 ```
 
-<!-- ### **Entwicklung des Alters der Infizierten sowie des Verhältnis von ITS- und Todesfällen zu gemeldeten Fällen** {.mobile} -->
-
-<!-- ```{r plotagefatality_mobile} -->
-<!-- ggplotly(age_plot_fatality, tooltip = c("x", "y"), width=350, height=400) %>% #  -->
-<!--   layout(legend = list(orientation = "h", x = 0.1, y = 1.2), autosize=TRUE) %>% -->
-<!--   config(displayModeBar = FALSE, responsive=TRUE) -->
-<!-- ``` -->
-
-Row <!--{data-height=150}-->
+Row 
 ------------------------------------------------------------------------
 ### Erläuterung
 
 Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an der Zahl der akut Infizierten zwei Wochen davor (es dauert etwa 14 Tage, bis eine schwere COVID-19-Infektion intensivmedizinisch behandelt werden muss). Daten für ITS-Fälle liegen erst ab Ende April vor. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
-Row <!--{data-height=400}-->
+Row
 ------------------------------------------------------------------------
 ### **Entwicklung der Reproduktionszahl**
 
 ```{r plotBLR}
-ggplotly(plot_rwert_bund, tooltip = c("x", "y", "text")) %>% # , width=800, height=400
+ggplotly(plot_rwert_bund, tooltip = c("x", "y", "text")) %>%
   config(displayModeBar = FALSE, responsive=TRUE)
 
 ```
 
-<!-- ### **Entwicklung der Reproduktionszahl** {.mobile} -->
-
-<!-- ```{r plotBLR_mobile} -->
-<!-- mitigationsplot_blvergleich -->
-<!-- ``` -->
-
-Row <!--{data-height=100}-->
+Row
 ------------------------------------------------------------------------
 
 ### Erläuterung
@@ -228,46 +167,24 @@ Row <!--{data-height=100}-->
 Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene des Bundes. R beschreibt die mittlere Anzahl von Neu-Infektionen, die von einer Person im Laufe ihrer COVID-19-Infektion angesteckt werden. R wird aus den Meldedaten des RKI geschätzt.
 
 
-Row <!--{data-height=400}-->
+Row
 -----------------------------------------------------------------------
 
 ### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)**
 
 ```{r plotVWZR}
-ggplotly(vorwarnzeitverlauf_plot, tooltip = c("x", "y", "text")) %>% # , width=800, height=400
+ggplotly(vorwarnzeitverlauf_plot, tooltip = c("x", "y", "text")) %>%
   config(displayModeBar = FALSE, responsive=TRUE)
 ```
 
-<!-- ### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)** {.mobile} -->
-
-<!-- ```{r plotVWZR_mobile} -->
-<!-- ggplotly(vorwarnzeitverlauf_plot, tooltip = c("x", "y", "text"), width=350, height=400) %>% #  -->
-<!--   config(displayModeBar = FALSE, responsive=TRUE) -->
-<!-- ``` -->
-
-Row <!--{data-height=100}-->
+Row
 ------------------------------------------------------------------------
 
 ### Erläuterung
 
 Dargestellt ist die Entwicklung der Zi-Vorwarnzeit für die BRD, ebenso zum Vergleich die Entwicklung des (7-Tage-)R-Wertes, wie er vom RKI gemeldet wird.
 
-<!-- ### **Überblick zu den Kennzahlen der Bundesländer** {.mobile} -->
-
-<!-- ```{r tableBL_mobile} -->
-<!-- DT::datatable(rki_fallzahl_bl(), -->
-<!--               extensions = 'Responsive', -->
-<!--               options = list(paging = FALSE, -->
-<!--                              searching = FALSE, -->
-<!--                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'), -->
-<!--                              server = FALSE, -->
-<!--                              initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}"))) -->
-
-<!-- ``` -->
-
-
-
-Row <!--{data-height=250}-->
+Row
 ------------------------------------------------------------------------
 ### Methodischer Hinweis zum R-Wert:
 

@@ -21,7 +21,6 @@ Row
 
 ### **Überblick zu den aktuellen Kennzahlen der Bundesländer**
 
-<!-- <div style = "width:99%; height:ato; margin: 0px; padding-right:2rem;"> -->
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableBL}
 DT::datatable(bundeslaender_table,
@@ -35,7 +34,7 @@ DT::datatable(bundeslaender_table,
 ```
 </div>
 
-Row <!--{data-height=100}-->
+Row
 -----------------------------------------------------------------------
 
 ### **Überblick zum Verlauf des R-Wertes und der Vorwarnzeit in den Bundesländern**

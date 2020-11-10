@@ -17,8 +17,7 @@ output:
 ---
 
 ```{r jsonzide, include=FALSE}
-# Datenexport Vorbereitung
-
+# Datenexport für zi.de-Box
 frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                            "Neue Fälle pro Tag",
                                            "Vorwarnzeit aktuell in Tagen",
@@ -29,11 +28,9 @@ frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                       faelle7tage100kEW))
 
 write_json(frueindikatoren,"data/frueindikatoren.json")
-#write_json(rki_fallzahl_bl(),"data/bundeslaender.json")
-#write_json(theoretisch,"data/vorwarnzeiten.json")
 ```
 
-Row <!--{data-height=100}-->
+Row
 -----------------------------------------------------------------------
 
 ### **Impressum**
