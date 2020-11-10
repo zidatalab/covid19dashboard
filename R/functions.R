@@ -50,32 +50,14 @@ divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(d
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 aktuell <- tbl(conn,"params") %>% collect()
 trends <- tbl(conn,"trends")
-
-vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
-  mutate(
-    cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
-    cases=ifelse(is.na(cases_rm), cases, cases_rm),
-    Infected=cases-lag(cases,15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
-  mutate(Rt=(cases-lag(cases,10))/lag(Infected,10)) %>% filter(!is.na(Infected) & !is.na(Rt))  %>%
-  mutate(date=date(date),
-         Neue_faelle=cases-lag(cases),
-         Neue_faelle_Anstieg = Neue_faelle/lag(Neue_faelle),
-         Vorwarnzeit= log(16000/Neue_faelle)/log(Neue_faelle_Anstieg), # obsolete, we calculate it differently now
-         Situation = case_when(Vorwarnzeit<0 ~ "grün",
-                               (Vorwarnzeit>18 )  ~ "orange",
-                               (Vorwarnzeit>=0 & Vorwarnzeit<18)   ~ "rot"),
-         Situation=factor(Situation,levels=c("grün","orange","rot"),ordered=T),
-         show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
-
-# rki imputation because of delayed gesundheitsamt-meldungen
-rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)),maxdate=max(date(Meldedatum)))
-rkidays <- date(rkitimeframe$maxdate)-date(rkitimeframe$mindate)
-rkidates <- date(rkitimeframe$maxdate)-seq(0,rkidays-1)
+##### make data for downstream analysis/plots
+## rki imputation because of delayed gesundheitsamt-meldungen
+rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), maxdate=max(date(Meldedatum)))
 rkiidkreise <- unique(rki$IdLandkreis)
-rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+") # unique(rki$Altersgruppe)
-rkigender <- c("M", "W") # unique(rki$Geschlecht)
-Kreise_allvalues <- expand_grid(Meldedatum=rkitimeframe$maxdate, IdLandkreis=rkiidkreise) #, Geschlecht=rkigender, Altersgruppe=rkiagegroups)
-Kreise <- rki %>%  mutate(Meldedatum=date(Meldedatum)) %>%
+rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")
+Kreise_allvalues <- expand_grid(Meldedatum=rkitimeframe$maxdate, IdLandkreis=rkiidkreise)
+Kreise <- rki %>%
+  mutate(Meldedatum=date(Meldedatum)) %>%
   full_join(., Kreise_allvalues, by=c("Meldedatum", "IdLandkreis"))
 n_missingkreise <- 0
 for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g. Hamburg 02000)
@@ -99,10 +81,19 @@ for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g.
 }
 cat("Kreise ohne aktuelle Meldung: ", n_missingkreise, "\n")
 rki <- Kreise
-
-rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
-  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
-            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+## akut iinfizierte (X Tage infektiös nach Meldung)
+akutinfiziert_data <- brd_timeseries %>% filter(id==0) %>% collect() %>%
+  mutate(cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
+         cases=ifelse(is.na(cases_rm), cases, cases_rm),
+         Infected=cases-lag(cases, 15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
+  mutate(Rt=(cases-lag(cases, 10))/lag(Infected, 10)) %>%
+  filter(!is.na(Infected) & !is.na(Rt)) %>%
+  mutate(date=date(date)) %>%
+  filter(date>=date("2020-03-02")) %>%
+  select(date, Infected)
+agefatality_data <- rki %>% group_by(Meldedatum, Altersgruppe) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = T),
+            AnzahlTodesfall=sum(AnzahlTodesfall, na.rm=T), .groups="drop") %>% 
   arrange(Meldedatum, Altersgruppe) %>% collect() %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
          Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
@@ -117,12 +108,18 @@ rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   left_join(divi_all %>% filter(id==0) %>% collect(), by=c('Meldedatum'='daten_stand')) %>%
-  left_join(vorwarndata %>% select(date, Infected), by=c('Meldedatum'='date')) %>%
+  left_join(akutinfiziert_data %>% select(date, Infected), by=c('Meldedatum'='date')) %>%
   mutate("Fälle gesamt"= `Fälle_0-59`+ `Fälle_60-79`+ `Fälle_80+` , 
          "Todesfälle gesamt" = `Todesfälle_0-59`+ `Todesfälle_60-79`+ `Todesfälle_80+`,
          "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`, 
          "itsfaelle"=`faelle_covid_aktuell`/lag(`Infected`, 14),
-         'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`) 
+         'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`) %>%
+  filter(Meldedatum>=as_date("2020-03-01")) %>%
+  select(Meldedatum,
+         "Alter 60+ an Fällen"=`60+`,
+         "ITS-Fälle an Fällen"=`itsfaelle`, 
+         "Todesfälle an Fällen"= `Todesfälle`) %>% 
+  gather(Merkmal, Anteil, 2:4) %>% mutate(Anteil=round(Anteil*100,digits=2))
 
 rki_alter_destatis <- rki %>% lazy_dt() %>%
   group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately... but much faster with dtplyr!
@@ -242,6 +239,11 @@ rki_cases_infected <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
          Infected6079=cases6079-lag(cases6079,15),
          Infected80=cases80-lag(cases80,15),
          Infected2=Infected059+Infected6079+Infected80)
+
+##### write data to jsons
+write_json(akutinfiziert_data, "./data/plotdata/akutinfiziert.json")
+write_json(agefatality_data, "./data/plotdata/agefatality.json")
+
 ## delay für fälle-->icu:
 rkidivi <- rki_cases_infected %>% left_join(., divi_all %>% filter(id==0), by=c("Meldedatum"="daten_stand")) %>% drop_na()
 lengthrkidivi <- dim(rkidivi)[1]
@@ -568,23 +570,14 @@ plot_rwert_bund <- ggplot(plot_rwert_bund_data,
 write_json(plot_rwert_bund_data, "./data/plotdata/plot_rwert_bund.json")
 
 ### Plot on Age of cases and case fatality 
-age_plot_fatality_data <- rki_divi_n_alter %>%
-  filter(Meldedatum>=as_date("2020-03-01")) %>%
-  select(Meldedatum,
-         "Alter 60+ an Fällen"=`60+`,
-         "ITS-Fälle an Fällen"=`itsfaelle`, 
-         "Todesfälle an Fällen"= `Todesfälle`) %>% 
-  gather(Merkmal,Anteil,2:4) %>% mutate(Anteil=round(Anteil*100,digits=2))
-age_plot_fatality <- ggplot(age_plot_fatality_data,
-                            aes(x=Meldedatum,y=Anteil,color=Merkmal)) +
-  # geom_smooth(span=0.1, se=FALSE, n=tally(rki_divi_n_alter)/3) +
+agefatality_plot <- ggplot(agefatality_data,
+                            aes(x=Meldedatum, y=Anteil, color=Merkmal)) +
   geom_line() +
   theme_minimal() + 
   scale_color_zi() +
-  labs(y="Verhältnis in %",x="Datum",color="") + 
+  labs(y="Verhältnis in %", x="Datum", color="") + 
   scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
-  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
-write_json(age_plot_fatality_data, "./data/plotdata/age_plot_fatality.json")
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 #### Einzelne Länder # Hier neue Datenreihe Vorwarnzeit!
 range_r <- range(myblmitidata$R_Mean)
@@ -623,7 +616,7 @@ write_json(mitigationsplot_bl_data,
            "./data/plotdata/mitigationsplot_bl.json")
 
 ### Akute infizierte Fälle
-akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
+akutinfiziert <- ggplot(akutinfiziert_data,aes(x=date,y=Infected,group=1)) +
   geom_area(fill="#0086C530") +
   # geom_vline(aes(xintercept=date("2020-03-16")),color="black",linetype ="dotted") +
   # geom_vline(aes(xintercept=date("2020-03-22")),color="black",linetype ="dotted") +
@@ -637,9 +630,8 @@ akutinfiziert <- ggplot(vorwarndata,aes(x=date,y=Infected,group=1)) +
   # annotate("text", x = date("2020-03-22"), y = 42000, label = "Kontakteinschränkungen",color="black",size=3) +
   # annotate("text", x = date("2020-04-17"), y = 43500, label = "Lockerungsbeschluss",color="black",size=3) +
   labs(y="Anzahl akut infiziert",x = "Datum") +
-  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank()) +
+  theme(panel.grid.major.x =element_blank(), panel.grid.minor.x=element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
-write_json(vorwarndata %>% select(date, Infected), "./data/plotdata/akutinfiziert.json")
 
 ## plotfunction for vorwarnzeitverlauf brd
 # change to function to avoid full breaks
