@@ -18,33 +18,20 @@ library(stringr)
 library(ggplot2)
 library(dtplyr)
 
-# parameters from literature
-icu_days <- 10.1 # aok/divi paper lancet
+##### parameters from literature
+## AOK/DIVI/Busse Paper Lancet (Case characteristics...)
+icu_days <- 10.1
+busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896,
+                                             "Hosp6079"=1621+2158,
+                                             "Hosp80"=3346)
+## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
-                             "60 bis 80"=21.7,	"80+"=6.8)/100 # destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
-
-## icu quoten nach busse-lancetpaper, divi-reports und rki-fallzahlen
-share_icu <- (19632+1296)/429181  # divi intensivregister 25.10.2020 and rki daily report 25.10.2020 # (14 days delay?)
-divi_behandlungen_aktuell <- (19632+1296)/1.27 # (16961+237)/1.27# divi intensivregister 25.10.2020 # SIEHE UNTEN rki_cases_infected
-divi_abgeschlossen <- 19632/1.27 # 16961/1.27 # divi report 25.10.2020
-deaths_divi <- 4500 # divi report 25.10.2020
-busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896, "Hosp6079"=1621+2158, "Hosp80"=3346)
-busselancet_altersgruppen_deaths <- tibble("Mort059"=0.007*2474+0.277*422,
-                                           "Mort6079"=0.054*1239+0.146*1623+0.455*382+0.626*535,
-                                           "Mort80"=0.338*2958+0.722*388)
-# mortalität icu nach divi ist vergleichbar zu mortalität KH nach busse:
-deathrate_icu <- deaths_divi/divi_abgeschlossen
-deathrate_busselancet <- sum(busselancet_altersgruppen_deaths)/sum(busselancet_altersgruppen_hospital)
-# deshalb hochrechnung altersverteilung mortalität gesamt von divi auf icu möglich:
+                             "60 bis 80"=21.7,	"80+"=6.8)/100
+## icu-quoten nach altersgruppe
+divi_behandlungen_aktuell <- (23782+3059)/1.27 # divi intensivregister 10.11.2020
 icu_altersgruppen <- divi_behandlungen_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
 
-# divi_diff_behandlungen <- divi_behandlungen_aktuell-(9300+2189)/1.27 # stichtag 1. mai ende erste welle
-# deaths_divi_diff <- deaths_divi-3512 # stichtag
-# # deshalb hochrechnung altersverteilung mortalität gesamt von divi auf icu möglich:
-# icu_altersgruppen_diff <- divi_diff_behandlungen*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
-
-
-# Connect to DB
+##### Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                           host   = Sys.getenv("DBHOST"),
@@ -54,9 +41,16 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                           port     = 5432,
                           sslmode = 'require')
 
-# get data
+##### get data
 ## get data from db
 brd_timeseries <- tbl(conn,"brd_timeseries")
+rki <- tbl(conn,"rki") %>% collect()
+divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
+divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
+strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
+aktuell <- tbl(conn,"params") %>% collect()
+trends <- tbl(conn,"trends")
+
 vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
   mutate(
     cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
@@ -72,9 +66,6 @@ vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
                                (Vorwarnzeit>=0 & Vorwarnzeit<18)   ~ "rot"),
          Situation=factor(Situation,levels=c("grün","orange","rot"),ordered=T),
          show_val=wday(date)==3) %>% filter(date>=date("2020-03-02"))
-prognosen <- tbl(conn,"prognosen") %>% filter((Tage<=28) | Tage %in% c(30,60,90,120,150,180))
-brdprognosen <- tbl(conn,"prognosen") %>% filter((Tage<=90) & ((ebene=="Kreis") | (name=="Berlin")) )
-rki <- tbl(conn,"rki") %>% collect()
 
 # rki imputation because of delayed gesundheitsamt-meldungen
 rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)),maxdate=max(date(Meldedatum)))
@@ -108,8 +99,7 @@ for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g.
 }
 cat("Kreise ohne aktuelle Meldung: ", n_missingkreise, "\n")
 rki <- Kreise
-divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
-divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
+
 rki_divi_n_alter <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
@@ -224,19 +214,7 @@ rki_alter_bund <- rki %>%
               values_from = c("Fälle","Todesfälle"),
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum))
-strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
-aktuell <- tbl(conn,"params") %>% collect()
-trends <- tbl(conn,"trends")
-brd_testungen <- tbl(conn,"brd_testungen") %>% collect()
-Datenstand <- tbl(conn,"Stand") %>% collect()
-# bundprognose <- prognosen %>% filter(id==0) %>% collect() %>%
-#   filter(Szenario!="Trend D") %>%
-#   mutate(Szenario=ifelse(Szenario=="Trend lokal","aktueller Trend",Szenario),
-#          Szenario=ifelse(Szenario=="Worst Case","Worst Case (R=1,3)",Szenario),
-#          Datum=as.Date(Datum,format="%d.%m.%Y")) %>%
-#   filter(Datum<date(max(Datum)+weeks(12)))
-# labordaten <- tbl(conn, "Labordaten")
-## 
+
 rki_cases_infected <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
@@ -308,12 +286,6 @@ RKI_R <- tryCatch(
   }
 )
 Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv") # fix for break
-rkiall <-  rki %>% select(AnzahlFall,AnzahlTodesfall,Meldedatum,Datenstand,NeuerFall,NeuerTodesfall) %>%
-  mutate(NeuerFall=ifelse(NeuerFall==1,"Neue Meldung","Alte Meldung")) %>%
-  group_by(Meldedatum,NeuerFall) %>% summarise(AnzahlFall=sum(AnzahlFall,na.rm=T), .groups="drop") %>%
-  collect() %>%
-  mutate(Meldedatum=date(Meldedatum),
-         Wochenende=ifelse(wday(Meldedatum)==1 |wday(Meldedatum)==7,"Wochenende",NA))
 
 # Hilfsfunktionen
 SIR <- function(time, state, parameters, ngesamt, gamma) {
@@ -323,17 +295,6 @@ SIR <- function(time, state, parameters, ngesamt, gamma) {
     dI <- beta/ngesamt * I * S - gamma * I
     dR <- gamma * I
     list(c(dS, dI, dR))
-  })
-}
-
-SIHR <- function(time, state, parameters, ngesamt, gamma, delta, zeta) {
-  par <- as.list(c(state, parameters))
-  with(par, {
-    dS <- -beta/ngesamt * I * S
-    dI <- beta/ngesamt * I * S - gamma * I
-    dH <- delta * gamma * I - zeta * H
-    dR <- (1 - delta) * gamma * I + zeta * H
-    list(c(dS, dI, dH, dR))
   })
 }
 
@@ -358,44 +319,7 @@ sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   return(as_tibble(out))
 }
 
-sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, delta, zeta, horizont=365) {
-  # Set parameters
-  ## Infection parameter beta; gamma: recovery parameter
-  params <- c("beta" = R0*gamma)
-  ## Timeframe
-  times      <- seq(0, horizont, by = 1)
-  ## Initial numbers
-  init       <- c("S"=S, "I"=I, "H"=H, "R"=R)
-  ## Time frame
-  times      <- seq(0, horizont, by = 1)
-  
-  # Solve using ode (General Solver for Ordinary Differential Equations)
-  out <- ode(y = init, times = times, func = SIHR, parms = params, ngesamt=ngesamt, gamma=gamma, delta=delta, zeta=zeta)
-  
-  # change to data frame and reformat
-  out <- as.data.frame(out) %>% select(-time) %>% rename(S=1, I=2, H=3, R=4) %>%
-    mutate_at(c("S", "I", "H", "R"), round)
-  ## Show data
-  return(as_tibble(out))
-}
-
 # Funktion zur Vorwarnzeit bei festem Rt
-vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
-  gamma=1/10
-  infected=faelle/gamma
-  recovered= cases-infected
-  mysir <- sirmodel(ngesamt = ngesamt,
-                    S = ngesamt - infected - recovered,
-                    I = infected,
-                    R = recovered,
-                    R0 = Rt,
-                    gamma = gamma,
-                    horizont = 180) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
-  myresult <- NA
-  myresult <- mysir %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle>=Kapazitaet) %>% head(1) %>% pull(Tage)
-  return(myresult)
-}
-
 vorwarnzeit_berechnen_AG <- function(ngesamt,cases,faelle,Kapazitaet_Betten,Rt=1.3, icurate_altersgruppen){
   # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 3 (AG 0-59, 60-79, 80+)
   gamma <- 1/10
@@ -495,9 +419,7 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
          R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-         Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
-         Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
-         Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
+         Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days)
 
 myTage <- vorwarnzeitergebnis %>% rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_AG(c(.$EW059, .$EW6079, .$EW80),
@@ -574,9 +496,7 @@ for (h in 0:horizont) {
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-           Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
-           Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
-           Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
+           Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days) %>%
   filter(id<=16)
 
   myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
@@ -748,31 +668,6 @@ vorwarnzeitverlauf_plot <- ggplot()
     theme(legend.position='none') #)
 write_json(zivwz_vs_rkir_verlauf, "./data/plotdata/vorwarnzeitverlauf_plot.json")
 
-#  functions for data generation
-
-make_theoretischedaten <- function(myid=0) {
-fall <- vorwarnzeitergebnis %>% filter(id==myid)
-Rt <- seq(1.1, 2, 0.1)
-Vorwarnzeit <- rep(0, length(Rt))
-Anstieg <- rep(0, length(Rt))
-Reaktionszeit <- 21
-Belastungsgrenze <- fall$Kapazitaet
-gamma=1/10
-for (i in seq(Rt)) {
-  mysir <- sirmodel(ngesamt = fall$Einwohner,
-                    S = fall$Einwohner - fall$cases,
-                    I = (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
-                    R = fall$cases - (fall$Faelle_letzte_7_Tage_pro_Tag)/gamma,
-                    R0 = Rt[i],
-                    gamma =gamma,
-                    horizont = 365) %>% mutate(Neue_Faelle=I-lag(I)+R-lag(R))
-  Vorwarnzeit[i] <- which.max(mysir$Neue_Faelle>Belastungsgrenze)
-}
-as_tibble(cbind(Rt,Vorwarnzeit)) %>%
-  mutate(id=myid,Effektive_Vorwarnzeit=pmax(0, Vorwarnzeit-Reaktionszeit)) %>%
-  select(id,Rt,Vorwarnzeit,Effektive_Vorwarnzeit)
-}
-
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17) %>%
   mutate(cases_je_100Tsd=round(cases/(Einwohner/100000)),
@@ -819,35 +714,6 @@ kreise_table <- kreise_table %>%
 write_json(kreise_table, "./data/tabledata/kreise_table.json")
 
 # plots direkt
-
-Auslastungsplot<- ggplot(vorwarnzeitergebnis %>% filter(id<17),
-                         aes(x=forcats::fct_reorder(name,Auslastung_durch_Grenze),y=Auslastung_durch_Grenze,
-                             fill=name=="Gesamt")) +
-  geom_bar(stat="identity",show.legend = F) + coord_flip() +
-  scale_fill_zi() + labs(subtitle="Auslastung ICU",x="",y="") +
-  theme_minimal() +
-  geom_text(aes(y=5,label=paste0(round(Auslastung_durch_Grenze),"%")),size=2.5,color="white") +
-  scale_y_continuous(breaks=seq(0,60,20), limits=c(0,65),
-                     labels =  function(x) paste0(x,"%"))
-Vorwarnzeitplot <- ggplot(vorwarnzeitergebnis %>% filter(id<17),aes(x=forcats::fct_reorder(name,Auslastung_durch_Grenze),y=Vorwarnzeit)) +
-  geom_bar(stat="identity",show.legend = F,fill=zi_cols("ziorange")) + coord_flip() +
-  geom_hline(yintercept = 0,color="black") +
-  geom_text(aes(y=5,label=paste(Vorwarnzeit,"Tage")),size=2.5,color="white") +
-  labs(subtitle="Vorwarnzeit ab Interventionsgrenze",x="",y="") + theme_zi() +
-  scale_y_continuous(breaks=seq(0,50,5) #, labels =  function(x) paste0(x," Tage")
-  )
-
-mycolorbreaks <- c(14,30,90)
-plotdata_Anstieg <- make_theoretischedaten(myid=0) %>% select(Rt,Vorwarnzeit,"Effektive Vorwarnzeit"=Effektive_Vorwarnzeit) %>% gather(Merkmal,Wert,2:3) # %>% filter(`Effektive Vorwarnzeit`>=0) 
-plotdata_Anstieg <- plotdata_Anstieg %>% mutate(Wert = replace(Wert, Wert < 0, 0))
-plot_Anstiegtheor <- ggplot(plotdata_Anstieg, aes(x=Rt, y=Wert,color=Merkmal)) +
-  geom_line(size=1.5, show.legend = F)+
-  geom_point(size=3, show.legend = F)+
-  geom_hline(yintercept = 0) +
-  theme_minimal() + scale_color_zi() +
-  scale_x_continuous(labels =  function(x) paste0(format(x,decimal.mark = ",")),breaks=seq(1.1, 2, 0.1))  +
-  labs(y=paste0("Vorwarnzeit in Tagen"))+
-  theme(panel.grid.major.x =   element_blank(),panel.grid.minor.x =   element_blank())
 
 ### Plot aktuelle ITS-Faelle
 its_betten_plotdata <- divi_all %>%
