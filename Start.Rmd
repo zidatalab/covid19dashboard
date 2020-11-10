@@ -173,7 +173,7 @@ Row
 ### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)**
 
 ```{r plotVWZR}
-ggplotly(vorwarnzeitverlauf_plot, tooltip = c("x", "y", "text")) %>%
+ggplotly(rki_r_und_zi_vwz_plot, tooltip = c("x", "y", "text")) %>%
   config(displayModeBar = FALSE, responsive=TRUE)
 ```
 

@@ -47,112 +47,112 @@ Row {.tabset .tabset-fade data-height=500}
 ### Schleswig-Holstein {#bl01}
 
 ```{r plotsBL01}
-mitigationsplot_bl(1) %>%
+bundeslaender_r_und_vwz_plot(1) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Hamburg {#bl02}
     
 ```{r plotsBL02}
-mitigationsplot_bl(2) %>%
+bundeslaender_r_und_vwz_plot(2) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Niedersachsen {#bl03}
 
 ```{r plotsBL03}
-mitigationsplot_bl(3) %>%
+bundeslaender_r_und_vwz_plot(3) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Bremen {#bl04}
     
 ```{r plotsBL04}
-mitigationsplot_bl(4) %>%
+bundeslaender_r_und_vwz_plot(4) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Nordrhein-Westfalen {#bl05}
 
 ```{r plotsBL05}
-mitigationsplot_bl(5) %>%
+bundeslaender_r_und_vwz_plot(5) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Hessen {#bl06}
     
 ```{r plotsBL06}
-mitigationsplot_bl(6) %>%
+bundeslaender_r_und_vwz_plot(6) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Rheinland-Pfalz {#bl07}
 
 ```{r plotsBL07}
-mitigationsplot_bl(7) %>%
+bundeslaender_r_und_vwz_plot(7) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Baden-Württemberg {#bl08}
     
 ```{r plotsBL08}
-mitigationsplot_bl(8) %>%
+bundeslaender_r_und_vwz_plot(8) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Bayern {#bl09}
 
 ```{r plotsBL09}
-mitigationsplot_bl(9) %>%
+bundeslaender_r_und_vwz_plot(9) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Saarland {#bl10}
     
 ```{r plotsBL10}
-mitigationsplot_bl(10) %>%
+bundeslaender_r_und_vwz_plot(10) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Berlin {#bl11}
 
 ```{r plotsBL11}
-mitigationsplot_bl(11) %>%
+bundeslaender_r_und_vwz_plot(11) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Brandenburg {#bl12}
     
 ```{r plotsBL12}
-mitigationsplot_bl(12) %>%
+bundeslaender_r_und_vwz_plot(12) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Mecklenburg-Vorpommern {#bl13}
 
 ```{r plotsBL13}
-mitigationsplot_bl(13) %>%
+bundeslaender_r_und_vwz_plot(13) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Sachsen {#bl14}
     
 ```{r plotsBL14}
-mitigationsplot_bl(14) %>%
+bundeslaender_r_und_vwz_plot(14) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
 ### Sachsen-Anhalt {#bl15}
 
 ```{r plotsBL15}
-mitigationsplot_bl(15) %>%
+bundeslaender_r_und_vwz_plot(15) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```   
  
 ### Thüringen {#bl16}
     
 ```{r plotsBL16}
-mitigationsplot_bl(16) %>%
+bundeslaender_r_und_vwz_plot(16) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
