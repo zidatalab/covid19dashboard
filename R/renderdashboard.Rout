@@ -101,14 +101,14 @@ The following objects are masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 28386  100 28386    0     0   225k      0 --:--:-- --:--:-- --:--:--  225k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 30112  100 30112    0     0   205k      0 --:--:-- --:--:-- --:--:--  205k
 
 ── Column specification ────────────────────────────────────────────────────────
 cols(
   `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
   `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glä` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glät` = col_double(),
+  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
+  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glätttung)` = col_double(),
   `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
   `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
   `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
@@ -259,11 +259,11 @@ Output created: Impressum.html
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpQF9VTG/rmarkdown-strb4474ec65e4f.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpQF9VTG/rmarkdown-strb44723dfadd5.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpQF9VTG/fileb44750c6e89html --highlight-style pygments --include-before-body /tmp/RtmpQF9VTG/fileb4477becf1c7.html --include-after-body /tmp/RtmpQF9VTG/fileb447b4d18d8.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpeLpurx/rmarkdown-str1ed7447281c1.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpeLpurx/rmarkdown-str1ed74190ab5aa.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpeLpurx/file1ed7460cc54f9html --highlight-style pygments --include-before-body /tmp/RtmpeLpurx/file1ed747b18bbc8.html --include-after-body /tmp/RtmpeLpurx/file1ed742d61d3ed.html --css static/styles.css 
 
 Output created: Start.html
 There were 35 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-449.129   2.624 480.124 
+439.233   2.691 472.195 
