@@ -1,3 +1,23 @@
+# Packages
+library(DT)
+library(DBI)
+library(forcats)
+library(EpiEstim)
+library(plotly)
+library(zicolors)
+library(deSolve)
+library(jsonlite)
+library(readxl)
+library(data.table)
+library(dplyr)
+library(glue)
+library(lubridate)
+library(tidyverse)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(dtplyr)
+
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
                        dbname = Sys.getenv("DBNAME"),
@@ -28,10 +48,15 @@ mort_ag_plot <- ggplot(mort_ag,
                        aes(x=Kalenderwoche, y=`Mortalität`*100, color=Altersgruppe)) +
   geom_smooth(se=FALSE) +
   geom_point() +
-  theme_zi() +
+  theme_zi_titels() +
+  theme(#axis.title.y = element_blank(),
+        legend.position="top",
+        legend.title = element_blank()) +
   scale_color_zi() +
   labs(title="Mortalität der COVID-19-Fälle",
-       subtitle="Anteil Todesfälle nach Alter und Kalenderwoche in Prozent", fill="")
+       # subtitle = "Anteil Todesfälle in Prozent",
+       y="Mortalität in %", 
+       x="Kalenderwoche")
   # scale_color_manual(values = c("#CCE7F3", "#0086C5", "#006596"), name = "Altersgruppe")
 mort_ag_plot
 
