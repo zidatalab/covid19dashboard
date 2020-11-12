@@ -53,9 +53,9 @@ mort_ag_plot <- ggplot(mort_ag,
         legend.position="top",
         legend.title = element_blank()) +
   scale_color_zi() +
-  labs(title="Mortalität der COVID-19-Fälle",
+  labs(title="Sterblichkeit der COVID-19-Fälle",
        # subtitle = "Anteil Todesfälle in Prozent",
-       y="Mortalität in %", 
+       y="Fallsterblichkeit in %", 
        x="Kalenderwoche")
   # scale_color_manual(values = c("#CCE7F3", "#0086C5", "#006596"), name = "Altersgruppe")
 mort_ag_plot
