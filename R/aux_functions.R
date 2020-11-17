@@ -65,7 +65,7 @@ sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, qa, delta, nu, horizont=365
 vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt, Kapazitaet_Betten, Rt=1.3, icurate_altersgruppen){
   # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 3 (AG 0-59, 60-79, 80+)
   gamma <- 1/infektperiode # contagious period
-  delta <- 1/14 #iculag # /14 # time till icu
+  delta <- 1/14 # iculag # time till icu
   nu <- 1/icu_days # time in icu
   infected <- akutinfiziert-icubelegt
   recovered <- cases-infected-icubelegt

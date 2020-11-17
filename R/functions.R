@@ -284,6 +284,7 @@ autocors <- rep(0, lengthrkidivi-autocorhorizont+1)
 for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(lengthrkidivi-autocorhorizont)], rkidivi$faelle_covid_aktuell[(1+lag):(lengthrkidivi-autocorhorizont+lag)]) }
 iculag <- which.max(autocors)-1
 # iculag <- 0
+# iculag <- 14
 cases_altersgruppen <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
