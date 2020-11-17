@@ -22,6 +22,7 @@ library(dtplyr)
 icu_days <- 10.1 # aok/divi paper lancet
 altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
                              "60 bis 80"=21.7,	"80+"=6.8)/100 # destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
+infektperiode <- 14 # rki/quarantäne
 
 ## icu quoten nach busse-lancetpaper, divi-reports und rki-fallzahlen
 dividay <- as_date("2020-11-16")
@@ -62,7 +63,7 @@ vorwarndata <- brd_timeseries %>% filter(id==0) %>% collect()  %>%
   mutate(
     cases_rm=floor(zoo::rollmean(cases, 7, fill=NA)),
     cases=ifelse(is.na(cases_rm), cases, cases_rm),
-    Infected=cases-lag(cases,15)) %>% # Wg. 10 Tage infektiös und symptomatisch + 5 Tage asymptomatisch
+    Infected=cases-lag(cases,infektperiode)) %>% # 
   mutate(Rt=(cases-lag(cases,10))/lag(Infected,10)) %>% filter(!is.na(Infected) & !is.na(Rt))  %>%
   mutate(date=date(date),
          Neue_faelle=cases-lag(cases),
@@ -261,9 +262,9 @@ rki_cases_infected <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
          deaths059=cumsum(`Todesfälle_0-59`),
          deaths6079=cumsum(`Todesfälle_60-79`),
          deaths80=cumsum(`Todesfälle_80+`)) %>%
-  mutate(Infected059=cases059-lag(cases059,15),
-         Infected6079=cases6079-lag(cases6079,15),
-         Infected80=cases80-lag(cases80,15),
+  mutate(Infected059=cases059-lag(cases059,12),
+         Infected6079=cases6079-lag(cases6079,12),
+         Infected80=cases80-lag(cases80,12),
          Infected2=Infected059+Infected6079+Infected80)
 ## delay für fälle-->icu:
 rkidivi <- rki_cases_infected %>% left_join(., divi_all %>% filter(id==0), by=c("Meldedatum"="daten_stand")) %>% drop_na()
@@ -278,7 +279,7 @@ cases_ag <- rki_cases_infected %>% filter(Meldedatum==dividay-iculag) %>% # filt
   select(cases059, cases6079, cases80) # mit 14 tage verzug abgeschlossene behandlungen
 # cases_ag_stichtag <- rki_cases_infected %>% filter(Meldedatum==as_date("2020-05-01")-iculag) %>% # hier je nach divi datum? 2020-10-25
 #   select(cases059, cases6079, cases80)
-icurate_altersgruppen <- icu_altersgruppen/cases_ag
+icurate_altersgruppen_busse <- icu_altersgruppen/cases_ag
 # icurate_altersgruppen_diff <- icu_altersgruppen_diff/(cases_ag-cases_ag_stichtag)
 # icurate_altersgruppen <- tibble("Hosp059"=0.0191, "Hosp6079"=0.091, "Hosp80"=0.145)
 
@@ -327,13 +328,13 @@ SIR <- function(time, state, parameters, ngesamt, gamma) {
   })
 }
 
-SIHR <- function(time, state, parameters, ngesamt, gamma, delta, zeta) {
+SIHR <- function(time, state, parameters, ngesamt, gamma, qa, delta, nu) {
   par <- as.list(c(state, parameters))
   with(par, {
-    dS <- -beta/ngesamt * I * S
-    dI <- beta/ngesamt * I * S - gamma * I
-    dH <- delta * gamma * I - zeta * H
-    dR <- (1 - delta) * gamma * I + zeta * H
+    dS <- -beta/ngesamt * (I+H) * S
+    dI <- beta/ngesamt * (I+H) * S - (1-qa) * gamma * I - qa * delta * I
+    dH <- qa * delta * I - nu * H
+    dR <- (1-qa) * gamma * I + nu * H
     list(c(dS, dI, dH, dR))
   })
 }
@@ -359,10 +360,10 @@ sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   return(as_tibble(out))
 }
 
-sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, delta, zeta, horizont=365) {
+sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, qa, delta, nu, horizont=365) {
   # Set parameters
   ## Infection parameter beta; gamma: recovery parameter
-  params <- c("beta" = R0*gamma)
+  params <- c("beta" = R0*((1-qa)*gamma+qa*delta))
   ## Timeframe
   times      <- seq(0, horizont, by = 1)
   ## Initial numbers
@@ -371,7 +372,7 @@ sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, delta, zeta, horizont=365) 
   times      <- seq(0, horizont, by = 1)
   
   # Solve using ode (General Solver for Ordinary Differential Equations)
-  out <- ode(y = init, times = times, func = SIHR, parms = params, ngesamt=ngesamt, gamma=gamma, delta=delta, zeta=zeta)
+  out <- ode(y = init, times = times, func = SIHR, parms = params, ngesamt=ngesamt, gamma=gamma, qa=qa, delta=delta, nu=nu)
   
   # change to data frame and reformat
   out <- as.data.frame(out) %>% select(-time) %>% rename(S=1, I=2, H=3, R=4) %>%
@@ -382,7 +383,7 @@ sihrmodel<- function(ngesamt, S, I, H, R, R0, gamma, delta, zeta, horizont=365) 
 
 # Funktion zur Vorwarnzeit bei festem Rt
 vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
-  gamma=1/10
+  gamma=1/infektperiode
   infected=faelle/gamma
   recovered= cases-infected
   mysir <- sirmodel(ngesamt = ngesamt,
@@ -397,24 +398,30 @@ vorwarnzeit_berechnen <- function(ngesamt,cases,faelle,Kapazitaet,Rt=1.3){
   return(myresult)
 }
 
-vorwarnzeit_berechnen_AG <- function(ngesamt,cases,faelle,Kapazitaet_Betten,Rt=1.3, icurate_altersgruppen){
+vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt, Kapazitaet_Betten, Rt=1.3, icurate_altersgruppen){
   # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 3 (AG 0-59, 60-79, 80+)
-  gamma <- 1/10
-  infected <- faelle/gamma
-  recovered <- cases-infected
+  gamma <- 1/infektperiode # 1/15? # contagious period
+  delta <- 1/14 # time till icu
+  nu <- 1/icu_days # time in icu
+  infected <- akutinfiziert-icubelegt
+  recovered <- cases-infected-icubelegt
   mysir_AG <- vector("list", 3)
   for (i in 1:3) {
-    mysir <- sirmodel(ngesamt = ngesamt[i],
-                      S = ngesamt[i] - infected[i] - recovered[i],
+    mysir <- sihrmodel(ngesamt = ngesamt[i],
+                      S = ngesamt[i] - infected[i] - icubelegt[i] - recovered[i],
                       I = infected[i],
+                      H=icubelegt[i],
                       R = recovered[i],
                       R0 = Rt,
                       gamma = gamma,
-                      horizont = 180) %>% mutate(Neue_Faelle_hq=icurate_altersgruppen[i]*(I-lag(I)+R-lag(R)))
+                      qa = icurate_altersgruppen[i],
+                      delta = delta,
+                      nu = nu,
+                      horizont = 180) %>% mutate(Neue_ICU_Faelle=H-lag(H))
     mysir_AG[[i]] <- mysir
   }
-  myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(Neue_Faelle_hq>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
-  return(myresult)
+  myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(H>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
+  return(ifelse(is_empty(myresult), NA, myresult))
 }
 
 ### Vorwarnzeit aktuell
@@ -487,7 +494,23 @@ ausgangsdaten <- aktuell  %>%
     `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
     `Faelle_letzte_7_Tage_je100TsdEinw_60+`), by="id") %>%
   mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
-         Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
+         Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw)) %>%
+  left_join(., rki_alter_destatis %>% filter(Meldedatum>=as_date(max(rki_alter_destatis$Meldedatum))-infektperiode) %>%
+              group_by(id) %>% arrange(Meldedatum) %>%
+              mutate(
+                cases059_rm=floor(zoo::rollmean(cases059, 7, fill=NA)),
+                cases6079_rm=floor(zoo::rollmean(cases6079, 7, fill=NA)),
+                cases80_rm=floor(zoo::rollmean(cases80, 7, fill=NA)),
+                cases059=ifelse(is.na(cases059_rm), cases059, cases059_rm),
+                cases6079=ifelse(is.na(cases6079_rm), cases6079, cases6079_rm),
+                cases80=ifelse(is.na(cases80_rm), cases80, cases80_rm),
+                Infected059=cases059-lag(cases059,infektperiode),
+                Infected6079=cases6079-lag(cases6079,infektperiode),
+                Infected80=cases80-lag(cases80,infektperiode)) %>%
+              ungroup() %>%
+              filter(Meldedatum==max(rki_alter_destatis$Meldedatum)) %>%
+              select(id, Infected059, Infected6079, Infected80),
+            by="id")
 
 
 # vorwarnzeit aktueller tag daten
@@ -496,15 +519,31 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
          Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
          R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-         Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
+         Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell), #/icu_days,
          Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
-         Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet)))
+         Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
+  replace(is.na(.), 0)
+
+# myTagetest <- rep(0, dim(vorwarnzeitergebnis)[1])
+# for (i in seq(dim(vorwarnzeitergebnis)[1])) {
+#   Tage <- vorwarnzeit_berechnen_AG(ngesamt = c(vorwarnzeitergebnis$EW059[i], vorwarnzeitergebnis$EW6079[i], vorwarnzeitergebnis$EW80[i]),
+#                                    cases = c(vorwarnzeitergebnis$cases059[i], vorwarnzeitergebnis$cases6079[i], vorwarnzeitergebnis$cases80[i]),
+#                                    akutinfiziert = c(vorwarnzeitergebnis$Infected059[i], vorwarnzeitergebnis$Infected6079[i], vorwarnzeitergebnis$Infected80[i]),
+#                                    icubelegt = round((vorwarnzeitergebnis$faelle_covid_aktuell[i]*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
+#                                    Kapazitaet_Betten = vorwarnzeitergebnis$Kapazitaet_Betten[i],
+#                                    Rt = 1.3,
+#                                    icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())
+#   myTagetest[i] <- Tage
+# }
 
 myTage <- vorwarnzeitergebnis %>% rowwise() %>%
-  do(Tage = vorwarnzeit_berechnen_AG(c(.$EW059, .$EW6079, .$EW80),
-                                  c(.$cases059, .$cases6079, .$cases80),
-                                  c(.$Faelle_letzte_7_Tage_pro_Tag_059, .$Faelle_letzte_7_Tage_pro_Tag_6079, .$Faelle_letzte_7_Tage_pro_Tag_80),
-                                  .$Kapazitaet_Betten, 1.3, icurate_altersgruppen%>%slice(1)%>%as.numeric())) %>% # max(1.3, R_aktuell_Bund)
+  do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
+                                     cases = c(.$cases059, .$cases6079, .$cases80),
+                                     akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
+                                     icubelegt = round((.$faelle_covid_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
+                                     Kapazitaet_Betten = .$Kapazitaet_Betten,
+                                     Rt = 1.3,
+                                     icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())) %>% # max(1.3, R_aktuell_Bund)
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(0, Vorwarnzeit-21))
@@ -569,22 +608,44 @@ for (h in 0:horizont) {
       `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
       `Faelle_letzte_7_Tage_je100TsdEinw_60+`), by="id") %>%
     mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/(Einwohner/100000)),
-           Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw))
+           Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw)) %>%
+    left_join(., rki_alter_destatis %>% 
+                filter(Meldedatum<=stichtag) %>%
+                filter(Meldedatum>=as_date(stichtag)-infektperiode) %>%
+                group_by(id) %>% arrange(Meldedatum) %>%
+                mutate(
+                  cases059_rm=floor(zoo::rollmean(cases059, 7, fill=NA)),
+                  cases6079_rm=floor(zoo::rollmean(cases6079, 7, fill=NA)),
+                  cases80_rm=floor(zoo::rollmean(cases80, 7, fill=NA)),
+                  cases059=ifelse(is.na(cases059_rm), cases059, cases059_rm),
+                  cases6079=ifelse(is.na(cases6079_rm), cases6079, cases6079_rm),
+                  cases80=ifelse(is.na(cases80_rm), cases80, cases80_rm),
+                  Infected059=cases059-lag(cases059,infektperiode),
+                  Infected6079=cases6079-lag(cases6079,infektperiode),
+                  Infected80=cases80-lag(cases80,infektperiode)) %>%
+                ungroup() %>%
+                filter(Meldedatum==stichtag) %>%
+                select(id, Infected059, Infected6079, Infected80),
+              by="id")
   
   vorwarnzeitergebnis_h <- ausgangsdaten_h %>%
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-           Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
+           Kapazitaet_Betten=0.3*ICU_Betten,#(betten_frei + faelle_covid_aktuell),
            Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
-  filter(id<=16)
+  filter(id<=16) %>%
+    replace(is.na(.), 0)
 
   myTage <- vorwarnzeitergebnis_h %>% rowwise() %>%
-    do(Tage = vorwarnzeit_berechnen_AG(c(.$EW059, .$EW6079, .$EW80),
-                                       c(.$cases059, .$cases6079, .$cases80),
-                                       c(.$Faelle_letzte_7_Tage_pro_Tag_059, .$Faelle_letzte_7_Tage_pro_Tag_6079, .$Faelle_letzte_7_Tage_pro_Tag_80),
-                                       .$Kapazitaet_Betten, 1.3, icurate_altersgruppen%>%slice(1)%>%as.numeric())) %>% 
+    do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
+                                       cases = c(.$cases059, .$cases6079, .$cases80),
+                                       akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
+                                       icubelegt = round((.$faelle_covid_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
+                                       Kapazitaet_Betten = .$Kapazitaet_Betten,
+                                       Rt = 1.3,
+                                       icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())) %>% 
     unnest(cols = c(Tage), keep_empty=TRUE)
   vorwarnzeitergebnis_h <- vorwarnzeitergebnis_h %>%
     mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(Vorwarnzeit-21, 0), date=stichtag)
