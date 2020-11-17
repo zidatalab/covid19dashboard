@@ -47,7 +47,9 @@ Row <!--{data-height=150}-->
 
 Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2020-10-30_Methodenpapier_Vorwarnzeit_Fassung_3.pdf). **Hinweis: Das Methodenpapier zu den Zi-Frühindikatoren wurde am 30.10.2020 aktualisiert.** 
 
-Stand: `r format(now(),format="%d.%m.%Y %H.%M Uhr")`
+Stand Zi-Dashboard: `r format(now(),format="%d.%m.%Y %H:%M Uhr")`
+
+Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand DIVI-Intensivregister: `r format(as_date(max(divi$daten_stand, na.rm = TRUE)),format="%d.%m.%Y")`
 
 Row 
 ------------------------------------------------------------------------
