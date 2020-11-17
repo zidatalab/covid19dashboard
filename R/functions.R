@@ -273,8 +273,7 @@ autocorhorizont <- 30
 autocors <- rep(0, lengthrkidivi-autocorhorizont+1)
 for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(lengthrkidivi-autocorhorizont)], rkidivi$faelle_covid_aktuell[(1+lag):(lengthrkidivi-autocorhorizont+lag)]) }
 iculag <- which.max(autocors)-1
-# icurates nach erster welle
-iculag <- 0
+# iculag <- 0
 cases_ag <- rki_cases_infected %>% filter(Meldedatum==dividay-iculag) %>% # filter(Meldedatum==as_date("2020-09-14")-iculag) %>% # hier je nach divi datum? 2020-10-25
   select(cases059, cases6079, cases80) # mit 14 tage verzug abgeschlossene behandlungen
 # cases_ag_stichtag <- rki_cases_infected %>% filter(Meldedatum==as_date("2020-05-01")-iculag) %>% # hier je nach divi datum? 2020-10-25
@@ -632,7 +631,7 @@ for (h in 0:horizont) {
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-           Kapazitaet_Betten=0.3*ICU_Betten,#(betten_frei + faelle_covid_aktuell),
+           Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell),
            Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
   filter(id<=16) %>%
