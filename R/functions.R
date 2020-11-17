@@ -31,8 +31,11 @@ busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896,
 altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
                              "60 bis 80"=21.7,	"80+"=6.8)/100
 ## icu-quoten nach altersgruppe
-divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister 16.11.2020
+dividay <- as_date("2020-11-16")
+divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister on dividay
 icu_altersgruppen <- divi_behandlungen_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
+## infectious period
+infektperiode <- 14
 
 ##### Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
@@ -186,7 +189,10 @@ rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
   arrange(Meldedatum) %>%
   mutate(cases059=cumsum(`Fälle_0-15`+`Fälle_15-34`+`Fälle_35-59`),
          cases6079=cumsum(`Fälle_60-79`),
-         cases80=cumsum(`Fälle_80+`)) %>% ungroup() %>%
+         cases80=cumsum(`Fälle_80+`)) %>%
+  mutate(Infected059=cases059-lag(cases059, infektperiode),
+         Infected6079=cases6079-lag(cases6079, infektperiode),
+         Infected80=cases80-lag(cases80, infektperiode)) %>% ungroup() %>%
   mutate(blid=floor(id/1000000)) %>%
   as_tibble()
 rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise, # kreise
@@ -195,6 +201,9 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise, # kreise
                                    summarise(cases059=sum(cases059),
                                              cases6079=sum(cases6079),
                                              cases80=sum(cases80),
+                                             Infected059=sum(Infected059),
+                                             Infected6079=sum(Infected6079),
+                                             Infected80=sum(Infected80),
                                              `Fälle_15-34`=sum(`Fälle_15-34`),
                                              `Fälle_35-59`=sum(`Fälle_35-59`),
                                              `Fälle_0-15`=sum(`Fälle_0-15`),
@@ -213,6 +222,9 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise, # kreise
                                   summarise(cases059=sum(cases059),
                                             cases6079=sum(cases6079),
                                             cases80=sum(cases80),
+                                            Infected059=sum(Infected059),
+                                            Infected6079=sum(Infected6079),
+                                            Infected80=sum(Infected80),
                                             `Fälle_15-34`=sum(`Fälle_15-34`),
                                             `Fälle_35-59`=sum(`Fälle_35-59`),
                                             `Fälle_0-15`=sum(`Fälle_0-15`),
@@ -259,6 +271,16 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
          `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)))
 
 ##### icurates nach altersgruppen
+## delay für fälle-->icu:
+rkidivi <- rki_alter_destatis %>%
+  filter(id==0) %>%
+  left_join(., divi_all %>% filter(id==0), by=c("Meldedatum"="daten_stand")) %>% drop_na()
+lengthrkidivi <- dim(rkidivi)[1]
+autocorhorizont <- 30
+autocors <- rep(0, lengthrkidivi-autocorhorizont+1)
+for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(lengthrkidivi-autocorhorizont)], rkidivi$faelle_covid_aktuell[(1+lag):(lengthrkidivi-autocorhorizont+lag)]) }
+iculag <- which.max(autocors)-1
+# iculag <- 0
 cases_altersgruppen <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
@@ -279,11 +301,12 @@ cases_altersgruppen <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
   mutate(cases059=cumsum(`Fälle_0-59`),
          cases6079=cumsum(`Fälle_60-79`),
          cases80=cumsum(`Fälle_80+`)) %>% 
-  filter(Meldedatum==max(Meldedatum)) %>% 
+  filter(Meldedatum==dividay-iculag) %>% 
   select(cases059, cases6079, cases80) 
 icurate_altersgruppen <- icu_altersgruppen/cases_altersgruppen
 
-## Vorwarnzeit aktuell
+##### Vorwarnzeit: Daten aggregieren und VWZ berechnen
+## aggregiere daten für vorwarnzeit
 maxdatum <- max(as_date(rki_alter_destatis$Meldedatum))
 letzte_7_tage <-  brd_timeseries %>% 
   group_by(id) %>% arrange(id,-as.numeric(date)) %>%
@@ -317,7 +340,6 @@ letzte_7_tage_altersgruppen_destatis <- rki_alter_destatis %>%
   mutate(EW059=rowSums(select(., `unter 3 Jahre`:`55 bis unter 60 Jahre`)),
          EW6079=`60 bis unter 65 Jahre`+`65 bis unter 75 Jahre`+round(0.4*`75 Jahre und mehr`),
          EW80=round(0.6*`75 Jahre und mehr`))
-
 ausgangsdaten <- letzte_7_tage %>%
   left_join(., divi_all %>%
               select(id, ICU_Betten, betten_frei, faelle_covid_aktuell, daten_stand) %>%
@@ -341,7 +363,7 @@ ausgangsdaten <- letzte_7_tage %>%
   mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/((EW059+EW6079+EW80)/100000)),
          Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw),
          Kapazitaet_Betten=(faelle_covid_aktuell+betten_frei)/icu_days)
-
+## berechne vorwarnzeit
 myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
                                      (date==as_date(maxdatum) & id>16) ) %>%
   rowwise() %>%
@@ -357,6 +379,7 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
 
 R_aktuell_Bund <- aktuell$R0[aktuell$id==0]
 
+##### weitere daten für dashboard
 ## rki-r-wert und vorwarnzeit
 rki_reformat_r_ts <- RKI_R %>%
   dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
