@@ -25,10 +25,11 @@ altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4
 infektperiode <- 14 # rki/quarantäne
 
 ## icu quoten nach busse-lancetpaper, divi-reports und rki-fallzahlen
-share_icu <- (213324+2243)/545027  # divi intensivregister 2.11.2020 and rki daily report 2.11.2020 # (14 days delay?)
-divi_behandlungen_aktuell <- (21324+2243)/1.27 # divi intensivregister 2.11.2020 # SIEHE UNTEN rki_cases_infected
-divi_abgeschlossen <- 213324/1.27 # divi report 2.11.2020
-deaths_divi <- 4813 # divi report 2.11.2020
+dividay <- as_date("2020-11-16")
+share_icu <- (26372+3436)/801327  # divi intensivregister 16.11.2020 and rki daily report 16.11.2020 # (14 days delay?)
+divi_behandlungen_aktuell <- (26372)/1.27+3436 # divi intensivregister 16.11.2020 # SIEHE UNTEN rki_cases_infected
+divi_abgeschlossen <- 26372/1.27 # 16961/1.27 # divi report 16.11.2020
+deaths_divi <- 5886 # divi report 16.11.2020
 busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896, "Hosp6079"=1621+2158, "Hosp80"=3346)
 busselancet_altersgruppen_deaths <- tibble("Mort059"=0.007*2474+0.277*422,
                                            "Mort6079"=0.054*1239+0.146*1623+0.455*382+0.626*535,
@@ -274,10 +275,10 @@ for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(le
 iculag <- which.max(autocors)-1
 # icurates nach erster welle
 iculag <- 0
-cases_ag <- rki_cases_infected %>% filter(Meldedatum==max(Meldedatum)-iculag) %>% # filter(Meldedatum==as_date("2020-09-14")-iculag) %>% # hier je nach divi datum? 2020-10-25
+cases_ag <- rki_cases_infected %>% filter(Meldedatum==dividay-iculag) %>% # filter(Meldedatum==as_date("2020-09-14")-iculag) %>% # hier je nach divi datum? 2020-10-25
   select(cases059, cases6079, cases80) # mit 14 tage verzug abgeschlossene behandlungen
-cases_ag_stichtag <- rki_cases_infected %>% filter(Meldedatum==as_date("2020-05-01")-iculag) %>% # hier je nach divi datum? 2020-10-25
-  select(cases059, cases6079, cases80)
+# cases_ag_stichtag <- rki_cases_infected %>% filter(Meldedatum==as_date("2020-05-01")-iculag) %>% # hier je nach divi datum? 2020-10-25
+#   select(cases059, cases6079, cases80)
 icurate_altersgruppen_busse <- icu_altersgruppen/cases_ag
 # icurate_altersgruppen_diff <- icu_altersgruppen_diff/(cases_ag-cases_ag_stichtag)
 # icurate_altersgruppen <- tibble("Hosp059"=0.0191, "Hosp6079"=0.091, "Hosp80"=0.145)
@@ -631,7 +632,7 @@ for (h in 0:horizont) {
     mutate(Handlungsgrenze_7_tage=50*(Einwohner/100000),
            Handlungsgrenze_pro_Tag=round(Handlungsgrenze_7_tage/7),
            R0 = ifelse((R0>1) & (Faelle_letzte_7_Tage_pro_Tag==0),NA,R0),
-           Kapazitaet_Betten=(betten_frei + faelle_covid_aktuell)/icu_days,
+           Kapazitaet_Betten=0.3*ICU_Betten,#(betten_frei + faelle_covid_aktuell),
            Kapazitaet=(betten_frei + faelle_covid_aktuell)/share_icu/icu_days,
            Auslastung_durch_Grenze=round(100*(Handlungsgrenze_pro_Tag/Kapazitaet))) %>%
   filter(id<=16) %>%
