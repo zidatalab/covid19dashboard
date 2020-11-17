@@ -44,7 +44,7 @@ Row
 
 ### **Zi-Frühindikatoren:** 
 
-Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2020-10-30_Methodenpapier_Vorwarnzeit_Fassung_3.pdf). **Hinweis: Das Methodenpapier zu den Zi-Frühindikatoren wurde am 30.10.2020 aktualisiert.** 
+Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2020-10-30_Methodenpapier_Vorwarnzeit_Fassung_3.pdf). **Hinweis: Wir haben die Methodik verbessert (17.11.2020). Das Methodenpapier wird zeitnah aktualisiert.** 
 
 Stand Zi-Dashboard: `r format(now(),format="%d.%m.%Y %H:%M Uhr")`
 
