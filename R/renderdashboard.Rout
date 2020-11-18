@@ -1,5 +1,5 @@
 
-R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+R version 4.0.3 (2020-10-10) -- "Bunny-Wunnies Freak Out"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-conda-linux-gnu (64-bit)
 
@@ -21,10 +21,16 @@ Type 'q()' to quit R.
 
 
 processing file: Start.Rmd
-  |                                                                              |                                                                      |   0%  |                                                                              |....                                                                  |   5%
+
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |....                                                                  |   5%
   ordinary text without R code
 
-  |                                                                              |.......                                                               |  11%
+
+  |                                                                            
+  |.......                                                               |  11%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -96,10 +102,12 @@ The following objects are masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 28705  100 28705    0     0   198k      0 --:--:-- --:--:-- --:--:--  198k
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100 28705  100 28705    0     0   373k      0 --:--:-- --:--:-- --:--:--  373k
 Quitting from lines 18-40 (Start.Rmd) 
 Error in lsoda(y, times, func, parms, ...) : 
   illegal input detected before taking any integration steps - see written message
-Calls: <Anonymous> ... vorwarnzeit_berechnen_AG -> %>% -> eval -> eval -> sihrmodel -> ode -> lsoda
+Calls: <Anonymous> ... vorwarnzeit_berechnen_AG -> %>% -> mutate -> sihrmodel -> ode -> lsoda
 
 Execution halted
