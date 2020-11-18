@@ -29,7 +29,7 @@ busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896,
                                              "Hosp80"=3346)
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
-                             "60 bis 80"=21.7,	"80+"=6.8)/100
+                             "60 bis 80"=21.7, "80+"=6.8)/100
 ## icu-quoten nach altersgruppe
 dividay <- as_date("2020-11-16")
 divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister on dividay
@@ -82,6 +82,11 @@ RKI_R <- tryCatch(
 )
 
 ##### make data for downstream analysis/plots
+## if last divi report missing
+maxdatum <- max(as_date(rki$Meldedatum))
+if (max(divi$daten_stand!=maxdatum)) {
+  divi_all <- bind_rows(divi_all, divi %>% mutate(daten_stand=as_date(maxdatum)))
+}
 ## rki imputation because of delayed gesundheitsamt-meldungen
 rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), maxdate=max(date(Meldedatum)))
 rkiidkreise <- unique(rki$IdLandkreis)
@@ -241,7 +246,6 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
                                             `Todesfälle_60+`=sum(`Todesfälle_60-79`+`Todesfälle_80+`, na.rm = TRUE), .groups="drop") %>%
                                    mutate(id=0, blid=0))
 ## 7-tage-inzidenzen nach altersgruppe für den bund
-maxdatum <- max(as_date(rki_alter_destatis$Meldedatum))
 letzte_7_tage_altersgruppen_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
