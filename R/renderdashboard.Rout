@@ -17,11 +17,6 @@ Type 'q()' to quit R.
 
 [Previously saved workspace restored]
 
-> # source('~/myenv.R')
-> # Sys.setenv("DBHOST"=DBHOST)
-> # Sys.setenv("DBNAME"=DBNAME)
-> # Sys.setenv("DBUSER"=DBUSER)
-> # Sys.setenv("DBPASSWORD"=DBPASSWORD)
 > rmarkdown::render('../Start.Rmd')
 
 
@@ -101,187 +96,10 @@ The following objects are masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  9549    0  9549    0     0   102k      0 --:--:-- --:--:-- --:--:--  102k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 28705  100 28705    0     0   198k      0 --:--:-- --:--:-- --:--:--  198k
+Quitting from lines 18-40 (Start.Rmd) 
+Error in lsoda(y, times, func, parms, ...) : 
+  illegal input detected before taking any integration steps - see written message
+Calls: <Anonymous> ... vorwarnzeit_berechnen_AG -> %>% -> eval -> eval -> sihrmodel -> ode -> lsoda
 
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
-  `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glä` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glät` = col_double(),
-  `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Punktschätzer der Reproduktionszahl R` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Punktschätzer des 7-Tage-R Wertes` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
-)
-
-
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  `Datum des Erkrankungsbeginns` = col_datetime(format = ""),
-  `Punktschätzer der Anzahl Neuerkrankungen (ohne Glättung)` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glä` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen (ohne Glät` = col_double(),
-  `Punktschätzer der Anzahl Neuerkrankungen` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Anzahl Neuerkrankungen` = col_double(),
-  `Punktschätzer der Reproduktionszahl R` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls der Reproduktionszahl R` = col_double(),
-  `Punktschätzer des 7-Tage-R Wertes` = col_double(),
-  `Untere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double(),
-  `Obere Grenze des 95%-Prädiktionsintervalls des 7-Tage-R Wertes` = col_double()
-)
-
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Default config will estimate R on weekly sliding windows.
-    To change this change the t_start and t_end arguments. 
-Joining, by = "blid"
-  |                                                                              |...........                                                           |  16%
-   inline R code fragments
-
-  |                                                                              |...............                                                       |  21%
-label: indicatorR
-  |                                                                              |..................                                                    |  26%
-  ordinary text without R code
-
-  |                                                                              |......................                                                |  32%
-label: indicator7TI
-  |                                                                              |..........................                                            |  37%
-  ordinary text without R code
-
-  |                                                                              |.............................                                         |  42%
-label: indicatorVWZ
-  |                                                                              |.................................                                     |  47%
-   inline R code fragments
-
-  |                                                                              |.....................................                                 |  53%
-label: plotakutinfiziert
-  |                                                                              |.........................................                             |  58%
-  ordinary text without R code
-
-  |                                                                              |............................................                          |  63%
-label: plotagefatality
-  |                                                                              |................................................                      |  68%
-  ordinary text without R code
-
-  |                                                                              |....................................................                  |  74%
-label: plotBLR
-  |                                                                              |.......................................................               |  79%
-  ordinary text without R code
-
-  |                                                                              |...........................................................           |  84%
-label: plotVWZR
-  |                                                                              |...............................................................       |  89%
-  ordinary text without R code
-
-  |                                                                              |..................................................................    |  95%
-label: renderothersites (with options) 
-List of 1
- $ include: logi FALSE
-
-
-
-processing file: Bundeslaender.Rmd
-output file: Bundeslaender.knit.md
-
-
-Output created: Bundeslaender.html
-
-
-processing file: Kreise.Rmd
-output file: Kreise.knit.md
-
-
-Output created: Kreise.html
-
-
-processing file: Impressum.Rmd
-output file: Impressum.knit.md
-
-
-Output created: Impressum.html
-  |                                                                              |......................................................................| 100%
-  ordinary text without R code
-
-
-output file: Start.knit.md
-
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpxNccdi/rmarkdown-str174575071354d.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpxNccdi/rmarkdown-str1745747999ba5.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpxNccdi/file174575774319ahtml --highlight-style pygments --include-before-body /tmp/RtmpxNccdi/file1745721bb7bd2.html --include-after-body /tmp/RtmpxNccdi/file1745727f9c2ef.html --css static/styles.css 
-
-Output created: Start.html
-There were 35 warnings (use warnings() to see them)
-> 
-> proc.time()
-   user  system elapsed 
-447.224   2.593 478.801 
+Execution halted
