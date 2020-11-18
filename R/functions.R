@@ -28,8 +28,11 @@ busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896,
                                              "Hosp6079"=1621+2158,
                                              "Hosp80"=3346)
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
-altersgruppen_bund <- tibble("unter 20"=18.4, "20 bis 40"=24.6,	"40 bis 60"=28.4,
-                             "60 bis 80"=21.7, "80+"=6.8)/100
+altersgruppen_bund <- tibble("unter 20"=18.4,
+                             "20 bis 40"=24.6,
+                             "40 bis 60"=28.4,
+                             "60 bis 80"=21.7,
+                             "80+"=6.8)/100
 ## icu-quoten nach altersgruppe
 dividay <- as_date("2020-11-16")
 divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister on dividay
@@ -311,7 +314,7 @@ cases_altersgruppen <- rki %>% group_by(Meldedatum,Altersgruppe) %>%
          cases80=cumsum(`Fälle_80+`)) %>% 
   filter(Meldedatum==dividay-iculag) %>% 
   select(cases059, cases6079, cases80) 
-icurate_altersgruppen <- icu_altersgruppen/cases_altersgruppen
+icurate_altersgruppen_busse <- icu_altersgruppen/cases_altersgruppen
 
 ##### Vorwarnzeit: Daten aggregieren und VWZ berechnen
 ## aggregiere daten für vorwarnzeit
@@ -383,7 +386,7 @@ myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
                                      icubelegt = round((.$faelle_covid_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
                                      Kapazitaet_Betten = .$Kapazitaet_Betten,
                                      Rt = 1.3,
-                                     icurate_altersgruppen = icurate_altersgruppen%>%slice(1)%>%as.numeric())) %>% 
+                                     icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())) %>% 
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- ausgangsdaten %>%
   filter((date>=as_date("2020-03-13") & id<=16) |
