@@ -15,22 +15,14 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-[Previously saved workspace restored]
-
 > rmarkdown::render('../Start.Rmd')
 
 
 processing file: Start.Rmd
-
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |....                                                                  |   5%
+  |                                                                              |                                                                      |   0%  |                                                                              |....                                                                  |   5%
   ordinary text without R code
 
-
-  |                                                                            
-  |.......                                                               |  11%
+  |                                                                              |.......                                                               |  11%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -102,9 +94,7 @@ The following objects are masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100 28705  100 28705    0     0   373k      0 --:--:-- --:--:-- --:--:--  373k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 30528  100 30528    0     0   202k      0 --:--:-- --:--:-- --:--:--  202k
 Quitting from lines 18-40 (Start.Rmd) 
 Error in lsoda(y, times, func, parms, ...) : 
   illegal input detected before taking any integration steps - see written message
