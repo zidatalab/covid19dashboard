@@ -94,10 +94,151 @@ The following objects are masked from 'package:base':
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 30528  100 30528    0     0   202k      0 --:--:-- --:--:-- --:--:--  202k
-Quitting from lines 18-40 (Start.Rmd) 
-Error in lsoda(y, times, func, parms, ...) : 
-  illegal input detected before taking any integration steps - see written message
-Calls: <Anonymous> ... vorwarnzeit_berechnen_AG -> %>% -> mutate -> sihrmodel -> ode -> lsoda
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 30528  100 30528    0     0   187k      0 --:--:-- --:--:-- --:--:--  188k
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Default config will estimate R on weekly sliding windows.
+    To change this change the t_start and t_end arguments. 
+Joining, by = "blid"
+  |                                                                              |...........                                                           |  16%
+   inline R code fragments
 
-Execution halted
+  |                                                                              |...............                                                       |  21%
+label: indicatorR
+  |                                                                              |..................                                                    |  26%
+  ordinary text without R code
+
+  |                                                                              |......................                                                |  32%
+label: indicator7TI
+  |                                                                              |..........................                                            |  37%
+  ordinary text without R code
+
+  |                                                                              |.............................                                         |  42%
+label: indicatorVWZ
+  |                                                                              |.................................                                     |  47%
+   inline R code fragments
+
+  |                                                                              |.....................................                                 |  53%
+label: plotakutinfiziert
+  |                                                                              |.........................................                             |  58%
+  ordinary text without R code
+
+  |                                                                              |............................................                          |  63%
+label: plotagefatality
+  |                                                                              |................................................                      |  68%
+  ordinary text without R code
+
+  |                                                                              |....................................................                  |  74%
+label: plotBLR
+  |                                                                              |.......................................................               |  79%
+  ordinary text without R code
+
+  |                                                                              |...........................................................           |  84%
+label: plotVWZR
+  |                                                                              |...............................................................       |  89%
+  ordinary text without R code
+
+  |                                                                              |..................................................................    |  95%
+label: renderothersites (with options) 
+List of 1
+ $ include: logi FALSE
+
+
+
+processing file: Bundeslaender.Rmd
+output file: Bundeslaender.knit.md
+
+
+Output created: Bundeslaender.html
+
+
+processing file: Kreise.Rmd
+output file: Kreise.knit.md
+
+
+Output created: Kreise.html
+
+
+processing file: Impressum.Rmd
+output file: Impressum.knit.md
+
+
+Output created: Impressum.html
+  |                                                                              |......................................................................| 100%
+  ordinary text without R code
+
+
+output file: Start.knit.md
+
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/Rtmp3kcyno/rmarkdown-str1744e59f42b6e.html --variable 'theme:bootstrap' --include-in-header /tmp/Rtmp3kcyno/rmarkdown-str1744e10f3e0e3.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/Rtmp3kcyno/file1744e4521f05html --highlight-style pygments --include-before-body /tmp/Rtmp3kcyno/file1744e5a64cbcc.html --include-after-body /tmp/Rtmp3kcyno/file1744e67c9639f.html --css static/styles.css 
+
+Output created: Start.html
+There were 35 warnings (use warnings() to see them)
+> 
+> proc.time()
+   user  system elapsed 
+413.794   3.027 449.002 
