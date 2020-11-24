@@ -20,6 +20,8 @@ library(dtplyr)
 
 bundeslaender_table<- read_json("./data/tabledata/bundeslaender_table.json",
                                 simplifyVector = TRUE)
+kreise_table<- read_json("./data/tabledata/kreise_table.json",
+                                simplifyVector = TRUE)
 bundeslaender_r_und_vwz_data <- read_json("./data/plotdata/bundeslaender_r_und_vwz.json",
                                           simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
@@ -256,5 +258,45 @@ itstabelle <- tibble(
     paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(quotefrei))*100)), 
            " %, \n",
            divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei))
+  )
+)
+
+rvwzmaxdate <- max(bundeslaender_r_und_vwz_data$Datum)
+rwert7ti <- tibble(
+  `R-Wert & 7-Tage-Inzidenz`=c(
+    "Reproduktionszahl R",
+    "Neue Fälle je 100.000 EW in 7 Tagen bezogen auf die jeweilige Gruppe:",
+    "Gesamtbevölkerung",
+    "Unter-60-Jährige",
+    "Über-60-Jährige",
+    "- Davon 60-bis-79-Jährige",
+    "- Davon Über-80-Jährige",
+    "Regionen mit 7-TI bei Über-60-Jährigen:",
+    "> 35",
+    "> 50"
+  ),
+  Vorwoche=c(
+    bundeslaender_r_und_vwz_data %>% filter(id==0 & Datum==rvwzmaxdate-7 & Variable=="R") %>% pull(Wert),
+    NA,
+    "dsfdfa",
+    "fsdfa",
+    "fdsaff",
+    "fasdfdsa",
+    "fdsafads",
+    NA,
+    "dfasf",
+    "fdasf"
+  ),
+  dieseWoche=c(
+    bundeslaender_r_und_vwz_data %>% filter(id==0 & Datum==rvwzmaxdate & Variable=="R") %>% pull(Wert),
+    NA,
+    bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz`),
+    "fsdfa",
+    bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz 60+`),
+    "fasdfdsa",
+    "fdsafads",
+    NA,
+    sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE),
+    sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE)
   )
 )

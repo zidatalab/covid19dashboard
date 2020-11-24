@@ -442,7 +442,7 @@ range_r <- range(myblmitidata$R_Mean)
 range_vwz <- range(myblmitidata$Vorwarnzeit, na.rm = TRUE)
 bundeslaender_r_und_vwz_data <- myblmitidata %>%
   rename(Datum=date, R=R_Mean) %>%
-  mutate(R=round(R,digits = 1)) %>%
+  mutate(R=round(R,digits = 2)) %>%
   pivot_longer(c("Vorwarnzeit", "R"), names_to="Variable", values_to="Wert") %>%
   mutate(y_min=ifelse(Variable=="R", 0, 0),
          y_max=ifelse(Variable=="R", range_r[2], range_vwz[2])) %>%
