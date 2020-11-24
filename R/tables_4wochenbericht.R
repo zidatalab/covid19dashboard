@@ -31,6 +31,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        password        = Sys.getenv("DBPASSWORD"),
                        port     = 5432,
                        sslmode = 'require')
+divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 rki <- tbl(conn,"rki") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum))
@@ -187,7 +188,6 @@ vorsterberki <- rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorst
   filter(Altersgruppe!="unbekannt") %>%
   bind_rows(., rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorsterbestichtag-6) %>%
               summarise(Altersgruppe="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
-
 sterbetabelle <- tibble(
   `Todesfälle & Sterblichkeit`=c(
     "0 bis 4 Jahre",
@@ -215,3 +215,46 @@ sterbetabelle <- tibble(
   mutate(Vorwoche=ifelse(Vorwoche==0, 0, paste0(Vorwoche, " (", format(round(100*Vorwoche_sterblichkeit, 1), decimal.mark=","), "%)")),
          KWX=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
   select(`Todesfälle & Sterblichkeit`, Vorwoche, KWX, Veraenderung)
+
+maxdividate <- max(divi_all$daten_stand)
+divi0 <- divi_all %>%
+  filter(id==0) %>%
+  mutate(auslastungcovid=faelle_covid_aktuell/ICU_Betten,
+         quotefrei=betten_frei/ICU_Betten)
+itstabelle <- tibble(
+  Intensivbetten=c(
+    "Intensivbetten gesamt",
+    "Belegung durch Patient*innen mit COVID-19",
+    "Freie Intensivbetten"
+  ),
+  Vorwoche=c(
+    divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(ICU_Betten),
+           divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(faelle_covid_aktuell),
+           divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(betten_frei)
+  ),
+  dieseWoche=c(
+    divi0 %>% filter(daten_stand==maxdividate) %>% pull(ICU_Betten),
+           divi0 %>% filter(daten_stand==maxdividate) %>% pull(faelle_covid_aktuell),
+           divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei)
+  ),
+  Veraenderung=format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ",")
+) %>% mutate(
+  Vorwoche=c(
+    divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(ICU_Betten),
+    paste0(round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(auslastungcovid))*100)), 
+           " %, \n",
+           divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(faelle_covid_aktuell)),
+    paste0(round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(quotefrei))*100)), 
+           " %, \n",
+           divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(betten_frei))
+  ),
+  dieseWoche=c(
+    divi0 %>% filter(daten_stand==maxdividate) %>% pull(ICU_Betten),
+    paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(auslastungcovid))*100)), 
+           " %, \n",
+           divi0 %>% filter(daten_stand==maxdividate) %>% pull(faelle_covid_aktuell)),
+    paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(quotefrei))*100)), 
+           " %, \n",
+           divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei))
+  )
+)
