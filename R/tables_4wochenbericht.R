@@ -32,8 +32,56 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        port     = 5432,
                        sslmode = 'require')
 rki <- tbl(conn,"rki") %>% collect()
+params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum))
+international <- tbl(conn,"trends") %>%
+  filter(Country %in% c(
+    "France",
+    "Spain",
+    "United Kingdom",
+    "Italy",
+    "Germany",
+    "Poland",
+    "Belgium",
+    "Czechia", 
+    "Netherlands",
+    "Romania",
+    "Portugal",
+    "Austria",
+    "Sweden",
+    "Hungary",
+    "Bulgaria",
+    "Croatia",
+    "Slovakia",
+    "Greece",
+    "Denmark",
+    "Ireland",
+    "Slovenia",
+    "Lithuania",
+    "Norway",
+    "Luxembourg",
+    "Finland",
+    "Latvia",
+    "Estonia",
+    "Cyprus",
+    "Malta",
+    "Iceland",
+    "Liechtenstein"
+  )) %>%
+  collect() %>%
+  mutate(date=as_date(date)) %>%
+  left_join(., params, by=c("Country"="name"))
 
+eumaxdate <- max(international$date)
+eutabelle <- international %>%
+  filter(date >= eumaxdate-14) %>%
+  group_by(Country) %>%
+  summarise(`COVID-19-Fälle`=max(cases),
+            `Todesfälle`=max(deaths),
+            `Neue Fälle je 100.000 EW in 14 Tagen`=round((max(cases)-min(cases))/EW_insgesamt*100000),
+            `Todesfälle je 100.000 EW in 14 Tagen`=round((max(deaths)-min(deaths))/EW_insgesamt*100000, 1),
+            .groups="drop") %>%
+  distinct()
 
 bltabelle <- bind_rows(
   bundeslaender_table %>%
