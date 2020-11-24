@@ -66,30 +66,7 @@ brd_timeseries <- brd_timeseries %>% filter(date<=stichtag)
 divi_all <- divi_all %>% filter(daten_stand<=stichtag)
 
 ## read/update RKI-R-estimates
-RKI_R <- tryCatch(
-  {
-    mytemp <- tempfile()
-    rki_r_data <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting_Zahlen.xlsx?__blob=publicationFile"
-    download.file(rki_r_data, mytemp, method = "curl")
-    Nowcasting_Zahlen <- read_excel(mytemp,
-                                    sheet = "Nowcast_R", col_types = c("date",
-                                                                       "numeric", "numeric", "numeric",
-                                                                       "numeric", "numeric", "numeric",
-                                                                       "numeric", "numeric", "numeric",
-                                                                       "numeric", "numeric", "numeric"))
-    if (dim(Nowcasting_Zahlen)[2] != 13){
-      stop("RKI changed their R table")
-    } else {
-      write_csv(Nowcasting_Zahlen, "./data/nowcasting_r_rki.csv")
-      Nowcasting_Zahlen
-    }
-  },
-  error=function(e) {
-    # read old data
-    Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv")
-    return(Nowcasting_Zahlen)
-  }
-)
+Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv")
 
 ##### make data for downstream analysis/plots
 ## if last divi report missing
@@ -507,80 +484,3 @@ write_json(akutinfiziert_data, "./data/plotdata/akutinfiziert.json")
 write_json(agefatality_data, "./data/plotdata/agefatality.json")
 write_json(itsbetten_data, "./data/plotdata/itsbetten.json")
 write_json(bundeslaender_r_und_vwz_data, "./data/plotdata/bundeslaender_r_und_vwz.json")
-
-##### Plots
-akutinfiziert_plot <- ggplot(akutinfiziert_data,
-                             aes(x=date, y=Infected,group=1)) +
-  geom_area(fill="#0086C530") +
-  geom_hline(aes(yintercept=0), color="black", linetype ="solid") +
-  geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
-  scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
-  theme_minimal() +
-  scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
-  labs(y="Anzahl akut infiziert",x = "Datum") +
-  theme(panel.grid.major.x =element_blank(), panel.grid.minor.x=element_blank()) +
-  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
-
-agefatality_plot <- ggplot(agefatality_data,
-                           aes(x=Meldedatum, y=Anteil, color=Merkmal)) +
-  geom_line() +
-  theme_minimal() + 
-  scale_color_zi() +
-  labs(y="Verhältnis in %", x="Datum", color="") + 
-  scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
-
-rwert_bund_plot <- ggplot(rwert_bund_data,
-                          aes(x=date, y=R, group=name, color=name=="Gesamt",
-                              text=paste("Region: ", name, "<br>", "Neue Fälle:", I_cases))) +
-  geom_hline(yintercept = 1) +
-  geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
-  scale_color_zi()  +
-  theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
-  labs(x="",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
-
-rki_r_und_zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data,
-                                  aes(x=date, y=Wert, color=Variable)) +
-  facet_wrap(~Variable, scales = "free_y") +
-  geom_line(size=2) +
-  ylim(0, NA) +
-  scale_color_zi() +
-  labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
-  theme_minimal() +
-  theme(legend.position='none')
-
-itsbetten_plot <- ggplot(itsbetten_data %>%
-                        filter(Betten=="faelle_covid_aktuell"),
-                      aes(x=daten_stand, y=Anzahl, color=Betten)) +
-  geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
-  geom_line(size=2, show.legend = FALSE, color=zi_cols("ziblue")) +
-  theme_minimal() +
-  scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
-  labs(y="COVID-19-Fälle ITS", x = "Datum") +
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
-  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
-
-bundeslaender_r_und_vwz_plot <- function(myid) {
-  myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid) %>% head(1) %>% pull(name)
-  my_r_vwz_data <- bundeslaender_r_und_vwz_data %>% filter(id==myid)
-  myplot <- ggplot(my_r_vwz_data,
-                   aes(x=Datum, y=Wert, group=name, color=Variable,
-                       text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
-    geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
-    geom_line(size=2, show.legend = F) +
-    scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
-    # facet_grid(Variable~., scales = "free") +
-    facet_wrap(~Variable, scales = "free") +
-    geom_blank(aes(y = y_min)) +
-    geom_blank(aes(y = y_max)) +
-    scale_color_zi()  +
-    theme_minimal() +
-    labs(x="", y="") +
-    theme(panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank(),
-          legend.position='none',
-          panel.spacing = unit(2, "lines")) +
-    ggtitle(myname)
-  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
-}
