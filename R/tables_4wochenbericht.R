@@ -25,12 +25,11 @@ altersgruppen_bund <- tibble("unter 20"=18.4,
                              "60 bis 80"=21.7,
                              "80+"=6.8)/100
 
-bundeslaender_table<- read_json("./data/tabledata/bundeslaender_table.json",
-                                simplifyVector = TRUE)
-kreise_table<- read_json("./data/tabledata/kreise_table.json",
-                                simplifyVector = TRUE)
-bundeslaender_r_und_vwz_data <- read_json("./data/plotdata/bundeslaender_r_und_vwz.json",
-                                          simplifyVector = TRUE) %>%
+bundeslaender_table_faktenblatt <- read_json("./data/tabledata/bundeslaender_table_faktenblatt.json",
+                                simplifyVector = TRUE) %>%
+  mutate(Datum=as_date(Datum))
+kreise_table_faktenblatt <- read_json("./data/tabledata/kreise_table_faktenblatt.json",
+                                simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
@@ -83,37 +82,6 @@ international <- tbl(conn,"trends") %>%
   mutate(date=as_date(date)) %>%
   left_join(., params, by=c("Country"="name"))
 
-## rki imputation because of delayed gesundheitsamt-meldungen
-rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), maxdate=max(date(Meldedatum)))
-rkiidkreise <- unique(rki$IdLandkreis)
-rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")
-Kreise_allvalues <- expand_grid(Meldedatum=rkitimeframe$maxdate, IdLandkreis=rkiidkreise)
-Kreise <- rki %>%
-  mutate(Meldedatum=date(Meldedatum)) %>%
-  full_join(., Kreise_allvalues, by=c("Meldedatum", "IdLandkreis"))
-n_missingkreise <- 0
-for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g. Hamburg 02000)
-  if (is.na((Kreise %>% filter(Meldedatum==rkitimeframe$maxdate & IdLandkreis==idkreis) %>% pull(AnzahlFall))[1])) {
-    n_missingkreise <- n_missingkreise+1
-    sixdaysbefore <- Kreise %>% filter(Meldedatum>=rkitimeframe$maxdate-6 & IdLandkreis==idkreis)
-    for (ag in rkiagegroups) {
-      Kreise <- Kreise %>%
-        add_row(IdBundesland=sixdaysbefore$IdBundesland[1],
-                Bundesland=sixdaysbefore$Bundesland[1],
-                Landkreis=sixdaysbefore$Landkreis[1],
-                Altersgruppe=ag,
-                Geschlecht="unbekannt",
-                AnzahlFall=round(sum(sixdaysbefore$AnzahlFall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
-                AnzahlTodesfall=round(sum(sixdaysbefore$AnzahlTodesfall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
-                Meldedatum=rkitimeframe$maxdate,
-                IdLandkreis=idkreis,
-                AnzahlGenesen=round(sum(sixdaysbefore$AnzahlGenesen[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6))
-    }
-  }
-}
-cat("Kreise ohne aktuelle Meldung: ", n_missingkreise, "\n")
-rki <- Kreise
-
 eumaxdate <- max(international$date)
 eutabelle <- international %>%
   filter(date >= eumaxdate-14) %>%
@@ -125,11 +93,12 @@ eutabelle <- international %>%
             .groups="drop") %>%
   distinct()
 
+maxdate <- max(bundeslaender_table_faktenblatt$Datum)
 bltabelle <- bind_rows(
+  bundeslaender_table_faktenblatt %>%
+    filter(Bundesland=="Gesamt" & Datum==maxdate),
   bundeslaender_table %>%
-    filter(Bundesland=="Gesamt"),
-  bundeslaender_table %>%
-    filter(Bundesland!="Gesamt") %>%
+    filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
     arrange(Bundesland)
 ) %>%
   select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit aktuell`)
@@ -141,73 +110,73 @@ vwztabelle <- tibble(
     "längste"
   ),
   Vorwoche=c(
-    paste0(bundeslaender_r_und_vwz_data %>%
-                 filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit" & name=="Gesamt") %>%
-                 pull(Wert),
+    paste0(bundeslaender_table_faktenblatt %>%
+                 filter(Datum==max(Datum)-7 & Bundesland=="Gesamt") %>%
+                 pull(`Vorwarnzeit`),
            " Tage"), # Bundesdurchschnitt
-    paste0(min(bundeslaender_r_und_vwz_data %>%
-                 filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit") %>%
-                 pull(Wert)),
+    paste0(min(bundeslaender_table_faktenblatt %>%
+                 filter(Datum==max(Datum)-7) %>%
+                 pull(Vorwarnzeit)),
            " Tage\n",
-           glue_collapse(bundeslaender_r_und_vwz_data %>%
-             filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit" &
-                      Wert==min(bundeslaender_r_und_vwz_data %>%
-                                  filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit") %>%
-                                  pull(Wert))) %>%
-             pull(name), ", ")), # kürzeste
-    paste0(max(bundeslaender_r_und_vwz_data %>%
-                 filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit") %>%
-                 pull(Wert)),
+           glue_collapse(bundeslaender_table_faktenblatt %>%
+             filter(Datum==max(Datum)-7 &
+                      Vorwarnzeit==min(bundeslaender_table_faktenblatt %>%
+                                  filter(Datum==max(Datum)-7) %>%
+                                  pull(Vorwarnzeit))) %>%
+             pull(Bundesland), ", ")), # kürzeste
+    paste0(max(bundeslaender_table_faktenblatt %>%
+                 filter(Datum==max(Datum)-7) %>%
+                 pull(Vorwarnzeit)),
            " Tage\n",
-           glue_collapse(bundeslaender_r_und_vwz_data %>%
-                           filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit" &
-                                    Wert==max(bundeslaender_r_und_vwz_data %>%
-                                                filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit") %>%
-                                                pull(Wert))) %>%
-                           pull(name), ", ")) # längste
+           glue_collapse(bundeslaender_table_faktenblatt %>%
+                           filter(Datum==max(Datum)-7 &
+                                    Vorwarnzeit==max(bundeslaender_table_faktenblatt %>%
+                                                filter(Datum==max(Datum)-7) %>%
+                                                pull(Vorwarnzeit))) %>%
+                           pull(Bundesland), ", ")) # längste
   ),
   dieseWoche=c(
-    paste0(bundeslaender_r_und_vwz_data %>%
-             filter(Datum==max(Datum) & Variable=="Vorwarnzeit" & name=="Gesamt") %>%
-             pull(Wert),
+    paste0(bundeslaender_table_faktenblatt %>%
+             filter(Datum==max(Datum) & Bundesland=="Gesamt") %>%
+             pull(`Vorwarnzeit`),
            " Tage"), # Bundesdurchschnitt
-    paste0(min(bundeslaender_r_und_vwz_data %>%
-                 filter(Datum==max(Datum) & Variable=="Vorwarnzeit") %>%
-                 pull(Wert)),
+    paste0(min(bundeslaender_table_faktenblatt %>%
+                 filter(Datum==max(Datum)) %>%
+                 pull(Vorwarnzeit)),
            " Tage\n",
-           glue_collapse(bundeslaender_r_und_vwz_data %>%
-             filter(Datum==max(Datum) & Variable=="Vorwarnzeit" &
-                      Wert==min(bundeslaender_r_und_vwz_data %>%
-                                  filter(Datum==max(Datum) & Variable=="Vorwarnzeit") %>%
-                                  pull(Wert))) %>%
-             pull(name), ", ")), # kürzeste
-    paste0(max(bundeslaender_r_und_vwz_data %>%
-                 filter(Datum==max(Datum) & Variable=="Vorwarnzeit") %>%
-                 pull(Wert)),
+           glue_collapse(bundeslaender_table_faktenblatt %>%
+                           filter(Datum==max(Datum) &
+                                    Vorwarnzeit==min(bundeslaender_table_faktenblatt %>%
+                                                       filter(Datum==max(Datum)) %>%
+                                                       pull(Vorwarnzeit))) %>%
+                           pull(Bundesland), ", ")), # kürzeste
+    paste0(max(bundeslaender_table_faktenblatt %>%
+                 filter(Datum==max(Datum)) %>%
+                 pull(Vorwarnzeit)),
            " Tage\n",
-           glue_collapse(bundeslaender_r_und_vwz_data %>%
-                           filter(Datum==max(Datum) & Variable=="Vorwarnzeit" &
-                                    Wert==max(bundeslaender_r_und_vwz_data %>%
-                                                filter(Datum==max(Datum) & Variable=="Vorwarnzeit") %>%
-                                                pull(Wert))) %>%
-                           pull(name), ", ")) # längste
+           glue_collapse(bundeslaender_table_faktenblatt %>%
+                           filter(Datum==max(Datum) &
+                                    Vorwarnzeit==max(bundeslaender_table_faktenblatt %>%
+                                                       filter(Datum==max(Datum)) %>%
+                                                       pull(Vorwarnzeit))) %>%
+                           pull(Bundesland), ", ")) # längste
   ),
   Veraenderung=c(
-    bundeslaender_r_und_vwz_data %>%
-      filter(Datum==max(Datum) & Variable=="Vorwarnzeit" & name=="Gesamt") %>%
-      pull(Wert) - bundeslaender_r_und_vwz_data %>%
-      filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit" & name=="Gesamt") %>%
-      pull(Wert), # Bundesdurchschnitt
-    min(bundeslaender_r_und_vwz_data %>%
-          filter(Datum==max(Datum) & Variable=="Vorwarnzeit") %>%
-          pull(Wert)) - min(bundeslaender_r_und_vwz_data %>%
-                              filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit") %>%
-                              pull(Wert)), # kürzeste
-    max(bundeslaender_r_und_vwz_data %>%
-          filter(Datum==max(Datum) & Variable=="Vorwarnzeit") %>%
-          pull(Wert)) - max(bundeslaender_r_und_vwz_data %>%
-                              filter(Datum==max(Datum)-7 & Variable=="Vorwarnzeit") %>%
-                              pull(Wert)) # längste
+    bundeslaender_table_faktenblatt %>%
+      filter(Datum==max(Datum) & Bundesland=="Gesamt") %>%
+      pull(Vorwarnzeit) - bundeslaender_table_faktenblatt %>%
+      filter(Datum==max(Datum)-7 & Bundesland=="Gesamt") %>%
+      pull(Vorwarnzeit), # Bundesdurchschnitt
+    min(bundeslaender_table_faktenblatt %>%
+          filter(Datum==max(Datum)) %>%
+          pull(Vorwarnzeit)) - min(bundeslaender_table_faktenblatt %>%
+                              filter(Datum==max(Datum)-7) %>%
+                              pull(Vorwarnzeit)), # kürzeste
+    max(bundeslaender_table_faktenblatt %>%
+          filter(Datum==max(Datum)) %>%
+          pull(Vorwarnzeit)) - max(bundeslaender_table_faktenblatt %>%
+                              filter(Datum==max(Datum)-7) %>%
+                              pull(Vorwarnzeit)) # längste
   )
 )
 
@@ -257,7 +226,7 @@ sterbetabelle <- tibble(
          KWX=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
   select(`Todesfälle & Sterblichkeit`, Vorwoche, KWX, Veraenderung)
 
-maxdividate <- max(divi_all$daten_stand)
+maxdividate <- maxdate # max(divi_all$daten_stand)
 divi0 <- divi_all %>%
   filter(id==0) %>%
   mutate(auslastungcovid=faelle_covid_aktuell/ICU_Betten,
@@ -300,8 +269,6 @@ itstabelle <- tibble(
   )
 )
 
-rvwzmaxdate <- max(bundeslaender_r_und_vwz_data$Datum)
-maxdatum <- max(as_date(rki$Meldedatum))
 letzte_7_tage_altersgruppen_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
@@ -324,7 +291,7 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   mutate(date=date(Meldedatum)) %>%
-  filter(date>=maxdatum-6) %>%
+  filter(date>=maxdate-6) %>%
   summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
@@ -333,7 +300,7 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
          `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/(`60 bis 80`/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)))
 vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>% 
-  filter(Meldedatum<=maxdatum-7) %>%
+  filter(Meldedatum<=maxdate-7) %>%
   filter(Altersgruppe!="unbekannt") %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
   filter(!is.na(id)) %>%
@@ -355,7 +322,7 @@ vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>%
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   mutate(date=date(Meldedatum)) %>%
-  filter(date>=maxdatum-6-7) %>%
+  filter(date>=maxdate-6-7) %>%
   summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
@@ -378,28 +345,28 @@ rwert7ti <- tibble(
     "> 50"
   ),
   Vorwoche=c(
-    bundeslaender_r_und_vwz_data %>% filter(id==0 & Datum==rvwzmaxdate-7 & Variable=="R") %>% pull(Wert),
+    bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`),
     NA,
-    round((vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_0-59`+vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_60-79`+vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_80+`)/83166711*100000),
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz`)),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`),
-    round((vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_60-79`+vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_80+`)/(letzte_7_tage_altersgruppen_bund$`60 bis 80`+letzte_7_tage_altersgruppen_bund$`80+`)*100000),
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`)),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
     NA,
-    NA,
-    NA
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
     ),
   dieseWoche=c(
-    bundeslaender_r_und_vwz_data %>% filter(id==0 & Datum==rvwzmaxdate & Variable=="R") %>% pull(Wert),
+    bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`),
     NA,
-    round(bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz`)),
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`7-Tage-Inzidenz`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`)),
-    round(bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz 60+`)),
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
     NA,
-    round(sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
   )
 )
 

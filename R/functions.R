@@ -87,6 +87,8 @@ RKI_R <- tryCatch(
 ##### make data for downstream analysis/plots
 ## if last divi report missing
 maxdatum <- max(as_date(rki$Meldedatum))
+lastsunday <- floor_date(maxdatum, "week")
+sundaybeforelastsunday <- lastsunday-7
 if (max(divi$daten_stand!=maxdatum)) {
   divi_all <- bind_rows(divi_all, divi %>% mutate(daten_stand=as_date(maxdatum)))
 }
@@ -378,7 +380,7 @@ ausgangsdaten <- letzte_7_tage %>%
          Kapazitaet_Betten=(faelle_covid_aktuell+betten_frei)) # /icu_days
 ## berechne vorwarnzeit
 myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
-                                     (date==as_date(maxdatum) & id>16) ) %>%
+                                     (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
   rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
                                      cases = c(.$cases059, .$cases6079, .$cases80),
@@ -390,7 +392,7 @@ myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- ausgangsdaten %>%
   filter((date>=as_date("2020-03-13") & id<=16) |
-           (date==as_date(maxdatum) & id>16) ) %>%
+           (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(Vorwarnzeit-21, 0))
 
 R_aktuell_Bund <- aktuell$R0[aktuell$id==0]
@@ -487,10 +489,47 @@ kreise_table <- vorwarnzeitergebnis %>%
          "Fälle insgesamt"=cases,
          "Vorwarnzeit lokal*"=Vorwarnzeit #, # needs communication
   )
-
+## data for Bundeslaender faktenblatt
+bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
+  filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
+  left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  mutate(R0=round(R0,digits = 2)) %>%
+  select(Bundesland=name,
+         Datum=date,
+         "R(t)"=R0,
+         "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
+         "Vorwarnzeit"=Vorwarnzeit,
+         "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
+         "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
+         "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
+         "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`
+  )
+## data for Kreise Faktenblatt
+kreise_table_faktenblatt <- vorwarnzeitergebnis %>%
+  filter((id>17 | id==11) & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
+  left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  mutate(R0=round(R0,digits = 2)) %>%
+  mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
+  left_join(., aktuell %>%
+              filter(id>0 & id<17) %>%
+              select(blid=id, Bundesland=name)) %>%
+  arrange(blid,id) %>%
+  select(Datum=date,
+         Kreis=name,
+         Bundesland,
+         "R(t)"=R0,
+         "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
+         "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
+         "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
+         "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
+         "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
+         "Vorwarnzeit"=Vorwarnzeit #, # needs communication
+  )
 ##### write data for displayed tables/plots to jsons
 write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
+write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_table_faktenblatt.json")
 write_json(kreise_table, "./data/tabledata/kreise_table.json")
+write_json(kreise_table_faktenblatt, "./data/tabledata/kreise_table_faktenblatt.json")
 write_json(rwert_bund_data, "./data/plotdata/rwert_bund.json")
 write_json(rki_r_und_zi_vwz_data, "./data/plotdata/rki_r_und_zi_vwz_data.json")
 write_json(akutinfiziert_data, "./data/plotdata/akutinfiziert.json")
