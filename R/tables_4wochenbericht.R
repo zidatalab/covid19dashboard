@@ -18,6 +18,13 @@ library(stringr)
 library(ggplot2)
 library(dtplyr)
 
+## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
+altersgruppen_bund <- tibble("unter 20"=18.4,
+                             "20 bis 40"=24.6,
+                             "40 bis 60"=28.4,
+                             "60 bis 80"=21.7,
+                             "80+"=6.8)/100
+
 bundeslaender_table<- read_json("./data/tabledata/bundeslaender_table.json",
                                 simplifyVector = TRUE)
 kreise_table<- read_json("./data/tabledata/kreise_table.json",
@@ -36,6 +43,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 rki <- tbl(conn,"rki") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
+strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum))
 international <- tbl(conn,"trends") %>%
   filter(Country %in% c(
@@ -74,6 +82,37 @@ international <- tbl(conn,"trends") %>%
   collect() %>%
   mutate(date=as_date(date)) %>%
   left_join(., params, by=c("Country"="name"))
+
+## rki imputation because of delayed gesundheitsamt-meldungen
+rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), maxdate=max(date(Meldedatum)))
+rkiidkreise <- unique(rki$IdLandkreis)
+rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")
+Kreise_allvalues <- expand_grid(Meldedatum=rkitimeframe$maxdate, IdLandkreis=rkiidkreise)
+Kreise <- rki %>%
+  mutate(Meldedatum=date(Meldedatum)) %>%
+  full_join(., Kreise_allvalues, by=c("Meldedatum", "IdLandkreis"))
+n_missingkreise <- 0
+for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g. Hamburg 02000)
+  if (is.na((Kreise %>% filter(Meldedatum==rkitimeframe$maxdate & IdLandkreis==idkreis) %>% pull(AnzahlFall))[1])) {
+    n_missingkreise <- n_missingkreise+1
+    sixdaysbefore <- Kreise %>% filter(Meldedatum>=rkitimeframe$maxdate-6 & IdLandkreis==idkreis)
+    for (ag in rkiagegroups) {
+      Kreise <- Kreise %>%
+        add_row(IdBundesland=sixdaysbefore$IdBundesland[1],
+                Bundesland=sixdaysbefore$Bundesland[1],
+                Landkreis=sixdaysbefore$Landkreis[1],
+                Altersgruppe=ag,
+                Geschlecht="unbekannt",
+                AnzahlFall=round(sum(sixdaysbefore$AnzahlFall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
+                AnzahlTodesfall=round(sum(sixdaysbefore$AnzahlTodesfall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
+                Meldedatum=rkitimeframe$maxdate,
+                IdLandkreis=idkreis,
+                AnzahlGenesen=round(sum(sixdaysbefore$AnzahlGenesen[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6))
+    }
+  }
+}
+cat("Kreise ohne aktuelle Meldung: ", n_missingkreise, "\n")
+rki <- Kreise
 
 eumaxdate <- max(international$date)
 eutabelle <- international %>%
@@ -262,6 +301,69 @@ itstabelle <- tibble(
 )
 
 rvwzmaxdate <- max(bundeslaender_r_und_vwz_data$Datum)
+maxdatum <- max(as_date(rki$Meldedatum))
+letzte_7_tage_altersgruppen_bund <- rki %>% 
+  filter(Altersgruppe!="unbekannt") %>%
+  mutate(id=as.integer(IdLandkreis)*1000) %>%
+  filter(!is.na(id)) %>%
+  group_by(Meldedatum, Altersgruppe) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+  arrange(Meldedatum,Altersgruppe) %>% collect() %>%
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
+                             Altersgruppe,
+                             "0-59")) %>%
+  group_by(Meldedatum, Altersgruppe) %>% 
+  summarise("Fälle"=sum(AnzahlFall , na.rm = T),
+            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
+  arrange(Meldedatum, Altersgruppe) %>% 
+  pivot_wider(id_cols =  c(Meldedatum),
+              names_from = Altersgruppe,
+              values_from = c("Fälle","Todesfälle"),
+              values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
+  mutate(date=date(Meldedatum)) %>%
+  filter(date>=maxdatum-6) %>%
+  summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
+            `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
+            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
+  bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
+  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`=round(`Faelle_letzte_7_Tage_0-59`/(sum(select(., `unter 20`:`40 bis 60`))/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/(`60 bis 80`/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)))
+vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>% 
+  filter(Meldedatum<=maxdatum-7) %>%
+  filter(Altersgruppe!="unbekannt") %>%
+  mutate(id=as.integer(IdLandkreis)*1000) %>%
+  filter(!is.na(id)) %>%
+  group_by(Meldedatum, Altersgruppe) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+  arrange(Meldedatum,Altersgruppe) %>% collect() %>%
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
+                             Altersgruppe,
+                             "0-59")) %>%
+  group_by(Meldedatum, Altersgruppe) %>% 
+  summarise("Fälle"=sum(AnzahlFall , na.rm = T),
+            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
+  arrange(Meldedatum, Altersgruppe) %>% 
+  pivot_wider(id_cols =  c(Meldedatum),
+              names_from = Altersgruppe,
+              values_from = c("Fälle","Todesfälle"),
+              values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
+  mutate(date=date(Meldedatum)) %>%
+  filter(date>=maxdatum-6-7) %>%
+  summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
+            `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
+            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
+  bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
+  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`=round(`Faelle_letzte_7_Tage_0-59`/(sum(select(., `unter 20`:`40 bis 60`))/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/(`60 bis 80`/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)))
+
 rwert7ti <- tibble(
   `R-Wert & 7-Tage-Inzidenz`=c(
     "Reproduktionszahl R",
@@ -278,25 +380,28 @@ rwert7ti <- tibble(
   Vorwoche=c(
     bundeslaender_r_und_vwz_data %>% filter(id==0 & Datum==rvwzmaxdate-7 & Variable=="R") %>% pull(Wert),
     NA,
-    "dsfdfa",
-    "fsdfa",
-    "fdsaff",
-    "fasdfdsa",
-    "fdsafads",
+    round((vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_0-59`+vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_60-79`+vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_80+`)/83166711*100000),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`),
+    round((vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_60-79`+vorwoche_letzte_7_tage_altersgruppen_bund$`Faelle_letzte_7_Tage_80+`)/(letzte_7_tage_altersgruppen_bund$`60 bis 80`+letzte_7_tage_altersgruppen_bund$`80+`)*100000),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
     NA,
-    "dfasf",
-    "fdasf"
-  ),
+    NA,
+    NA
+    ),
   dieseWoche=c(
     bundeslaender_r_und_vwz_data %>% filter(id==0 & Datum==rvwzmaxdate & Variable=="R") %>% pull(Wert),
     NA,
-    bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz`),
-    "fsdfa",
-    bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz 60+`),
-    "fasdfdsa",
-    "fdsafads",
+    round(bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`)),
+    round(bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`7-Tage-Inzidenz 60+`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
     NA,
-    sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE),
-    sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE)
+    round(sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
+    round(sum((kreise_table %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
   )
 )
+
+write_excel_csv(bltabelle, "./data/faktenblatt_bltabelle.csv")
+write_excel_csv(eutabelle, "./data/faktenblatt_eutabelle.csv")
