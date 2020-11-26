@@ -495,10 +495,10 @@ kreise_table <- vorwarnzeitergebnis %>%
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
-  left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  left_join(., myblmitidata %>% select(id, name, date, R_Mean), by=c("id", "date")) %>%
   select(Bundesland=name,
          Datum=date,
-         "R(t)"=R0,
+         "R(t)"=R_Mean,
          "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
          "Vorwarnzeit"=Vorwarnzeit,
          "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,

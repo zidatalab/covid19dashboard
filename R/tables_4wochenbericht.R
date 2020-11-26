@@ -382,7 +382,7 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   mutate(date=date(Meldedatum)) %>%
-  filter(date>=maxdate-6) %>%
+  filter(date>=maxdate-6 & date<=maxdate) %>%
   summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
@@ -413,7 +413,7 @@ vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>%
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   mutate(date=date(Meldedatum)) %>%
-  filter(date>=maxdate-6-7) %>%
+  filter(date>=maxdate-6-7 & date<=maxdate-7) %>%
   summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
@@ -436,7 +436,7 @@ rwert7ti <- tibble(
     "> 50"
   ),
   Vorwoche=c(
-    bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`),
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`), 2),
     NA,
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz`)),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`),
@@ -448,7 +448,7 @@ rwert7ti <- tibble(
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
     ),
   dieseWoche=c(
-    bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`),
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`), 2),
     NA,
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`7-Tage-Inzidenz`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`)),
@@ -458,8 +458,12 @@ rwert7ti <- tibble(
     NA,
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
-  )
+  ),
+  Veraenderung=ifelse(is.na(Vorwoche), NA, paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ","), " %"))
 )
+rwert7ti <- rwert7ti %>%
+  mutate(Vorwoche = replace(Vorwoche, 1, format(as.numeric(rwert7ti[1, 2]), decimal.mark=",")),
+         dieseWoche = replace(dieseWoche, 1, format(as.numeric(rwert7ti[1, 3]), decimal.mark=",")))
 
 testmaxkw <- max(almev$KW)
 almev <- almev %>%
