@@ -17,6 +17,8 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(dtplyr)
+library(readr)
+library(openxlsx)
 
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4,
@@ -25,12 +27,88 @@ altersgruppen_bund <- tibble("unter 20"=18.4,
                              "60 bis 80"=21.7,
                              "80+"=6.8)/100
 
+# mapping eurpean countries german
+eumapping <- tibble(english=c(
+  "France",
+  "Spain",
+  "United Kingdom",
+  "Italy",
+  "Germany",
+  "Poland",
+  "Belgium",
+  "Czechia", 
+  "Netherlands",
+  "Romania",
+  "Portugal",
+  "Austria",
+  "Sweden",
+  "Hungary",
+  "Bulgaria",
+  "Croatia",
+  "Slovakia",
+  "Greece",
+  "Denmark",
+  "Ireland",
+  "Slovenia",
+  "Lithuania",
+  "Norway",
+  "Luxembourg",
+  "Finland",
+  "Latvia",
+  "Estonia",
+  "Cyprus",
+  "Malta",
+  "Iceland",
+  "Liechtenstein"
+), german=c(
+  "Frankreich",
+  "Spanien",
+  "Vereinigtes Königreich",
+  "Italien",
+  "Deutschland",
+  "Polen",
+  "Belgien",
+  "Tschechien", 
+  "Niederlande",
+  "Rumänien",
+  "Portugal",
+  "Österreich",
+  "Schweden",
+  "Ungarn",
+  "Bulgarien",
+  "Kroatien",
+  "Slowakei",
+  "Griechenland",
+  "Dänemark",
+  "Irland",
+  "Slowenien",
+  "Litauen",
+  "Norwegen",
+  "Luxemburg",
+  "Finnland",
+  "Lettland",
+  "Estland",
+  "Zypern",
+  "Malta",
+  "Island",
+  "Liechtenstein"
+)
+)
+
+almev <- read_csv("./data/almev.csv")
+
+rki_hosp_ifsg <- read_csv("data/rki_hosp_ifsg.csv")
+
 bundeslaender_table_faktenblatt <- read_json("./data/tabledata/bundeslaender_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
 kreise_table_faktenblatt <- read_json("./data/tabledata/kreise_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
+
+agefatality_data <- read_json("./data/plotdata/agefatality.json",
+                                             simplifyVector = TRUE) %>%
+  mutate(Meldedatum=as_date(Meldedatum))
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -91,17 +169,30 @@ eutabelle <- international %>%
             `Neue Fälle je 100.000 EW in 14 Tagen`=round((max(cases)-min(cases))/EW_insgesamt*100000),
             `Todesfälle je 100.000 EW in 14 Tagen`=round((max(deaths)-min(deaths))/EW_insgesamt*100000, 1),
             .groups="drop") %>%
-  distinct()
+  distinct() %>%
+  left_join(., eumapping, by=c("Country"="english"))
+top10eu <- eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(german)
+EUmal4tabelle <- tibble(
+  `Länder nach Fällen`=top10eu,
+  `COVID-19-Fälle`=eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
+  `Länder nach Todesfällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(german),
+  `Todesfälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(`Todesfälle`),
+  `Länder nach neuen Fällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Neue Fälle je 100.000 EW in 14 Tagen`) %>% pull(german),
+  `Neue Fälle je 100.000 EW in 14 Tagen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Neue Fälle je 100.000 EW in 14 Tagen`) %>% pull(`Neue Fälle je 100.000 EW in 14 Tagen`),
+  `Länder nach neuen Todesfällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle je 100.000 EW in 14 Tagen`) %>% pull(german),
+  `Todesfälle je 100.000 EW in 14 Tagen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle je 100.000 EW in 14 Tagen`) %>% pull(`Todesfälle je 100.000 EW in 14 Tagen`)
+) %>%
+  mutate(`Todesfälle je 100.000 EW in 14 Tagen`=format(`Todesfälle je 100.000 EW in 14 Tagen`, decimal.mark = ","))
 
 maxdate <- max(bundeslaender_table_faktenblatt$Datum)
 bltabelle <- bind_rows(
   bundeslaender_table_faktenblatt %>%
     filter(Bundesland=="Gesamt" & Datum==maxdate),
-  bundeslaender_table %>%
+  bundeslaender_table_faktenblatt %>%
     filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
     arrange(Bundesland)
 ) %>%
-  select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit aktuell`)
+  select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit`)
 
 vwztabelle <- tibble(
   Vorwarnzeit=c(
@@ -370,5 +461,88 @@ rwert7ti <- tibble(
   )
 )
 
-write_excel_csv(bltabelle, "./data/faktenblatt_bltabelle.csv")
-write_excel_csv(eutabelle, "./data/faktenblatt_eutabelle.csv")
+testmaxkw <- max(almev$KW)
+almev <- almev %>%
+  mutate(positivrate=positivtests/pcrtests,
+         auslastung=pcrtests/testkapazitaet)
+testtabelle <- tibble(
+  Testungen=c(
+    "Zahl der PCR-Tests",
+    "Positive Tests",
+    "Positivrate",
+    "Testkapazität",
+    "Auslastung"
+  ),
+  Vorwoche=c(
+    almev %>% filter(KW==testmaxkw-1) %>% pull(pcrtests),
+    almev %>% filter(KW==testmaxkw-1) %>% pull(positivtests),
+    paste0(format(round((almev %>% filter(KW==testmaxkw-1) %>% pull(positivrate))*100, 2), decimal.mark = ","), " %"),
+    almev %>% filter(KW==testmaxkw-1) %>% pull(testkapazitaet),
+    paste0(round((almev %>% filter(KW==testmaxkw-1) %>% pull(auslastung))*100, 0), " %")
+  ),
+  dieseWoche=c(
+    almev %>% filter(KW==testmaxkw) %>% pull(pcrtests),
+    almev %>% filter(KW==testmaxkw) %>% pull(positivtests),
+    paste0(format(round((almev %>% filter(KW==testmaxkw) %>% pull(positivrate))*100, 2), decimal.mark = ","), " %"),
+    almev %>% filter(KW==testmaxkw) %>% pull(testkapazitaet),
+    paste0(round((almev %>% filter(KW==testmaxkw) %>% pull(auslastung))*100, 0), " %")
+  ),
+  Veraenderung=c(
+    paste0(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(pcrtests) - almev %>% filter(KW==testmaxkw-1) %>% pull(pcrtests))/almev %>% filter(KW==testmaxkw-1) %>% pull(pcrtests), 0), " %"),
+    paste0(format(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(positivtests) - almev %>% filter(KW==testmaxkw-1) %>% pull(positivtests))/almev %>% filter(KW==testmaxkw-1) %>% pull(positivtests), 1), decimal.mark = ","), " %"),
+    paste0(format(round((almev %>% filter(KW==testmaxkw) %>% pull(positivrate))*100, 2)- round((almev %>% filter(KW==testmaxkw-1) %>% pull(positivrate))*100, 2), decimal.mark = ","), " PP"),
+    paste0(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(testkapazitaet) - almev %>% filter(KW==testmaxkw-1) %>% pull(testkapazitaet))/almev %>% filter(KW==testmaxkw-1) %>% pull(testkapazitaet), 0), " %"),
+    paste0(round((almev %>% filter(KW==testmaxkw) %>% pull(auslastung))*100, 0)- round((almev %>% filter(KW==testmaxkw-1) %>% pull(auslastung))*100, 0), " PP")
+  )
+) 
+
+ifsgmaxkw <- max(rki_hosp_ifsg$KW)
+c19erkranktetabelle <- tibble(
+  Testungen=c(
+    "Ohne Symptomatik",
+    "Nicht stationär behandelt",
+    "Intensivmedizinisch behandelt (Schätzung)",
+    "Klinik- und Praxispersonal",
+    "Neuinfizierte",
+    "Neu stationär behandelt",
+    "Neu verstorben"
+  ),
+  Vorwoche=c(
+    paste0(format(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ohnesymptomatik)), decimal.mark = ","), " %"),
+    paste0(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(nichtstationaer)), " %"),
+    paste0(format(agefatality_data %>% filter(Meldedatum==maxdate-7 & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark = ","), " %"),
+    NA,
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuverstorben)
+  ),
+  dieseWoche=c(
+    paste0(format(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ohnesymptomatik)), decimal.mark = ","), " %"),
+    paste0(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(nichtstationaer)), " %"),
+    paste0(format(agefatality_data %>% filter(Meldedatum==maxdate & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark = ","), " %"),
+    NA,
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neustationaer),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuverstorben)
+  ),
+  Veraenderung=c(
+    paste0(format(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ohnesymptomatik)-rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ohnesymptomatik)), 1), decimal.mark=","), " PP"),
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(nichtstationaer)-rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(nichtstationaer)), 0), " PP"),
+    paste0(format(agefatality_data %>% filter(Meldedatum==maxdate & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil)-agefatality_data %>% filter(Meldedatum==maxdate-7 & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark=","), " PP"),
+    NA,
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert) - rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert)), " %"),
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neustationaer)- rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer)), " %"),
+    NA
+  )
+) 
+
+library(openxlsx)
+list_of_datasets <- list("Testungen"=testtabelle,
+                         "R-Wert & 7-Tage-Inzidenz" = rwert7ti,
+                         "Intensivbetten"=itstabelle,
+                         "COVID-19-Erkrankte"=c19erkranktetabelle,
+                         "Todesfälle & Fallsterblichkeit"=sterbetabelle,
+                         "Vorwarnzeit"=vwztabelle,
+                         "Regionale Daten"=bltabelle,
+                         "Internationaler Vergleich"=EUmal4tabelle)
+write.xlsx(list_of_datasets, file = paste0("./data/faktenblatttabellen_", maxdate, ".xlsx"))
