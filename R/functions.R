@@ -496,7 +496,6 @@ kreise_table <- vorwarnzeitergebnis %>%
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
-  mutate(R0=round(R0,digits = 2)) %>%
   select(Bundesland=name,
          Datum=date,
          "R(t)"=R0,
@@ -511,7 +510,6 @@ bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
 kreise_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter((id>17 | id==11) & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
-  mutate(R0=round(R0,digits = 2)) %>%
   mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
   left_join(., aktuell %>%
               filter(id>0 & id<17) %>%

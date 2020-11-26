@@ -538,10 +538,10 @@ c19erkranktetabelle <- tibble(
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
-                         "R-Wert & 7-Tage-Inzidenz" = rwert7ti,
+                         "R-Wert und 7-Tage-Inzidenz" = rwert7ti,
                          "Intensivbetten"=itstabelle,
                          "COVID-19-Erkrankte"=c19erkranktetabelle,
-                         "Todesfälle & Fallsterblichkeit"=sterbetabelle,
+                         "Todesfälle und Fallsterblichkeit"=sterbetabelle,
                          "Vorwarnzeit"=vwztabelle,
                          "Regionale Daten"=bltabelle,
                          "Internationaler Vergleich"=EUmal4tabelle)
