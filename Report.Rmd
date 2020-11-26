@@ -1,0 +1,29 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    
+    
+---
+
+Row
+-----------------------------------------------------------------------
+
+### **KBV-Corona-Report**
+
+Jeden Mittwoch veröffentlicht die Kassenärztliche Bundesvereinigung (KBV) gemeinsam mit dem Zentralinstitut für die kassenärztliche Versorgung (Zi) mit dem *Corona-Report* ein Faktenblatt mit Kennzahlen zur Einordnung des Infektionsgeschehens.
+
+Den aktuellen Corona-Report finden Sie hier.
+
+Zum besseren Verständnis des Reports finden Sie eine kommentierte Lesehilfe hier.
