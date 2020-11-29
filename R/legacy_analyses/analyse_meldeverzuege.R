@@ -1,22 +1,10 @@
-##### Packages
-library(DT)
-library(DBI)
-library(forcats)
-library(EpiEstim)
-library(plotly)
-library(zicolors)
-library(deSolve)
-library(jsonlite)
-library(readxl)
-library(data.table)
-library(dplyr)
-library(glue)
-library(lubridate)
 library(tidyverse)
-library(tidyr)
-library(stringr)
-library(ggplot2)
-library(dtplyr)
+library(lubridate)
+
+mindate <- as_date("2020-11-01")
+
+startdate <- as_date("2020-11-24")
+enddate <- as_date("2020-11-28")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -25,38 +13,42 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        password        = Sys.getenv("DBPASSWORD"),
                        port     = 5432,
                        sslmode = 'require')
+strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
+DBI::dbDisconnect(conn)
+rkicounts <- tibble()
 
-rki <- tbl(conn,"rki") %>% collect()
-
-## rki imputation because of delayed gesundheitsamt-meldungen
-rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), maxdate=max(date(Meldedatum)))
-rkiidkreise <- unique(rki$IdLandkreis)
-rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")
-Kreise_allvalues <- expand_grid(Meldedatum=rkitimeframe$maxdate, IdLandkreis=rkiidkreise)
-Kreise <- rki %>%
-  mutate(Meldedatum=date(Meldedatum)) %>%
-  full_join(., Kreise_allvalues, by=c("Meldedatum", "IdLandkreis"))
-n_missingkreise <- 0
-mssngno <- tibble()
-for (idkreis in rkiidkreise) { # take care of delayed reporting Landkreise (e.g. Hamburg 02000)
-  thiskreistable <- Kreise %>% filter(Meldedatum>=rkitimeframe$maxdate & IdLandkreis==idkreis)
-  if (is.na((thiskreistable %>% pull(AnzahlFall))[1])) {
-    n_missingkreise <- n_missingkreise+1
-    sixdaysbefore <- Kreise %>% filter(Meldedatum>=rkitimeframe$maxdate-6 & IdLandkreis==idkreis)
-    for (ag in rkiagegroups) {
-      Kreise <- Kreise %>%
-        add_row(IdBundesland=sixdaysbefore$IdBundesland[1],
-                Bundesland=sixdaysbefore$Bundesland[1],
-                Landkreis=sixdaysbefore$Landkreis[1],
-                Altersgruppe=ag,
-                Geschlecht="unbekannt",
-                AnzahlFall=round(sum(sixdaysbefore$AnzahlFall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
-                AnzahlTodesfall=round(sum(sixdaysbefore$AnzahlTodesfall[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6),
-                Meldedatum=rkitimeframe$maxdate,
-                IdLandkreis=idkreis,
-                AnzahlGenesen=round(sum(sixdaysbefore$AnzahlGenesen[sixdaysbefore$Altersgruppe==ag], na.rm = TRUE)/6))
-    }
-  }
+for (thisdate in seq(startdate, enddate, 1)) {
+  thisrki <- read_csv(paste0("./data/rki_", as_date(thisdate), ".csv")) %>%
+    filter(Meldedatum>=mindate) %>%
+    select(IdBundesland, AnzahlFall, Meldedatum, IdLandkreis) %>%
+    mutate(IdLandkreis=as.numeric(IdLandkreis)*1000) %>%
+    mutate(IdLandkreis=ifelse(IdLandkreis<12000000&IdLandkreis>=11000000, 11000000, IdLandkreis)) %>%
+    left_join(., strukturdaten %>% select(id, EW_insgesamt), by=c("IdLandkreis"="id")) %>%
+    group_by(IdLandkreis, Meldedatum) %>%
+    summarise(Faelle=sum(AnzahlFall),
+              IdBundesland=median(IdBundesland),
+              EW_insgesamt=median(EW_insgesamt),
+              .groups="drop")
+  thisrki2 <- inner_join(thisrki,
+                         thisrki %>%
+                           select(IdLandkreis, Meldedatum, Faelle), by = "IdLandkreis") %>% 
+    mutate(datediff = as_date(Meldedatum.x) - as_date(Meldedatum.y)) %>%
+    filter(datediff >= 0 & datediff <= 6) %>% 
+    group_by(IdLandkreis, Meldedatum.x) %>% 
+    summarise(Siebentagefaelle = sum(Faelle.y, na.rm=TRUE),
+              Siebentageinzidenz = median(Siebentagefaelle/EW_insgesamt*100000),
+              Faelle=median(Faelle.x),
+              .groups="drop") %>%
+    mutate(Rkidatum=as_date(thisdate))
+  rkicounts <- bind_rows(rkicounts,
+                         thisrki2)
 }
-cat("Kreise ohne aktuelle Meldung: ", n_missingkreise, "\n")
-rki <- Kreise
+
+quantmeldeverzuege <- rkicounts %>%
+  filter(Meldedatum.x==startdate) %>%
+  group_by(IdLandkreis) %>%
+  mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz))
+
+ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
+  geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
+  stat_summary(fun="mean", geom="point")
