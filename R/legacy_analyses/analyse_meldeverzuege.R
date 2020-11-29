@@ -52,3 +52,9 @@ quantmeldeverzuege <- rkicounts %>%
 ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
   geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
   stat_summary(fun="mean", geom="point")
+
+sum(quantmeldeverzuege$Siebentageinzidenz[quantmeldeverzuege$Rkidatum=="2020-11-24"]>=50)
+sum(quantmeldeverzuege$Siebentageinzidenz[quantmeldeverzuege$Rkidatum=="2020-11-25"]>=50)
+sum(quantmeldeverzuege$Siebentageinzidenz[quantmeldeverzuege$Rkidatum=="2020-11-26"]>=50)
+sum(quantmeldeverzuege$Siebentageinzidenz[quantmeldeverzuege$Rkidatum=="2020-11-27"]>=50)
+sum(quantmeldeverzuege$Siebentageinzidenz[quantmeldeverzuege$Rkidatum=="2020-11-28"]>=50)
