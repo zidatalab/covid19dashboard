@@ -1,0 +1,165 @@
+library(tidyverse)
+library(lubridate)
+library(ggalluvial)
+library(sf)
+library(zicolors)
+library(cowplot)
+mindate <- as_date("2020-11-01")
+
+startdate <- as_date("2020-11-26")
+enddate <- as_date("2020-11-29")
+
+conn <- DBI::dbConnect(RPostgres::Postgres(),
+                       host   = Sys.getenv("DBHOST"),
+                       dbname = Sys.getenv("DBNAME"),
+                       user      =  Sys.getenv("DBUSER"),
+                       password        = Sys.getenv("DBPASSWORD"),
+                       port     = 5432,
+                       sslmode = 'require')
+strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
+DBI::dbDisconnect(conn)
+rkicounts <- tibble()
+
+lastrki <- read_csv(paste0("./data/rki_", as_date(enddate), ".csv")) %>%
+  filter(Meldedatum>=mindate)
+allkreisedates <- expand(lastrki, IdLandkreis, Meldedatum)
+
+for (thisdate in seq(startdate, enddate, 1)) {
+  thisrki <- read_csv(paste0("./data/rki_", as_date(thisdate), ".csv")) %>%
+    filter(Meldedatum>=mindate) %>%
+    select(AnzahlFall, Meldedatum, IdLandkreis) %>%
+    full_join(., allkreisedates %>% filter(Meldedatum<=thisdate), by=c("IdLandkreis", "Meldedatum")) %>%
+    mutate(IdLandkreis=as.numeric(IdLandkreis)*1000) %>%
+    mutate(IdLandkreis=ifelse(IdLandkreis<12000000&IdLandkreis>=11000000, 11000000, IdLandkreis)) %>%
+    left_join(., strukturdaten %>% select(id, EW_insgesamt), by=c("IdLandkreis"="id")) %>%
+    group_by(IdLandkreis, Meldedatum) %>%
+    summarise(Faelle=sum(AnzahlFall, na.rm=TRUE),
+              EW_insgesamt=median(EW_insgesamt),
+              .groups="drop")
+  thisrki2 <- inner_join(thisrki,
+                         thisrki %>%
+                           select(IdLandkreis, Meldedatum, Faelle), by = "IdLandkreis") %>% 
+    mutate(datediff = as_date(Meldedatum.x) - as_date(Meldedatum.y)) %>%
+    filter(datediff >= 0 & datediff <= 6) %>% 
+    group_by(IdLandkreis, Meldedatum.x) %>% 
+    summarise(Siebentagefaelle = sum(Faelle.y, na.rm=TRUE),
+              Siebentageinzidenz = median(Siebentagefaelle/EW_insgesamt*100000),
+              Faelle=median(Faelle.x),
+              .groups="drop") %>%
+    mutate(Rkidatum=as_date(thisdate))
+  rkicounts <- bind_rows(rkicounts,
+                         thisrki2)
+}
+
+quantmeldeverzuege <- rkicounts %>%
+  filter(Meldedatum.x==startdate) %>%
+  group_by(IdLandkreis) %>%
+  mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz),
+         Inzidenzlevel=ifelse(Siebentageinzidenz<35, "<35",
+                              ifelse(Siebentageinzidenz<50, "35-50",
+                                     ifelse(Siebentageinzidenz<70, "50-70",
+                                            ifelse(Siebentageinzidenz<200, "70-200",
+                                                   "200+"))))) %>%
+  mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50-70", "70-200", "200+"), ordered=TRUE))
+jumpmeldeverzuge <- quantmeldeverzuege %>%
+  group_by(IdLandkreis) %>%
+  summarise(Jump=n_distinct(Inzidenzlevel)-1,
+            .groups="drop")
+jumpkreise <- jumpmeldeverzuge %>% filter(Jump>0) %>% pull(IdLandkreis)
+
+ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
+  geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
+  stat_summary(fun="mean", geom="point")
+
+ggplot(quantmeldeverzuege, aes(x=Rkidatum, fill=Inzidenzlevel)) +
+  geom_bar(position="dodge")
+
+ggplot(quantmeldeverzuege %>% filter(Rkidatum<="2020-11-26" & IdLandkreis%in%jumpkreise),
+       aes(x = Rkidatum, stratum = Inzidenzlevel, alluvium = IdLandkreis,
+           fill = Inzidenzlevel, label = Inzidenzlevel)) +
+  scale_fill_brewer(type = "qual", palette = "Set2") +
+  geom_flow(stat = "alluvium", lode.guidance = "backfront") +
+  geom_stratum() +
+  theme(legend.position = "bottom")
+
+# deutschlandkarte
+KRS <- read_sf("./data/shp/kreise.shp")
+ggplot(KRS)+geom_sf() 
+ggplot(KRS, aes(fill=SN_L))+geom_sf() # colored by Bundesland!
+REG <- KRS %>%
+  group_by(RS) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(IdLandkreis=as.numeric(RS)*1000) %>%
+  left_join(., quantmeldeverzuege, by="IdLandkreis") %>%
+  mutate(Jump=factor(ifelse(IdLandkreis%in%jumpkreise, 1, 0)),
+         Inz50200=ifelse(!Inzidenzlevel%in%c("<35", "35-50"), 
+                         ifelse(Inzidenzlevel=="200+",
+                                "über 200",
+                                "über 50"),
+                         "unter 50"))
+BL <- KRS %>%
+  group_by(SN_L) %>%
+  summarise(geometry = sf::st_union(geometry))
+
+# final one
+plot1<-ggplot() + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
+  geom_sf(data=REG %>%
+            filter(Rkidatum %in% as_date(c("2020-11-29"))),
+          aes(fill=diffSiebentageinzidenz),
+          lwd=0.2) +
+  geom_sf(data=BL, lwd=0.4, alpha=0) +
+  theme_void() +
+  scale_fill_gradient(low="#FFFFFF", high=zi_cols("ziblue")) +
+  labs(fill="Veränderung der\n7-Tages-Inzidenz\nin Tagen") 
+plot1
+
+# final two
+plot2<-
+  REG %>% filter(Rkidatum %in% as_date(c("2020-11-29"))) %>%
+  mutate(change=case_when(Jump==1 & Inz50200=="über 50"~">50",
+                          Jump==1 & Inz50200=="über 200"~">200",
+                          TRUE ~ "keine Veränderung")) %>%
+  ggplot(.) +
+  # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
+  geom_sf(aes(fill=change),lwd=0.1, na.rm = T) +
+  scale_fill_manual(values = c("maroon","orange","white")) +
+  geom_sf(data=BL, lwd=0.4, alpha=0) +
+  theme_void()+
+  labs(fill="Überschreitung\nvon Grenzwerten\nnach Korrektur")
+
+title <- ggdraw() +
+  draw_label(
+    "Verzögerte Meldungen der Gesundheitsämter verschieben Inzidenzen in Deutschland",
+    fontfamily = "Calibri",
+    fontface = 'bold',
+    x = 0,
+    hjust = 0
+  ) +
+  theme(    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 0))
+
+full_plot<- plot_grid(title,NULL,plot1,plot2, ncol=2,rel_heights = c(.3,1))
+
+ggsave(full_plot,filename = "Verzoegerung_Effekt.png", width = 10,height=10*9/16,dpi=600)
+
+
+# ggplot(REG %>% filter(Rkidatum %in% as_date(c("2020-11-24", "2020-11-29")))) +
+#   geom_sf(aes(fill=Inzidenzlevel), lwd=0.2) +
+#   scale_fill_brewer() +
+#   facet_wrap(~Rkidatum) +
+#   theme_minimal() +
+#   theme(panel.grid.major = element_line(colour = 'transparent'),
+#         axis.text=element_blank())
+# 
+# ggplot(REG %>% filter(Rkidatum %in% as_date(c("2020-11-29")))) + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
+#   geom_sf(aes(fill=diffSiebentageinzidenz), lwd=0.2) +
+#   theme_minimal() +
+#   geom_sf(data=st_centroid(REG %>% filter(Jump==1)) %>%
+#             mutate(Inzidenzlevel=REG %>% filter(Jump==1) %>% pull(Inzidenzlevel)), aes(color=Inzidenzlevel), size=0.5, shape=8) + # midpoints of the kreise
+#   scale_fill_gradient(low="#FFFFFF", high="#00008B") +
+#   scale_color_brewer() +
+#   theme(panel.grid.major = element_line(colour = 'transparent'),
+#         axis.text=element_blank())
+
