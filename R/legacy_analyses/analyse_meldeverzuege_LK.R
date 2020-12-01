@@ -121,7 +121,7 @@ plot1<-
           lwd=0.2) +
   geom_sf(data=BL, lwd=0.4, alpha=0) +
   theme_void() +
-  scale_fill_manual(values=c("white", "#CCE7F3" ,"#0086C5","#006596" ,"#889C05" )) +
+  scale_fill_manual(values=c("white","lightgrey", "#CCE7F3" ,"#0086C5","#006596")) +
   labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
 plot1 
 
@@ -130,7 +130,7 @@ plot2<-
   REG %>% filter(Rkidatum %in% as_date(c("2020-11-29"))) %>%
   mutate(change=case_when(Jump==1 & Inz50200=="über 50"~">50",
                           Jump==1 & Inz50200=="über 200"~">200",
-                          TRUE ~ "keine Veränderung")) %>%
+                          TRUE ~ "keine Änderung")) %>%
   ggplot(.) +
   # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
   geom_sf(aes(fill=change),lwd=0.1, na.rm = T) +
