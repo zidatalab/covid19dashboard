@@ -133,14 +133,28 @@ title <- ggdraw() +
     "Verzögerte Meldungen der Gesundheitsämter verschieben Inzidenzen in Deutschland",
     fontfamily = "Calibri",
     fontface = 'bold',
-    x = 0,
+    size = 14,
+    x = 0.02  ,
+    hjust = 0
+  ) +
+  theme(    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 0))
+subtitle <- ggdraw() +
+  draw_label(
+    paste0("Änderung der 7-Tages-Inzidenz bei Berücksichtigung von Nachmeldungen ",
+           format(startdate,"%d.%m.")," vs. ",format(enddate,"%d.%m.")),
+    fontfamily = "Calibri",
+    size = 12,
+    x = 0.02,
     hjust = 0
   ) +
   theme(    # add margin on the left of the drawing canvas,
     # so title is aligned with left edge of first plot
     plot.margin = margin(0, 0, 0, 0))
 
-full_plot<- plot_grid(title,NULL,plot1,plot2, ncol=2,rel_heights = c(.3,1))
+full_plot<- plot_grid(title,NULL,subtitle,NULL,plot1,plot2, ncol=2,rel_heights = c(.08,.05,1))
+full_plot
 
 ggsave(full_plot,filename = "Verzoegerung_Effekt.png", width = 10,height=10*9/16,dpi=600)
 
