@@ -6,8 +6,8 @@ library(zicolors)
 library(cowplot)
 mindate <- as_date("2020-11-01")
 
-startdate <- as_date("2020-11-26")
-enddate <- as_date("2020-11-29")
+startdate <- as_date("2020-11-24")
+enddate <- as_date("2020-11-26")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -58,10 +58,8 @@ quantmeldeverzuege <- rkicounts %>%
          jump=ifelse((max(Siebentageinzidenz)>=50) & (min(Siebentageinzidenz)<50),TRUE,FALSE),
          Inzidenzlevel=ifelse(Siebentageinzidenz<35, "<35",
                               ifelse(Siebentageinzidenz<50, "35-50",
-                                     ifelse(Siebentageinzidenz<70, "50-70",
-                                            ifelse(Siebentageinzidenz<200, "70-200",
-                                                   "200+"))))) %>%
-  mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50-70", "70-200", "200+"), ordered=TRUE))
+                                     "50+"))) %>%
+  mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50+"), ordered=TRUE))
 
 ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
   geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
@@ -74,7 +72,7 @@ ggplot(quantmeldeverzuege, aes(group=Rkidatum, y=diffSiebentageinzidenz)) +
 ggplot(quantmeldeverzuege, aes(x=Rkidatum, fill=Inzidenzlevel)) +
   geom_bar(position="dodge")
 
-ggplot(quantmeldeverzuege %>% filter(Rkidatum<="2020-11-26" & jump==TRUE),
+ggplot(quantmeldeverzuege %>% filter(Rkidatum<="2020-11-29" & jump==TRUE),
        aes(x = Rkidatum, stratum = Inzidenzlevel, alluvium = IdLandkreis,
            fill = Inzidenzlevel, label = Inzidenzlevel)) +
   scale_fill_brewer(type = "qual", palette = "Set2") +
@@ -89,21 +87,16 @@ REG <- KRS %>%
   count() %>%
   ungroup() %>%
   mutate(IdLandkreis=as.numeric(RS)*1000) %>%
-  left_join(., quantmeldeverzuege, by="IdLandkreis") %>%
-  mutate(Inz50200=ifelse(!Inzidenzlevel%in%c("<35", "35-50"), 
-                         ifelse(Inzidenzlevel=="200+",
-                                "über 200",
-                                "über 50"),
-                         "unter 50"))
+  left_join(., quantmeldeverzuege, by="IdLandkreis")
 BL <- KRS %>%
   group_by(SN_L) %>%
   summarise(geometry = sf::st_union(geometry))
 
 # final one
 c_levels = c("keine Änderung","+1 bis +5","+6 bis +19","+20 bis +49","mehr als +50")
-plot1<-
+plot1 <-
   REG %>%
-  filter(Rkidatum %in% as_date(c("2020-11-29"))) %>%
+  filter(Rkidatum %in% as_date(enddate)) %>%
   mutate(change_kat=case_when(diffSiebentageinzidenz==0~"keine Änderung",
                               diffSiebentageinzidenz>0 &
                                 diffSiebentageinzidenz<=5  ~"+1 bis +5",
@@ -118,22 +111,21 @@ plot1<-
           lwd=0.2) +
   geom_sf(data=BL, lwd=0.4, alpha=0) +
   theme_void() +
-  scale_fill_manual(values=c("white","lightgrey", "#CCE7F3" ,"#0086C5","#006596")) +
+  scale_fill_manual(values=c("#ededed","#F5FAFD", "#CCE7F3" ,"#0086C5","#006596")) +
   labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
 plot1 
 
 # final two
 plot2 <-
-  REG %>% filter(Rkidatum %in% as_date(c("2020-11-29"))) %>%
-  mutate(change=case_when(jump==TRUE~">50",
-                          jump==FALSE ~ "keine Änderung")) %>%
+  REG %>% filter(Rkidatum %in% as_date(enddate)) %>%
   ggplot(.) +
   # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
-  geom_sf(aes(fill=change),lwd=0.1, na.rm = T) +
-  scale_fill_manual(values = c("#E49900","white")) + # "maroon",
+  geom_sf(aes(fill=jump),lwd=0.1, na.rm = TRUE) +
+  scale_fill_manual(values = c("white", "#E49900"), labels=c("keine Änderung", ">50")) +
   geom_sf(data=BL, lwd=0.4, alpha=0) +
-  theme_void()+
+  theme_void() +
   labs(fill="Überschreitung\nvon Grenzwerten\nnach Korrektur")
+plot2
 
 title <- ggdraw() +
   draw_label(
