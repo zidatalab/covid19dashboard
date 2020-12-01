@@ -27,7 +27,17 @@ kreise_em <- vorwarnzeitergebnis %>%
          "STI60"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
          "Vorwarnzeit"=Vorwarnzeit
   ) %>%
-  mutate(EM=case_when(
+  mutate(EM_Vorwarnzeit=case_when(
+    Vorwarnzeit > 21 ~ ">21",
+    Vorwarnzeit <= 21 & Vorwarnzeit >= 7 ~ "7-21",
+    Vorwarnzeit < 7 ~ "<7"
+  ), 
+  EM_Inzidenz=case_when(
+    STI60 < 50 ~ "<50",
+    STI60 >= 50 & STI60 <= 150 ~ "50-150",
+    STI60 > 150 ~ ">150"
+  ), 
+  EM=case_when(
     STI60 < 50 & Vorwarnzeit > 21 ~ 1,
     STI60 < 50 & Vorwarnzeit <= 21 & Vorwarnzeit >= 7 ~ 1,
     STI60 >= 50 & STI60 <= 150 & Vorwarnzeit > 21 ~ 1,
@@ -36,9 +46,9 @@ kreise_em <- vorwarnzeitergebnis %>%
     STI60 > 150 & Vorwarnzeit > 21 ~ 2,
     STI60 >= 50 & STI60 <= 150 & Vorwarnzeit < 7 ~ 2,
     STI60 > 150 & Vorwarnzeit <= 21 & Vorwarnzeit >= 7 ~ 2,
-    STI60 > 150 & Vorwarnzeit < 7 ~ 1
+    STI60 > 150 & Vorwarnzeit < 7 ~ 3
   )) %>%
-  select(IdLandkreis=id, EM) %>%
+  select(IdLandkreis=id, EM, EM_Vorwarnzeit, EM_Inzidenz) %>%
   mutate(IdLandkreis=ifelse(IdLandkreis==11, 11000000, IdLandkreis))
 
 # deutschlandkarte
@@ -66,4 +76,5 @@ karte_em <-
 karte_em 
 
 # table
-table(kreise_em$EM)
+table(kreise_em$EM_Vorwarnzeit, kreise_em$EM_Inzidenz, useNA = "always")
+table(kreise_em$EM, useNA = "always")
