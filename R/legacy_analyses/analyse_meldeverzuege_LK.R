@@ -103,16 +103,25 @@ BL <- KRS %>%
   summarise(geometry = sf::st_union(geometry))
 
 # final one
-plot1<-ggplot() + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
-  geom_sf(data=REG %>%
-            filter(Rkidatum %in% as_date(c("2020-11-29"))),
-          aes(fill=diffSiebentageinzidenz),
+c_levels = c("keine Änderung","+ 0 bis +19","+20 bis +49","mehr als +50")
+plot1<-
+  REG %>%
+  filter(Rkidatum %in% as_date(c("2020-11-29"))) %>%
+  mutate(change_kat=case_when(diffSiebentageinzidenz==0~"keine Änderung",
+                              diffSiebentageinzidenz>0 &
+                              diffSiebentageinzidenz<20  ~"+ 0 bis +19",
+                              diffSiebentageinzidenz>=20 &
+                                diffSiebentageinzidenz<50  ~"+20 bis +49",
+                              diffSiebentageinzidenz>=50   ~"mehr als +50"),
+         change_kat=factor(change_kat,ordered = T, levels = c_levels)) %>%
+  ggplot() + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
+  geom_sf(aes(fill=change_kat),
           lwd=0.2) +
   geom_sf(data=BL, lwd=0.4, alpha=0) +
   theme_void() +
-  scale_fill_gradient(low="#FFFFFF", high=zi_cols("ziblue")) +
-  labs(fill="Veränderung der\n7-Tages-Inzidenz\nin Tagen") 
-plot1
+  scale_fill_manual(values=c("lightgrey","#0086C5","#B1C800","#E49900")) +
+  labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
+plot1 
 
 # final two
 plot2<-
