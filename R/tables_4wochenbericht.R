@@ -311,7 +311,7 @@ sterbetabelle <- tibble(
   KWX_sterblichkeit=c(
     sterberki %>% pull(Sterblichkeit)
   ),
-  Veraenderung=paste0(round(100*(KWX-Vorwoche)/Vorwoche, 1), "%")
+  Veraenderung=paste0(format(round(100*(KWX-Vorwoche)/Vorwoche, 1), decimal.mark = ","), "%")
 ) %>%
   mutate(Vorwoche=ifelse(Vorwoche==0, 0, paste0(Vorwoche, " (", format(round(100*Vorwoche_sterblichkeit, 1), decimal.mark=","), "%)")),
          KWX=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
@@ -338,7 +338,7 @@ itstabelle <- tibble(
            divi0 %>% filter(daten_stand==maxdividate) %>% pull(faelle_covid_aktuell),
            divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei)
   ),
-  Veraenderung=format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ",")
+  Veraenderung=paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ","), " %")
 ) %>% mutate(
   Vorwoche=c(
     divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(ICU_Betten),

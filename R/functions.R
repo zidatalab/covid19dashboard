@@ -496,6 +496,7 @@ kreise_table <- vorwarnzeitergebnis %>%
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
   left_join(., myblmitidata %>% select(id, name, date, R_Mean), by=c("id", "date")) %>%
+  mutate(R_Mean=round(R_Mean, 2)) %>%
   select(Bundesland=name,
          Datum=date,
          "R(t)"=R_Mean,
