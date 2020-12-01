@@ -55,12 +55,14 @@ quantmeldeverzuege <- rkicounts %>%
   filter(Meldedatum.x==startdate) %>%
   group_by(IdLandkreis) %>%
   mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz),
+         jump=ifelse((max(Siebentageinzidenz)>=50) & (min(Siebentageinzidenz)<50),TRUE,FALSE),
          Inzidenzlevel=ifelse(Siebentageinzidenz<35, "<35",
                               ifelse(Siebentageinzidenz<50, "35-50",
                                      ifelse(Siebentageinzidenz<70, "50-70",
                                             ifelse(Siebentageinzidenz<200, "70-200",
                                                    "200+"))))) %>%
   mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50-70", "70-200", "200+"), ordered=TRUE))
+View(quantmeldeverzuege %>% filter(Rkidatum == enddate) )
 jumpmeldeverzuge <- quantmeldeverzuege %>%
   group_by(IdLandkreis) %>%
   summarise(Jump=n_distinct(Inzidenzlevel)-1,
