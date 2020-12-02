@@ -7,7 +7,7 @@ library(cowplot)
 mindate <- as_date("2020-11-01")
 
 startdate <- as_date("2020-11-24")
-enddate <- as_date("2020-11-26")
+enddate <- as_date("2020-11-27")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -110,18 +110,22 @@ plot1 <-
   geom_sf(aes(fill=change_kat),
           lwd=0.2) +
   geom_sf(data=BL, lwd=0.4, alpha=0) +
-  theme_void() +
-  scale_fill_manual(values=c("#ededed","#F5FAFD", "#CCE7F3" ,"#0086C5","#006596")) +
+  theme_void() + scale_fill_zi("blue", discrete = TRUE, reverse = T)+
+  #scale_fill_manual(values=c("#ededed","white", "#CCE7F3" ,"#0086C5","#006596")) +
   labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
 plot1 
 
 # final two
+plot2.df <- REG %>% filter(Rkidatum %in% as_date(enddate)) %>%
+  mutate(veraenderung=case_when((Siebentageinzidenz)<50 ~ "keine Überschreitung",
+                                (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ "Überschreitung bekannt",
+                                Siebentageinzidenz>=50 & (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ "Überschreitung unbekannt"))
+
 plot2 <-
-  REG %>% filter(Rkidatum %in% as_date(enddate)) %>%
+  plot2.df %>%
   ggplot(.) +
-  # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
-  geom_sf(aes(fill=jump),lwd=0.1, na.rm = TRUE) +
-  scale_fill_manual(values = c("white", "#E49900"), labels=c("keine Änderung", ">50")) +
+  geom_sf(aes(fill=veraenderung),lwd=0.1, na.rm = TRUE) +
+  scale_fill_manual(values = c("white", "#c58a8a", "#c50000")) +
   geom_sf(data=BL, lwd=0.4, alpha=0) +
   theme_void() +
   labs(fill="Überschreitung\nvon Grenzwerten\nnach Korrektur")
@@ -141,8 +145,7 @@ title <- ggdraw() +
     plot.margin = margin(0, 0, 0, 0))
 subtitle <- ggdraw() +
   draw_label(
-    paste0("Änderung der 7-Tages-Inzidenz bei Berücksichtigung von Nachmeldungen ",
-           format(startdate,"%d.%m.")," vs. ",format(enddate,"%d.%m.")),
+    "Änderung der 7-Tages-Inzidenz bei Berücksichtigung von Nachmeldungen",
     fontfamily = "Calibri",
     size = 12,
     x = 0.02,
@@ -155,24 +158,9 @@ subtitle <- ggdraw() +
 full_plot<- plot_grid(title,NULL,subtitle,NULL,plot1,plot2, ncol=2,rel_heights = c(.08,.05,1))
 full_plot
 
-ggsave(full_plot,filename = "Verzoegerung_Effekt.png", width = 10,height=10*9/16,dpi=600)
+#ggsave(full_plot,filename = "Verzoegerung_Effekt.png", width = 10,height=10*9/16,dpi=600)
 
-
-# ggplot(REG %>% filter(Rkidatum %in% as_date(c("2020-11-24", "2020-11-29")))) +
-#   geom_sf(aes(fill=Inzidenzlevel), lwd=0.2) +
-#   scale_fill_brewer() +
-#   facet_wrap(~Rkidatum) +
-#   theme_minimal() +
-#   theme(panel.grid.major = element_line(colour = 'transparent'),
-#         axis.text=element_blank())
-# 
-# ggplot(REG %>% filter(Rkidatum %in% as_date(c("2020-11-29")))) + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
-#   geom_sf(aes(fill=diffSiebentageinzidenz), lwd=0.2) +
-#   theme_minimal() +
-#   geom_sf(data=st_centroid(REG %>% filter(Jump==1)) %>%
-#             mutate(Inzidenzlevel=REG %>% filter(Jump==1) %>% pull(Inzidenzlevel)), aes(color=Inzidenzlevel), size=0.5, shape=8) + # midpoints of the kreise
-#   scale_fill_gradient(low="#FFFFFF", high="#00008B") +
-#   scale_color_brewer() +
-#   theme(panel.grid.major = element_line(colour = 'transparent'),
-#         axis.text=element_blank())
-
+finalise_plot(full_plot,"Verzoegerung_Effekt.png",
+              source_name = paste0("Datenbasis: Meldedaten des RKI für den ",format(startdate,"%d.%m.%Y")," mit dem Datenstand ",
+                                   format(startdate+days(1),"%d.%m.%Y")," bzw. ",format(enddate,"%d.%m.%Y"),"."),
+              width_cm = 20,height_cm = 20*(9/16))
