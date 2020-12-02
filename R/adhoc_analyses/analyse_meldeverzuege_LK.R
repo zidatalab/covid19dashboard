@@ -108,8 +108,8 @@ plot1 <-
          change_kat=factor(change_kat,ordered = T, levels = c_levels)) %>%
   ggplot() + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
   geom_sf(aes(fill=change_kat),
-          lwd=0.2) +
-  geom_sf(data=BL, lwd=0.4, alpha=0) +
+          lwd=0.1, color="#dfdfdf") +
+  geom_sf(data=BL, lwd=0.4, alpha=0, color="black") +
   theme_void() + scale_fill_zi("blue", discrete = TRUE, reverse = T)+
   #scale_fill_manual(values=c("#ededed","white", "#CCE7F3" ,"#0086C5","#006596")) +
   labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
@@ -117,16 +117,16 @@ plot1
 
 # final two
 plot2.df <- REG %>% filter(Rkidatum %in% as_date(enddate)) %>%
-  mutate(veraenderung=case_when((Siebentageinzidenz)<50 ~ "keine Überschreitung",
-                                (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ "Wert >50 bekannt",
-                                Siebentageinzidenz>=50 & (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ "Wert >50 unbekannt"))
+  mutate(veraenderung=case_when((Siebentageinzidenz)<50 ~ "<50",
+                                (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ ">50 bekannt",
+                                Siebentageinzidenz>=50 & (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ ">50 unbekannt"))
 
 plot2 <-
   plot2.df %>%
   ggplot(.) +
-  geom_sf(aes(fill=veraenderung),lwd=0.1, na.rm = TRUE) +
+  geom_sf(aes(fill=veraenderung),lwd=0.1, na.rm = TRUE,color="#dfdfdf") +
   scale_fill_manual(values = c("white", "#c58a8a", "#c50000")) +
-  geom_sf(data=BL, lwd=0.4, alpha=0) +
+  geom_sf(data=BL, lwd=0.4, alpha=0, color="black") +
   theme_void() +
   labs(fill="Überschreitung\nvon Grenzwerten\nnach Korrektur")
 plot2
