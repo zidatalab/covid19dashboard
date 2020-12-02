@@ -26,7 +26,7 @@ allkreisedates <- expand(lastrki, IdLandkreis, Meldedatum)
 
 for (thisdate in seq(startdate, enddate, 1)) {
   thisrki <- read_csv(paste0("./data/rki_", as_date(thisdate), ".csv"))
-  # dbWriteTable(conn,paste0("rki_", as_date(thisdate)),thisrki,overwrite=FALSE)
+  # dbWriteTable(conn,paste0("rki_", as_date(thisdate)+1),thisrki,overwrite=TRUE)
   thisrki <- thisrki %>%
     filter(Meldedatum>=mindate) %>%
     select(AnzahlFall, Meldedatum, IdLandkreis) %>%
