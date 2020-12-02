@@ -7,7 +7,7 @@ library(cowplot)
 mindate <- as_date("2020-11-01")
 
 startdate <- as_date("2020-11-24")
-enddate <- as_date("2020-11-27")
+enddate <- as_date("2020-11-28")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -61,24 +61,24 @@ quantmeldeverzuege <- rkicounts %>%
                                      "50+"))) %>%
   mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50+"), ordered=TRUE))
 
-ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
-  geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
-  stat_summary(fun="mean", geom="point")
-
-ggplot(quantmeldeverzuege, aes(group=Rkidatum, y=diffSiebentageinzidenz)) +
-  geom_boxplot() +
-  scale_y_continuous(limits=c(0, 50))
-
-ggplot(quantmeldeverzuege, aes(x=Rkidatum, fill=Inzidenzlevel)) +
-  geom_bar(position="dodge")
-
-ggplot(quantmeldeverzuege %>% filter(Rkidatum<="2020-11-29" & jump==TRUE),
-       aes(x = Rkidatum, stratum = Inzidenzlevel, alluvium = IdLandkreis,
-           fill = Inzidenzlevel, label = Inzidenzlevel)) +
-  scale_fill_brewer(type = "qual", palette = "Set2") +
-  geom_flow(stat = "alluvium", lode.guidance = "backfront") +
-  geom_stratum() +
-  theme(legend.position = "bottom")
+# ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
+#   geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
+#   stat_summary(fun="mean", geom="point")
+# 
+# ggplot(quantmeldeverzuege, aes(group=Rkidatum, y=diffSiebentageinzidenz)) +
+#   geom_boxplot() +
+#   scale_y_continuous(limits=c(0, 50))
+# 
+# ggplot(quantmeldeverzuege, aes(x=Rkidatum, fill=Inzidenzlevel)) +
+#   geom_bar(position="dodge")
+# 
+# ggplot(quantmeldeverzuege %>% filter(Rkidatum<="2020-11-29" & jump==TRUE),
+#        aes(x = Rkidatum, stratum = Inzidenzlevel, alluvium = IdLandkreis,
+#            fill = Inzidenzlevel, label = Inzidenzlevel)) +
+#   scale_fill_brewer(type = "qual", palette = "Set2") +
+#   geom_flow(stat = "alluvium", lode.guidance = "backfront") +
+#   geom_stratum() +
+#   theme(legend.position = "bottom")
 
 # deutschlandkarte
 KRS <- read_sf("./data/shp/kreise.shp")
@@ -145,9 +145,9 @@ title <- ggdraw() +
     plot.margin = margin(0, 0, 0, 0))
 subtitle <- ggdraw() +
   draw_label(
-    "Änderung der 7-Tages-Inzidenz bei Berücksichtigung von Nachmeldungen",
+    "Änderung der 7-Tages-Inzidenz vor und nach Berücksichtigung von Nachmeldungen",
     fontfamily = "Calibri",
-    size = 12,
+    size = 14,
     x = 0.02,
     hjust = 0
   ) +
@@ -156,11 +156,11 @@ subtitle <- ggdraw() +
     plot.margin = margin(0, 0, 0, 0))
 
 full_plot<- plot_grid(title,NULL,subtitle,NULL,plot1,plot2, ncol=2,rel_heights = c(.08,.05,1))
-full_plot
+
 
 #ggsave(full_plot,filename = "Verzoegerung_Effekt.png", width = 10,height=10*9/16,dpi=600)
 
-finalise_plot(full_plot,"Verzoegerung_Effekt.png",
+finalise_plot(full_plot,"static/Verzoegerung_Effekt.png",
               source_name = paste0("Datenbasis: Meldedaten des RKI für den ",format(startdate,"%d.%m.%Y")," mit dem Datenstand ",
                                    format(startdate+days(1),"%d.%m.%Y")," bzw. ",format(enddate,"%d.%m.%Y"),"."),
               width_cm = 20,height_cm = 20*(9/16))
