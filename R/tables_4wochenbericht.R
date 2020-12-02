@@ -160,9 +160,20 @@ international <- tbl(conn,"trends") %>%
   mutate(date=as_date(date)) %>%
   left_join(., params, by=c("Country"="name"))
 
+maxdate <- max(bundeslaender_table_faktenblatt$Datum)
+bltabelle <- bind_rows(
+  bundeslaender_table_faktenblatt %>%
+    filter(Bundesland=="Gesamt" & Datum==maxdate),
+  bundeslaender_table_faktenblatt %>%
+    filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
+    arrange(Bundesland)
+) %>%
+  select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit`)
+
 eumaxdate <- max(international$date)
+eumaxdate <- maxdate
 eutabelle <- international %>%
-  filter(date >= eumaxdate-14) %>%
+  filter(date >= eumaxdate-14 & date <= eumaxdate) %>%
   group_by(Country) %>%
   summarise(`COVID-19-Fälle`=max(cases),
             `Todesfälle`=max(deaths),
@@ -184,15 +195,6 @@ EUmal4tabelle <- tibble(
 ) %>%
   mutate(`Todesfälle je 100.000 EW in 14 Tagen`=format(`Todesfälle je 100.000 EW in 14 Tagen`, decimal.mark = ","))
 
-maxdate <- max(bundeslaender_table_faktenblatt$Datum)
-bltabelle <- bind_rows(
-  bundeslaender_table_faktenblatt %>%
-    filter(Bundesland=="Gesamt" & Datum==maxdate),
-  bundeslaender_table_faktenblatt %>%
-    filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
-    arrange(Bundesland)
-) %>%
-  select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit`)
 
 vwztabelle <- tibble(
   Vorwarnzeit=c(
