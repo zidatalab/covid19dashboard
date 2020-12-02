@@ -109,7 +109,7 @@ plot1 <-
   ggplot() + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
   geom_sf(aes(fill=change_kat),
           lwd=0.1, color="#dfdfdf") +
-  geom_sf(data=BL, lwd=0.4, alpha=0, color="black") +
+  geom_sf(data=BL, lwd=0.2, alpha=0, color="black") +
   theme_void() + scale_fill_zi("blue", discrete = TRUE, reverse = T)+
   #scale_fill_manual(values=c("#ededed","white", "#CCE7F3" ,"#0086C5","#006596")) +
   labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
@@ -125,8 +125,8 @@ plot2 <-
   plot2.df %>%
   ggplot(.) +
   geom_sf(aes(fill=veraenderung),lwd=0.1, na.rm = TRUE,color="#dfdfdf") +
-  scale_fill_manual(values = c("white", "#c58a8a", "#c50000")) +
-  geom_sf(data=BL, lwd=0.4, alpha=0, color="black") +
+  scale_fill_manual(values = c("white", "#c59e9e", "#c50000")) +
+  geom_sf(data=BL, lwd=0.2, alpha=0, color="black") +
   theme_void() +
   labs(fill="Überschreitung\nvon Grenzwerten\nnach Korrektur")
 plot2
@@ -163,4 +163,4 @@ full_plot<- plot_grid(title,NULL,subtitle,NULL,plot1,plot2, ncol=2,rel_heights =
 finalise_plot(full_plot,"static/Verzoegerung_Effekt.png",
               source_name = paste0("Datenbasis: Meldedaten des RKI für den ",format(startdate,"%d.%m.%Y")," mit dem Datenstand ",
                                    format(startdate+days(1),"%d.%m.%Y")," bzw. ",format(enddate,"%d.%m.%Y"),"."),
-              width_cm = 20,height_cm = 20*(9/16))
+              width_cm = 23,height_cm = 23*(9/16))
