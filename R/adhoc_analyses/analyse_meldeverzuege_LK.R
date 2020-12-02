@@ -118,8 +118,8 @@ plot1
 # final two
 plot2.df <- REG %>% filter(Rkidatum %in% as_date(enddate)) %>%
   mutate(veraenderung=case_when((Siebentageinzidenz)<50 ~ "keine Überschreitung",
-                                (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ "Überschreitung bekannt",
-                                Siebentageinzidenz>=50 & (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ "Überschreitung unbekannt"))
+                                (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ "Wert >50 bekannt",
+                                Siebentageinzidenz>=50 & (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ "Wert >50 unbekannt"))
 
 plot2 <-
   plot2.df %>%
