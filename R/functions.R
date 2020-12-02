@@ -471,7 +471,7 @@ bundeslaender_table <- vorwarnzeitergebnis %>%
   )
 ## data for table on subpage Kreise
 kreise_table <- vorwarnzeitergebnis %>%
-  filter((id>17 | id==11) & date==maxdatum) %>%
+  filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
          R0=round(R0,digits = 2)) %>%
