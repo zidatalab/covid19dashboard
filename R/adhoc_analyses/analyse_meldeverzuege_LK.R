@@ -38,7 +38,8 @@ for (thisdate in seq(startdate, enddate, 1)) {
               .groups="drop")
   thisrki2 <- inner_join(thisrki,
                          thisrki %>%
-                           select(IdLandkreis, Meldedatum, Faelle), by = "IdLandkreis") %>% 
+                           select(IdLandkreis, Meldedatum, Faelle), 
+                         by = "IdLandkreis") %>% 
     mutate(datediff = as_date(Meldedatum.x) - as_date(Meldedatum.y)) %>%
     filter(datediff >= 0 & datediff <= 6) %>% 
     group_by(IdLandkreis, Meldedatum.x) %>% 
@@ -55,11 +56,13 @@ quantmeldeverzuege <- rkicounts %>%
   filter(Meldedatum.x==startdate) %>%
   group_by(IdLandkreis) %>%
   mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz),
-         jump=ifelse((max(Siebentageinzidenz)>=50) & (min(Siebentageinzidenz)<50),TRUE,FALSE),
+         jump=ifelse((max(Siebentageinzidenz)>=50) &
+                       (min(Siebentageinzidenz)<50),TRUE,FALSE),
          Inzidenzlevel=ifelse(Siebentageinzidenz<35, "<35",
                               ifelse(Siebentageinzidenz<50, "35-50",
                                      "50+"))) %>%
-  mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50+"), ordered=TRUE))
+  mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50+"), 
+                              ordered=TRUE))
 
 # ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
 #   geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
@@ -93,7 +96,8 @@ BL <- KRS %>%
   summarise(geometry = sf::st_union(geometry))
 
 # final one
-c_levels = c("keine Änderung","+1 bis +5","+6 bis +19","+20 bis +49","mehr als +50")
+c_levels = c("keine Änderung","+1 bis +5","+6 bis +19",
+             "+20 bis +49","mehr als +50")
 plot1 <-
   REG %>%
   filter(Rkidatum %in% as_date(enddate)) %>%
@@ -106,20 +110,24 @@ plot1 <-
                                 diffSiebentageinzidenz<50  ~"+20 bis +49",
                               diffSiebentageinzidenz>=50   ~"mehr als +50"),
          change_kat=factor(change_kat,ordered = T, levels = c_levels)) %>%
-  ggplot() + # %>% mutate(diffSiebentageinzidenz=ifelse(diffSiebentageinzidenz==0, NA, diffSiebentageinzidenz))
+  ggplot() + 
   geom_sf(aes(fill=change_kat),
           lwd=0.1, color="#dfdfdf") +
   geom_sf(data=BL, lwd=0.2, alpha=0, color="black") +
   theme_void() + scale_fill_zi("blue", discrete = TRUE, reverse = T)+
-  #scale_fill_manual(values=c("#ededed","white", "#CCE7F3" ,"#0086C5","#006596")) +
-  labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
+  labs(fill=paste0("Veränderung der\n7-Tages-Inzidenz\n nach ",
+                   as.numeric(days(enddate-startdate))/60/60/24," Tagen")) 
 plot1 
 
 # final two
 plot2.df <- REG %>% filter(Rkidatum %in% as_date(enddate)) %>%
-  mutate(veraenderung=case_when((Siebentageinzidenz)<50 ~ "<50",
-                                (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ ">50 bekannt",
-                                Siebentageinzidenz>=50 & (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ ">50 unbekannt"))
+  mutate(veraenderung=
+           case_when((Siebentageinzidenz)<50 ~ "<50",
+                     (Siebentageinzidenz-diffSiebentageinzidenz)>=50 ~ 
+                       ">50 bekannt",
+                     Siebentageinzidenz>=50 & 
+                       (Siebentageinzidenz-diffSiebentageinzidenz)<50 ~ 
+                       ">50 unbekannt"))
 
 plot2 <-
   plot2.df %>%
@@ -151,16 +159,17 @@ subtitle <- ggdraw() +
     x = 0.02,
     hjust = 0
   ) +
-  theme(    # add margin on the left of the drawing canvas,
-    # so title is aligned with left edge of first plot
+  theme(
     plot.margin = margin(0, 0, 0, 0))
 
-full_plot<- plot_grid(title,NULL,subtitle,NULL,plot1,plot2, ncol=2,rel_heights = c(.08,.05,1))
+full_plot<- plot_grid(title,NULL,subtitle,NULL,plot1,plot2, 
+                      ncol=2,rel_heights = c(.08,.05,1))
 
-
-#ggsave(full_plot,filename = "Verzoegerung_Effekt.png", width = 10,height=10*9/16,dpi=600)
 
 finalise_plot(full_plot,"static/Verzoegerung_Effekt.png",
-              source_name = paste0("Datenbasis: Meldedaten des RKI für den ",format(startdate,"%d.%m.%Y")," mit dem Datenstand ",
-                                   format(startdate+days(1),"%d.%m.%Y")," bzw. ",format(enddate,"%d.%m.%Y"),"."),
+              source_name = 
+                paste0("Datenbasis: Meldedaten des RKI für den ",
+                       format(startdate,"%d.%m.%Y")," mit dem Datenstand ",
+                       format(startdate+days(1),"%d.%m.%Y")," bzw. ",
+                       format(enddate,"%d.%m.%Y"),"."),
               width_cm = 23,height_cm = 23*(9/16))
