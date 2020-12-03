@@ -6,8 +6,8 @@ library(zicolors)
 library(cowplot)
 mindate <- as_date("2020-11-01")
 
-startdate <- as_date("2020-11-24")
-enddate <- as_date("2020-12-01")
+startdate <- as_date("2020-11-25")
+enddate <- as_date("2020-12-03")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -17,20 +17,21 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        port     = 5432,
                        sslmode = 'require')
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
-DBI::dbDisconnect(conn)
+
 rkicounts <- tibble()
 
-lastrki <- read_csv(paste0("./data/rki_", as_date(enddate), ".csv")) %>%
+lastrki <- read_csv(paste0("./data/rki_", as_date(enddate)-1, ".csv")) %>%
   filter(Meldedatum>=mindate)
+# dbWriteTable(conn,paste0("rki_", as_date(thisdate)),thisrki,overwrite=TRUE)
 allkreisedates <- expand(lastrki, IdLandkreis, Meldedatum)
 
 for (thisdate in seq(startdate, enddate, 1)) {
-  thisrki <- read_csv(paste0("./data/rki_", as_date(thisdate), ".csv"))
-  # dbWriteTable(conn,paste0("rki_", as_date(thisdate)+1),thisrki,overwrite=TRUE)
-  thisrki <- thisrki %>%
+  # thisrki <- read_csv(paste0("./data/rki_", as_date(thisdate), ".csv"))
+  thisrki <- tbl(conn,paste0("rki_", as_date(thisdate))) %>%
     filter(Meldedatum>=mindate) %>%
-    select(AnzahlFall, Meldedatum, IdLandkreis) %>%
-    full_join(., allkreisedates %>% filter(Meldedatum<=thisdate), by=c("IdLandkreis", "Meldedatum")) %>%
+    select(AnzahlFall, Meldedatum, IdLandkreis) %>% collect()
+  thisrki <- thisrki %>%
+    full_join(., allkreisedates %>% filter(Meldedatum<=max(thisrki$Meldedatum)), by=c("IdLandkreis", "Meldedatum")) %>%
     mutate(IdLandkreis=as.numeric(IdLandkreis)*1000) %>%
     mutate(IdLandkreis=ifelse(IdLandkreis<12000000&IdLandkreis>=11000000, 11000000, IdLandkreis)) %>%
     left_join(., strukturdaten %>% select(id, EW_insgesamt), by=c("IdLandkreis"="id")) %>%
@@ -46,20 +47,23 @@ for (thisdate in seq(startdate, enddate, 1)) {
     filter(datediff >= 0 & datediff <= 6) %>% 
     group_by(IdLandkreis, Meldedatum.x) %>% 
     summarise(Siebentagefaelle = sum(Faelle.y, na.rm=TRUE),
-              Siebentageinzidenz = median(Siebentagefaelle/EW_insgesamt*100000),
-              Faelle=median(Faelle.x),
+              Siebentageinzidenz = median(Siebentagefaelle/EW_insgesamt*100000, na.rm=TRUE),
+              Faelle=median(Faelle.x, na.rm=TRUE),
               .groups="drop") %>%
     mutate(Rkidatum=as_date(thisdate))
   rkicounts <- bind_rows(rkicounts,
                          thisrki2)
 }
 
+DBI::dbDisconnect(conn)
+
 quantmeldeverzuege <- rkicounts %>%
-  filter(Meldedatum.x==startdate) %>%
+  filter(Meldedatum.x==startdate-1) %>%
   group_by(IdLandkreis) %>%
-  mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz),
-         jump=ifelse((max(Siebentageinzidenz)>=50) &
-                       (min(Siebentageinzidenz)<50),TRUE,FALSE),
+  mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz, na.rm = TRUE),
+         prozentFaelle=Faelle/max(Faelle, na.rm = TRUE)*100,
+         jump=ifelse((max(Siebentageinzidenz, na.rm = TRUE)>=50) &
+                       (min(Siebentageinzidenz, na.rm = TRUE)<50),TRUE,FALSE),
          Inzidenzlevel=ifelse(Siebentageinzidenz<35, "<35",
                               ifelse(Siebentageinzidenz<50, "35-50",
                                      "50+"))) %>%
@@ -175,3 +179,21 @@ finalise_plot(full_plot,"static/Verzoegerung_Effekt.png",
                        format(startdate+days(1),"%d.%m.%Y")," bzw. ",
                        format(enddate,"%d.%m.%Y"),"."),
               width_cm = 23,height_cm = 23*(9/16))
+
+# prozent verzug nach tagen
+quantmeldeverzuege_byday <- quantmeldeverzuege %>%
+  group_by(Rkidatum) %>%
+  summarise(mean_prozentFaelle=mean(prozentFaelle, na.rm=TRUE),
+            .groups="drop")
+
+ggplot(quantmeldeverzuege_byday %>% filter(Rkidatum<=as_date("2020-11-29")), aes(x=Rkidatum, y=mean_prozentFaelle)) +
+  geom_bar(stat="identity", fill=zi_cols("ziblue")) +
+  theme_zi() +
+  scale_x_date(date_labels=paste0("Tag ", c(5, 1:4))) +
+  labs(title="Nachmeldungen von COVID-19-Fällen", subtitle="gemeldete Fälle in Prozent der \nnach einer Woche bekannten Fälle")
+  
+ggplot(quantmeldeverzuege %>% filter(Rkidatum<=as_date("2020-11-29")), aes(group=factor(Rkidatum), y=prozentFaelle)) +
+  geom_boxplot() +
+  theme_zi() +
+  # scale_x_discrete(labels=paste0("Tag ", c(5, 1:4))) +
+  labs(title="Nachmeldungen von COVID-19-Fällen", subtitle="gemeldete Fälle in Prozent der \nnach einer Woche bekannten Fälle")
