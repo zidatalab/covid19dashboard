@@ -191,9 +191,69 @@ ggplot(quantmeldeverzuege_byday %>% filter(Rkidatum<=as_date("2020-11-29")), aes
   theme_zi() +
   scale_x_date(date_labels=paste0("Tag ", c(5, 1:4))) +
   labs(title="Nachmeldungen von COVID-19-Fällen", subtitle="gemeldete Fälle in Prozent der \nnach einer Woche bekannten Fälle")
-  
+
 ggplot(quantmeldeverzuege %>% filter(Rkidatum<=as_date("2020-11-29")), aes(group=factor(Rkidatum), y=prozentFaelle)) +
   geom_boxplot() +
   theme_zi() +
   # scale_x_discrete(labels=paste0("Tag ", c(5, 1:4))) +
   labs(title="Nachmeldungen von COVID-19-Fällen", subtitle="gemeldete Fälle in Prozent der \nnach einer Woche bekannten Fälle")
+
+# nach wie viel tagen 95 prozent der fälle (kreisweise)
+quantmeldeverzuege_95bykreis <- quantmeldeverzuege %>%
+  group_by(IdLandkreis) %>%
+  summarise(wann95=min(Rkidatum[prozentFaelle>=95]),
+            .groups="drop") %>%
+  mutate(Tag95=as.integer(wann95-as_date(startdate)))
+
+plot3 <-
+  REG %>%
+  left_join(., quantmeldeverzuege_95bykreis, by="IdLandkreis") %>%
+  filter(Rkidatum %in% as_date(enddate)) %>%
+  ggplot() + 
+  geom_sf(aes(fill=Tag95),
+          lwd=0.1, color="#dfdfdf") +
+  geom_sf(data=BL, lwd=0.2, alpha=0, color="black") +
+  theme_void() + scale_fill_zi("green", discrete = TRUE, reverse = T)+
+  labs(fill=paste0("Erreichen von 95% der\ngemeldeten Fälle")) 
+
+# analyse gemittelt 3 tage
+multi_quantmeldeverzuege <- tibble()
+for (d in 1:3) {
+  quantmeldeverzuege_d <- rkicounts %>%
+    filter(Meldedatum.x==startdate-1+(d-1)) %>%
+    group_by(IdLandkreis) %>%
+    mutate(diffSiebentageinzidenz=Siebentageinzidenz-min(Siebentageinzidenz, na.rm = TRUE),
+           prozentFaelle=Faelle/max(Faelle, na.rm = TRUE)*100,
+           jump=ifelse((max(Siebentageinzidenz, na.rm = TRUE)>=50) &
+                         (min(Siebentageinzidenz, na.rm = TRUE)<50),TRUE,FALSE),
+           Inzidenzlevel=ifelse(Siebentageinzidenz<35, "<35",
+                                ifelse(Siebentageinzidenz<50, "35-50",
+                                       "50+"))) %>%
+    mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50+"), 
+                                ordered=TRUE),
+           d=d)
+  multi_quantmeldeverzuege <- bind_rows(multi_quantmeldeverzuege,
+                                    quantmeldeverzuege_d)
+}
+m_quantmeldeverzuege <- multi_quantmeldeverzuege %>%
+  mutate(datediff=as.integer(Rkidatum-Meldedatum.x)) %>%
+  filter(datediff<=7) %>%
+  group_by(datediff) %>%
+  summarise(mean_prozentFaelle=mean(prozentFaelle, na.rm=TRUE),
+                                .groups="drop")
+# nachgemeldete faelle pro tag gemittelt:
+ggplot(m_quantmeldeverzuege %>%
+         mutate(nachmeldungprozent=mean_prozentFaelle-lag(mean_prozentFaelle, 1, 0)), 
+       aes(x=datediff, y=nachmeldungprozent)) +
+  geom_bar(stat="identity", fill=zi_cols("ziblue")) +
+  theme_zi() +
+  scale_y_continuous(breaks=(0:6)*10, labels=paste0((0:6)*10, "%")) +
+  scale_x_continuous(breaks=1:7, labels=paste0("Tag ", 1:7)) +
+  labs(title="Nachmeldungen von COVID-19-Fällen", subtitle="(nach)gemeldete Fälle in Prozent")
+
+ggplot(m_quantmeldeverzuege, aes(x=datediff, y=mean_prozentFaelle)) +
+  geom_bar(stat="identity", fill=zi_cols("ziblue")) +
+  theme_zi() +
+  scale_y_continuous(breaks=(0:5)*20, labels=paste0((0:5)*20, "%")) +
+  scale_x_continuous(breaks=1:7, labels=paste0("Tag ", 1:7)) +
+  labs(title="Vorliegende Meldungen von COVID-19-Fällen", subtitle="gemeldete Fälle in Prozent für den Stichtag")
