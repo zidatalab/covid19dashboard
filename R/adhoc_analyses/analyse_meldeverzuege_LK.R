@@ -55,7 +55,6 @@ for (thisdate in seq(startdate, enddate, 1)) {
                          thisrki2)
 }
 
-DBI::dbDisconnect(conn)
 
 quantmeldeverzuege <- rkicounts %>%
   filter(Meldedatum.x==startdate-1) %>%
@@ -70,26 +69,7 @@ quantmeldeverzuege <- rkicounts %>%
   mutate(Inzidenzlevel=factor(Inzidenzlevel, levels=c("<35", "35-50", "50+"), 
                               ordered=TRUE))
 
-# ggplot(quantmeldeverzuege, aes(x=Rkidatum, y=diffSiebentageinzidenz)) +
-#   geom_line(aes(group=as_factor(IdLandkreis)), alpha=0.1) + 
-#   stat_summary(fun="mean", geom="point")
-# 
-# ggplot(quantmeldeverzuege, aes(group=Rkidatum, y=diffSiebentageinzidenz)) +
-#   geom_boxplot() +
-#   scale_y_continuous(limits=c(0, 50))
-# 
-# ggplot(quantmeldeverzuege, aes(x=Rkidatum, fill=Inzidenzlevel)) +
-#   geom_bar(position="dodge")
-# 
-# ggplot(quantmeldeverzuege %>% filter(Rkidatum<="2020-11-29" & jump==TRUE),
-#        aes(x = Rkidatum, stratum = Inzidenzlevel, alluvium = IdLandkreis,
-#            fill = Inzidenzlevel, label = Inzidenzlevel)) +
-#   scale_fill_brewer(type = "qual", palette = "Set2") +
-#   geom_flow(stat = "alluvium", lode.guidance = "backfront") +
-#   geom_stratum() +
-#   theme(legend.position = "bottom")
-
-# deutschlandkarte
+# Deutschlandkarte
 KRS <- read_sf("./data/shp/kreise.shp")
 REG <- KRS %>%
   group_by(RS) %>%
