@@ -41,5 +41,5 @@ ziplot <- ggplot(plotdata,aes(x=date,
        subtitle="Todesfälle Bewohner von Einr. n. § 36 IfSG an allen Todesfällen in %")
 
 finalise_plot(ziplot, save_filepath = "static/pflegeheimbewohner_an_toten.png",
-              width_cm = 16, height_cm = 9,
+              width_cm = 18, height_cm = 9,
               source_name = "Datenbasis: Situationsberichte des RKI 1.10.-3.12.")
