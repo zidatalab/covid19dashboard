@@ -7,7 +7,7 @@ library(cowplot)
 mindate <- as_date("2020-11-01")
 
 startdate <- as_date("2020-11-25")
-enddate <- as_date("2020-12-04")
+enddate <- as_date("2020-12-05")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -20,9 +20,10 @@ strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 
 rkicounts <- tibble()
 
-lastrki <- read_csv(paste0("./data/rki_", as_date(enddate)-1, ".csv")) %>%
+lastrki <- read_csv(paste0("./data/rki_", as_date(enddate)-1, ".csv"))
+# dbWriteTable(conn,paste0("rki_", as_date(enddate)),lastrki,overwrite=TRUE)
+lastrki <- lastrki %>%
   filter(Meldedatum>=mindate)
-# dbWriteTable(conn,paste0("rki_", as_date(thisdate)),thisrki,overwrite=TRUE)
 allkreisedates <- expand(lastrki, IdLandkreis, Meldedatum)
 
 for (thisdate in seq(startdate, enddate, 1)) {
