@@ -176,7 +176,9 @@ eutabelle <- international %>%
   filter(date >= eumaxdate-14 & date <= eumaxdate) %>%
   group_by(Country) %>%
   summarise(`COVID-19-Fälle`=max(cases),
+            `COVID-19-Fälle Anteil Bev.`=paste0(format(round(100*max(cases)/EW_insgesamt, 1), decimal.mark = ","), " %"),
             `Todesfälle`=max(deaths),
+            `Fallsterblichkeit`=paste0(format(round(100*max(deaths)/max(cases), 1), decimal.mark = ","), " %"),
             `Neue Fälle je 100.000 EW in 14 Tagen`=round((max(cases)-min(cases))/EW_insgesamt*100000),
             `Todesfälle je 100.000 EW in 14 Tagen`=round((max(deaths)-min(deaths))/EW_insgesamt*100000, 1),
             .groups="drop") %>%
@@ -185,9 +187,11 @@ eutabelle <- international %>%
 top10eu <- eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(german)
 EUmal4tabelle <- tibble(
   `Länder nach Fällen`=top10eu,
-  `COVID-19-Fälle`=eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
+  `COVID-19-Fälle (Anteil Bev. %)`=paste0(eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
+                                          " (", eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle Anteil Bev.`), ")"),
   `Länder nach Todesfällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(german),
-  `Todesfälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(`Todesfälle`),
+  `Todesfälle (Fallsterblichkeit %)`=paste0(eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(`Todesfälle`),
+                                            " (", eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(`Fallsterblichkeit`), ")"),
   `Länder nach neuen Fällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Neue Fälle je 100.000 EW in 14 Tagen`) %>% pull(german),
   `Neue Fälle je 100.000 EW in 14 Tagen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Neue Fälle je 100.000 EW in 14 Tagen`) %>% pull(`Neue Fälle je 100.000 EW in 14 Tagen`),
   `Länder nach neuen Todesfällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle je 100.000 EW in 14 Tagen`) %>% pull(german),
