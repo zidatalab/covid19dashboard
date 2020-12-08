@@ -511,6 +511,11 @@ c19erkranktetabelle <- tibble(
     "Klinik- und Praxispersonal",
     "Neuinfizierte",
     "Neu stationär behandelt",
+    "Neu verstorben",
+    "Betreut nach IfSG §36 (u.a. Pflegewohnheim)",
+    "Neuinfizierte",
+    "Neuinfizierte über 60 J.",
+    "Neu stationär behandelt",
     "Neu verstorben"
   ),
   Vorwoche=c(
@@ -520,7 +525,12 @@ c19erkranktetabelle <- tibble(
     NA,
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert),
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer),
-    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuverstorben)
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuverstorben),
+    "Betreut nach IfSG §36 (u.a. Pflegewohnheim)",
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben)
   ),
   dieseWoche=c(
     paste0(format(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ohnesymptomatik)), decimal.mark = ","), " %"),
@@ -529,7 +539,12 @@ c19erkranktetabelle <- tibble(
     NA,
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert),
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neustationaer),
-    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuverstorben)
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuverstorben),
+    NA,
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert60),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neustationaer),
+    rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuverstorben)
   ),
   Veraenderung=c(
     paste0(format(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ohnesymptomatik)-rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ohnesymptomatik)), 1), decimal.mark=","), " PP"),
@@ -538,7 +553,12 @@ c19erkranktetabelle <- tibble(
     NA,
     paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert) - rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert)), " %"),
     paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neustationaer)- rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer)), " %"),
-    NA
+    NA,
+    NA,
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert) - rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert)), " %"),
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert60) - rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60)), " %"),
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neustationaer)- rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer)), " %"),
+    paste0(round(100*(rki_hosp_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuverstorben)- rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben))/rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben)), " %")
   )
 ) 
 

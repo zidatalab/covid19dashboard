@@ -7,7 +7,7 @@ library(cowplot)
 mindate <- as_date("2020-11-01")
 
 startdate <- as_date("2020-11-25")
-enddate <- as_date("2020-12-06")
+enddate <- as_date("2020-12-08")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
