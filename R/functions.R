@@ -534,9 +534,9 @@ kreise_table <- vorwarnzeitergebnis %>%
          "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
          "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
          "Fälle insgesamt"=cases,
-         # "Vorwarnzeit ROR"=Vorwarnzeit_ROR,
+         "Vorwarnzeit ROR"=Vorwarnzeit_ROR,
          # "ROR"=ROR11,
-         "Vorwarnzeit lokal*"=Vorwarnzeit #, # needs communication
+         "Vorwarnzeit lokal"=Vorwarnzeit #, # needs communication
   )
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
@@ -571,6 +571,7 @@ kreise_table_faktenblatt <- vorwarnzeitergebnis %>%
          "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
          "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
          "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
+         "Vorwarnzeit ROR"=Vorwarnzeit_ROR, 
          "Vorwarnzeit"=Vorwarnzeit #, # needs communication
   )
 ##### write data for displayed tables/plots to jsons
