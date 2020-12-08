@@ -51,6 +51,12 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                           sslmode = 'require')
 
 ##### get data
+## get data from file
+kreise_ror <- read_delim("data/kreise_2016_ror_kv_etc.csv", 
+                                     ";", escape_double = FALSE, locale = locale(decimal_mark = ",", 
+                                                                                 grouping_mark = ".", encoding = "ISO-8859-1"), 
+                                     trim_ws = TRUE) %>%
+  select(krs17, ROR11)
 ## get data from db
 brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect() %>% mutate(date=as.Date(date))
 rki <- tbl(conn,"rki") %>% collect()
@@ -381,9 +387,37 @@ ausgangsdaten <- letzte_7_tage %>%
   mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/((EW059+EW6079+EW80)/100000)),
          Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw),
          Kapazitaet_Betten=(faelle_covid_aktuell+betten_frei)) # /icu_days
+ausgangsdaten_ror <- ausgangsdaten %>%
+  inner_join(., kreise_ror %>%
+               mutate(krs17=ifelse(krs17==11000, 11, 1000*krs17)),
+             by=c("id"="krs17")) %>%
+  filter(date%in%c(maxdatum, lastsunday, sundaybeforelastsunday)) %>%
+  group_by(ROR11, date) %>%
+  summarise(EW059=sum(EW059, na.rm = TRUE),
+            EW6079=sum(EW6079, na.rm = TRUE),
+            EW80=sum(EW80, na.rm = TRUE),
+            Infected059=sum(Infected059, na.rm = TRUE),
+            Infected6079=sum(Infected6079, na.rm = TRUE),
+            Infected80=sum(Infected80, na.rm = TRUE),
+            cases059=sum(cases059, na.rm = TRUE),
+            cases6079=sum(cases6079, na.rm = TRUE),
+            cases80=sum(cases80, na.rm = TRUE),
+            faelle_covid_aktuell=sum(faelle_covid_aktuell, na.rm = TRUE),
+            Kapazitaet_Betten=sum(Kapazitaet_Betten, na.rm = TRUE),
+            .groups="drop")
 ## berechne vorwarnzeit
 myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
                                      (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
+  rowwise() %>%
+  do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
+                                     cases = c(.$cases059, .$cases6079, .$cases80),
+                                     akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
+                                     icubelegt = round((.$faelle_covid_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
+                                     Kapazitaet_Betten = .$Kapazitaet_Betten,
+                                     Rt = 1.3,
+                                     icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())) %>% 
+  unnest(cols = c(Tage), keep_empty=TRUE)
+myTage_ror <- ausgangsdaten_ror %>% 
   rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
                                      cases = c(.$cases059, .$cases6079, .$cases80),
@@ -397,8 +431,18 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   filter((date>=as_date("2020-03-13") & id<=16) |
            (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
   mutate(Vorwarnzeit = myTage$Tage, Vorwarnzeit_effektiv=pmax(Vorwarnzeit-21, 0))
-
+vorwarnzeitergebnis_ror <- ausgangsdaten_ror %>%
+  mutate(Vorwarnzeit = myTage_ror$Tage, Vorwarnzeit_effektiv = pmax(Vorwarnzeit-21, 0))
+vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
+  left_join(., kreise_ror %>%
+               mutate(krs17=ifelse(krs17==11000, 11, 1000*krs17)),
+             by=c("id"="krs17")) %>%
+  left_join(., vorwarnzeitergebnis_ror %>%
+              select(ROR11, date, Vorwarnzeit, Vorwarnzeit_effektiv),
+            by=c("date", "ROR11"),
+            suffix=c("", "_ROR"))
 R_aktuell_Bund <- aktuell$R0[aktuell$id==0]
+
 
 ##### weitere daten für dashboard
 ## rki-r-wert und vorwarnzeit
@@ -490,6 +534,8 @@ kreise_table <- vorwarnzeitergebnis %>%
          "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
          "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
          "Fälle insgesamt"=cases,
+         # "Vorwarnzeit ROR"=Vorwarnzeit_ROR,
+         # "ROR"=ROR11,
          "Vorwarnzeit lokal*"=Vorwarnzeit #, # needs communication
   )
 ## data for Bundeslaender faktenblatt
