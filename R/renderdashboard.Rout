@@ -94,9 +94,37 @@ The following objects are masked from 'package:base':
 
     date, intersect, setdiff, union
 
+
+── Column specification ────────────────────────────────────────────────────────
+cols(
+  .default = col_double(),
+  krs17name = col_character(),
+  kbez_1 = col_character(),
+  ksitz = col_character(),
+  kslkname = col_character(),
+  kreg17name = col_character(),
+  st_kreg_name = col_character(),
+  kslk_kreg_name = col_character(),
+  ktyp4_name = col_character(),
+  slraum_name = col_character(),
+  raumt2010lage_kreis_name = col_character(),
+  ROR11name = col_character(),
+  rtyp3name = col_character(),
+  AAGname = col_character(),
+  IAB_Typ_name = col_character(),
+  amr16name = col_character(),
+  foerd1420 = col_character(),
+  RBZname = col_character(),
+  NUTS2 = col_character(),
+  NUTS2name = col_character(),
+  metropolen_IKM_2015_a = col_character()
+  # ... with 4 more columns
+)
+ℹ Use `spec()` for the full column specifications.
+
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 30164  100 30164    0     0   316k      0 --:--:-- --:--:-- --:--:--  316k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 21732  100 21732    0     0   129k      0 --:--:-- --:--:-- --:--:--  129k
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -244,11 +272,11 @@ Output created: Impressum.html
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpekPfT1/rmarkdown-strf1167f94b98f.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpekPfT1/rmarkdown-strf116650bd22d.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpekPfT1/filef1163c0daf8ehtml --highlight-style pygments --include-before-body /tmp/RtmpekPfT1/filef116340f42f2.html --include-after-body /tmp/RtmpekPfT1/filef11647d3237f.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpMResg4/rmarkdown-str3e252c5aa68e.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpMResg4/rmarkdown-str3e2513afa38e.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpMResg4/file3e2515d76235html --highlight-style pygments --include-before-body /tmp/RtmpMResg4/file3e252dcb17e1.html --include-after-body /tmp/RtmpMResg4/file3e25116ad598.html --css static/styles.css 
 
 Output created: Start.html
-There were 35 warnings (use warnings() to see them)
+There were 36 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-463.986   2.920 536.961 
+495.874   3.512 540.545 
