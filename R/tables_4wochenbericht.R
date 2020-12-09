@@ -439,6 +439,9 @@ rwert7ti <- tibble(
     "- Davon Über-80-Jährige",
     "Regionen mit 7-TI bei Über-60-Jährigen:",
     "> 35",
+    "> 50",
+    "Regionen mit 7-TI bei Über-80-Jährigen:",
+    "> 35",
     "> 50"
   ),
   Vorwoche=c(
@@ -451,8 +454,11 @@ rwert7ti <- tibble(
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
     NA,
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
-    ),
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE)),
+    NA,
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
+  ),
   dieseWoche=c(
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`), 2),
     NA,
@@ -463,7 +469,10 @@ rwert7ti <- tibble(
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
     NA,
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE)),
+    NA,
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
   ),
   Veraenderung=ifelse(is.na(Vorwoche), NA, paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ","), " %"))
 )

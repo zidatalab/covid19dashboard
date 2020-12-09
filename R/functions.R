@@ -634,7 +634,7 @@ kreise_table_faktenblatt <- vorwarnzeitergebnis %>%
          "R(t)"=R0,
          "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
          "7-Tage-Inzidenz 80+"=`Faelle_letzte_7_Tage_je100TsdEinw_80+`,
-         "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_80+`,
+         "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
          "7-Tage-Inzidenz 60-79"=`Faelle_letzte_7_Tage_je100TsdEinw_60-79`,
          "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
          "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
