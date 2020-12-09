@@ -530,7 +530,7 @@ c19erkranktetabelle <- tibble(
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert),
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer),
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuverstorben),
-    "Betreut nach IfSG §36 (u.a. Pflegewohnheim)",
+    NA,
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert),
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60),
     rki_hosp_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer),
