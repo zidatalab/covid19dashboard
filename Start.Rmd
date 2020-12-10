@@ -61,7 +61,7 @@ indicatorR <- aktuell %>% filter(id==0) %>% collect() %>% pull(R0)
 faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0 & date==maxdatum) %>% pull(Faelle_letzte_7_Tage_pro_Tag)
 faelle7tage100kEW <-  vorwarnzeitergebnis %>% filter(id==0 & date==maxdatum) %>% pull(Faelle_letzte_7_Tage_je100TsdEinw)
 valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
-         caption="Reproduktionszahl",
+         caption="Reproduktionszahl \n Bei hoher Inzidenz sind auch Werte nahe 1 kritisch, da sich das Infektionsgeschehen nicht deutlich verlangsamt.",
          color = case_when(indicatorR < 0.9 | (indicatorR >= 0.9 & indicatorR <= 1 & faelle7tage100kEW < 50) ~ "#B1C800", # gruen
                            (indicatorR >= 0.9 & indicatorR <= 1 & faelle7tage100kEW >= 50) | (indicatorR > 1.0 & indicatorR < 1.3 & faelle7tage100kEW < 50) ~ "#E49900", # orangegelb
                            (indicatorR > 1 & indicatorR < 1.3 & faelle7tage100kEW >= 50) | (indicatorR >= 1.3) ~ "#E40000"), # rot
