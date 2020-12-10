@@ -1,6 +1,7 @@
 library(tidyverse)
 library(lubridate)
 library(DBI)
+library(rpostgis)
 
 startdate <- as_date("2020-11-25")
 enddate <- as_date("2020-12-10")
@@ -27,7 +28,10 @@ for (idx in seq(2, 15)) {
   cat(as_date(startdate)+idx, ": ", tt[3]/60, "minutes\n")
 }
 
-testarchive <- tbl(conn, "rki_archive") %>% collect()
-tt <- system.time({testarchive_teil <- tbl(conn, "rki_archive") %>% 
+tt_index <- system.time({indexcreated <- dbIndex(conn, "rki_archive", "Datenstand", unique = TRUE)})
+# dbDrop(conn, "rki_archive_Datenstand_idx", "INDEX")
+
+# testarchive <- tbl(conn, "rki_archive") %>% collect()
+tt_query <- system.time({testarchive_teil <- tbl(conn, "rki_archive") %>% 
   filter(Datenstand=="2020-12-06") %>% 
   collect() })
