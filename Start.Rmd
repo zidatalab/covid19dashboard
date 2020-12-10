@@ -58,12 +58,13 @@ Row
 
 ```{r indicatorR}
 indicatorR <- aktuell %>% filter(id==0) %>% collect() %>% pull(R0)
+faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0 & date==maxdatum) %>% pull(Faelle_letzte_7_Tage_pro_Tag)
+faelle7tage100kEW <-  vorwarnzeitergebnis %>% filter(id==0 & date==maxdatum) %>% pull(Faelle_letzte_7_Tage_je100TsdEinw)
 valueBox(value= paste("R =",format(indicatorR,digits=2,decimal.mark = ","))  ,
          caption="Reproduktionszahl",
-         color = case_when(indicatorR < 1.0 ~ "#B1C800",
-                           indicatorR >= 1.0 & 
-                             indicatorR < 1.3 ~ "#E49900",
-                           indicatorR >= 1.3 ~ "#E40000"),
+         color = case_when(indicatorR < 0.9 | (indicatorR >= 0.9 & indicatorR <= 1 & faelle7tage100kEW < 50) ~ "#B1C800", # gruen
+                           (indicatorR >= 0.9 & indicatorR <= 1 & faelle7tage100kEW >= 50) | (indicatorR > 1.0 & indicatorR < 1.3 & faelle7tage100kEW < 50) ~ "#E49900", # orangegelb
+                           (indicatorR > 1 & indicatorR < 1.3 & faelle7tage100kEW >= 50) | (indicatorR >= 1.3) ~ "#E40000"), # rot
          icon = "fa-users"
         )
 ```
@@ -74,8 +75,6 @@ Row
 ### Neue Fälle je 100.000 Einwohnende in 7 Tagen
 
 ```{r indicator7TI}
-faelleprotag <-  vorwarnzeitergebnis %>% filter(id==0 & date==maxdatum) %>% pull(Faelle_letzte_7_Tage_pro_Tag)
-faelle7tage100kEW <-  vorwarnzeitergebnis %>% filter(id==0 & date==maxdatum) %>% pull(Faelle_letzte_7_Tage_je100TsdEinw)
 valueBox(faelle7tage100kEW,
          caption=paste0("Neue Fälle je 100.000 Einwohnende in 7 Tagen \n unter 60-Jährige: ",
                         letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`),
@@ -114,7 +113,7 @@ Row
 
 ### Legende:
 
-***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. \
+***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. Bei R<1 sinkt die Zahl der Neuinfektionen. Bei hoher Inzidenz sind auch Werte nahe 1 kritisch, da sich das Infektionsgeschehen nicht deutlich verlangsamt.\
 ***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet. Wegen Meldeverzügen fehlen für einige Kreise/Bundesländer die Fallzahlen des Vortages. Fehlende Werte imputieren wir mit dem Mittelwert der vorhergehenden 6 Tage, um die 7-Tage-Inzidenz vergleichbarer zu machen. \
 ***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten (Annahme: für zukünftige COVID-19-Fälle stehen die derzeit freien Betten sowie bereits mit COVID-19-Fällen belegte Betten zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Wir berücksichtigen die aktuelle Altersstruktur der Infizierten und unterschiedliche Raten der Intensivfälle: `r round(icurate_altersgruppen_busse$Hosp059*100, 2)`% für Unter-60-Jährige, `r round(icurate_altersgruppen_busse$Hosp6079*100, 2)`% für 60-bis-79-Jährige, sowie `r round(icurate_altersgruppen_busse$Hosp80*100, 2)`% für Über-80-Jährige. Diese Quoten wurden auf Basis der im Intensivregister gemeldeten Fälle mit Korrektur für Doppelzählungen auf Grund von Verlegungen (27%) sowie COVID-19-Charakteristiken aus der Literatur bestimmt. Die "effektive Vorwarnzeit" ist die Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken. Vgl. Methodenpapier.
 
