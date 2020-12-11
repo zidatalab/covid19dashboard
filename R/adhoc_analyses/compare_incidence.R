@@ -58,41 +58,11 @@ plotdata <- cases.all %>% filter(age %in% c("A80+","Gesamt")) %>%
   group_by(id) %>% arrange(id,KW) %>% mutate(Gesamt_l2=lag(Gesamt,2)) %>%
   ungroup() %>% mutate(id=1000*id) %>%
   left_join(idnames,by="id")
-
-
-myplot <- ggplot(plotdata %>% filter(KW<50),aes(x=`Gesamt_l2`,y=`A80+`)) + 
-  geom_point(alpha=.05) + geom_smooth(method="lm") +
-  scale_y_continuous(limits = c(0,250)) +
-  scale_x_continuous(limits=c(0,250)) +
-  facet_grid(.~case_when(
-    KW<15 ~ "KW 0-14",
-    KW>=15 & KW < 35 ~ "KW 15-34",
-    KW>=35 & KW <= 49 ~ "KW 35-49"
-  )) +
-  geom_abline(aes(intercept=0,slope=1), color="black" , 
-              linetype="dotted" ) +
-  coord_fixed() +
-  labs(y="Inz. 80+ je 100 Tsd.EW",
-       x="Inz. je 100 Tsd.EW vorletzte KW",
-       caption="Datenbasis: RKI Meldedaten bis 49. KW, eine Beobachtung je Kreis/KW, Stand: 10.12.20")
-
-kreislines <- ggplot(plotdata %>% filter(KW<50),aes(x=`Gesamt_l2`,y=`A80+`)) + 
-  geom_smooth(aes(group=id),method="lm",size=.1,color=zi_cols("zidarkblue"),alpha=.2,se = FALSE) +
-  geom_abline(aes(intercept=0,slope=1), color="black" ) + 
-  geom_smooth(method="lm",size=2,color=zi_cols("zigreen")) +
-  geom_hline(yintercept = 0, color="black")+
-  scale_y_continuous(limits = c(0,500)) +
-  theme_zi_titels() + 
-  labs(title="Wenige Kreise erreichen Entkopplung der Inzidenz der über 80-jährigen",
-       y="Inzidenz in Altersgruppe 80+ J.",
-       x="Inzidenz in der vorletzten KW")   
-
-finalise_plot(kreislines, 
-              save_filepath = "~/Desktop/Kreisvergleich_Schutz_älterer.png",
-              width_cm=22,height_cm=22*(9/16),
-              source_name = "Datenbasis: RKI 10.12.2020, Zusammenhang der Inzidenz je 100 Tsd. Einwohner auf Ebene der 402 Landkreise und kreisfreien Städte zwischen 1. und 49. KW")
-                
-                
+           
+# Andata
+andata <- plotdata %>% filter(KW>=isoweek(date("2020-09-01")) & KW<=49)
+mymodel <- lm(`A80+`~ 1+ Gesamt_l2, data=andata)
+broom::tidy(mymodel,conf.int=TRUE)
 # Aggregate Info for Kreis after 1.9.2020
 plotdata.condensed <- plotdata %>% filter(KW>=isoweek(date("2020-09-01")) & KW<=49) %>% 
   ungroup() %>% group_by(id,name) %>% 
@@ -121,7 +91,7 @@ myplot <- ggplot(plotdata.condensed) +
   geom_point(show.legend = FALSE, aes(color=schutz_80_plus)) +
   geom_hline(yintercept = 0) +
   scale_x_log10(breaks=c(.1,.2,.5,1,2,5,10),limits=c(.1,10),
-                labels=paste0(c("0,1","0,2","0,5","1","2","5","10"),":1")) +
+                labels=paste0("1:",c("0,1","0,2","0,5","1","2","5","10"))) +
   theme_zi() +
   scale_color_zi("bluegreen",reverse = TRUE) +
   geom_text_repel(data = . %>% 
