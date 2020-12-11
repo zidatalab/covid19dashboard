@@ -38,7 +38,7 @@ cases.rec <- cases %>% ungroup() %>%
          id=as.numeric(IdLandkreis),
          age=as.character(Altersgruppe)) %>% 
   select(id,date,age,cases) %>%
-  mutate(id=ifelse(id>=11000 & id<12000,11,id))
+  mutate(id=ifelse(id>=11000 & id<12000,11000,id))
 
 cases.all <- cases.rec %>% select(id,date,age) %>% 
   expand(id,date,age) %>% 
@@ -48,6 +48,7 @@ cases.all <- cases.rec %>% select(id,date,age) %>%
   group_by(id,KW,age) %>% 
   summarise(cases=sum(cases)) %>% ungroup() %>%
   left_join(.,pop.rec, by=c("id","age")) %>% filter(!is.na(bev)) 
+
 cases.all <- bind_rows(
   cases.all,
   cases.all %>% group_by(id,KW) %>% summarise(cases=sum(cases),bev=sum(bev),age="Gesamt"))
@@ -58,7 +59,7 @@ plotdata <- cases.all %>% filter(age %in% c("A80+","Gesamt")) %>%
   select(id,KW,age,Incidence) %>% spread(age,Incidence) %>%
   group_by(id) %>% arrange(id,KW) %>% mutate(Gesamt_l2=lag(Gesamt,2)) %>%
   ungroup() %>% mutate(id=1000*id) %>%
-  left_join(idnames,by="id")
+  left_join(idnames ,by="id") %>% mutate(name=ifelse(id==11000000,"Berlin",name))
            
 # Andata
 andata <- plotdata %>% filter(KW>=isoweek(date("2020-09-01")) & KW<=49)
