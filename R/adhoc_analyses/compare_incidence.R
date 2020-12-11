@@ -17,7 +17,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 cases <- tbl(conn,"rki") %>% group_by(Refdatum,IdLandkreis,Altersgruppe) %>% 
   summarise(cases=sum(AnzahlFall)) %>% collect()
 
-idnames <- tbl(conn,"params")  %>% select(id,name) %>% collect()
+idnames <- tbl(conn,"params")  %>% select(id,name) %>% collect() 
 
 
 pop <- read_delim("https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/Bev2019_Kreis_AG_rki_geschlecht.txt", 
@@ -38,7 +38,7 @@ cases.rec <- cases %>% ungroup() %>%
          id=as.numeric(IdLandkreis),
          age=as.character(Altersgruppe)) %>% 
   select(id,date,age,cases) %>%
-  mutate(id=ifelse(id>=11000 & id<12000,11000,id))
+  mutate(id=ifelse(id>=11000 & id<12000,11,id))
 
 cases.all <- cases.rec %>% select(id,date,age) %>% 
   expand(id,date,age) %>% 
