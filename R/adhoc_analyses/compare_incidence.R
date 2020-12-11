@@ -120,7 +120,8 @@ myplot <- ggplot(plotdata.condensed) +
       y=pos) +
   geom_point(show.legend = FALSE, aes(color=schutz_80_plus)) +
   geom_hline(yintercept = 0) +
-  scale_x_log10(breaks=c(.1,.2,.5,1,2,5,10),limits=c(.1,10)) +
+  scale_x_log10(breaks=c(.1,.2,.5,1,2,5,10),limits=c(.1,10),
+                labels=paste0(c("0,1","0,2","0,5","1","2","5","10"),":1")) +
   theme_zi() +
   scale_color_zi("bluegreen",reverse = TRUE) +
   geom_text_repel(data = . %>% 
