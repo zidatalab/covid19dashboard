@@ -37,7 +37,8 @@ cases.rec <- cases %>% ungroup() %>%
   mutate(date=as.Date(Refdatum),
          id=as.numeric(IdLandkreis),
          age=as.character(Altersgruppe)) %>% 
-  select(id,date,age,cases) 
+  select(id,date,age,cases) %>%
+  mutate(id=ifelse(id>=11000 & id<12000,11000,id))
 
 cases.all <- cases.rec %>% select(id,date,age) %>% 
   expand(id,date,age) %>% 
@@ -116,5 +117,9 @@ finalise_plot(myplot,
               source_name = "Datenbasis: RKI 11.12.2020, Meldungen der 36. bis 49. KW")
 
 
+write.csv2(plotdata.condensed %>% arrange(raw_Verhaeltnis) %>% 
+             ungroup() %>% select(RS=id,Kreis=name,
+                                  "Verhältnis"=raw_Verhaeltnis),
+           file = "~/Desktop/Tabelle_Kreise.csv")
 
               
