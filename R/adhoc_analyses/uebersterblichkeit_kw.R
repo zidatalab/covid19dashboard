@@ -5,6 +5,8 @@ library(DBI)
 library("zicolors")
 library("ggrepel")
 library("readxl")
+library("zoo")
+
 url <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
 destfile <- "~/Downloads/sonderauswertung_sterbefaelle.xlsx"
 curl::curl_download(url, destfile)
@@ -22,7 +24,7 @@ sterbefaelle_kw <- bind_rows(read_excel(destfile,
                                         skip = 8) %>% mutate(sex="weiblich")) %>%
   select(-"Nr.") %>% rename("Jahr"="...2", "Alter"= "unter … Jahren" ) %>% relocate(Jahr,Alter,sex) %>% gather(KW,Tote,4:ncol(.))
 
-max_kw <- max(sterbefaelle_kw.rec$KW)
+
 
 sterbefaelle_kw.rec <- 
   left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote)) ,
@@ -42,6 +44,10 @@ sterbefaelle_kw.rec <-
         agegrp=factor(agegrp,ordered = T,levels=c(1,2,3,4),labels=c("0-59","60-79","80+","Gesamt"))
          ) 
 
+
+min_kw <- min(sterbefaelle_kw.rec$KW)
+max_kw <- max(sterbefaelle_kw.rec$KW)
+
 myplot <- sterbefaelle_kw.rec %>% group_by(agegrp,KW) %>% filter(agegrp!="Gesamt") %>% summarise(Vergleich=100*(sum(Tote)/sum(Tote_2016_2019))) %>% filter(!is.na(agegrp)) %>% 
   ggplot(aes(x=KW,y=Vergleich,group=agegrp,color=agegrp)) + 
   geom_line(show.legend = F, size=1.5) +  scale_color_zi() +
@@ -49,6 +55,47 @@ myplot <- sterbefaelle_kw.rec %>% group_by(agegrp,KW) %>% filter(agegrp!="Gesamt
                                    ungroup() %>% group_by(agegrp) %>% arrange(-KW) %>% filter(KW>40) %>% filter(row_number()==1),aes(label=agegrp),show.legend = F) + geom_hline(yintercept = 100) + 
   labs(y="Todesfälle in % von 2016-19", 
        x="Kalenderwoche")
+
+
+myplot_1_alt <- sterbefaelle_kw.rec %>% group_by(agegrp,KW) %>% filter(agegrp!="Gesamt") %>% summarise(Vergleich=100*(sum(Tote)/sum(Tote_2016_2019))) %>% filter(!is.na(agegrp)) %>%   group_by(agegrp) %>% arrange(KW) %>%
+  mutate(Datum=as_date("2020-01-01")+weeks(as.numeric(KW)),
+         Vergleich=rollmean(Vergleich, k = 3, fill = NA)) %>%
+  ggplot(aes(x=Datum,y=Vergleich,group=agegrp,color=agegrp)) + 
+  geom_line(show.legend = F, size=1.5) +  scale_color_zi() +
+  theme_zi_titels() + 
+  geom_label(data=. %>% filter(!is.na(Vergleich))%>% 
+              group_by(agegrp) %>% arrange(-as.numeric(Datum)) %>% filter(row_number()==1) ,
+              aes(label=agegrp),show.legend = FALSE)+
+  geom_hline(yintercept = 100) + 
+  labs(y="Todesfälle in % von 2016-19", 
+       x="Datum") + scale_x_date(breaks="4 weeks",date_labels = "%d.%m.")
+
+
+myplot_1_alt_abs <- sterbefaelle_kw.rec %>% group_by(agegrp,KW) %>% 
+  filter(agegrp!="Gesamt") %>% 
+  summarise(Vergleich_abs=sum(Tote-Tote_2016_2019)) %>% 
+  filter(!is.na(agegrp)) %>%   group_by(agegrp) %>% arrange(KW) %>%
+  mutate(Datum=as_date("2020-01-01")+weeks(as.numeric(KW)),
+         Vergleich_abs=rollmean(Vergleich_abs , k = 3, fill = NA)) %>%
+  ggplot(aes(x=Datum,y=Vergleich_abs,group=agegrp,color=agegrp)) + 
+  geom_hline(yintercept = 0) + 
+  geom_line(show.legend = F, size=1.5) +  scale_color_zi() +
+  theme_zi() + 
+  geom_text_repel(force=5,nudge_x = 20,direction = "y", data=. %>% filter(!is.na(Vergleich_abs))%>% 
+               group_by(agegrp) %>% arrange(-as.numeric(Datum)) %>% filter(row_number()==1) ,
+             aes(label=paste(agegrp,"J.")),show.legend = FALSE)+
+  labs(title="Übersterblichkeit in der Altersgruppe 80+ durch COVID-19",
+        subtitle="Abweichung der Todesfälle vom Durchschnitt 2016-19 pro KW (rollierender MW)", 
+       x="Datum") + scale_x_date(breaks="4 weeks",date_labels = "%d.%m.")
+
+
+finalise_plot(myplot_1_alt_abs,
+              source_name = "Datenbasis: Stat. Bundesamt (2020) Sonderauswertung Sterbefälle 2016-2020",
+              save_filepath = "~/Desktop/Trend_abs.png", width_cm=20,height_cm=20*(9/16))
+
+
+
+
 
 finalise_plot(myplot,
               source_name = "Datenbasis: Stat. Bundesamt (2020) Sonderauswertung Sterbefälle 2016-2020",
