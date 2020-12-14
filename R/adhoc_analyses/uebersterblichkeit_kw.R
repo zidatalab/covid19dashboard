@@ -120,7 +120,7 @@ myplot_1_alt_abs <- sterbefaelle_kw.rec %>% group_by(agegrp,KW) %>%
   geom_text_repel(force=5,nudge_x = 20,direction = "y", data=. %>% filter(!is.na(Vergleich_abs))%>% 
                group_by(agegrp) %>% arrange(-as.numeric(Datum)) %>% filter(row_number()==1) ,
              aes(label=paste(agegrp,"J.")),show.legend = FALSE)+
-  labs(title="Übersterblichkeit in der Altersgruppe 80+ durch COVID-19",
+  labs(title="Sterblichkeit nach Altersgruppen im Kontext von COVID-19",
         subtitle="Abweichung der Todesfälle vom Durchschnitt 2016-19 pro KW (rollierender MW)", 
        x="Datum") + scale_x_date(breaks="4 weeks",date_labels = "%d.%m.")
 
