@@ -93,7 +93,7 @@ kreise_ror <- read_delim("data/kreise_2016_ror_kv_etc.csv",
 brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect() %>% mutate(date=as.Date(date))
 rki <- tbl(conn,"rki") %>% collect()
 # for assessment of meldeverzug
-write_csv(rki, paste0("data/rki_", max(as_date(rki$Meldedatum)), ".csv"))
+# write_csv(rki, paste0("data/rki_", max(as_date(rki$Meldedatum)), ".csv"))
 # continue
 divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))

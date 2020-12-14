@@ -4,7 +4,7 @@ library(DBI)
 library(rpostgis)
 
 startdate <- as_date("2020-11-25")
-enddate <- as_date("2020-12-11")
+enddate <- as_date("2020-12-14")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -15,7 +15,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        sslmode = 'require')
 
 # add latest
-thisrki <- tbl(conn, paste0("rki_", as_date(enddate))) %>% collect()
+thisrki <- tbl(conn, paste0("rki_", as_date(enddate)-2)) %>% collect()
 tt <- system.time({
   dbWriteTable(conn, "rki_archive", thisrki, append=TRUE)
 })
