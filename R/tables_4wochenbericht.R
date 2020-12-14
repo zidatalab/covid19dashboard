@@ -19,6 +19,13 @@ library(ggplot2)
 library(dtplyr)
 library(readr)
 library(openxlsx)
+library(zoo)
+library(curl)
+
+# daten übersterblichkeit
+url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
+destfile_sterblk <- "./data/sonderauswertung_sterbefaelle.xlsx"
+curl::curl_download(url_sterblk, destfile_sterblk)
 
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4,
@@ -109,6 +116,17 @@ kreise_table_faktenblatt <- read_json("./data/tabledata/kreise_table_faktenblatt
 agefatality_data <- read_json("./data/plotdata/agefatality.json",
                                              simplifyVector = TRUE) %>%
   mutate(Meldedatum=as_date(Meldedatum))
+
+sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
+                                        sheet = "D_2016_2020_KW_AG_Männlich", 
+                                        skip = 8) %>% mutate(sex="maennlich"),
+                             read_excel(destfile_sterblk, 
+                                        sheet = "D_2016_2020_KW_AG_Weiblich", 
+                                        skip = 8) %>% mutate(sex="weiblich")) %>%
+  select(-"Nr.") %>% 
+  rename("Jahr"="...2", "Alter"= "unter … Jahren" ) %>%
+  relocate(Jahr,Alter,sex) %>% 
+  pivot_longer(cols=-c("Jahr", "Alter", "sex"), names_to="KW", values_to="Tote")
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
