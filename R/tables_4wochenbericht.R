@@ -127,6 +127,35 @@ sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk,
   rename("Jahr"="...2", "Alter"= "unter … Jahren" ) %>%
   relocate(Jahr,Alter,sex) %>% 
   pivot_longer(cols=-c("Jahr", "Alter", "sex"), names_to="KW", values_to="Tote")
+sterbefaelle_kw.rec <- 
+  left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote)),
+            sterbefaelle_kw %>% filter(Jahr<2020) %>%
+              group_by(Alter,KW,sex) %>% 
+              summarise(Tote_2016_2019=mean(Tote,na.rm=T), .groups="drop"),
+            by=c("KW","Alter","sex")) %>% 
+  mutate(
+    KW=as.numeric(KW),
+    Vergleich=(Tote/Tote_2016_2019)*100,
+    startage=as.numeric(ifelse(grepl("-", Alter), stringr::str_split_fixed(Alter,"-",2)[,1], NA)),
+    stopage=as.numeric(ifelse(grepl("-", Alter), stringr::str_split_fixed(Alter,"-",2)[,2], NA)),
+    agegrp = case_when(
+      stopage<=60 ~ 1,
+      startage>=60 & startage<=75 ~ 2,
+      startage>=80 ~ 3,
+      Alter=="95 u. mehr" ~ 3,
+      Alter=="Insgesamt" ~ 4
+    ),
+    agegrp=factor(agegrp,
+                  ordered = T,
+                  levels=c(1,2,3,4),
+                  labels=c("0-59","60-79","80+","Gesamt"))
+  )  %>%
+  group_by(agegrp, KW) %>% 
+  summarise(
+    Tote_diff=sum(Tote)-sum(Tote_2016_2019),
+    Vergleich=100*(sum(Tote)/sum(Tote_2016_2019))-100,
+    .groups="drop") %>% 
+  filter(!is.na(agegrp))
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
