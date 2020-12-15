@@ -47,3 +47,7 @@ tt_index <- system.time({indexcreated <- dbIndex(conn, "rki_archive", "Datenstan
 tt_query <- system.time({testarchive_teil <- tbl(conn, "rki_archive") %>% 
   filter(Datenstand=="2020-12-06") %>% 
   collect() })
+
+# delete old tables
+dbListTables(conn)
+dbRemoveTable(conn, "rki_2020-11-30")
