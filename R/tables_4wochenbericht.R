@@ -135,7 +135,7 @@ sterbefaelle_kw.rec <-
             by=c("KW","Alter","sex")) %>% 
   mutate(
     KW=as.numeric(KW),
-    Vergleich=(Tote/Tote_2016_2019)*100,
+    Vergleich=(Tote/Tote_2016_2019),
     startage=as.numeric(ifelse(grepl("-", Alter), stringr::str_split_fixed(Alter,"-",2)[,1], NA)),
     stopage=as.numeric(ifelse(grepl("-", Alter), stringr::str_split_fixed(Alter,"-",2)[,2], NA)),
     agegrp = case_when(
@@ -153,9 +153,9 @@ sterbefaelle_kw.rec <-
   group_by(agegrp, KW) %>% 
   summarise(
     Tote_diff=sum(Tote)-sum(Tote_2016_2019),
-    Vergleich=100*(sum(Tote)/sum(Tote_2016_2019))-100,
-    .groups="drop") %>% 
-  filter(!is.na(agegrp))
+    Vergleich=(sum(Tote)/sum(Tote_2016_2019))-1,
+    .groups="drop") # %>% 
+  # filter(!is.na(agegrp))
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -223,9 +223,11 @@ eutabelle <- international %>%
   filter(date >= eumaxdate-14 & date <= eumaxdate) %>%
   group_by(Country) %>%
   summarise(`COVID-19-Fälle`=max(cases),
-            `COVID-19-Fälle Anteil Bev.`=paste0(format(round(100*max(cases)/EW_insgesamt, 1), decimal.mark = ","), " %"),
+            AnteilBev=100*max(cases)/EW_insgesamt,
+            `COVID-19-Fälle Anteil Bev.`=paste0(format(round(AnteilBev, 1), decimal.mark = ","), " %"),
             `Todesfälle`=max(deaths),
-            `Fallsterblichkeit`=paste0(format(round(100*max(deaths)/max(cases), 1), decimal.mark = ","), " %"),
+            Fallsterb=100*max(deaths)/max(cases),
+            `Fallsterblichkeit`=paste0(format(round(Fallsterb, 1), decimal.mark = ","), " %"),
             `Neue Fälle je 100.000 EW in 14 Tagen`=round((max(cases)-min(cases))/EW_insgesamt*100000),
             `Todesfälle je 100.000 EW in 14 Tagen`=round((max(deaths)-min(deaths))/EW_insgesamt*100000, 1),
             .groups="drop") %>%
@@ -233,19 +235,18 @@ eutabelle <- international %>%
   left_join(., eumapping, by=c("Country"="english"))
 top10eu <- eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(german)
 EUmal4tabelle <- tibble(
-  `Länder nach Fällen`=top10eu,
-  `COVID-19-Fälle (Anteil Bev. %)`=paste0(eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
-                                          " (", eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle Anteil Bev.`), ")"),
-  `Länder nach Todesfällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(german),
-  `Todesfälle (Fallsterblichkeit %)`=paste0(eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(`Todesfälle`),
-                                            " (", eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle`) %>% pull(`Fallsterblichkeit`), ")"),
+  `Fälle gesamt`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-AnteilBev) %>% pull(german),
+  `Anteil Bevölk.`=eutabelle %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle Anteil Bev.`),
+  `Anzahl Fälle`=eutabelle %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
+  `Todesfälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-Fallsterb) %>% pull(german),
+  `Fallsterblichkeit`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-Fallsterb) %>% pull(Fallsterblichkeit),
+  `Anzahl Todesfälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-Fallsterb) %>% pull(`Todesfälle`),
   `Länder nach neuen Fällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Neue Fälle je 100.000 EW in 14 Tagen`) %>% pull(german),
   `Neue Fälle je 100.000 EW in 14 Tagen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Neue Fälle je 100.000 EW in 14 Tagen`) %>% pull(`Neue Fälle je 100.000 EW in 14 Tagen`),
   `Länder nach neuen Todesfällen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle je 100.000 EW in 14 Tagen`) %>% pull(german),
   `Todesfälle je 100.000 EW in 14 Tagen`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-`Todesfälle je 100.000 EW in 14 Tagen`) %>% pull(`Todesfälle je 100.000 EW in 14 Tagen`)
 ) %>%
   mutate(`Todesfälle je 100.000 EW in 14 Tagen`=format(`Todesfälle je 100.000 EW in 14 Tagen`, decimal.mark = ","))
-
 
 vwztabelle <- tibble(
   Vorwarnzeit=c(
@@ -326,49 +327,71 @@ vwztabelle <- tibble(
 
 rki <- rki %>% mutate(KW=isoweek(Meldedatum))
 thisKW <- max(rki$KW)
-sterbeKW <- thisKW-4
+sterbeKW <- thisKW-5
 vorsterbeKW <- sterbeKW-1
 sterbestichtag <- max(rki%>%filter(KW==sterbeKW)%>%pull(Meldedatum))
 vorsterbestichtag <- max(rki%>%filter(KW==vorsterbeKW)%>%pull(Meldedatum))
 sterberki <- rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
-  group_by(Altersgruppe) %>%
+  mutate(Altersgruppe3=case_when(
+    Altersgruppe=="A80+" ~ "80+",
+    Altersgruppe=="A60-A79" ~ "60-79",
+    Altersgruppe=="unbekannt" ~ "unbekannt",
+    TRUE ~ "0-59"
+  )) %>%
+  group_by(Altersgruppe3) %>%
   summarise(Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop") %>%
-  filter(Altersgruppe!="unbekannt") %>%
+  filter(Altersgruppe3!="unbekannt") %>%
   bind_rows(., rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
-              summarise(Altersgruppe="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
+              summarise(Altersgruppe3="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
 vorsterberki <- rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorsterbestichtag-6) %>%
-  group_by(Altersgruppe) %>%
+  mutate(Altersgruppe3=case_when(
+    Altersgruppe=="A80+" ~ "80+",
+    Altersgruppe=="A60-A79" ~ "60-79",
+    Altersgruppe=="unbekannt" ~ "unbekannt",
+    TRUE ~ "0-59"
+  )) %>%
+  group_by(Altersgruppe3) %>%
   summarise(Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop") %>%
-  filter(Altersgruppe!="unbekannt") %>%
+  filter(Altersgruppe3!="unbekannt") %>%
   bind_rows(., rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorsterbestichtag-6) %>%
-              summarise(Altersgruppe="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
+              summarise(Altersgruppe3="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
 sterbetabelle <- tibble(
   `Todesfälle & Sterblichkeit`=c(
-    "0 bis 4 Jahre",
-    "5 bis 14 Jahre",
-    "15 bis 34 Jahre",
-    "35 bis 59 Jahre",
+    "0 bis 59 Jahre",
+    "60 bis 79 Jahre",
+    "80 Jahre +",
+    "Gesamt",
+    "Übersterblichkeit",
+    "0 bis 59 Jahre",
     "60 bis 79 Jahre",
     "80 Jahre +",
     "Gesamt"
   ),
   Vorwoche=c(
-    vorsterberki %>% pull(Todesfaelle)
+    vorsterberki %>% pull(Todesfaelle),
+    NA,
+    sterbefaelle_kw.rec %>% filter(KW==vorsterbeKW) %>% pull(Tote_diff)
   ),
   Vorwoche_sterblichkeit=c(
-    vorsterberki %>% pull(Sterblichkeit)
+    vorsterberki %>% pull(Sterblichkeit),
+    NA,
+    sterbefaelle_kw.rec %>% filter(KW==vorsterbeKW) %>% pull(Vergleich)
   ),
   KWX=c(
-    sterberki %>% pull(Todesfaelle)
+    sterberki %>% pull(Todesfaelle),
+    NA,
+    sterbefaelle_kw.rec %>% filter(KW==sterbeKW) %>% pull(Tote_diff)
   ),
   KWX_sterblichkeit=c(
-    sterberki %>% pull(Sterblichkeit)
+    sterberki %>% pull(Sterblichkeit),
+    NA,
+    sterbefaelle_kw.rec %>% filter(KW==sterbeKW) %>% pull(Vergleich)
   ),
-  Veraenderung=paste0(format(round(100*(KWX-Vorwoche)/Vorwoche, 1), decimal.mark = ","), "%")
+  Veraenderung=ifelse(is.na(KWX), NA, paste0(format(round(100*(KWX-Vorwoche)/Vorwoche, 1), decimal.mark = ","), "%"))
 ) %>%
   mutate(Vorwoche=ifelse(Vorwoche==0, 0, paste0(Vorwoche, " (", format(round(100*Vorwoche_sterblichkeit, 1), decimal.mark=","), "%)")),
-         KWX=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
-  select(`Todesfälle & Sterblichkeit`, Vorwoche, KWX, Veraenderung)
+         !!paste0("KW ", sterbeKW):=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
+  select(`Todesfälle & Sterblichkeit`, Vorwoche, !!paste0("KW ", sterbeKW), Veraenderung)
 
 maxdividate <- maxdate # max(divi_all$daten_stand)
 divi0 <- divi_all %>%
