@@ -1,5 +1,5 @@
 # manual updates:
-# almev.csv from https://www.alm-ev.de/aktuell/corona-themenseite/datenerhebung-alm-ev/
+# almev.csv tuesdays from https://www.alm-ev.de/aktuell/corona-themenseite/datenerhebung-alm-ev/
 # rki_ifsg.csv ifsg 23 and 36 data from rki situationsbericht last sunday and sunday before
 ##### Packages
 library(DT)
@@ -602,7 +602,7 @@ testtabelle <- tibble(
 )  %>%
   select(Testungen, Vorwoche, !!paste0("KW ", testmaxkw):=dieseWoche, Veraenderung)
 
-ifsgmaxkw <- min(max(rki_ifsg$KW), max(rki_hosp$KW))
+ifsgmaxkw <- max(rki_ifsg$KW, rki_hosp$KW, na.rm = TRUE) # min(max(rki_ifsg$KW), max(rki_hosp$KW))
 c19erkranktetabelle <- tibble(
   Erkrankte=c(
     "Ohne Symptomatik",
