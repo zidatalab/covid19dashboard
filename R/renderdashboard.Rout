@@ -124,7 +124,7 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 30957  100 30957    0     0   311k      0 --:--:-- --:--:-- --:--:--  311k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 31768  100 31768    0     0   500k      0 --:--:-- --:--:-- --:--:--  500k
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -272,11 +272,11 @@ Output created: Impressum.html
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpdeDmKI/rmarkdown-str10fd778fe3068.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpdeDmKI/rmarkdown-str10fd743399a7e.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpdeDmKI/file10fd74f5a7bb3html --highlight-style pygments --include-before-body /tmp/RtmpdeDmKI/file10fd71746f8d.html --include-after-body /tmp/RtmpdeDmKI/file10fd775556d05.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpwY4dpf/rmarkdown-str1371c5738940f.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpwY4dpf/rmarkdown-str1371c661b6af0.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpwY4dpf/file1371c7600c212html --highlight-style pygments --include-before-body /tmp/RtmpwY4dpf/file1371c58e93d80.html --include-after-body /tmp/RtmpwY4dpf/file1371c142b7795.html --css static/styles.css 
 
 Output created: Start.html
 There were 37 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-527.303   4.280 607.523 
+511.793   3.421 578.907 
