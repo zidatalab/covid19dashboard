@@ -163,7 +163,7 @@ sterbefaelle_kw.rec <-
   )  %>%
   group_by(agegrp, KW) %>% 
   summarise(
-    Tote_diff=sum(Tote)-sum(Tote_2016_2019),
+    Tote_diff=round(sum(Tote)-sum(Tote_2016_2019)),
     Vergleich=(sum(Tote)/sum(Tote_2016_2019))-1,
     .groups="drop") # %>% 
   # filter(!is.na(agegrp))
@@ -247,8 +247,8 @@ eutabelle <- international %>%
 top10eu <- eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(german)
 EUmal4tabelle <- tibble(
   `Fälle gesamt`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-AnteilBev) %>% pull(german),
-  `Anteil Bevölk.`=eutabelle %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle Anteil Bev.`),
-  `Anzahl Fälle`=eutabelle %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
+  `Anteil Bevölk.`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle Anteil Bev.`),
+  `Anzahl Fälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle`),
   `Todesfälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-Fallsterb) %>% pull(german),
   `Fallsterblichkeit`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-Fallsterb) %>% pull(Fallsterblichkeit),
   `Anzahl Todesfälle`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-Fallsterb) %>% pull(`Todesfälle`),
@@ -432,19 +432,19 @@ itstabelle <- tibble(
   Vorwoche=c(
     divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(ICU_Betten),
     paste0(round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(auslastungcovid))*100)), 
-           " %, \n",
+           " %\n",
            divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(faelle_covid_aktuell)),
     paste0(round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(quotefrei))*100)), 
-           " %, \n",
+           " %\n",
            divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(betten_frei))
   ),
   dieseWoche=c(
     divi0 %>% filter(daten_stand==maxdividate) %>% pull(ICU_Betten),
     paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(auslastungcovid))*100)), 
-           " %, \n",
+           " %\n",
            divi0 %>% filter(daten_stand==maxdividate) %>% pull(faelle_covid_aktuell)),
     paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(quotefrei))*100)), 
-           " %, \n",
+           " %\n",
            divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei))
   )
 )  %>%
@@ -523,10 +523,10 @@ rwert7ti <- tibble(
     "- Davon Über-80-Jährige",
     "Regionen mit 7-TI bei Über-60-Jährigen:",
     "> 35",
-    "> 50",
-    "Regionen mit 7-TI bei Über-80-Jährigen:",
-    "> 35",
-    "> 50"
+    "> 50"#,
+    # "Regionen mit 7-TI bei Über-80-Jährigen:",
+    # "> 35",
+    # "> 50"
   ),
   Vorwoche=c(
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`), 2),
@@ -538,10 +538,10 @@ rwert7ti <- tibble(
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
     NA,
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE)),
-    NA,
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
+    # NA,
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
   ),
   dieseWoche=c(
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`), 2),
@@ -553,10 +553,10 @@ rwert7ti <- tibble(
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
     NA,
     round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE)),
-    NA,
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
-    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
+    round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
+    # NA,
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
   ),
   Veraenderung=ifelse(is.na(Vorwoche), NA, paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ","), " %"))
 )
