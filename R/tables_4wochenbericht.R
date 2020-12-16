@@ -672,4 +672,4 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Vorwarnzeit"=vwztabelle,
                          "Regionale Daten"=bltabelle,
                          "Internationaler Vergleich"=EUmal4tabelle)
-write.xlsx(list_of_datasets, file = paste0("../data/faktenblatttabellen_", maxdate, ".xlsx"))
+write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))
