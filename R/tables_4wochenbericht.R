@@ -27,12 +27,12 @@ library(curl)
 
 # daten übersterblichkeit
 url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
-destfile_sterblk <- "./data/sonderauswertung_sterbefaelle.xlsx"
+destfile_sterblk <- "../data/sonderauswertung_sterbefaelle.xlsx"
 curl::curl_download(url_sterblk, destfile_sterblk)
 
 # daten rki symptomanteil, hospitalisierungsrate und sterberate
 url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
-destfile_rkihosp <- "./data/klinische_aspekte.xlsx"
+destfile_rkihosp <- "../data/klinische_aspekte.xlsx"
 curl::curl_download(url_rkihosp, destfile_rkihosp)
 
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
@@ -110,21 +110,21 @@ eumapping <- tibble(english=c(
 )
 )
 
-almev <- read_csv("./data/almev.csv")
+almev <- read_csv("../data/almev.csv")
 
-rki_ifsg <- read_csv("data/rki_ifsg.csv")
+rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 rki_hosp <- read_excel(destfile_rkihosp, 
                        sheet = "Daten", 
                        skip = 2)
 
-bundeslaender_table_faktenblatt <- read_json("./data/tabledata/bundeslaender_table_faktenblatt.json",
+bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
-kreise_table_faktenblatt <- read_json("./data/tabledata/kreise_table_faktenblatt.json",
+kreise_table_faktenblatt <- read_json("../data/tabledata/kreise_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
 
-agefatality_data <- read_json("./data/plotdata/agefatality.json",
+agefatality_data <- read_json("../data/plotdata/agefatality.json",
                                              simplifyVector = TRUE) %>%
   mutate(Meldedatum=as_date(Meldedatum))
 
@@ -672,4 +672,4 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Vorwarnzeit"=vwztabelle,
                          "Regionale Daten"=bltabelle,
                          "Internationaler Vergleich"=EUmal4tabelle)
-write.xlsx(list_of_datasets, file = paste0("./data/faktenblatttabellen_", maxdate, ".xlsx"))
+write.xlsx(list_of_datasets, file = paste0("../data/faktenblatttabellen_", maxdate, ".xlsx"))
