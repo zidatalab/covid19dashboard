@@ -581,24 +581,47 @@ kreise_table <- vorwarnzeitergebnis %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
-         R0=round(R0,digits = 2)) %>%
+         R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
   mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
   left_join(., aktuell %>%
               filter(id>0 & id<17) %>%
               select(blid=id, Bundesland=name)) %>%
   arrange(blid,id) %>%
+  mutate(STI80=`Faelle_letzte_7_Tage_je100TsdEinw_80+`,
+    EM_Vorwarnzeit=case_when(
+    Vorwarnzeit_ROR > 21 ~ ">21",
+    Vorwarnzeit_ROR <= 21 & Vorwarnzeit_ROR >= 7 ~ "7-21",
+    Vorwarnzeit_ROR < 7 ~ "<7"
+  ), 
+  EM_Inzidenz=case_when(
+    STI80 < 50 ~ "<50",
+    STI80 >= 50 & STI80 <= 150 ~ "50-150",
+    STI80 > 150 ~ ">150"
+  ), 
+  EM=case_when(
+    STI80 < 50 & Vorwarnzeit_ROR > 21 ~ "grün",
+    STI80 < 50 & Vorwarnzeit_ROR <= 21 & Vorwarnzeit_ROR >= 7 ~ "gelb",
+    STI80 >= 50 & STI80 <= 150 & Vorwarnzeit_ROR > 21 ~ "gelb",
+    STI80 < 50 & Vorwarnzeit_ROR < 7 ~ "orange",
+    STI80 >= 50 & STI80 <= 150 & Vorwarnzeit_ROR <= 21 & Vorwarnzeit_ROR >= 7 ~ "orange",
+    STI80 > 150 & Vorwarnzeit_ROR > 21 ~ "orange",
+    STI80 >= 50 & STI80 <= 150 & Vorwarnzeit_ROR < 7 ~ "orange",
+    STI80 > 150 & Vorwarnzeit_ROR <= 21 & Vorwarnzeit_ROR >= 7 ~ "orange",
+    STI80 > 150 & Vorwarnzeit_ROR < 7 ~ "rot"
+  )) %>%
   select(Kreis=name,
          Bundesland,
-         "R(t)"=R0,
-         "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
+         "Vorwarnzeit ROR"=Vorwarnzeit_ROR,
          "7-Tage-Inzidenz 80+"=`Faelle_letzte_7_Tage_je100TsdEinw_80+`,
+         "Risikostufe"=EM,
+         "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
+         "R(t)"=R0,
          "7-Tage-Inzidenz 60-79"=`Faelle_letzte_7_Tage_je100TsdEinw_60-79`,
          "7-Tage-Inzidenz 35-59"=`Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
          "7-Tage-Inzidenz 15-34"=`Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
          "7-Tage-Inzidenz 0-14"=`Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
          "Neue Fälle pro Tag"=Faelle_letzte_7_Tage_pro_Tag,
          "Fälle insgesamt"=cases,
-         "Vorwarnzeit ROR"=Vorwarnzeit_ROR,
          # "ROR"=ROR11,
          "Vorwarnzeit lokal"=Vorwarnzeit #, # needs communication
   )
@@ -662,7 +685,7 @@ akutinfiziert_plot <- ggplot(akutinfiziert_data,
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
   theme_minimal() +
-  scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
+  scale_x_date(breaks = "2 months",date_labels = "%d.%m.") +
   labs(y="Anzahl akut infiziert",x = "Datum") +
   theme(panel.grid.major.x =element_blank(), panel.grid.minor.x=element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
@@ -673,7 +696,7 @@ agefatality_plot <- ggplot(agefatality_data,
   theme_minimal() + 
   scale_color_zi() +
   labs(y="Verhältnis in %", x="Datum", color="") + 
-  scale_x_date(breaks="1 month", date_labels = "%d.%m.") + 
+  scale_x_date(breaks="2 months", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 rwert_bund_plot <- ggplot(rwert_bund_data,
@@ -682,7 +705,7 @@ rwert_bund_plot <- ggplot(rwert_bund_data,
   geom_hline(yintercept = 1) +
   geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
   scale_color_zi()  +
-  theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
+  theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
   labs(x="",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
@@ -694,6 +717,15 @@ rki_r_und_zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data,
   scale_color_zi() +
   labs(subtitle="Zi-Vorwarnzeit und RKI-R-Wert im Zeitverlauf",x="",y="") +
   theme_minimal() +
+  theme(legend.position='none')
+
+zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data %>% filter(Variable=="Vorwarnzeit"),
+                                aes(x=date, y=Wert)) +
+  geom_line(size=2, col=zi_cols("zigreen")) +
+  ylim(0, NA) +
+  labs(subtitle="Zi-Vorwarnzeit im Zeitverlauf",x="",y="") +
+  theme_minimal() +
+  scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
   theme(legend.position='none')
 
 itsbetten_plot <- ggplot(itsbetten_data %>%
@@ -715,9 +747,9 @@ bundeslaender_r_und_vwz_plot <- function(myid) {
                        text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=2, show.legend = F) +
-    scale_x_date(date_labels = "%d.%m.", breaks="1 month") +
-    # facet_grid(Variable~., scales = "free") +
-    facet_wrap(~Variable, scales = "free") +
+    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    facet_grid(Variable~., scales = "free") +
+    # facet_wrap(~Variable, scales = "free") +
     geom_blank(aes(y = y_min)) +
     geom_blank(aes(y = y_max)) +
     scale_color_zi()  +
