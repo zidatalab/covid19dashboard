@@ -45,7 +45,8 @@ Row
 
 ### **Zi-Frühindikatoren:** 
 
-Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie im Methodenpapier [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2020-11-17_Methodenpapier_Vorwarnzeit_Fassung_4_SIHR.pdf). **Hinweis: Wir haben die Methodik bzgl. der Prognose der zukünftigen ITS-Fälle verbessert (17.11.2020, "SIHR"-Modell, siehe Methodenpapier).** 
+Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie im Methodenpapier [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2020-11-17_Methodenpapier_Vorwarnzeit_Fassung_4_SIHR.pdf).
+<!-- **Hinweis: Wir haben die Methodik bzgl. der Prognose der zukünftigen ITS-Fälle verbessert (17.11.2020, "SIHR"-Modell, siehe Methodenpapier).**  -->
 
 Stand Zi-Dashboard: `r format(now(),format="%d.%m.%Y %H:%M Uhr")`
 
@@ -171,10 +172,10 @@ Dargestellt ist die Entwicklung der Reproduktionszahl R auf Ebene des Bundes. R 
 Row
 -----------------------------------------------------------------------
 
-### **Entwicklung der Vorwarnzeit (und Vergleich zum R-Wert des RKI)**
+### **Entwicklung der Vorwarnzeit**
 
 ```{r plotVWZR}
-ggplotly(rki_r_und_zi_vwz_plot, tooltip = c("x", "y", "text")) %>%
+ggplotly(zi_vwz_plot, tooltip = c("x", "y", "text")) %>%
   config(displayModeBar = FALSE, responsive=TRUE)
 ```
 
@@ -183,7 +184,7 @@ Row
 
 ### Erläuterung
 
-Dargestellt ist die Entwicklung der Zi-Vorwarnzeit für die BRD, ebenso zum Vergleich die Entwicklung des (7-Tage-)R-Wertes, wie er vom RKI gemeldet wird.
+Dargestellt ist die Entwicklung der Zi-Vorwarnzeit für die BRD. Die Vorwarnzeit beschreibt die voraussichtliche Zeit in Tagen bis zur vollständigen Auslastung der intensivmedizinischen Kapazitäten bei ungebremstem Pandemieverlauf.
 
 Row
 ------------------------------------------------------------------------
