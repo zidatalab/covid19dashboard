@@ -897,3 +897,31 @@ bundeslaender_stiag_plot <- function(myid) {
     ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
+
+bundeslaender_stiag_und_vwz_plot <- function(myid) {
+  myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid) %>% head(1) %>% pull(name)
+  my_vwz_data <- bundeslaender_r_und_vwz_data %>% filter(id==myid & Variable=="Vorwarnzeit")
+  my_stiag_data <- rki_7ti_alle %>% filter(id==myid)
+  my_stiag_vwz_data <- bind_rows(my_vwz_data %>%
+                                   mutate(Altersgruppe="80+") %>%
+                                   select(Datum, Wert, Variable, Altersgruppe),
+                                 my_stiag_data %>%
+                                   mutate(Wert=STI, Variable="Inzidenz", Datum=datesunday) %>%
+                                   select(Datum, Wert, Variable, Altersgruppe)) %>%
+    filter(Datum>="2020-03-13")
+  myplot <- ggplot(my_stiag_vwz_data,
+                   aes(x=Datum, y=Wert, color=Altersgruppe)) +
+    geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
+    geom_line(size=1.5) +
+    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    facet_grid(Variable~., scales = "free") +
+    # facet_wrap(~Variable, scales = "free") +
+    scale_color_zi() +
+    theme_minimal() +
+    labs(x="", y="") +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          panel.spacing = unit(2, "lines")) +
+    ggtitle(myname)
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+}
