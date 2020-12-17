@@ -180,13 +180,13 @@ itsbetten_data <- divi_all %>%
                names_to = "Betten",
                values_to = "Anzahl")
 ## entwicklung alter, todesfälle, its
-agefatality_data <- rki %>% group_by(Meldedatum, Altersgruppe) %>% 
+agefatality_data_pre <- rki %>% group_by(Meldedatum, Altersgruppe) %>% 
   summarise(AnzahlFall=sum(AnzahlFall, na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall, na.rm=T), .groups="drop") %>% 
   arrange(Meldedatum, Altersgruppe) %>% collect() %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
-         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
-                             Altersgruppe,"0-59")) %>%
+         Altersgruppe=ifelse(Altersgruppe == "80+", # %in% c("60-79","80+"),
+                             Altersgruppe,"0-79")) %>% # 59")) %>%
   group_by(Meldedatum, Altersgruppe) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
             "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
@@ -197,18 +197,24 @@ agefatality_data <- rki %>% group_by(Meldedatum, Altersgruppe) %>%
               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   left_join(divi_all %>% filter(id==0) %>% collect(), by=c('Meldedatum'='daten_stand')) %>%
-  left_join(akutinfiziert_data %>% select(date, Infected), by=c('Meldedatum'='date')) %>%
-  mutate("Fälle gesamt"= `Fälle_0-59`+ `Fälle_60-79`+ `Fälle_80+` , 
-         "Todesfälle gesamt" = `Todesfälle_0-59`+ `Todesfälle_60-79`+ `Todesfälle_80+`,
-         "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`, 
+  left_join(akutinfiziert_data %>% select(date, Infected), by=c('Meldedatum'='date'))
+agefatality_data <- agefatality_data_pre %>%
+  mutate("Fälle gesamt"= `Fälle_0-79`+ `Fälle_80+`, #"Fälle gesamt"= `Fälle_0-59`+ `Fälle_60-79`+ `Fälle_80+` , 
+         "Todesfälle gesamt" = `Todesfälle_0-79`+ `Todesfälle_80+`,# "Todesfälle gesamt" = `Todesfälle_0-59`+ `Todesfälle_60-79`+ `Todesfälle_80+`,
+         # "60+" = (`Fälle_80+` + `Fälle_60-79` )/ `Fälle gesamt`,
+         "80+" = (`Fälle_80+`)/ `Fälle gesamt`,
          "itsfaelle"=`faelle_covid_aktuell`/lag(`Infected`, 14),
          'Todesfälle'= `Todesfälle gesamt`/ `Fälle gesamt`) %>%
   filter(Meldedatum>=as_date("2020-03-01")) %>%
   select(Meldedatum,
-         "Alter 60+ an Fällen"=`60+`,
+         # "Alter 60+ an Fällen"=`60+`,
+         "Alter 80+ an Fällen"=`80+`,
          "ITS-Fälle an Fällen"=`itsfaelle`, 
          "Todesfälle an Fällen"= `Todesfälle`) %>% 
   gather(Merkmal, Anteil, 2:4) %>% mutate(Anteil=round(Anteil*100,digits=2))
+age_its_death_data <- agefatality_data_pre %>%
+  mutate(`Todesfälle`=`Todesfälle_0-79`+`Todesfälle_80+`) %>%
+  select(Meldedatum, `Fälle_80+`, `Todesfälle`, faelle_covid_aktuell)
 ## faelle nach altersgruppe (mix rki und destatis altersgruppen)
 rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
   group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately... but much faster with dtplyr!
@@ -507,6 +513,65 @@ R_aktuell_Bund <- aktuell$R0[aktuell$id==0]
 
 
 ##### weitere daten für dashboard
+## siebentageinzidenzen verlauf
+rki_7ti_kreise <- rki %>% 
+  filter(Altersgruppe!="unbekannt") %>%
+  filter(AnzahlFall>=0) %>%
+  mutate(KW=isoweek(Meldedatum),
+         Jahr=year(Meldedatum),
+         JahrKW=paste0(Jahr, "-", str_pad(KW, 2, pad="0")),
+         # Altersgruppe=case_when(
+         #   Altersgruppe=="A00-A04" ~ "ag_1",
+         #   Altersgruppe=="A05-A14" ~ "ag_2",
+         #   Altersgruppe=="A15-A34" ~ "ag_3",
+         #   Altersgruppe=="A35-A59" ~ "ag_4",
+         #   Altersgruppe=="A60-A79" ~ "ag_5",
+         #   Altersgruppe=="A80+" ~ "ag_6"
+         Altersgruppe=case_when(
+           Altersgruppe=="A80+" ~ "80+",
+           Altersgruppe=="A60-A79" ~ "60-79",
+           TRUE ~ "0-59"
+         )) %>%
+  group_by(IdLandkreis, JahrKW, Altersgruppe) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = TRUE), 
+            .groups="drop")
+rki_7ti_kreise_full <- rki_7ti_kreise %>%
+  expand(IdLandkreis, JahrKW, Altersgruppe) %>%
+  left_join(., rki_7ti_kreise, by=c("IdLandkreis", "Altersgruppe", "JahrKW")) %>%
+  mutate(AnzahlFall=ifelse(is.na(AnzahlFall), 0, AnzahlFall))
+rki_7ti_laender <- rki_7ti_kreise_full %>%
+  mutate(BLID=floor(as.integer(IdLandkreis)/1000)) %>%
+  group_by(BLID, JahrKW, Altersgruppe) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = TRUE),
+            .groups="drop")
+rki_7ti_bund <- rki_7ti_laender %>%
+  group_by(JahrKW, Altersgruppe) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = TRUE),
+            .groups="drop")
+rki_7ti_alle <- bind_rows(rki_7ti_bund %>%
+                            mutate(id=0),
+                          rki_7ti_laender %>%
+                            mutate(id=BLID) %>%
+                            select(-BLID),
+                          rki_7ti_kreise_full %>%
+                            mutate(id=as.integer(IdLandkreis)*1000) %>%
+                            filter(id>=12000000 | id<11000000) %>%
+                            select(-IdLandkreis)) %>%
+  left_join(., kreise_regstat_alter %>%
+              pivot_longer(cols=contains("ag_"),
+                           names_to="Altersgruppe",
+                           values_to="Einwohnende") %>%
+              mutate(Altersgruppe=case_when(
+                Altersgruppe=="ag_6" ~ "80+",
+                Altersgruppe=="ag_5" ~ "60-79",
+                TRUE ~ "0-59"
+              )) %>%
+              group_by(id, Altersgruppe) %>%
+              summarise(Einwohnende=sum(Einwohnende, na.rm=TRUE),
+                        .groups="drop"), by=c("id", "Altersgruppe")) %>%
+  mutate(STI=round(AnzahlFall/Einwohnende*100000),
+         datesunday=as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")) %>%
+  filter(datesunday<=lastsunday)
 ## rki-r-wert und vorwarnzeit
 rki_reformat_r_ts <- RKI_R %>%
   dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
@@ -563,7 +628,7 @@ bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
-         R0=round(R0,digits = 2)) %>%
+         R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
   select(Bundesland=name,
          "R(t)"=R0,
          "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
@@ -706,7 +771,7 @@ rwert_bund_plot <- ggplot(rwert_bund_data,
   geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
   scale_color_zi()  +
   theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
-  labs(x="",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
+  labs(x="Datum",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 rki_r_und_zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data,
@@ -719,6 +784,17 @@ rki_r_und_zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data,
   theme_minimal() +
   theme(legend.position='none')
 
+sti_ag_bund_plot <- ggplot(rki_7ti_alle %>%
+                             filter(id==0),
+                           aes(x=datesunday, y=STI, col=Altersgruppe)) +
+  geom_line(size=1.5) +
+  scale_x_date(breaks = "2 months",date_labels = "%d.%m.") +
+  ylim(0, NA) +
+  labs(subtitle="Sieben-Tage-Inzidenz nach Altersgruppen im Zeitverlauf",x="Datum",y="Sieben-Tage-Inzidenz") +
+  scale_color_zi() +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
 zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data %>% filter(Variable=="Vorwarnzeit"),
                                 aes(x=date, y=Wert)) +
   geom_line(size=2, col=zi_cols("zigreen")) +
@@ -726,7 +802,8 @@ zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data %>% filter(Variable=="Vorwarnzeit"),
   labs(subtitle="Zi-Vorwarnzeit im Zeitverlauf",x="",y="") +
   theme_minimal() +
   scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
-  theme(legend.position='none')
+  theme(legend.position='none') +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 itsbetten_plot <- ggplot(itsbetten_data %>%
                         filter(Betten=="faelle_covid_aktuell"),
@@ -734,10 +811,24 @@ itsbetten_plot <- ggplot(itsbetten_data %>%
   geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
   geom_line(size=2, show.legend = FALSE, color=zi_cols("ziblue")) +
   theme_minimal() +
-  scale_x_date(breaks = "1 month",date_labels = "%d.%m.") +
+  scale_x_date(breaks = "2 months",date_labels = "%d.%m.") +
   labs(y="COVID-19-Fälle ITS", x = "Datum") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
+
+age_its_death_plot <- ggplot(age_its_death_data %>%
+                           pivot_longer(cols=c(`Fälle_80+`, "faelle_covid_aktuell", `Todesfälle`),
+                                        names_to="Faelle",
+                                        values_to="Anzahl"),
+                         aes(x=Meldedatum, y=Anzahl, color=Faelle)) +
+  geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
+  geom_line(size=1, show.legend = FALSE) +
+  scale_color_zi() +
+  theme_minimal() +
+  labs(y="Anzahl", x="Datum", color="") + 
+  scale_x_date(breaks="2 months", date_labels = "%d.%m.") + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
 
 bundeslaender_r_und_vwz_plot <- function(myid) {
   myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid) %>% head(1) %>% pull(name)
@@ -758,6 +849,50 @@ bundeslaender_r_und_vwz_plot <- function(myid) {
     theme(panel.grid.major.x = element_blank(),
           panel.grid.minor.x = element_blank(),
           legend.position='none',
+          panel.spacing = unit(2, "lines")) +
+    ggtitle(myname)
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+}
+
+bundeslaender_vwz_plot <- function(myid) {
+  myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid & Variable=="Vorwarnzeit") %>% head(1) %>% pull(name)
+  my_vwz_data <- bundeslaender_r_und_vwz_data %>% filter(id==myid & Variable=="Vorwarnzeit")
+  myplot <- ggplot(my_vwz_data,
+                   aes(x=Datum, y=Wert, group=name,
+                       text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
+    geom_hline(aes(yintercept=0)) +
+    geom_line(size=2, show.legend = F, col=zi_cols("zigreen")) +
+    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    # facet_grid(Variable~., scales = "free") +
+    # facet_wrap(~Variable, scales = "free") +
+    geom_blank(aes(y = y_min)) +
+    geom_blank(aes(y = y_max)) +
+    scale_color_zi()  +
+    theme_minimal() +
+    labs(x="Datum", y="Vorwarnzeit") +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          legend.position='none',
+          panel.spacing = unit(2, "lines")) +
+    ggtitle(myname)
+  myplot %>% ggplotly(tooltip = c("x", "y", "text"))
+}
+
+bundeslaender_stiag_plot <- function(myid) {
+  myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid & Variable=="Vorwarnzeit") %>% head(1) %>% pull(name)
+  my_stiag_data <- rki_7ti_alle %>% filter(id==myid)
+  myplot <- ggplot(my_stiag_data %>%
+                     mutate(Datum=datesunday, `Sieben-Tage-Inzidenz`=STI),
+                   aes(x=Datum, y=`Sieben-Tage-Inzidenz`, col=Altersgruppe)) +
+    geom_hline(aes(yintercept=0)) +
+    geom_hline(aes(yintercept=50), linetype="dashed") +
+    geom_line(size=1.5) +
+    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    scale_color_zi()  +
+    theme_minimal() +
+    labs(x="Datum", y="Sieben-Tage-Inzidenz") +
+    theme(panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
           panel.spacing = unit(2, "lines")) +
     ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
