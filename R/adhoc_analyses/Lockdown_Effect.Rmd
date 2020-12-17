@@ -1,0 +1,55 @@
+---
+title: "When will it work"
+output:
+  html_document:
+    df_print: paged
+---
+ 
+ This is based on the current Situation in Germany with approx. 30k cases 
+ per day and a lockdown from 2020-12-16 onward. Effect estimates are based 
+ roughly on Brauner et al. Science 2020 [link](https://science.sciencemag.org/content/early/2020/12/15/science.abd9338/).
+ Roughly, because they didn't provide tables.
+ 
+### Effects
+ 
+ - Limit gatherings to max. 10 persons: -45%
+ - Limit only some businesses: -15%
+ - Limit businesses to essential activities: -25%
+ - Close schools and universities: -40%
+ - Additional stay-at-home orders: -15% 
+
+### Calculations 
+ 
+```{r}
+R0 <- 3.3
+Lockdown_light_Effect = R0*(1-.45)*(1-.15)
+Hard_Lockdown_Effect = R0*(1-.45)*(1-.25)*(1-.40)*(1-.15)
+```
+ 
+Overall estimated R(t) based on **lockdown light* should have been `r Lockdown_light_Effect`. Everything below this can be considered a success.
+ 
+### Goal and Time to reach
+
+Overall estimated R(t) based on **lockdown* from 2020-12-15 should be `r Hard_Lockdown_Effect`. We will use this estimate to calculate the time until the 
+official threshold of 50 cases per 100k inhabitants within 7 days is reached.
+
+```{r}
+population = 82.5 * 1e6
+goal_daily = round((population/100000)*(50)/7)
+Reduction_daily = 1*Hard_Lockdown_Effect^.1
+days_till_goal = round((-1*log(30000/goal_daily)/log(Reduction_daily)))
+date = as.Date("2020-12-16")+lubridate::days(days_till_goal)
+time_until_recap = as.integer(as.Date("2021-1-10")-as.Date("2020-12-16"))
+cases_on_recap = 30000*Reduction_daily^time_until_recap
+incidence_on_recap = 7*cases_on_recap/(population/100000)
+```
+
+### So, how long for Germany 50?
+
+The goal is to reduce the daily cases to `r goal_daily`. With the estimated R(t) this will take **`r days_till_goal` days** or until **`r date`** this goal is reached. On January 10th we will be roughly down to `r format(round(cases_on_recap),scientific=FALSE)` daily cases and an incidence of `r round(incidence_on_recap)` cases per 7 days for 100k inhabitants.
+
+
+
+
+ 
+
