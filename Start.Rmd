@@ -136,6 +136,23 @@ Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deut
 Row
 ------------------------------------------------------------------------
 
+### **Entwicklung der Sieben-Tage-Inzidenz nach Altersgruppen**
+
+```{r plotstiagbund}
+ggplotly(sti_ag_bund_plot, tooltip = c("x", "y")) %>%
+  layout(legend = list(orientation = "h", x = 0.1, y = 1.2), autosize=TRUE) %>%
+  config(displayModeBar = FALSE, responsive=TRUE)
+```
+
+Row 
+------------------------------------------------------------------------
+### Erläuterung
+
+Dargestellt ist die Entwicklung der COVID-19-Fälle pro 100.000 Einwohnende in den letzten sieben Tagen (auch Sieben-Tage-Inzidenz genannt), aufgeschlüsselt nach Altersgruppen.
+
+Row
+------------------------------------------------------------------------
+
 ### **Entwicklung des Alters der Infizierten sowie des Verhältnis von ITS- und Todesfällen zu gemeldeten Fällen**
 
 ```{r plotagefatality}
@@ -148,7 +165,7 @@ Row
 ------------------------------------------------------------------------
 ### Erläuterung
 
-Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 60 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an der Zahl der akut Infizierten zwei Wochen davor (es dauert etwa 14 Tage, bis eine schwere COVID-19-Infektion intensivmedizinisch behandelt werden muss). Daten für ITS-Fälle liegen erst ab Ende April vor. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
+Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 80 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an der Zahl der akut Infizierten zwei Wochen davor (es dauert etwa 14 Tage, bis eine schwere COVID-19-Infektion intensivmedizinisch behandelt werden muss). Daten für ITS-Fälle liegen erst ab Ende April vor. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
 Row
