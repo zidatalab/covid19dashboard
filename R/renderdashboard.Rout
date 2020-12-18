@@ -21,10 +21,10 @@ Type 'q()' to quit R.
 
 
 processing file: Start.Rmd
-  |                                                                              |                                                                      |   0%  |                                                                              |....                                                                  |   5%
+  |                                                                              |                                                                      |   0%  |                                                                              |...                                                                   |   5%
   ordinary text without R code
 
-  |                                                                              |.......                                                               |  11%
+  |                                                                              |.......                                                               |  10%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -124,7 +124,7 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 32365  100 32365    0     0   385k      0 --:--:-- --:--:-- --:--:--  385k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 22334  100 22334    0     0   272k      0 --:--:-- --:--:-- --:--:--  272k
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -195,45 +195,50 @@ Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Joining, by = "blid"
 Joining, by = "blid"
-  |                                                                              |...........                                                           |  16%
+  |                                                                              |..........                                                            |  14%
    inline R code fragments
 
-  |                                                                              |...............                                                       |  21%
+  |                                                                              |.............                                                         |  19%
 label: indicatorR
-  |                                                                              |..................                                                    |  26%
+  |                                                                              |.................                                                     |  24%
   ordinary text without R code
 
-  |                                                                              |......................                                                |  32%
+  |                                                                              |....................                                                  |  29%
 label: indicator7TI
-  |                                                                              |..........................                                            |  37%
+  |                                                                              |.......................                                               |  33%
   ordinary text without R code
 
-  |                                                                              |.............................                                         |  42%
+  |                                                                              |...........................                                           |  38%
 label: indicatorVWZ
-  |                                                                              |.................................                                     |  47%
+  |                                                                              |..............................                                        |  43%
    inline R code fragments
 
-  |                                                                              |.....................................                                 |  53%
+  |                                                                              |.................................                                     |  48%
 label: plotakutinfiziert
-  |                                                                              |.........................................                             |  58%
+  |                                                                              |.....................................                                 |  52%
   ordinary text without R code
 
-  |                                                                              |............................................                          |  63%
+  |                                                                              |........................................                              |  57%
+label: plotstiagbund
+  |                                                                              |...........................................                           |  62%
+  ordinary text without R code
+
+  |                                                                              |...............................................                       |  67%
 label: plotagefatality
-  |                                                                              |................................................                      |  68%
+  |                                                                              |..................................................                    |  71%
   ordinary text without R code
 
-  |                                                                              |....................................................                  |  74%
+  |                                                                              |.....................................................                 |  76%
 label: plotBLR
-  |                                                                              |.......................................................               |  79%
+  |                                                                              |.........................................................             |  81%
   ordinary text without R code
 
-  |                                                                              |...........................................................           |  84%
+  |                                                                              |............................................................          |  86%
 label: plotVWZR
-  |                                                                              |...............................................................       |  89%
+  |                                                                              |...............................................................       |  90%
   ordinary text without R code
 
-  |                                                                              |..................................................................    |  95%
+  |                                                                              |...................................................................   |  95%
 label: renderothersites (with options) 
 List of 1
  $ include: logi FALSE
@@ -272,11 +277,11 @@ Output created: Impressum.html
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpkhXIW6/rmarkdown-str6459143a06f.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpkhXIW6/rmarkdown-str645970cc1752.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpkhXIW6/file64597d5c252chtml --highlight-style pygments --include-before-body /tmp/RtmpkhXIW6/file6459bcfe056.html --include-after-body /tmp/RtmpkhXIW6/file64595f7fa69.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpcI9dvj/rmarkdown-str191052e5e4ea0.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpcI9dvj/rmarkdown-str1910556f55d8.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpcI9dvj/file191055ecb4464html --highlight-style pygments --include-before-body /tmp/RtmpcI9dvj/file191056c6d9fac.html --include-after-body /tmp/RtmpcI9dvj/file191051915b90e.html --css static/styles.css 
 
 Output created: Start.html
 There were 37 warnings (use warnings() to see them)
 > 
 > proc.time()
    user  system elapsed 
-495.783   3.456 560.020 
+494.346   3.128 567.756 
