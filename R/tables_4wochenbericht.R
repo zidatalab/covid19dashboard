@@ -130,10 +130,12 @@ agefatality_data <- read_json("../data/plotdata/agefatality.json",
 
 sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
                                         sheet = "D_2016_2020_KW_AG_Männlich", 
-                                        skip = 8) %>% mutate(sex="maennlich"),
+                                        skip = 8,
+                                        na="X") %>% mutate(sex="maennlich"),
                              read_excel(destfile_sterblk, 
                                         sheet = "D_2016_2020_KW_AG_Weiblich", 
-                                        skip = 8) %>% mutate(sex="weiblich")) %>%
+                                        skip = 8,
+                                        na="X") %>% mutate(sex="weiblich")) %>%
   select(-"Nr.") %>% 
   rename("Jahr"="...2", "Alter"= "unter … Jahren" ) %>%
   relocate(Jahr,Alter,sex) %>% 
