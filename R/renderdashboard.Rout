@@ -124,7 +124,7 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 23216  100 23216    0     0   138k      0 --:--:-- --:--:-- --:--:--  138k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 33290  100 33290    0     0   192k      0 --:--:-- --:--:-- --:--:--  192k
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -200,88 +200,10 @@ Joining, by = "blid"
 
   |                                                                              |.............                                                         |  19%
 label: indicatorR
-  |                                                                              |.................                                                     |  24%
-  ordinary text without R code
+Quitting from lines 61-71 (Start.Rmd) 
+Error in writeImpl(text) : 
+  Text to be written must be a length-one character vector
+Calls: <Anonymous> ... doRenderTags -> tagWrite -> <Anonymous> -> writeImpl
+In addition: There were 50 or more warnings (use warnings() to see the first 50)
 
-  |                                                                              |....................                                                  |  29%
-label: indicator7TI
-  |                                                                              |.......................                                               |  33%
-  ordinary text without R code
-
-  |                                                                              |...........................                                           |  38%
-label: indicatorVWZ
-  |                                                                              |..............................                                        |  43%
-   inline R code fragments
-
-  |                                                                              |.................................                                     |  48%
-label: plotakutinfiziert
-  |                                                                              |.....................................                                 |  52%
-  ordinary text without R code
-
-  |                                                                              |........................................                              |  57%
-label: plotstiagbund
-  |                                                                              |...........................................                           |  62%
-  ordinary text without R code
-
-  |                                                                              |...............................................                       |  67%
-label: plotagefatality
-  |                                                                              |..................................................                    |  71%
-  ordinary text without R code
-
-  |                                                                              |.....................................................                 |  76%
-label: plotBLR
-  |                                                                              |.........................................................             |  81%
-  ordinary text without R code
-
-  |                                                                              |............................................................          |  86%
-label: plotVWZR
-  |                                                                              |...............................................................       |  90%
-  ordinary text without R code
-
-  |                                                                              |...................................................................   |  95%
-label: renderothersites (with options) 
-List of 1
- $ include: logi FALSE
-
-
-
-processing file: Bundeslaender.Rmd
-output file: Bundeslaender.knit.md
-
-
-Output created: Bundeslaender.html
-
-
-processing file: Kreise.Rmd
-output file: Kreise.knit.md
-
-
-Output created: Kreise.html
-
-
-processing file: Report.Rmd
-output file: Report.knit.md
-
-
-Output created: Report.html
-
-
-processing file: Impressum.Rmd
-output file: Impressum.knit.md
-
-
-Output created: Impressum.html
-  |                                                                              |......................................................................| 100%
-  ordinary text without R code
-
-
-output file: Start.knit.md
-
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpS9PC6p/rmarkdown-straef95f6e2209.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpS9PC6p/rmarkdown-straef95e8605ae.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpS9PC6p/fileaef92072cc79html --highlight-style pygments --include-before-body /tmp/RtmpS9PC6p/fileaef91ae7e051.html --include-after-body /tmp/RtmpS9PC6p/fileaef916af6283.html --css static/styles.css 
-
-Output created: Start.html
-There were 50 or more warnings (use warnings() to see the first 50)
-> 
-> proc.time()
-   user  system elapsed 
-500.782   3.604 573.679 
+Execution halted
