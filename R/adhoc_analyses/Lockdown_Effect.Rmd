@@ -54,7 +54,7 @@ estimate_duration <- function(df,goal){
     mutate(Reduction_daily = 1*effect^.1,
            days_till_goal = round((-1*log(current_cases_daily/goal_daily)/log(Reduction_daily))),
     date = lubridate::now()-lubridate::days(1)+lubridate::days(days_till_goal),
-    result = ifelse(effect<1,format(date),"never"))
+    result = ifelse(effect<1,format(date,format="%d.%M.%Y"),"never"))
   newdf$result
 }
 ```
