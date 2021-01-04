@@ -1651,6 +1651,7 @@ summary {
 
 
 <p>This is based on the current Situation in Germany with approx. 30k cases per day and a lockdown from 2020-12-16 onward. Effect estimates are based roughly on Brauner et al. Science 2020 <a href="https://science.sciencemag.org/content/early/2020/12/15/science.abd9338/">link</a>. Roughly, because they didn’t provide tables.</p>
+<p>B 1.1.7 Estimate is derived from <a href="https://imperial.ac.uk/media/imperial-college/medicine/mrc-gida/2020-12-31-COVID19-Report-42-Preprint-VOC.pdf">here p. 10, table 2</a>.</p>
 <div id="effects" class="section level3">
 <h3>Effects</h3>
 <ul>
@@ -1664,12 +1665,12 @@ summary {
 <div id="calculations" class="section level3">
 <h3>Calculations</h3>
 <pre class="r"><code>library(&quot;tidyverse&quot;)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ──────────────── tidyverse 1.3.0 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
 ## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
 ## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
 ## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ─────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>b117 &lt;- .5
@@ -1686,25 +1687,24 @@ all_scens= data.frame(&#39;scenario&#39;=c(&quot;light&quot;,&quot;light b 1.1.7
 <h3>Goal and Time to reach</h3>
 <p>Overall estimated R(t) based on **lockdown* from 2020-12-15 should be 0.6942375. We will use this estimate to calculate the time until the official threshold of 50 cases per 100k inhabitants within 7 days is reached.</p>
 <pre class="r"><code>current_cases_daily = 269500/10
-population = 82.5 * 1e6
-goal_daily = round((population/100000)*(50)/7)</code></pre>
+population = 82.5 * 1e6</code></pre>
 <pre class="r"><code>estimate_duration &lt;- function(df,goal){
   goal_daily = round((population/100000)*(goal)/7)
   newdf = df %&gt;%
     mutate(Reduction_daily = 1*effect^.1,
            days_till_goal = round((-1*log(current_cases_daily/goal_daily)/log(Reduction_daily))),
     date = lubridate::now()-lubridate::days(1)+lubridate::days(days_till_goal),
-    result = ifelse(effect&lt;1,format(date,format=&quot;%d.%M.%Y&quot;),&quot;never&quot;))
+    result = ifelse(effect&lt;1,format(date,format=&quot;%d.%m.%Y&quot;),&quot;never&quot;))
   newdf$result
 }</code></pre>
 </div>
 <div id="so-how-long-for-germany-50" class="section level3">
 <h3>So, how long for Germany 50?</h3>
 <p>The goal is to reduce the daily cases to 50 or better 20 (in light of b.1.1.7) per 7 days. This is, how long it will take:</p>
-<pre class="r"><code>all_scens %&gt;% mutate(&quot;goal 50&quot;=estimate_duration(.,50),&quot;gaol 20&quot;=estimate_duration(.,7))</code></pre>
+<pre class="r"><code>all_scens %&gt;% mutate(&quot;goal 50&quot;=estimate_duration(.,50),&quot;gaol 20&quot;=estimate_duration(.,20)) %&gt;% rename(&quot;R(t) for scenario&quot;=effect)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["scenario"],"name":[1],"type":["chr"],"align":["left"]},{"label":["effect"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["goal 50"],"name":[3],"type":["chr"],"align":["left"]},{"label":["gaol 20"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"light","2":"1.5427500","3":"never","4":"never"},{"1":"light b 1.1.7","2":"1.7765000","3":"never","4":"never"},{"1":"hard","2":"0.6942375","3":"13.02.2021","4":"08.02.2021"},{"1":"hard b 1.1.7","2":"0.7994250","3":"11.02.2021","4":"07.02.2021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["scenario"],"name":[1],"type":["chr"],"align":["left"]},{"label":["R(t) for scenario"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["goal 50"],"name":[3],"type":["chr"],"align":["left"]},{"label":["gaol 20"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"light","2":"1.5427500","3":"never","4":"never"},{"1":"light b 1.1.7","2":"1.7765000","3":"never","4":"never"},{"1":"hard","2":"0.6942375","3":"14.02.2021","4":"11.03.2021"},{"1":"hard b 1.1.7","2":"0.7994250","3":"12.03.2021","4":"22.04.2021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>

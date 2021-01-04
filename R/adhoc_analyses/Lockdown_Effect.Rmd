@@ -66,7 +66,7 @@ estimate_duration <- function(df,goal){
 The goal is to reduce the daily cases to 50 or better 20 (in light of b.1.1.7) per 7 days. This is, how long it will take:
 
 ```{r}
-all_scens %>% mutate("goal 50"=estimate_duration(.,50),"gaol 20"=estimate_duration(.,20))
+all_scens %>% mutate("goal 50"=estimate_duration(.,50),"gaol 20"=estimate_duration(.,20)) %>% rename("R(t) for scenario"=effect)
 ```
 
 
