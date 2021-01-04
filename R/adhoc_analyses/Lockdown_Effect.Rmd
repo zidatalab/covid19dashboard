@@ -10,6 +10,8 @@ output:
  roughly on Brauner et al. Science 2020 [link](https://science.sciencemag.org/content/early/2020/12/15/science.abd9338/).
  Roughly, because they didn't provide tables.
  
+ B 1.1.7 Estimate is derived from [here p. 10, table 2](https://imperial.ac.uk/media/imperial-college/medicine/mrc-gida/2020-12-31-COVID19-Report-42-Preprint-VOC.pdf).  
+ 
 ### Effects
  
  - Limit gatherings to max. 10 persons: -45%
@@ -43,7 +45,6 @@ official threshold of 50 cases per 100k inhabitants within 7 days is reached.
 ```{r}
 current_cases_daily = 269500/10
 population = 82.5 * 1e6
-goal_daily = round((population/100000)*(50)/7)
 ```
 
 
@@ -54,7 +55,7 @@ estimate_duration <- function(df,goal){
     mutate(Reduction_daily = 1*effect^.1,
            days_till_goal = round((-1*log(current_cases_daily/goal_daily)/log(Reduction_daily))),
     date = lubridate::now()-lubridate::days(1)+lubridate::days(days_till_goal),
-    result = ifelse(effect<1,format(date,format="%d.%M.%Y"),"never"))
+    result = ifelse(effect<1,format(date,format="%d.%m.%Y"),"never"))
   newdf$result
 }
 ```
@@ -65,7 +66,7 @@ estimate_duration <- function(df,goal){
 The goal is to reduce the daily cases to 50 or better 20 (in light of b.1.1.7) per 7 days. This is, how long it will take:
 
 ```{r}
-all_scens %>% mutate("goal 50"=estimate_duration(.,50),"gaol 20"=estimate_duration(.,7))
+all_scens %>% mutate("goal 50"=estimate_duration(.,50),"gaol 20"=estimate_duration(.,20)) %>% rename("R(t) for scenario"=effect)
 ```
 
 
