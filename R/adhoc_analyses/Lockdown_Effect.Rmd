@@ -26,6 +26,7 @@ output:
 library("tidyverse")
 b117 <- .5
 R0 <- 3.3
+# R0+b117 or R0*(1+b117) ? https://twitter.com/AdamJKucharski/status/1343567425107881986
 Lockdown_light_Effect = R0*(1-.45)*(1-.15)
 Lockdown_light_Effect_b117 = (R0+b117)*(1-.45)*(1-.15)
 Hard_Lockdown_Effect = R0*(1-.45)*(1-.25)*(1-.40)*(1-.15)
