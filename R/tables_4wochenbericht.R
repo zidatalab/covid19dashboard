@@ -115,7 +115,8 @@ almev <- read_csv("../data/almev.csv")
 rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 rki_hosp <- read_excel(destfile_rkihosp, 
                        sheet = "Daten", 
-                       skip = 2)
+                       skip = 2) %>%
+  mutate(KW=202000+KW)
 
 bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
@@ -148,6 +149,7 @@ sterbefaelle_kw.rec <-
             by=c("KW","Alter","sex")) %>% 
   mutate(
     KW=as.numeric(KW),
+    YearKW=as.numeric(Jahr)*100+KW,
     Vergleich=(Tote/Tote_2016_2019),
     startage=as.numeric(ifelse(grepl("-", Alter), stringr::str_split_fixed(Alter,"-",2)[,1], NA)),
     stopage=as.numeric(ifelse(grepl("-", Alter), stringr::str_split_fixed(Alter,"-",2)[,2], NA)),
@@ -163,7 +165,7 @@ sterbefaelle_kw.rec <-
                   levels=c(1,2,3,4),
                   labels=c("0-59","60-79","80+","Gesamt"))
   )  %>%
-  group_by(agegrp, KW) %>% 
+  group_by(agegrp, YearKW) %>% 
   summarise(
     Tote_diff=round(sum(Tote)-sum(Tote_2016_2019)),
     Vergleich=(sum(Tote)/sum(Tote_2016_2019))-1,
@@ -340,12 +342,20 @@ vwztabelle <- tibble(
   select(Vorwarnzeit, Vorwoche, !!paste0("KW ", isoweek(max(bundeslaender_table_faktenblatt$Datum))):=dieseWoche, Veraenderung)
 
 
-rki <- rki %>% mutate(KW=isoweek(Meldedatum))
-thisKW <- max(rki$KW)
-sterbeKW <- thisKW-5
-vorsterbeKW <- sterbeKW-1
-sterbestichtag <- max(rki%>%filter(KW==sterbeKW)%>%pull(Meldedatum))
-vorsterbestichtag <- max(rki%>%filter(KW==vorsterbeKW)%>%pull(Meldedatum))
+rki <- rki %>% mutate(KW=isoweek(Meldedatum),
+                      YearKW=ifelse(KW==53, 202053, year(Meldedatum)*100+KW))
+thisKW <- max(rki$YearKW)
+sterbeKW <- case_when(thisKW==202101 ~ 202053-4,
+                      thisKW==202102 ~ 202053-3,
+                      thisKW==202103 ~ 202053-2,
+                      thisKW==202104 ~ 202053-1,
+                      thisKW==202105 ~ 202053,
+                      TRUE ~ thisKW-5)
+sterbeJahr <- floor(sterbeKW/100)
+vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
+vorsterbeJahr <- floor(vorsterbeKW)
+sterbestichtag <- max(rki%>%filter(YearKW==sterbeKW)%>%pull(Meldedatum))
+vorsterbestichtag <- max(rki%>%filter(YearKW==vorsterbeKW)%>%pull(Meldedatum))
 sterberki <- rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
   mutate(Altersgruppe3=case_when(
     Altersgruppe=="A80+" ~ "80+",
@@ -385,28 +395,28 @@ sterbetabelle <- tibble(
   Vorwoche=c(
     vorsterberki %>% pull(Todesfaelle),
     NA,
-    sterbefaelle_kw.rec %>% filter(KW==vorsterbeKW) %>% pull(Tote_diff)
+    sterbefaelle_kw.rec %>% filter(YearKW==vorsterbeKW) %>% pull(Tote_diff)
   ),
   Vorwoche_sterblichkeit=c(
     vorsterberki %>% pull(Sterblichkeit),
     NA,
-    sterbefaelle_kw.rec %>% filter(KW==vorsterbeKW) %>% pull(Vergleich)
+    sterbefaelle_kw.rec %>% filter(YearKW==vorsterbeKW) %>% pull(Vergleich)
   ),
   KWX=c(
     sterberki %>% pull(Todesfaelle),
     NA,
-    sterbefaelle_kw.rec %>% filter(KW==sterbeKW) %>% pull(Tote_diff)
+    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Tote_diff)
   ),
   KWX_sterblichkeit=c(
     sterberki %>% pull(Sterblichkeit),
     NA,
-    sterbefaelle_kw.rec %>% filter(KW==sterbeKW) %>% pull(Vergleich)
+    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Vergleich)
   ),
   Veraenderung=ifelse(is.na(KWX), NA, paste0(format(round(100*(KWX-Vorwoche)/Vorwoche, 1), decimal.mark = ","), "%"))
 ) %>%
   mutate(Vorwoche=ifelse(Vorwoche==0, 0, paste0(Vorwoche, " (", format(round(100*Vorwoche_sterblichkeit, 1), decimal.mark=","), "%)")),
-         !!paste0("KW ", sterbeKW):=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
-  select(`Todesfälle & Sterblichkeit`, Vorwoche, !!paste0("KW ", sterbeKW), Veraenderung)
+         !!paste0("KW ", sterbeKW-sterbeJahr*100):=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
+  select(`Todesfälle & Sterblichkeit`, Vorwoche, !!paste0("KW ", sterbeKW-sterbeJahr*100), Veraenderung)
 
 maxdividate <- maxdate # max(divi_all$daten_stand)
 divi0 <- divi_all %>%
@@ -569,6 +579,7 @@ rwert7ti <- rwert7ti %>%
 
 
 testmaxkw <- max(almev$KW)
+testmaxjahr <- floor(testmaxkw/100)
 almev <- almev %>%
   mutate(positivrate=positivtests/pcrtests,
          auslastung=pcrtests/testkapazitaet)
@@ -602,9 +613,10 @@ testtabelle <- tibble(
     paste0(round((almev %>% filter(KW==testmaxkw) %>% pull(auslastung))*100, 0)- round((almev %>% filter(KW==testmaxkw-1) %>% pull(auslastung))*100, 0), " PP")
   )
 )  %>%
-  select(Testungen, Vorwoche, !!paste0("KW ", testmaxkw):=dieseWoche, Veraenderung)
+  select(Testungen, Vorwoche, !!paste0("KW ", testmaxkw-testmaxjahr*100):=dieseWoche, Veraenderung)
 
 ifsgmaxkw <- max(rki_ifsg$KW, rki_hosp$KW, na.rm = TRUE) # min(max(rki_ifsg$KW), max(rki_hosp$KW))
+ifsgmaxjahr <- floor(ifsgmaxkw/100)
 c19erkranktetabelle <- tibble(
   Erkrankte=c(
     "Ohne Symptomatik",
@@ -663,7 +675,7 @@ c19erkranktetabelle <- tibble(
     paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuverstorben)- rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben)), " %")
   )
 ) %>%
-  select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw):=dieseWoche, Veraenderung)
+  select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
