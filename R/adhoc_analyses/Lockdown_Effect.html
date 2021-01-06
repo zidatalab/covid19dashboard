@@ -1673,7 +1673,17 @@ summary {
 <pre><code>## ── Conflicts ─────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>b117 &lt;- .5
+<pre class="r"><code>library(&quot;jsonlite&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;jsonlite&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     flatten</code></pre>
+<pre class="r"><code>current_cases &lt;- jsonlite::read_json(&#39;https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/frueindikatoren.json&#39;,simplifyVector = TRUE) %&gt;% filter(Indikator==&quot;Neue Fälle pro Tag&quot;) %&gt;% pull(Wert) %&gt;% as.numeric(.)
+
+  
+
+b117 &lt;- .5
 R0 &lt;- 3.3
 Lockdown_light_Effect = R0*(1-.45)*(1-.15)
 Lockdown_light_Effect_b117 = (R0+b117)*(1-.45)*(1-.15)
@@ -1686,8 +1696,8 @@ all_scens= data.frame(&#39;scenario&#39;=c(&quot;light&quot;,&quot;light b 1.1.7
 <div id="goal-and-time-to-reach" class="section level3">
 <h3>Goal and Time to reach</h3>
 <p>Overall estimated R(t) based on **lockdown* from 2020-12-15 should be 0.6942375. We will use this estimate to calculate the time until the official threshold of 50 cases per 100k inhabitants within 7 days is reached.</p>
-<pre class="r"><code>current_cases_daily = 269500/10
-population = 82.5 * 1e6</code></pre>
+<pre class="r"><code>current_cases_daily = current_cases
+population = 83166711</code></pre>
 <pre class="r"><code>estimate_duration &lt;- function(df,goal){
   goal_daily = round((population/100000)*(goal)/7)
   newdf = df %&gt;%
@@ -1701,10 +1711,10 @@ population = 82.5 * 1e6</code></pre>
 <div id="so-how-long-for-germany-50" class="section level3">
 <h3>So, how long for Germany 50?</h3>
 <p>The goal is to reduce the daily cases to 50 or better 20 (in light of b.1.1.7) per 7 days. This is, how long it will take:</p>
-<pre class="r"><code>all_scens %&gt;% mutate(&quot;goal 50&quot;=estimate_duration(.,50),&quot;gaol 20&quot;=estimate_duration(.,20)) %&gt;% rename(&quot;R(t) for scenario&quot;=effect)</code></pre>
+<pre class="r"><code>all_scens %&gt;% mutate(&quot;goal Incidence&lt;50&quot;=estimate_duration(.,50),&quot;goal Incidence&lt;20&quot;=estimate_duration(.,20)) %&gt;% rename(&quot;R(t) for scenario&quot;=effect)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["scenario"],"name":[1],"type":["chr"],"align":["left"]},{"label":["R(t) for scenario"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["goal 50"],"name":[3],"type":["chr"],"align":["left"]},{"label":["gaol 20"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"light","2":"1.5427500","3":"never","4":"never"},{"1":"light b 1.1.7","2":"1.7765000","3":"never","4":"never"},{"1":"hard","2":"0.6942375","3":"14.02.2021","4":"11.03.2021"},{"1":"hard b 1.1.7","2":"0.7994250","3":"12.03.2021","4":"22.04.2021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["scenario"],"name":[1],"type":["chr"],"align":["left"]},{"label":["R(t) for scenario"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["goal Incidence<50"],"name":[3],"type":["chr"],"align":["left"]},{"label":["goal Incidence<20"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"light","2":"1.5427500","3":"never","4":"never"},{"1":"light b 1.1.7","2":"1.7765000","3":"never","4":"never"},{"1":"hard","2":"0.6942375","3":"31.01.2021","4":"25.02.2021"},{"1":"hard b 1.1.7","2":"0.7994250","3":"17.02.2021","4":"30.03.2021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
