@@ -1701,10 +1701,10 @@ population = 82.5 * 1e6</code></pre>
 <div id="so-how-long-for-germany-50" class="section level3">
 <h3>So, how long for Germany 50?</h3>
 <p>The goal is to reduce the daily cases to 50 or better 20 (in light of b.1.1.7) per 7 days. This is, how long it will take:</p>
-<pre class="r"><code>all_scens %&gt;% mutate(&quot;goal 50&quot;=estimate_duration(.,50),&quot;gaol 20&quot;=estimate_duration(.,20)) %&gt;% rename(&quot;R(t) for scenario&quot;=effect)</code></pre>
+<pre class="r"><code>all_scens %&gt;% mutate(&quot;goal 50&quot;=estimate_duration(.,50),&quot;goal 20&quot;=estimate_duration(.,20)) %&gt;% rename(&quot;R(t) for scenario&quot;=effect)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["scenario"],"name":[1],"type":["chr"],"align":["left"]},{"label":["R(t) for scenario"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["goal 50"],"name":[3],"type":["chr"],"align":["left"]},{"label":["gaol 20"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"light","2":"1.5427500","3":"never","4":"never"},{"1":"light b 1.1.7","2":"1.7765000","3":"never","4":"never"},{"1":"hard","2":"0.6942375","3":"14.02.2021","4":"11.03.2021"},{"1":"hard b 1.1.7","2":"0.7994250","3":"12.03.2021","4":"22.04.2021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["scenario"],"name":[1],"type":["chr"],"align":["left"]},{"label":["R(t) for scenario"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["goal 50"],"name":[3],"type":["chr"],"align":["left"]},{"label":["goal 20"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"light","2":"1.5427500","3":"never","4":"never"},{"1":"light b 1.1.7","2":"1.7765000","3":"never","4":"never"},{"1":"hard","2":"0.6942375","3":"14.02.2021","4":"11.03.2021"},{"1":"hard b 1.1.7","2":"0.7994250","3":"12.03.2021","4":"22.04.2021"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
