@@ -116,7 +116,7 @@ rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 rki_hosp <- read_excel(destfile_rkihosp, 
                        sheet = "Daten", 
                        skip = 2) %>%
-  mutate(KW=202000+KW)
+  mutate(YearKW=Meldejahr*100+MW)
 
 bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
@@ -230,6 +230,7 @@ bltabelle <- bind_rows(
     filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
     arrange(Bundesland)
 ) %>%
+  mutate(`R(t)`=format(`R(t)`, decimal.mark = ",")) %>%
   select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit`)
 
 eumaxdate <- max(international$date)
@@ -350,7 +351,7 @@ sterbeKW <- case_when(thisKW==202101 ~ 202053-4,
                       thisKW==202103 ~ 202053-2,
                       thisKW==202104 ~ 202053-1,
                       thisKW==202105 ~ 202053,
-                      TRUE ~ thisKW-5)
+                      TRUE ~ thisKW-5)#-1
 sterbeJahr <- floor(sterbeKW/100)
 vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
 vorsterbeJahr <- floor(vorsterbeKW)
