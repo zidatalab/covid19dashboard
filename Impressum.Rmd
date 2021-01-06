@@ -7,7 +7,7 @@ output:
        - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
        - { title: "Kreise", href: "Kreise.html", align: left }
        - { title: "KBV-Report", href: "Report.html", align: left }
-       - { title: "Impressum", href: "Impressum.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
     orientation: rows
     vertical_layout: scroll 
     logo: static/logo.png
