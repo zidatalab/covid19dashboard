@@ -94,7 +94,7 @@ plotdata.condensed <- plotdata %>% filter(KW>=isoweek(date("2020-09-01")) & KW<=
 
 # Meta Informationen zu den Kreisen  
 
-more_meta <- readr::read_csv2("https://raw.githubusercontent.com/zidatalab/covid19causaleffects/master/data/inkar/kontextindikatoren_kreise.csv?token=AHZPFCZMK6PZH3B6LVQLWIK76WVBS") %>%
+more_meta <- readr::read_csv2("../../data/kontextindikatoren_kreise.txt") %>%
   mutate(id=Kennziffer*1000)
 
 andata <- pop.rec %>% group_by(id) %>% mutate(ges=sum(bev)) %>% 
@@ -127,3 +127,18 @@ dasmodell <- andata %>%  MASS::glm.nb(Verhaeltnis ~ 1 +
                                         ,data=.) 
 broom::tidy( dasmodell ,exponentiate = TRUE) 
 broom::glance( dasmodell) 
+
+# lm modell
+lm_modell <- andata %>% lm(Verhaeltnis ~ 1 +  
+                                        mean_Inzidenz +
+                                        #I(mean_Inzidenz^2) +
+                                        # I(mean_Inzidenz^3 )+
+                                        z_BevDichte +
+                                        # I(mean_Inzidenz*BevDichte)+
+                                        `Haushalte mit niedrigem Einkommen`+
+                                        `Stimmenanteile AfD`
+                                      ,data=.) 
+broom::tidy(lm_modell) 
+broom::glance(lm_modell) 
+
+View(cor(andata%>%dplyr::select(Verhaeltnis, mean_Inzidenz, z_BevDichte, `Haushalte mit niedrigem Einkommen`, `Stimmenanteile AfD`), use = "complete.obs"))

@@ -1,0 +1,402 @@
+"Kennziffer";"Raumeinheit";"Aggregat";"Einwohner 65 Jahre und älter";"Einwohnerdichte";"Frauenanteil";"Ausländeranteil";"Anteil Schutzsuchender an Bevölkerung";"Haushalte mit niedrigem Einkommen";"Stimmenanteile AfD";"Wahlbeteiligung"
+1001;"Flensburg, Stadt";"krsfr. Stadt";20,2;1560;50,2;13,3;2,9;34,8;7,5;70,3
+1002;"Kiel, Stadt";"krsfr. Stadt";18,5;2090;51,3;11,3;3;38,3;6,9;73,5
+1003;"Lübeck, Stadt";"krsfr. Stadt";23,2;1010;52;9,7;2,3;37;8,9;70,7
+1004;"Neumünster, Stadt";"krsfr. Stadt";22,6;1108;50,6;11;2,8;34,7;10,3;66
+1051;"Dithmarschen";"Landkreis";24,6;93;50,6;5,6;2;32,9;8,6;72,2
+1053;"Herzogtum Lauenburg";"Landkreis";22,3;155;50,9;7,5;2;27,3;10,2;76,8
+1054;"Nordfriesland";"Landkreis";23,9;79;51;6,8;2;33;5,8;74,7
+1055;"Ostholstein";"Landkreis";27,3;151;51,7;5,5;1,7;32,2;8,5;75,3
+1056;"Pinneberg";"Landkreis";22,1;471;50,9;10,1;2,4;25,6;8,6;78,1
+1057;"Plön";"Landkreis";25,8;112;51,4;4,7;1,9;28,4;7,7;79,6
+1058;"Rendsburg-Eckernförde";"Landkreis";23,2;125;50,8;5;2;27,8;7,3;78,2
+1059;"Schleswig-Flensburg";"Landkreis";23,6;96;50,5;5,1;1,7;30;6,6;76,5
+1060;"Segeberg";"Landkreis";21,7;198;50,6;8,1;2,1;26;9;76,5
+1061;"Steinburg";"Landkreis";22,6;125;50,6;6,6;2,2;30,6;8,2;74,8
+1062;"Stormarn";"Landkreis";23;334;51,1;7;2;21,3;9,1;80,4
+2000;"Hamburg, Stadt";"krsfr. Stadt";18,4;2424;51;16,2;2,9;33,4;7,8;75,4
+3101;"Braunschweig, Stadt";"krsfr. Stadt";21;1287;50,5;9,7;1,5;35,5;8,4;76,4
+3102;"Salzgitter, Stadt";"krsfr. Stadt";22,8;466;50,3;16,9;4,3;33,4;16,4;70,9
+3103;"Wolfsburg, Stadt";"krsfr. Stadt";22,3;606;50,3;14,3;2,5;28,9;11,7;73,2
+3151;"Gifhorn";"Landkreis";19,8;112;49,9;6,2;1,4;28,6;11,4;76,6
+3153;"Goslar";"Landkreis";27,2;142;50,6;8,9;2,3;34,5;11,1;73,4
+3154;"Helmstedt";"Landkreis";23,2;136;50,4;6,6;1,8;31,1;9,9;73,7
+3155;"Northeim";"Landkreis";25,3;105;50,8;5,9;2;32,2;9,5;74,8
+3157;"Peine";"Landkreis";21,4;249;50,6;7,2;2,1;31,1;10,3;77
+3158;"Wolfenbüttel";"Landkreis";23,4;166;50,5;5,9;1,9;31,7;9,9;79,3
+3159;"Göttingen";"Landkreis";22,3;187;50,9;8,1;1,9;34,6;8,1;76,3
+3241;"Region Hannover";"Landkreis";21,1;502;51,1;13,1;3;33,5;9,4;76,7
+3251;"Diepholz";"Landkreis";22,2;108;50,3;7,8;2,1;27,3;8,4;76,2
+3252;"Hameln-Pyrmont";"Landkreis";25,4;186;51,7;9,7;2,8;32,9;10,5;74,1
+3254;"Hildesheim";"Landkreis";23,2;229;51,3;7,6;2,2;30,6;9,3;77,1
+3255;"Holzminden";"Landkreis";26;102;50,5;7;2;32,2;9,6;73,9
+3256;"Nienburg (Weser)";"Landkreis";22;87;50,3;7,7;2,8;31,7;9,8;72,8
+3257;"Schaumburg";"Landkreis";24,4;234;51,1;8,2;2,5;31,2;10,3;76,2
+3351;"Celle";"Landkreis";23,2;115;50,8;7,4;2,6;32,6;11,7;74,8
+3352;"Cuxhaven";"Landkreis";25;96;51;6,2;1,9;30,3;8,9;75,1
+3353;"Harburg";"Landkreis";22,2;201;50,7;7,3;1,5;25,1;10;80,8
+3354;"Lüchow-Dannenberg";"Landkreis";27,6;39;50,9;5,3;1,3;35,1;7,8;73,6
+3355;"Lüneburg";"Landkreis";19,8;138;51,1;6,6;2,2;30,7;9,2;78,6
+3356;"Osterholz";"Landkreis";23,2;173;50,8;5,3;1,8;27,5;9,6;77,8
+3357;"Rotenburg (Wümme)";"Landkreis";20,9;79;49,7;6;1,8;30,1;8,1;76,5
+3358;"Heidekreis";"Landkreis";22,3;74;50,1;7,7;1,8;31,8;9,7;74,6
+3359;"Stade";"Landkreis";21,2;159;50,3;8;2,2;28;9,5;76,7
+3360;"Uelzen";"Landkreis";25;63;51,1;5,5;1,6;33;9,4;75,4
+3361;"Verden";"Landkreis";22;173;50,8;7,2;2,4;27,3;9,7;77
+3401;"Delmenhorst, Stadt";"krsfr. Stadt";22;1241;50,5;14,6;4;34,1;13,1;69,6
+3402;"Emden, Stadt";"krsfr. Stadt";21;450;49,9;9,7;2,6;33,5;10;70,7
+3403;"Oldenburg (Oldenburg), Stadt";"krsfr. Stadt";18,9;1621;52,2;9,3;3,1;34,8;6,7;77,3
+3404;"Osnabrück, Stadt";"krsfr. Stadt";18,7;1372;51,6;12,7;2,9;34,5;6,2;75,4
+3405;"Wilhelmshaven, Stadt";"krsfr. Stadt";26,2;713;50,8;8,5;3,5;34,7;10,6;69,6
+3451;"Ammerland";"Landkreis";22,8;169;51,1;5,6;1,9;32,2;7,9;77
+3452;"Aurich";"Landkreis";22,5;148;50,7;5,4;1,9;34,2;8,9;74,4
+3453;"Cloppenburg";"Landkreis";16,2;118;49,4;10,1;2,1;29,7;9,1;72,3
+3454;"Emsland";"Landkreis";18,7;112;49,2;10,3;2;28,8;6,3;77
+3455;"Friesland";"Landkreis";25,8;162;51,2;4,3;2;33,4;8,2;75,2
+3456;"Grafschaft Bentheim";"Landkreis";20,4;138;50;14,1;1,7;30;5,3;76,7
+3457;"Leer";"Landkreis";21,1;156;50,1;7,5;1,8;34,6;9,2;73,7
+3458;"Oldenburg";"Landkreis";21;122;50,4;8,1;2,2;30,6;8,9;78,3
+3459;"Osnabrück";"Landkreis";20,4;168;50,3;7,7;1,3;27,4;7;76,5
+3460;"Vechta";"Landkreis";15,9;173;49,4;11,7;2,6;25,8;7;75,8
+3461;"Wesermarsch";"Landkreis";23,2;108;49,9;7,5;1,7;32,6;8,3;71,9
+3462;"Wittmund";"Landkreis";24,2;86;50,8;4,3;1,5;35,2;8,6;72,4
+4011;"Bremen, Stadt";"krsfr. Stadt";21;1741;50,6;17,5;3,7;38,2;9,5;71,5
+4012;"Bremerhaven, Stadt";"krsfr. Stadt";21,8;1207;50,3;16,9;4;40,2;12,5;63,1
+5111;"Düsseldorf, Stadt";"krsfr. Stadt";19,4;2839;51,7;19,7;3,1;29,7;7,9;76
+5112;"Duisburg, Stadt";"krsfr. Stadt";20,4;2140;50,6;20,2;2,8;39,1;13,3;67,5
+5113;"Essen, Stadt";"krsfr. Stadt";21,5;2774;51,5;15,3;3,9;35,4;11,4;73,3
+5114;"Krefeld, Stadt";"krsfr. Stadt";22;1645;51,3;15,5;2,5;34,3;8,3;70,9
+5116;"Mönchengladbach, Stadt";"krsfr. Stadt";20,7;1538;50,8;15,3;2,9;35,8;9,5;68,7
+5117;"Mülheim an der Ruhr, Stadt";"krsfr. Stadt";23,7;1876;51,8;15,1;3,5;28,6;10,6;76,9
+5119;"Oberhausen, Stadt";"krsfr. Stadt";21,7;2743;50,9;14,6;2,8;34,9;13,1;71,3
+5120;"Remscheid, Stadt";"krsfr. Stadt";22,3;1484;50,7;17,5;2,3;28,3;10,6;71,2
+5122;"Solingen, Stadt";"krsfr. Stadt";21,4;1774;51,4;16,2;2;30,8;9,7;72,1
+5124;"Wuppertal, Stadt";"krsfr. Stadt";20,9;2100;51,1;18,8;3,9;35,6;10,8;72,5
+5154;"Kleve";"Landkreis";20,3;252;50,2;14,4;1,6;26,3;6,9;74,2
+5158;"Mettmann";"Landkreis";23,8;1192;51,7;11,9;1,8;22,2;9,5;77
+5162;"Rhein-Kreis Neuss";"Landkreis";21,8;780;51,4;11,4;1,9;21,8;8,6;76,6
+5166;"Viersen";"Landkreis";21,8;530;51,1;9,7;1,6;26,1;7,5;75,6
+5170;"Wesel";"Landkreis";22,9;442;51,2;9;2;28,6;9,6;76,4
+5314;"Bonn, Stadt";"krsfr. Stadt";18;2307;52,2;16,2;2,9;34,4;7,3;78,7
+5315;"Köln, Stadt";"krsfr. Stadt";17,4;2668;51,2;19,2;3;35,2;7,2;75,4
+5316;"Leverkusen, Stadt";"krsfr. Stadt";21,7;2074;51,3;15,4;2,5;31,1;10,3;74,4
+5334;"Städteregion Aachen";"Landkreis";20,2;784;49,6;14;2,5;34,3;7,4;76,4
+5358;"Düren";"Landkreis";21,1;279;50,4;10,3;2,1;29,9;9,6;75,2
+5362;"Rhein-Erft-Kreis";"Landkreis";21,3;663;51,1;12,1;1,8;27,1;9,6;76,5
+5366;"Euskirchen";"Landkreis";21,3;154;50,7;7,5;1,6;27,9;9,9;74,4
+5370;"Heinsberg";"Landkreis";20,6;403;50,5;11,3;1,8;29,3;8,7;74,1
+5374;"Oberbergischer Kreis";"Landkreis";21,1;297;50,8;9,3;1,9;27,7;10,6;74,4
+5378;"Rheinisch-Bergischer Kreis";"Landkreis";23,1;648;51,5;9,2;2;22,4;8;79,4
+5382;"Rhein-Sieg-Kreis";"Landkreis";21,1;519;51;10;1,8;25,2;9,4;78,5
+5512;"Bottrop, Stadt";"krsfr. Stadt";22,1;1167;51,3;10,7;2,3;33,8;12,5;74,5
+5513;"Gelsenkirchen, Stadt";"krsfr. Stadt";20,6;2481;50,2;19,1;2,8;39,2;17;67,4
+5515;"Münster, Stadt";"krsfr. Stadt";16,9;1034;52;10,3;2,6;35,5;4,9;81,8
+5554;"Borken";"Landkreis";18,7;260;50,1;8,9;1,7;26,6;6,1;77,6
+5558;"Coesfeld";"Landkreis";20,4;197;50,6;6,1;1,7;24,6;6,2;80,6
+5562;"Recklinghausen";"Landkreis";22,5;810;51,2;10,7;2,4;33,4;12,3;73,4
+5566;"Steinfurt";"Landkreis";19,6;249;50,2;8,8;2,2;27,9;6,5;77,4
+5570;"Warendorf";"Landkreis";20,9;210;50,6;9,8;1,8;26,5;7,4;77,4
+5711;"Bielefeld, Stadt";"krsfr. Stadt";19,9;1285;51,8;14,1;4,4;36,4;9;74,8
+5754;"Gütersloh";"Landkreis";19,3;375;50;12,4;2,2;24;8,7;75
+5758;"Herford";"Landkreis";21,9;558;50,9;9;2;28,8;10,9;73,1
+5762;"Höxter";"Landkreis";22,3;118;50,2;5,4;1,7;31,7;8,9;75,9
+5766;"Lippe";"Landkreis";22,3;280;50,9;8,3;2,1;31,9;10,8;74,5
+5770;"Minden-Lübbecke";"Landkreis";21,8;270;50,7;7,6;2,7;29,9;10,6;73,1
+5774;"Paderborn";"Landkreis";17,8;245;50;8,9;2,3;31,4;9,9;74,4
+5911;"Bochum, Stadt";"krsfr. Stadt";22;2509;51,3;12,3;3;37,2;10,5;74,7
+5913;"Dortmund, Stadt";"krsfr. Stadt";20,4;2090;50,9;17;2,9;37,1;10,3;71,7
+5914;"Hagen, Stadt";"krsfr. Stadt";22,5;1170;51,3;17,4;2,8;35,7;12,8;70,1
+5915;"Hamm, Stadt";"krsfr. Stadt";20,7;791;50,9;14,6;2;35,4;11,1;71,7
+5916;"Herne, Stadt";"krsfr. Stadt";21,8;3043;51;16,3;2,9;38,3;13,9;69,5
+5954;"Ennepe-Ruhr-Kreis";"Landkreis";23,5;793;51,5;10;2,4;29;9,8;75,9
+5958;"Hochsauerlandkreis";"Landkreis";21,8;133;50,1;8,5;2,2;26,5;8;75,4
+5962;"Märkischer Kreis";"Landkreis";21,9;390;50,8;12,8;1,9;26,4;11,3;71,4
+5966;"Olpe";"Landkreis";19,9;189;49,9;9,1;2,1;22,3;7,7;75,9
+5970;"Siegen-Wittgenstein";"Landkreis";21,3;245;50,3;10,3;2,5;27,6;10,7;75,6
+5974;"Soest";"Landkreis";21;227;50,3;9,2;1,9;28,4;9,3;74,5
+5978;"Unna";"Landkreis";22,6;725;51,3;9,5;2,8;31,4;10,3;74,5
+6411;"Darmstadt, Stadt";"krsfr. Stadt";17,3;1296;49,1;19,3;2,3;32,8;8,4;77,9
+6412;"Frankfurt am Main, Stadt";"krsfr. Stadt";15,7;3008;50,6;29;2,1;34,4;8,6;74,1
+6413;"Offenbach am Main, Stadt";"krsfr. Stadt";16,7;2822;50,6;35;1,6;35;12;66,4
+6414;"Wiesbaden, Stadt";"krsfr. Stadt";19,9;1366;52,2;18,8;2,9;30,2;11,2;73
+6431;"Bergstraße";"Landkreis";22;374;50,6;12,9;2,5;26,1;12,9;77,7
+6432;"Darmstadt-Dieburg";"Landkreis";20,6;449;50,3;14;2;23,8;11,1;78,6
+6433;"Groß-Gerau";"Landkreis";19,3;599;50,1;21,5;2,3;26,3;12,2;75,1
+6434;"Hochtaunuskreis";"Landkreis";22,5;490;51,5;15,8;2,1;13,6;10,2;81,3
+6435;"Main-Kinzig-Kreis";"Landkreis";21,3;299;50,7;15,1;2,4;26;14,7;75,5
+6436;"Main-Taunus-Kreis";"Landkreis";21,2;1066;51,1;15,9;2,1;15,6;10,6;80,4
+6437;"Odenwaldkreis";"Landkreis";23,3;155;50,6;13,2;0,9;28;13,1;75,3
+6438;"Offenbach";"Landkreis";21,1;987;50,8;18,6;2,3;22;11,9;77,4
+6439;"Rheingau-Taunus-Kreis";"Landkreis";22,7;230;50,8;11,8;2,3;22,6;11,6;79,5
+6440;"Wetteraukreis";"Landkreis";20,9;277;50,5;12,3;2;24,6;12,3;77,1
+6531;"Gießen";"Landkreis";19,2;312;50,8;11,6;3,8;31,9;12,1;76
+6532;"Lahn-Dill-Kreis";"Landkreis";21,9;238;50,7;10,5;2,4;28,3;13,9;72,5
+6533;"Limburg-Weilburg";"Landkreis";21,2;233;50,3;11,2;2,4;29,6;12,7;75,1
+6534;"Marburg-Biedenkopf";"Landkreis";19,4;195;50,8;11,1;2,2;30,8;11,5;76,8
+6535;"Vogelsbergkreis";"Landkreis";24;73;49,9;6,9;1,9;29,2;14,1;74,3
+6611;"Kassel, Stadt";"krsfr. Stadt";19,5;1880;51;17,5;5,3;38;9,9;72
+6631;"Fulda";"Landkreis";20,9;161;50,3;8,5;2,1;28,5;16,2;75,8
+6632;"Hersfeld-Rotenburg";"Landkreis";23,8;110;50;9;1,8;30,7;14,7;74,9
+6633;"Kassel";"Landkreis";24,7;183;50,9;6,9;;27,6;11,3;77,4
+6634;"Schwalm-Eder-Kreis";"Landkreis";23;117;49,9;7;2;28,6;12,9;76,6
+6635;"Waldeck-Frankenberg";"Landkreis";23;85;50,1;8,1;2,4;29,4;12,4;73,9
+6636;"Werra-Meißner-Kreis";"Landkreis";25,4;99;50,6;7;2,1;31,6;11,2;74
+7111;"Koblenz, Stadt";"krsfr. Stadt";21,6;1082;51,4;12,7;3,1;34,8;8,4;74,5
+7131;"Ahrweiler";"Landkreis";24,3;164;50,9;9,1;2,2;27,7;8,8;78,5
+7132;"Altenkirchen (Westerwald)";"Landkreis";22;200;50,5;7,2;1,6;29,6;10,9;74,6
+7133;"Bad Kreuznach";"Landkreis";23;182;51,2;9,8;1,9;27,8;11,6;75,8
+7134;"Birkenfeld";"Landkreis";24,1;104;50,4;7,7;1,7;31;12;72,5
+7135;"Cochem-Zell";"Landkreis";24;89;49,9;7;1,6;27,8;8,5;77,3
+7137;"Mayen-Koblenz";"Landkreis";21,6;261;50,6;7,6;2,1;28,1;10,1;75,9
+7138;"Neuwied";"Landkreis";22,1;290;50,8;9,1;2;28,9;10,6;75
+7140;"Rhein-Hunsrück-Kreis";"Landkreis";22,3;104;50,2;7,4;1,5;26,8;9,8;77,2
+7141;"Rhein-Lahn-Kreis";"Landkreis";23,1;156;50,5;8,3;1,8;28,3;10,9;76,8
+7143;"Westerwaldkreis";"Landkreis";20,9;203;50,3;8,5;1,4;25,2;10,8;76,9
+7211;"Trier, Stadt";"krsfr. Stadt";17,7;940;50,8;13,1;3,9;35,6;7,8;74,2
+7231;"Bernkastel-Wittlich";"Landkreis";22,5;96;50,1;9,4;1,6;30,2;8,4;77,1
+7232;"Eifelkreis Bitburg-Prüm";"Landkreis";20,5;60;49,8;12,1;1,2;31,5;7,4;75,1
+7233;"Vulkaneifel";"Landkreis";23,9;67;49,8;7,1;1,3;29,6;8,2;76,9
+7235;"Trier-Saarburg";"Landkreis";20,3;135;50,5;10,1;1,2;29,8;8,1;80,3
+7311;"Frankenthal (Pfalz), Stadt";"krsfr. Stadt";22,9;1103;51,7;16,3;1,9;31,3;16,5;72,5
+7312;"Kaiserslautern, Stadt";"krsfr. Stadt";20,2;714;49,5;15,5;2,6;35,2;13,7;70,3
+7313;"Landau in der Pfalz, Stadt";"krsfr. Stadt";19;558;52,7;9,9;2,3;28,8;10;76,9
+7314;"Ludwigshafen am Rhein, Stadt";"krsfr. Stadt";19,1;2176;50,2;25;2,7;35;16,3;69
+7315;"Mainz, Stadt";"krsfr. Stadt";17,5;2201;51,4;17,9;2,4;36;7,3;80,2
+7316;"Neustadt an der Weinstraße, Stadt";"krsfr. Stadt";24;456;51,3;10,6;2;29,4;12;77,8
+7317;"Pirmasens, Stadt";"krsfr. Stadt";25,2;662;51;11,2;3,2;35,5;16,1;67,1
+7318;"Speyer, Stadt";"krsfr. Stadt";22,1;1192;51,4;14,9;2,4;33;13,5;75,4
+7319;"Worms, Stadt";"krsfr. Stadt";20,3;764;50,8;16,5;2,3;33,6;15;72,3
+7320;"Zweibrücken, Stadt";"krsfr. Stadt";23;485;50,6;9,7;2,2;34,4;14,5;70,5
+7331;"Alzey-Worms";"Landkreis";19,6;219;50,1;9,1;1,7;24,4;13,8;79,7
+7332;"Bad Dürkheim";"Landkreis";23,9;223;51,1;8,3;1,6;23,7;12,4;80,3
+7333;"Donnersbergkreis";"Landkreis";21,3;116;50,4;7,4;1,5;27,4;13,7;75,1
+7334;"Germersheim";"Landkreis";19,5;277;50,1;11,9;1,5;24,1;16,3;77,5
+7335;"Kaiserslautern";"Landkreis";21,4;165;50,8;8;1,5;28,2;14;75,8
+7336;"Kusel";"Landkreis";23,5;123;50,3;6;1,7;27,2;14;75,8
+7337;"Südliche Weinstraße";"Landkreis";22,7;173;50,7;7,2;1,2;25,3;12,2;79,8
+7338;"Rhein-Pfalz-Kreis";"Landkreis";22,5;504;50,7;9,9;1,6;20,3;13,8;80,9
+7339;"Mainz-Bingen";"Landkreis";20,4;347;50,7;9,6;1,7;19,9;9,8;81,9
+7340;"Südwestpfalz";"Landkreis";24,7;100;50,6;4;1;27,3;12,9;79,1
+8111;"Stuttgart, Stadt";"krsfr. Stadt";17,9;3052;50;24,6;2,3;30,5;8,8;79,1
+8115;"Böblingen";"Landkreis";19,8;631;50,3;18;1,7;20;11,7;79,5
+8116;"Esslingen";"Landkreis";20,4;830;50,1;16,9;1,9;19,6;11,7;80,1
+8117;"Göppingen";"Landkreis";21,4;399;50,2;15,9;1,9;22,9;14,7;76,2
+8118;"Ludwigsburg";"Landkreis";19,7;790;50,4;17,5;1,8;20,7;11,9;79,9
+8119;"Rems-Murr-Kreis";"Landkreis";20,9;495;50,5;15,6;1,8;20,6;13,7;78,7
+8121;"Heilbronn, Stadt";"krsfr. Stadt";19,5;1253;49,6;24,6;2,8;31,9;16,4;72
+8125;"Heilbronn";"Landkreis";19,1;310;49,8;13,9;1,5;21,9;15,7;78,5
+8126;"Hohenlohekreis";"Landkreis";19,2;143;49,5;10,4;1,4;22,1;14,8;76,4
+8127;"Schwäbisch Hall";"Landkreis";19;131;49,8;10,6;1,4;25,1;14,5;74,5
+8128;"Main-Tauber-Kreis";"Landkreis";22,2;101;50,2;8,7;1,5;24,8;13,6;77,6
+8135;"Heidenheim";"Landkreis";21,8;210;50,2;14,6;1,8;24,7;13,3;74,9
+8136;"Ostalbkreis";"Landkreis";20,4;207;50,2;10,5;1,1;24,6;12,3;76,5
+8211;"Baden-Baden, Stadt";"krsfr. Stadt";26,2;390;52;18,8;3,1;26,1;10,7;74,9
+8212;"Karlsruhe, Stadt";"krsfr. Stadt";18,3;1799;48,8;18,5;1,8;35,1;10,4;77
+8215;"Karlsruhe";"Landkreis";20,9;408;50,2;12,8;1,5;24,2;13,6;78,8
+8216;"Rastatt";"Landkreis";21,3;312;50,4;13,3;1,8;25,5;13,2;75,3
+8221;"Heidelberg, Stadt";"krsfr. Stadt";16,2;1475;51,9;20,6;1,7;33,2;7,8;81,2
+8222;"Mannheim, Stadt";"krsfr. Stadt";18,5;2125;50,1;23,3;1;37,1;12,8;72,3
+8225;"Neckar-Odenwald-Kreis";"Landkreis";21,3;127;49,8;9,5;1,5;27,5;14,1;75,4
+8226;"Rhein-Neckar-Kreis";"Landkreis";21,3;515;50,8;12,3;1,7;25;12,8;79,3
+8231;"Pforzheim, Stadt";"Landkreis";20,3;1267;50,9;25,3;4;31;19,3;68,4
+8235;"Calw";"Landkreis";20,5;197;49,8;14,6;1,6;23,8;15,2;77,2
+8236;"Enzkreis";"Landkreis";20,9;346;50,4;12,8;1,5;19,4;14,9;79,5
+8237;"Freudenstadt";"Landkreis";20,4;135;50,1;11,3;1,7;24,4;14,7;75,8
+8311;"Freiburg im Breisgau, Stadt";"krsfr. Stadt";16,3;1500;52,3;17,1;2,3;38,4;7,2;80,4
+8315;"Breisgau-Hochschwarzwald";"Landkreis";21,5;190;50,7;11,6;1,9;24,9;9,3;80
+8316;"Emmendingen";"Landkreis";20,6;242;50,6;10;1,8;24,2;10;78,7
+8317;"Ortenaukreis";"Landkreis";20,6;229;50,2;11;1,7;25,1;12;74,4
+8325;"Rottweil";"Landkreis";20,9;180;50;11;1,9;23,6;13,8;75,9
+8326;"Schwarzwald-Baar-Kreis";"Landkreis";22,1;206;50,3;14,7;1,3;26,2;12,8;74,6
+8327;"Tuttlingen";"Landkreis";19,4;190;49,8;15,7;1,7;24;14,1;74,7
+8335;"Konstanz";"Landkreis";20,7;347;51,2;14,6;1,9;28,7;10,3;76,7
+8336;"Lörrach";"Landkreis";20,1;283;51;14,6;1,7;27,7;10,9;74,6
+8337;"Waldshut";"Landkreis";20,9;150;50,4;15;1,6;25;10,5;73,9
+8415;"Reutlingen";"Landkreis";20,3;262;50,4;15,3;1,9;24,1;12,9;78,1
+8416;"Tübingen";"Landkreis";17;435;51,3;13,3;1,9;28,4;8,8;82
+8417;"Zollernalbkreis";"Landkreis";21,9;205;50,4;12,1;0,7;22,5;14,6;74,3
+8421;"Ulm, Stadt";"krsfr. Stadt";18,4;1058;50,4;19,3;2,6;31,1;10,2;77,5
+8425;"Alb-Donau-Kreis";"Landkreis";19,1;143;49,4;12,6;1,6;21;12,5;79,8
+8426;"Biberach";"Landkreis";18,4;141;49,6;10;1,7;22,2;12,6;78,1
+8435;"Bodenseekreis";"Landkreis";22,4;323;50,7;12,9;1,8;23,7;10,3;79,2
+8436;"Ravensburg";"Landkreis";19,5;174;50,2;10,7;1,7;25,9;10,4;77,4
+8437;"Sigmaringen";"Landkreis";20,1;108;49,9;10,3;1,7;26,8;12,9;75,6
+9161;"Ingolstadt, Stadt";"krsfr. Stadt";18,5;1014;49,5;17,6;2,1;29,4;15,3;70,9
+9162;"München, Stadt";"krsfr. Stadt";17,8;4686;51,3;25,5;2,3;32,3;8,4;78,2
+9163;"Rosenheim, Stadt";"krsfr. Stadt";20,1;1695;50,7;20,5;2;28,9;14,7;73,7
+9171;"Altötting";"Landkreis";21,7;194;50,6;10,8;1,7;26;13,6;74,3
+9172;"Berchtesgadener Land";"Landkreis";23,6;125;50,9;15,7;1,2;30,1;13,1;75,3
+9173;"Bad Tölz-Wolfratshausen";"Landkreis";21,2;114;50,7;12,2;1,7;21;11,9;79,3
+9174;"Dachau";"Landkreis";18,3;264;49,9;15,4;1,2;17,9;12,3;81,1
+9175;"Ebersberg";"Landkreis";18,7;256;50,1;12,9;1;12,9;10,3;83,7
+9176;"Eichstätt";"Landkreis";17,4;108;49,2;8,9;1,5;19,8;14,7;81,7
+9177;"Erding";"Landkreis";16,7;157;49,5;11,1;1;18;13,5;80,4
+9178;"Freising";"Landkreis";15,7;223;49;16,8;1,3;20,1;12,3;80,2
+9179;"Fürstenfeldbruck";"Landkreis";21,5;501;51;14,3;1,3;16;10,9;82,1
+9180;"Garmisch-Partenkirchen";"Landkreis";25;87;51,5;12,7;1,5;27,5;12,6;79,3
+9181;"Landsberg am Lech";"Landkreis";19,7;148;49,9;8,3;1,4;20,6;10,9;81,4
+9182;"Miesbach";"Landkreis";22,6;115;51;12,1;0,8;20,6;11,4;80
+9183;"Mühldorf a.Inn";"Landkreis";19,8;142;49,4;11,5;1,3;25,1;15,5;75,4
+9184;"München";"Landkreis";20,5;522;50,3;17,1;1,3;15;9,4;83,5
+9185;"Neuburg-Schrobenhausen";"Landkreis";18,8;130;49,6;10;1,4;24;15,1;77,3
+9186;"Pfaffenhofen a.d.Ilm";"Landkreis";17,9;166;49,1;10,8;1;21,5;15,2;77,2
+9187;"Rosenheim";"Landkreis";21,1;180;50,5;10;1,1;23,2;13,7;80
+9188;"Starnberg";"Landkreis";22,8;278;51,5;13,9;1,3;9,3;8,8;84,1
+9189;"Traunstein";"Landkreis";22,6;115;50,5;9,7;1,3;25,3;11,4;77,3
+9190;"Weilheim-Schongau";"Landkreis";21,4;139;50,3;9,2;1,3;25,3;11,7;80,3
+9261;"Landshut, Stadt";"krsfr. Stadt";20,6;1081;51,4;17,5;1,7;29,6;13;74,3
+9262;"Passau, Stadt";"krsfr. Stadt";21,5;744;52;14,1;2,4;33,4;12,7;73,3
+9263;"Straubing, Stadt";"krsfr. Stadt";21,2;704;49,7;15,4;2,4;29,1;17,2;67,4
+9271;"Deggendorf";"Landkreis";20;138;50,1;8,4;2,5;29,4;18,4;70,9
+9272;"Freyung-Grafenau";"Landkreis";21,3;80;50,1;4,5;0,7;31,5;20,1;71,9
+9273;"Kelheim";"Landkreis";18,3;114;49,2;11,7;1,1;26,4;14,9;75,6
+9274;"Landshut";"Landkreis";18,4;117;49,2;9,3;0,9;25,3;15,1;78,7
+9275;"Passau";"Landkreis";21,7;125;50,3;7,3;1;29,3;17,2;73,5
+9276;"Regen";"Landkreis";22;79;50,1;5,9;1,2;33,3;20,7;71,9
+9277;"Rottal-Inn";"Landkreis";21,1;94;50;9,5;1;28,2;15,3;73,4
+9278;"Straubing-Bogen";"Landkreis";19,3;83;49,6;6,9;0,9;26,9;17,1;77,9
+9279;"Dingolfing-Landau";"Landkreis";18,8;109;48,4;11,5;0,9;26,6;18,3;72,5
+9361;"Amberg, Stadt";"krsfr. Stadt";23,3;843;50,7;10,5;2,4;34;14,9;70,1
+9362;"Regensburg, Stadt";"krsfr. Stadt";17,2;1866;51,5;15,8;2,9;34,2;10,8;76
+9363;"Weiden i.d.OPf., Stadt";"krsfr. Stadt";23,1;603;51,8;10,8;2,7;34,2;14,6;69,8
+9371;"Amberg-Sulzbach";"Landkreis";20,8;82;50;5,4;0,9;29,3;13;78,5
+9372;"Cham";"Landkreis";20,8;84;49,8;5,4;0,8;32;18;73,5
+9373;"Neumarkt i.d.OPf.";"Landkreis";18,8;99;49,5;8,2;0,8;26,1;12;80
+9374;"Neustadt a.d.Waldnaab";"Landkreis";20,7;66;50,3;4,5;0,8;29,8;13,9;78,6
+9375;"Regensburg";"Landkreis";19;138;49,9;8,1;0,8;26,6;14,4;79,7
+9376;"Schwandorf";"Landkreis";20,3;100;49,7;7,5;1,1;30,9;16,8;75,5
+9377;"Tirschenreuth";"Landkreis";22,5;67;50,2;4,1;0,9;31,7;12,3;78,3
+9461;"Bamberg, Stadt";"krsfr. Stadt";19,2;1413;51,8;14,2;4;33,1;11,4;75,6
+9462;"Bayreuth, Stadt";"krsfr. Stadt";21,5;1106;51,3;11,1;5,2;33,7;9,6;72,8
+9463;"Coburg, Stadt";"krsfr. Stadt";23,5;854;51,3;10,6;1,8;33,1;10,7;73,5
+9464;"Hof, Stadt";"krsfr. Stadt";23,9;792;52;16,4;4,5;34,4;13,9;69,8
+9471;"Bamberg";"Landkreis";18,7;126;49,9;4,7;0,5;25,9;15,5;80,8
+9472;"Bayreuth";"Landkreis";22,1;82;50,5;3,6;0,4;29,9;10,9;79,3
+9473;"Coburg";"Landkreis";22,9;147;50,6;5,3;0,7;26,8;12;78
+9474;"Forchheim";"Landkreis";20;180;50,4;6,5;1;24,2;11,8;81,3
+9475;"Hof";"Landkreis";25,6;107;51,2;5,5;0,7;31,2;12,4;77,8
+9476;"Kronach";"Landkreis";23,9;104;50,6;4,7;0,7;27,1;11,8;76,5
+9477;"Kulmbach";"Landkreis";23,8;109;50,8;4,5;0,8;30,3;11,4;77,3
+9478;"Lichtenfels";"Landkreis";22,2;128;50,6;5,3;0,9;29,5;13,2;75,6
+9479;"Wunsiedel i.Fichtelgebirge";"Landkreis";26,2;121;51,3;8,1;1,5;33,1;13,8;74,5
+9561;"Ansbach, Stadt";"krsfr. Stadt";21,4;417;52,2;12,9;3,1;29,5;13,2;71
+9562;"Erlangen, Stadt";"krsfr. Stadt";17,9;1442;50,3;17,2;1,9;29,7;8;80,1
+9563;"Fürth, Stadt";"krsfr. Stadt";18,3;1997;51;18,7;1,8;32,3;11,9;73,1
+9564;"Nürnberg, Stadt";"krsfr. Stadt";20,2;2763;51,3;21,9;3,1;35,3;12;73,7
+9565;"Schwabach, Stadt";"krsfr. Stadt";21,8;1000;51,2;12,1;1,7;26,4;11,9;76,3
+9571;"Ansbach";"Landkreis";19,8;93;49,7;8,1;1,1;26,9;11,7;77,3
+9572;"Erlangen-Höchstadt";"Landkreis";20,2;240;50,3;8,2;0,9;20,4;10,5;82,6
+9573;"Fürth";"Landkreis";22,8;378;51,5;6,5;1;22,4;12,1;80,9
+9574;"Nürnberger Land";"Landkreis";22,2;212;50,7;8,6;1,2;21,2;11,4;81,8
+9575;"Neustadt a.d.Aisch-Bad Windsheim";"Landkreis";20,6;79;49,9;7,5;1,2;27,9;10,9;77,5
+9576;"Roth";"Landkreis";20,6;141;50,3;6,9;1,9;24,9;11,7;80,2
+9577;"Weißenburg-Gunzenhausen";"Landkreis";21,6;97;50,2;8,8;1,3;28,9;11,3;74,4
+9661;"Aschaffenburg, Stadt";"krsfr. Stadt";20,7;1120;51,5;15,9;2,5;31,4;12;72,6
+9662;"Schweinfurt, Stadt";"krsfr. Stadt";23,8;1497;51,1;17,7;12,4;34,2;15,6;68,5
+9663;"Würzburg, Stadt";"krsfr. Stadt";20;1446;52,3;11,2;2,2;34,1;8;76,9
+9671;"Aschaffenburg";"Landkreis";21,1;249;50,3;9,1;1;24,8;11,5;80,3
+9672;"Bad Kissingen";"Landkreis";24,1;91;50,8;5,3;1;29,3;11,4;78,1
+9673;"Rhön-Grabfeld";"Landkreis";21,7;78;50,2;4,6;0,8;30,4;10,4;77,7
+9674;"Haßberge";"Landkreis";20,4;88;49,8;4,5;0,9;28,1;12,9;80,2
+9675;"Kitzingen";"Landkreis";20,4;132;49,7;8,6;1;28,8;10,9;78,6
+9676;"Miltenberg";"Landkreis";21;180;50,2;10,8;1;25,6;11,3;78,6
+9677;"Main-Spessart";"Landkreis";22,5;96;50,1;6,6;0,8;24,5;10,4;80,3
+9678;"Schweinfurt";"Landkreis";21,4;137;49,9;5,5;0,7;26,2;12;81,1
+9679;"Würzburg";"Landkreis";20,9;167;50,3;6;0,8;26,8;9,1;83,3
+9761;"Augsburg, Stadt";"krsfr. Stadt";19,5;1994;50,9;21;3,3;36,6;13,6;71,8
+9762;"Kaufbeuren, Stadt";"krsfr. Stadt";22,9;1086;50,8;14,7;1,7;31,9;14;71,2
+9763;"Kempten (Allgäu), Stadt";"krsfr. Stadt";22,2;1080;50,6;15,9;1,6;31,8;13,4;71,5
+9764;"Memmingen, Stadt";"krsfr. Stadt";21,6;620;50,6;17,8;1,7;27,3;15,3;72,7
+9771;"Aichach-Friedberg";"Landkreis";19,6;170;50,1;8;0,9;18,3;14,3;80,4
+9772;"Augsburg";"Landkreis";20,3;233;50,4;9,2;1;19,6;13,8;78,5
+9773;"Dillingen a.d.Donau";"Landkreis";19,9;120;49,9;8,9;1,6;24,5;16,6;75,1
+9774;"Günzburg";"Landkreis";19,2;163;49,5;12,4;1,1;25,4;16;73,9
+9775;"Neu-Ulm";"Landkreis";20,1;334;50,4;14,1;1,1;24,9;14,2;76
+9776;"Lindau (Bodensee)";"Landkreis";22,5;251;50,8;12,9;1,1;27,3;9;77,7
+9777;"Ostallgäu";"Landkreis";21;100;50,2;8,4;1;26,8;11,5;79,3
+9778;"Unterallgäu";"Landkreis";21;116;49,7;8,8;0,9;24,3;15,3;77,5
+9779;"Donau-Ries";"Landkreis";19,6;104;49,2;9,2;1,3;24,2;13,2;78,1
+9780;"Oberallgäu";"Landkreis";22,5;101;50,7;8,4;0,9;27,9;10,3;79,6
+10041;"Regionalverband Saarbrücken";"Landkreis";22,7;803;50,9;13,9;;36,2;10;73,1
+10042;"Merzig-Wadern";"Landkreis";22,2;186;50,6;11,1;;31,8;9,3;76,6
+10043;"Neunkirchen";"Landkreis";24,1;534;50,9;9,2;;33,6;10,9;73,5
+10044;"Saarlouis";"Landkreis";23,6;426;51;9,8;13,1;31,5;10,1;75,8
+10045;"Saarpfalz-Kreis";"Landkreis";24,6;343;51,3;8,8;;31,5;11,3;77,2
+10046;"St. Wendel";"Landkreis";24;185;50,5;5,1;;25,9;8,3;79,9
+11000;"Berlin, Stadt";"krsfr. Stadt";19,2;4055;50,8;17,6;2,5;40,3;12;74,7
+12051;"Brandenburg an der Havel, Stadt";"krsfr. Stadt";27,3;313;50,6;4,8;2,2;39;17,3;64,7
+12052;"Cottbus, Stadt";"krsfr. Stadt";24,7;610;50,7;8,1;4,9;36,8;24,3;71,7
+12053;"Frankfurt (Oder), Stadt";"krsfr. Stadt";25,2;394;51,6;9,8;2,4;39,1;21,9;68,2
+12054;"Potsdam, Stadt";"krsfr. Stadt";19,6;933;51,6;8;2,3;34,8;12,8;78,1
+12060;"Barnim";"Landkreis";23,3;122;50,4;3,8;1,1;34,9;20,6;73,4
+12061;"Dahme-Spreewald";"Landkreis";23,8;74;50,4;4,4;1,1;34,6;21,4;75,2
+12062;"Elbe-Elster";"Landkreis";27,4;54;50,4;2,8;1,2;37,1;24,2;73,1
+12063;"Havelland";"Landkreis";22,1;93;50,5;4;1,2;35,4;18;72,8
+12064;"Märkisch-Oderland";"Landkreis";23,5;89;50,4;2,8;0,9;36,8;20,8;72,8
+12065;"Oberhavel";"Landkreis";22,5;116;50,7;3,6;1,3;34,7;19,3;73,9
+12066;"Oberspreewald-Lausitz";"Landkreis";28,3;91;50,9;3,2;1,2;37,1;25,9;70,7
+12067;"Oder-Spree";"Landkreis";25,8;79;50,9;3,9;2,7;36;22,1;71,7
+12068;"Ostprignitz-Ruppin";"Landkreis";24,7;39;50,2;3,5;1,5;38,2;18,5;67,1
+12069;"Potsdam-Mittelmark";"Landkreis";21,9;82;50,5;4;0,9;32,3;15,4;76,8
+12070;"Prignitz";"Landkreis";27,4;36;50,2;4,2;1,8;38,4;18,3;68,5
+12071;"Spree-Neiße";"Landkreis";27;70;50,8;3,2;;36,5;28,9;73,7
+12072;"Teltow-Fläming";"Landkreis";22,3;79;50,2;4,8;1,3;35,9;20;72,4
+12073;"Uckermark";"Landkreis";27;39;51;4;1,4;39,4;20,8;68,3
+13003;"Rostock, Stadt";"krsfr. Stadt";23,5;1149;50,7;5,9;1,9;44,1;14,7;71,5
+13004;"Schwerin, Stadt";"krsfr. Stadt";25,1;734;51,9;8,8;4,1;39,5;15,6;71,8
+13071;"Mecklenburgische Seenplatte";"Landkreis";25;47;50,9;3,1;1,3;41;19,6;68,4
+13072;"Landkreis Rostock";"Landkreis";23,2;63;50,3;3;1,1;40,1;18,2;72
+13073;"Vorpommern-Rügen";"Landkreis";25,4;70;50,8;3,9;1,2;42,2;20,5;68,6
+13074;"Nordwestmecklenburg";"Landkreis";22,9;74;50,2;3,4;1,1;39,8;17;69,7
+13075;"Vorpommern-Greifswald";"Landkreis";24,5;60;50,9;4,1;1,1;42;22,7;68,9
+13076;"Ludwigslust-Parchim";"Landkreis";23,1;45;50,1;4,6;1,2;38,2;17,7;71
+14511;"Chemnitz, Stadt";"krsfr. Stadt";27,6;1117;50,7;7,4;3;41,4;24,3;74,5
+14521;"Erzgebirgskreis";"Landkreis";28,8;186;51,1;1,9;0,8;39,7;28,9;74,5
+14522;"Mittelsachsen";"Landkreis";27,6;146;50,3;3,1;0,9;38,3;30,4;74,2
+14523;"Vogtlandkreis";"Landkreis";29,5;163;51,3;3,3;1,2;39,8;26,4;73
+14524;"Zwickau";"Landkreis";28,8;337;51,2;3,1;1,1;39,4;26;72,2
+14612;"Dresden, Stadt";"krsfr. Stadt";21,8;1678;50,2;7;1,8;40,3;22,5;78,4
+14625;"Bautzen";"Landkreis";26,9;126;50,6;2;0,8;37,3;32,5;74,6
+14626;"Görlitz";"Landkreis";29,1;122;51;4,2;0,9;38,9;32,9;72,2
+14627;"Meißen";"Landkreis";27;167;50,7;2,9;1;38,5;32,9;75
+14628;"Sächsische Schweiz-Osterzgebirge";"Landkreis";27,1;148;50,7;2,6;0,8;38,3;35,5;76,2
+14713;"Leipzig, Stadt";"krsfr. Stadt";20,5;1954;50,9;9;2,5;43,6;18,3;74,4
+14729;"Leipzig";"Landkreis";26,1;156;51;2,3;0,9;37,8;26,9;73,9
+14730;"Nordsachsen";"Landkreis";25,2;98;50,3;3,7;1,1;38,3;26,9;71,1
+15001;"Dessau-Roßlau, Stadt";"krsfr. Stadt";30,8;335;51,4;5,5;2,5;40,5;20,1;68,8
+15002;"Halle (Saale), Stadt";"krsfr. Stadt";23,9;1771;51,6;9,1;3,6;42,8;17,1;69,7
+15003;"Magdeburg, Stadt";"krsfr. Stadt";24,1;1186;50,7;8,6;2,9;41,8;15,7;68,6
+15081;"Altmarkkreis Salzwedel";"Landkreis";23,6;37;50,1;3,6;1,3;38;15,6;66,9
+15082;"Anhalt-Bitterfeld";"Landkreis";27,3;111;50,9;3,5;1;39,6;22,4;66,1
+15083;"Börde";"Landkreis";23,1;73;50,1;3,1;1,2;38,4;18,8;66,7
+15084;"Burgenlandkreis";"Landkreis";27,3;129;50,3;5,1;1,3;40,8;24,3;66,9
+15085;"Harz";"Landkreis";27,5;103;50,9;3;0,8;38,6;16,5;65,9
+15086;"Jerichower Land";"Landkreis";25,2;57;50,2;3,4;1,1;40;19;67,7
+15087;"Mansfeld-Südharz";"Landkreis";28,9;95;50,8;2,9;1,4;40,8;23,9;65,7
+15088;"Saalekreis";"Landkreis";25,1;129;50,5;3,5;1,4;39;24;69
+15089;"Salzlandkreis";"Landkreis";27,4;135;51,1;3,1;1,1;41,2;20,4;63,3
+15090;"Stendal";"Landkreis";24,8;47;50,6;3,7;1,4;39,9;17,7;65,9
+15091;"Wittenberg";"Landkreis";28;66;50,7;3,2;1,2;39,3;19,9;68,8
+16051;"Erfurt, Stadt";"krsfr. Stadt";21,9;789;51,3;7,4;2,5;40,4;18,5;74,7
+16052;"Gera, Stadt";"krsfr. Stadt";28,4;623;51,6;5,8;3;41,4;28,5;71,3
+16053;"Jena, Stadt";"krsfr. Stadt";21,1;968;50,1;8,9;2,3;36,2;14,4;78,4
+16054;"Suhl, Stadt";"krsfr. Stadt";31,5;341;51,3;7;1,1;37;19,9;70,8
+16055;"Weimar, Stadt";"krsfr. Stadt";22,8;763;51,5;8,2;2,3;38,9;16,1;74,9
+16056;"Eisenach, Stadt";"krsfr. Stadt";25,6;410;50,7;7,9;3;37,4;19;72
+16061;"Eichsfeld";"Landkreis";23,1;107;49,7;3,3;1,3;36;18,2;75,9
+16062;"Nordhausen";"Landkreis";25,8;119;50,5;4,2;1,5;40,5;21,1;68,8
+16063;"Wartburgkreis";"Landkreis";24,9;95;50;2,8;0,8;35,4;22,5;73,8
+16064;"Unstrut-Hainich-Kreis";"Landkreis";24,5;106;50,4;3,5;1,5;39,1;23,2;70,6
+16065;"Kyffhäuserkreis";"Landkreis";26,5;73;50,3;2,8;1,2;39,8;25;70,4
+16066;"Schmalkalden-Meiningen";"Landkreis";25,9;102;50;3,2;0,9;36,9;21,6;72,2
+16067;"Gotha";"Landkreis";24,8;145;50,2;5,4;1,1;37,4;23,2;72,4
+16068;"Sömmerda";"Landkreis";23,8;87;50;2,6;0,5;38;24,2;72,1
+16069;"Hildburghausen";"Landkreis";24,3;68;50;2,9;1,1;37,1;25,2;72,8
+16070;"Ilm-Kreis";"Landkreis";25,4;129;49,7;5,3;1,3;38,7;25;75
+16071;"Weimarer Land";"Landkreis";23,4;102;50,4;3,5;1,1;39;23,7;75,3
+16072;"Sonneberg";"Landkreis";27,4;130;50,8;4,1;1,5;36,8;25,6;70
+16073;"Saalfeld-Rudolstadt";"Landkreis";28,4;104;50,8;2,7;1,1;38;27;72,5
+16074;"Saale-Holzland-Kreis";"Landkreis";25,4;102;50,2;2,9;0,2;36;23,5;75,9
+16075;"Saale-Orla-Kreis";"Landkreis";26,1;71;50,5;3,3;1,3;36,8;26,5;74,3
+16076;"Greiz";"Landkreis";28,5;117;50,7;2,3;0,7;38,4;25,6;74,8
+16077;"Altenburger Land";"Landkreis";29,9;159;51;3,2;1,4;40,3;27,5;71
