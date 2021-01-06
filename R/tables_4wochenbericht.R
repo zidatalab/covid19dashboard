@@ -406,12 +406,12 @@ sterbetabelle <- tibble(
   KWX=c(
     sterberki %>% pull(Todesfaelle),
     NA,
-    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Tote_diff)
+    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Tote_diff) # c(NA,NA,NA,NA)# 
   ),
   KWX_sterblichkeit=c(
     sterberki %>% pull(Sterblichkeit),
     NA,
-    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Vergleich)
+    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Vergleich) # c(NA,NA,NA,NA)#
   ),
   Veraenderung=ifelse(is.na(KWX), NA, paste0(format(round(100*(KWX-Vorwoche)/Vorwoche, 1), decimal.mark = ","), "%"))
 ) %>%
@@ -616,7 +616,7 @@ testtabelle <- tibble(
 )  %>%
   select(Testungen, Vorwoche, !!paste0("KW ", testmaxkw-testmaxjahr*100):=dieseWoche, Veraenderung)
 
-ifsgmaxkw <- max(rki_ifsg$KW, rki_hosp$KW, na.rm = TRUE) # min(max(rki_ifsg$KW), max(rki_hosp$KW))
+ifsgmaxkw <- max(rki_ifsg$KW, rki_hosp$YearKW, na.rm = TRUE) # min(max(rki_ifsg$KW), max(rki_hosp$KW))
 ifsgmaxjahr <- floor(ifsgmaxkw/100)
 c19erkranktetabelle <- tibble(
   Erkrankte=c(
@@ -634,8 +634,8 @@ c19erkranktetabelle <- tibble(
     "Neu verstorben"
   ),
   Vorwoche=c(
-    paste0(format(round(100*(rki_hosp %>% filter(KW==ifsgmaxkw-1) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
-    paste0(format(round(100-100*(rki_hosp %>% filter(KW==ifsgmaxkw-1) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark = ","), " %"),
+    paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
+    paste0(format(round(100-100*(rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark = ","), " %"),
     paste0(format(agefatality_data %>% filter(Meldedatum==maxdate-7 & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark = ","), " %"),
     NA,
     rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert),
@@ -648,8 +648,8 @@ c19erkranktetabelle <- tibble(
     rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben)
   ),
   dieseWoche=c(
-    paste0(format(round(100*(rki_hosp %>% filter(KW==ifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
-    paste0(format(round(100-100*(rki_hosp %>% filter(KW==ifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark = ","), " %"),
+    paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
+    paste0(format(round(100-100*(rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark = ","), " %"),
     paste0(format(agefatality_data %>% filter(Meldedatum==maxdate & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark = ","), " %"),
     NA,
     rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert),
@@ -662,8 +662,8 @@ c19erkranktetabelle <- tibble(
     rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuverstorben)
   ),
   Veraenderung=c(
-    paste0(format(round(100*(rki_hosp %>% filter(KW==ifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)-rki_hosp %>% filter(KW==ifsgmaxkw-1) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark=","), " PP"),
-    paste0(format(round(100*(rki_hosp %>% filter(KW==ifsgmaxkw-1) %>% pull(`Anteil hospitalisiert`)-rki_hosp %>% filter(KW==ifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark=","), " PP"),
+    paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)-rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark=","), " PP"),
+    paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil hospitalisiert`)-rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark=","), " PP"),
     paste0(format(agefatality_data %>% filter(Meldedatum==maxdate & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil)-agefatality_data %>% filter(Meldedatum==maxdate-7 & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark=","), " PP"),
     NA,
     paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert) - rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert)), " %"),
