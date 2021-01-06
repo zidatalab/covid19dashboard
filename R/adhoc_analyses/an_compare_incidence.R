@@ -92,14 +92,38 @@ plotdata.condensed <- plotdata %>% filter(KW>=isoweek(date("2020-09-01")) & KW<=
                                                        "kaum","gar nicht"))
          )
 
-# Meta Informationen zu den Kreisen                           
-kreis.meta <- pop.rec %>% group_by(id) %>% mutate(ges=sum(bev)) %>% 
+# Meta Informationen zu den Kreisen  
+
+more_meta <- readr::read_csv2("https://raw.githubusercontent.com/zidatalab/covid19causaleffects/master/data/inkar/kontextindikatoren_kreise.csv?token=AHZPFCZMK6PZH3B6LVQLWIK76WVBS") %>%
+  mutate(id=Kennziffer*1000)
+
+andata <- pop.rec %>% group_by(id) %>% mutate(ges=sum(bev)) %>% 
   spread(age,bev) %>% 
-  mutate(Altenquotient=(`A60-A79`+`A80+`)/ges) %>% 
-  select(id,Altenquotient,Einwohner=ges) %>%
-  mutate(id=id*1000) %>% left_join(meta)
+  mutate(
+    Altenquotient=((`A60-A79`+`A80+`)/ges)) %>% 
+  select(id,Altenquotient,"Einwohner"="ges") %>%
+  mutate(id=id*1000) %>% left_join(meta) %>%
+  mutate( Ant_Hoechstrisiko = Hoechstrisikopopulation_75plus/Einwohner) %>%
+  left_join(.,plotdata %>% group_by(id) %>% summarise(mean_Inzidenz=mean(Gesamt,na.rm=T)),by="id") %>% ungroup() %>%
+  left_join(plotdata.condensed,.,by="id") %>%
+  mutate(Bundesland=floor(id/1000000)) %>%
+  left_join(.,idnames %>% filter(id<17) %>% rename(Bundesland=id, BL_=name) %>% collect(),by="Bundesland") %>%
+  mutate(BL_name=as.factor(BL_)) %>% 
+  left_join(.,more_meta %>% select(-contains("Einw")),by="id") %>%
+  mutate(z_BevDichte= scale(Einwohner/flaeche) )
 
 
 
+#contrasts(andata$BL_ = contr.sum(16)
 
-              
+dasmodell <- andata %>%  MASS::glm.nb(Verhaeltnis ~ 1 +  
+                                        mean_Inzidenz +
+                                        #I(mean_Inzidenz^2) +
+                                        # I(mean_Inzidenz^3 )+
+                                        z_BevDichte +
+                                       # I(mean_Inzidenz*BevDichte)+
+                                          `Haushalte mit niedrigem Einkommen`+
+                                        `Stimmenanteile AfD`
+                                        ,data=.) 
+broom::tidy( dasmodell ,exponentiate = TRUE) 
+broom::glance( dasmodell) 
