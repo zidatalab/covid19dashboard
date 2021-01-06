@@ -24,6 +24,12 @@ output:
  
 ```{r}
 library("tidyverse")
+library("jsonlite")
+
+current_cases <- jsonlite::read_json('https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/frueindikatoren.json',simplifyVector = TRUE) %>% filter(Indikator=="Neue Fälle pro Tag") %>% pull(Wert) %>% as.numeric(.)
+
+  
+
 b117 <- .5
 R0 <- 3.3
 # R0+b117 or R0*(1+b117) ? https://twitter.com/AdamJKucharski/status/1343567425107881986
@@ -44,8 +50,9 @@ Overall estimated R(t) based on **lockdown* from 2020-12-15 should be `r Hard_Lo
 official threshold of 50 cases per 100k inhabitants within 7 days is reached.
 
 ```{r}
-current_cases_daily = 269500/10
-population = 82.5 * 1e6
+
+current_cases_daily = current_cases
+population = 83166711
 ```
 
 
@@ -67,7 +74,7 @@ estimate_duration <- function(df,goal){
 The goal is to reduce the daily cases to 50 or better 20 (in light of b.1.1.7) per 7 days. This is, how long it will take:
 
 ```{r}
-all_scens %>% mutate("goal 50"=estimate_duration(.,50),"gaol 20"=estimate_duration(.,20)) %>% rename("R(t) for scenario"=effect)
+all_scens %>% mutate("goal Incidence<50"=estimate_duration(.,50),"goal Incidence<20"=estimate_duration(.,20)) %>% rename("R(t) for scenario"=effect)
 ```
 
 
