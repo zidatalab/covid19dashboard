@@ -101,17 +101,17 @@ meldeverzuege_bund <- multi_quantmeldeverzuege %>%
             mean_prozentSTI=mean(prozentSTI, na.rm=TRUE),
             .groups="drop")
 
-# ggplot(meldeverzuege_bund, 
-#        aes(x=datediff, y=mean_prozentSTI, fill=mean_prozentSTI)) +
-#   geom_bar(stat="identity") + # , fill=zi_cols("ziblue")
-#   theme_zi() +
-#   theme(legend.position = "none") +
-#   scale_fill_continuous(limits=c(50,100)) +
-#   scale_y_continuous(breaks=(0:10)*10, labels=paste0((0:10)*10, "%")) +
-#   scale_x_continuous(breaks=1:tagehorizont, labels=paste0("Tag ", 1:tagehorizont)) +
-#   labs(title="Unvollständige Sieben-Tage-Inzidenz\ndurch Nachmeldungen (BRD gesamt)", subtitle="Prozent der tatsächlichen Siebentageinzidenz")
+ggplot(meldeverzuege_bund,
+       aes(x=datediff, y=mean_prozentSTI, fill=mean_prozentSTI)) +
+  geom_bar(stat="identity") + # , fill=zi_cols("ziblue")
+  theme_zi() +
+  theme(legend.position = "none") +
+  scale_fill_continuous(limits=c(50,100)) +
+  scale_y_continuous(breaks=(0:10)*10, labels=paste0((0:10)*10, "%")) +
+  scale_x_continuous(breaks=1:tagehorizont, labels=paste0("Tag ", 1:tagehorizont)) +
+  labs(title="Unvollständige Sieben-Tage-Inzidenz\ndurch Nachmeldungen (BRD gesamt)", subtitle="Prozent der tatsächlichen Siebentageinzidenz")
 
-ggplot(meldeverzuege_bund, 
+meldeverzuege_bund_plot <- ggplot(meldeverzuege_bund, 
        aes(x=datediff, y=mean_prozentFaelle, fill=mean_prozentFaelle)) +
   geom_bar(stat="identity") +
   theme_zi() +
@@ -119,7 +119,20 @@ ggplot(meldeverzuege_bund,
   scale_fill_continuous(limits=c(0,100)) +
   scale_y_continuous(breaks=(0:10)*10, labels=paste0((0:10)*10, "%")) +
   scale_x_continuous(breaks=1:tagehorizont, labels=paste0("Tag ", 1:tagehorizont)) +
-  labs(title="Nachmeldungen von COVID-19-Fällen\n(BRD gesamt)", subtitle="(nach)gemeldete Fälle in Prozent\nder gemeldeten Fälle nach einer Woche")
+  labs(title="Meldeverzug von COVID-19-Fällen\n(BRD gesamt, gemittelt)",
+       subtitle="vorliegende Fälle zum Meldedatum in Prozent\nder gemeldeten Fälle nach einer Woche")
+
+finalise_plot(meldeverzuege_bund_plot, "static/meldeverzuege_bund.png",
+              source_name = 
+                paste0("Datenbasis: Meldedaten des RKI für den ",
+                       format(startdate-1, "%d.%m.%Y"),
+                       " bis ",
+                       format(startdate-1+27, "%d.%m.%Y"),
+                       "\nmit den Datenständen ",
+                       format(startdate, "%d.%m.%Y"),
+                       " bis ",
+                       format(startdate-1+27+7, "%d.%m.%Y"),"."),
+              width_cm = 23,height_cm = 23*(9/16))
 
 # bund nachmeldung nach wochentag
 meldeverzuege_bund_wday <- multi_quantmeldeverzuege %>%
@@ -198,15 +211,50 @@ meldeverzuege_kreise <- multi_quantmeldeverzuege %>%
   group_by(datediff, IdLandkreis) %>%
   summarise(mean_prozentFaelle=mean(prozentFaelle, na.rm=TRUE),
             mean_prozentSTI=mean(prozentSTI, na.rm=TRUE),
+            mean_STI=mean(Siebentageinzidenz, na.rm=TRUE),
             .groups="drop")
 
-# ggplot(meldeverzuege_kreise,
-#        aes(x=factor(datediff), y=mean_prozentSTI)) +
-#   geom_beeswarm(cex=0.2, size=0.2) +
-#   theme_zi() +
-#   scale_x_discrete(labels=paste0("Tag ", 1:tagehorizont)) +
-#   scale_y_continuous(breaks=(0:2)*50, labels=paste0((0:2)*50, "%")) +
-#   labs(title="Unvollständige Sieben-Tage-Inzidenz\ndurch Nachmeldungen (Kreise)", subtitle="Prozent der tatsächlichen Siebentageinzidenz")
+# ausreisser 9775000 
+View(multi_quantmeldeverzuege %>%
+  mutate(datediff=as.integer(Rkidatum-Meldedatum.x)) %>%
+  filter(IdLandkreis==9775000 & datediff==7))
+View(rkicounts %>%
+       filter(IdLandkreis==9775000) %>%
+       group_by(Rkidatum) %>%
+       summarise(Faellegesamt=sum(Faelle, na.rm = TRUE),
+                 .groups="drop"))
+# --> am 8.12. sind im Landkreis Neu-Ulm 180 Fälle verschwunden/umdatiert?
+
+mk_d1 <- meldeverzuege_kreise %>% filter(datediff==1)
+mm_prozentSTI <- mean(mk_d1$mean_prozentSTI)
+mm_STI <- mean(mk_d1$mean_STI)
+belastungkreise_niveausti <- ggplot(mk_d1,
+       aes(x = mean_prozentSTI, y = mean_STI)) +
+  geom_point(col=zi_cols("zidarkblue")) +
+  geom_hline(yintercept = mm_STI) +
+  geom_vline(xintercept = mm_prozentSTI) +
+  scale_x_continuous(breaks=(6:10)*10, labels=paste0((6:10)*10, "%")) +
+  theme_zi() +
+  labs(x="Niveau",
+       y="Sieben-Tage-Inzidenz",
+       title="Kein Zusammenhang zwischen Höhe der\nSieben-Tage-Inzidenz und Nachmeldungen",
+       subtitle="durchschnittliche Inzidenz und erreichtes Niveau auf Kreisebene")
+cor((meldeverzuege_kreise %>% filter(datediff==1))$mean_prozentSTI,
+    (meldeverzuege_kreise %>% filter(datediff==1))$mean_STI)
+
+finalise_plot(belastungkreise_niveausti, "static/belastungkreise_niveausti.png",
+              source_name = 
+                paste0("Datenbasis: Meldedaten des RKI für den ",
+                       format(startdate-1, "%d.%m.%Y"),
+                       " bis ",
+                       format(startdate-1+27, "%d.%m.%Y"),
+                       "\nmit den Datenständen ",
+                       format(startdate, "%d.%m.%Y"),
+                       " bis ",
+                       format(startdate-1+27+7, "%d.%m.%Y"),
+                       "."),
+              width_cm = 23,height_cm = 23*(9/16))
+
 
 ## karte prozent sti
 KRS <- read_sf("./data/shp/kreise.shp")
@@ -250,5 +298,19 @@ plot_karte_sti_cat <-
   geom_sf(data=BL, lwd=0.2, alpha=0, color="black") +
   theme_void() +
   scale_fill_zi("blue", discrete = TRUE) +
-  labs(fill=paste0("Niveau der berichteten\nSieben-Tage-Inzidenz"))
+  labs(fill=paste0("erreichtes Niveau\nam ersten Meldetag"),
+       title="Regionale Unterschiede des Niveaus der\nSieben-Tage-Inzidenz durch Nachmeldungen")
 plot_karte_sti_cat
+
+finalise_plot(plot_karte_sti_cat, "static/niveau_sti_karte.png",
+              source_name = 
+                paste0("Datenbasis: Meldedaten des RKI für den ",
+                       format(startdate-1, "%d.%m.%Y"),
+                       " bis ",
+                       format(startdate-1+27, "%d.%m.%Y"),
+                       "\nmit den Datenständen ",
+                       format(startdate, "%d.%m.%Y"),
+                       " bis ",
+                       format(startdate-1+27+7, "%d.%m.%Y"),
+                       ", Karte: GeoBasis-DE / BKG 2020."),
+              width_cm = 23/2, height_cm = 23*(9/16))
