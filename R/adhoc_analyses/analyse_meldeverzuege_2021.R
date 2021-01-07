@@ -285,21 +285,21 @@ plot_karte_sti_cat <-
   REG %>%
   filter(datediff==1) %>%
   mutate(sti_cat=case_when(
-    mean_prozentSTI<70 ~ "unter 70%",
-    mean_prozentSTI>=70 & mean_prozentSTI<80 ~ "70-80%",
-    mean_prozentSTI>=80 & mean_prozentSTI<90 ~ "80-90%",
-    mean_prozentSTI>=90 & mean_prozentSTI<95 ~ "90-95%",
-    mean_prozentSTI>=95 ~ "über 95%"
+    mean_prozentSTI<70 ~ "über 30%",
+    mean_prozentSTI>=70 & mean_prozentSTI<80 ~ "20-30%",
+    mean_prozentSTI>=80 & mean_prozentSTI<90 ~ "10-20%",
+    mean_prozentSTI>=90 & mean_prozentSTI<95 ~ "5-10%",
+    mean_prozentSTI>=95 ~ "unter 5%"
   ),
-  sti_cat=factor(sti_cat, ordered = TRUE, levels = c("unter 70%", "70-80%", "80-90%", "90-95%", "über 95%"))) %>%
+  sti_cat=factor(sti_cat, ordered = TRUE, levels = c("über 30%", "20-30%", "10-20%", "5-10%", "unter 5%"))) %>%
   ggplot() + 
   geom_sf(aes(fill=sti_cat),
           lwd=0.1, color="#dfdfdf") +
   geom_sf(data=BL, lwd=0.2, alpha=0, color="black") +
   theme_void() +
   scale_fill_zi("blue", discrete = TRUE) +
-  labs(fill=paste0("erreichtes Niveau\nam ersten Meldetag"),
-       title="Regionale Unterschiede des Niveaus der\nSieben-Tage-Inzidenz durch Nachmeldungen")
+  labs(fill=paste0("Anteil fehlende Fälle"),
+       title="Regionale Unterschiede bei der Berechnung der\nSieben-Tage-Inzidenz durch Nachmeldungen")
 plot_karte_sti_cat
 
 finalise_plot(plot_karte_sti_cat, "static/niveau_sti_karte.png",
