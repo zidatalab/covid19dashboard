@@ -229,17 +229,17 @@ mk_d1 <- meldeverzuege_kreise %>% filter(datediff==1)
 mm_prozentSTI <- mean(mk_d1$mean_prozentSTI)
 mm_STI <- mean(mk_d1$mean_STI)
 belastungkreise_niveausti <- ggplot(mk_d1,
-       aes(x = mean_prozentSTI, y = mean_STI)) +
+       aes(x = 100-mean_prozentSTI, y = mean_STI)) +
   geom_point(col=zi_cols("zidarkblue")) +
   geom_hline(yintercept = mm_STI) +
-  geom_vline(xintercept = mm_prozentSTI) +
-  scale_x_continuous(breaks=(6:10)*10, labels=paste0((6:10)*10, "%")) +
+  geom_vline(xintercept = 100-mm_prozentSTI) +
+  scale_x_continuous(breaks=100-(6:10)*10, labels=paste0(100-(6:10)*10, "%")) +
   theme_zi() +
   labs(x="Niveau",
        y="Sieben-Tage-Inzidenz",
        title="Kein Zusammenhang zwischen Höhe der\nSieben-Tage-Inzidenz und Nachmeldungen",
-       subtitle="durchschnittliche Inzidenz und erreichtes Niveau auf Kreisebene")
-cor((meldeverzuege_kreise %>% filter(datediff==1))$mean_prozentSTI,
+       subtitle="durchschnittliche Inzidenz und Anteil fehlender Fälle zur\nBerechnung der Sieben-Tage-Inzidenz auf Kreisebene")
+cor(100-(meldeverzuege_kreise %>% filter(datediff==1))$mean_prozentSTI,
     (meldeverzuege_kreise %>% filter(datediff==1))$mean_STI)
 
 finalise_plot(belastungkreise_niveausti, "static/belastungkreise_niveausti.png",
