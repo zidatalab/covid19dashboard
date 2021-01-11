@@ -89,6 +89,8 @@ kreise_ror <- read_delim("data/kreise_2016_ror_kv_etc.csv",
                                                                                  grouping_mark = ".", encoding = "ISO-8859-1"), 
                                      trim_ws = TRUE) %>%
   select(krs17, ROR11)
+pflegeheimbewohnende_2019_bundeslaender <- read_delim("data/pflegeheimbewohnende_2019_bundeslaender.csv", 
+                                                      ";", escape_double = FALSE, trim_ws = TRUE)
 ## get data from db
 brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect() %>% mutate(date=as.Date(date))
 rki <- tbl(conn,"rki") %>% collect()
@@ -99,6 +101,7 @@ divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stan
 divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 aktuell <- tbl(conn,"params") %>% collect()
+vaccinations <- tbl(conn, "vaccinations") %>% collect() %>% mutate(datum=as_date(as_datetime(date)))
 ## read/update RKI-R-estimates
 RKI_R <- tryCatch(
   {
@@ -626,13 +629,24 @@ bundeslaender_r_und_vwz_data <- myblmitidata %>%
   mutate(y_min=ifelse(Variable=="R", 0, 0),
          y_max=ifelse(Variable=="R", range_r[2], range_vwz[2])) %>%
   select(id, name, Datum, Wert, Variable, I_cases, y_min, y_max)
+## vaccination gesamt bundesländer
+vacc_bl <- vaccinations %>%
+  filter(datum==max(vaccinations$datum) &
+           metric=="impfungen_pro_1000_einwohner") %>%
+  left_join(., pflegeheimbewohnende_2019_bundeslaender %>%
+              select(Kuerzel, Bundesland_ID),
+            by=c("region"="Kuerzel")) %>%
+  mutate(impfungen_prozent=format(round(value/10, 1), decimal.mark = ","))
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
          R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
+  left_join(., vacc_bl %>% select(Bundesland_ID, impfungen_prozent),
+            by=c("id"="Bundesland_ID")) %>%
   select(Bundesland=name,
+         "geimpfte Bevölkerung %"=impfungen_prozent,
          "R(t)"=R0,
          "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
          "Vorwarnzeit aktuell"=Vorwarnzeit,
@@ -802,7 +816,7 @@ zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data %>% filter(Variable=="Vorwarnzeit"),
                                 aes(x=date, y=Wert)) +
   geom_line(size=2, col=zi_cols("zigreen")) +
   ylim(0, NA) +
-  labs(subtitle="Zi-Vorwarnzeit im Zeitverlauf",x="",y="") +
+  labs(subtitle="Zi-Vorwarnzeit im Zeitverlauf",x="Datum",y="Vorwarnzeit") +
   theme_minimal() +
   scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
   theme(legend.position='none') +
@@ -832,6 +846,17 @@ age_its_death_plot <- ggplot(age_its_death_data %>%
   scale_x_date(breaks="2 months", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
+vaccination_plot <- ggplot(vaccinations %>%
+                             filter(metric=="impfungen_kumulativ" & region=="DE"),
+                           aes(x=datum, y=value)) +
+  geom_line(size=2, col=zi_cols("ziblue")) +
+  ylim(0, NA) +
+  labs(subtitle="Verabreichte Impfdosen im Zeitverlauf",x="Datum",y="Impfungen") +
+  theme_minimal() +
+  scale_x_date(date_labels = "%d.%m.") + # , breaks="3 days"
+  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE)) +
+  theme(legend.position='none') +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 bundeslaender_r_und_vwz_plot <- function(myid) {
   myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid) %>% head(1) %>% pull(name)

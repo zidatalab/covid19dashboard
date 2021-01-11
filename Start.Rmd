@@ -55,6 +55,23 @@ Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),forma
 Row 
 ------------------------------------------------------------------------
 
+### Impfungen 
+
+```{r indicatorVacc}
+indicatorVacc <- vaccinations %>% filter(datum==max(vaccinations$datum) &
+                                           region=="DE" &
+                                           metric=="impfungen_pro_1000_einwohner") %>% pull(value)
+indicatorVacc <- paste0(format(round(indicatorVacc/10, 1), decimal.mark = ","), "%")
+valueBox(value=indicatorVacc,
+         caption="Prozentsatz der Bevölkerung mit mindestens einer Impfdosis",
+         color = "#0086C5", # ziblue
+         icon = "fa-syringe"
+        )
+```
+
+Row 
+------------------------------------------------------------------------
+
 ### Reproduktionszahl 
 
 ```{r indicatorR}
@@ -114,9 +131,25 @@ Row
 
 ### Legende:
 
+***Impfungen***: Wir berichten den Anteil der deutschen Bevölkerung, der bereits (mindestens) eine Impfdosis erhalten hat. Eine "Herdenimmunität" ist bei etwa 60 Prozent vollständig Geimpften erreicht.\
 ***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. Bei R<1 sinkt die Zahl der Neuinfektionen. Bei hoher Inzidenz sind auch Werte nahe 1 kritisch, da sich das Infektionsgeschehen nicht deutlich verlangsamt.\
 ***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet. Wegen Meldeverzügen fehlen für einige Kreise/Bundesländer die Fallzahlen des Vortages. Fehlende Werte imputieren wir mit dem Mittelwert der vorhergehenden 6 Tage, um die 7-Tage-Inzidenz vergleichbarer zu machen. \
 ***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten (Annahme: für zukünftige COVID-19-Fälle stehen die derzeit freien Betten sowie bereits mit COVID-19-Fällen belegte Betten zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Wir berücksichtigen die aktuelle Altersstruktur der Infizierten und unterschiedliche Raten der Intensivfälle: `r round(icurate_altersgruppen_busse$Hosp059*100, 2)`% für Unter-60-Jährige, `r round(icurate_altersgruppen_busse$Hosp6079*100, 2)`% für 60-bis-79-Jährige, sowie `r round(icurate_altersgruppen_busse$Hosp80*100, 2)`% für Über-80-Jährige. Diese Quoten wurden auf Basis der im Intensivregister gemeldeten Fälle mit Korrektur für Doppelzählungen auf Grund von Verlegungen (27%) sowie COVID-19-Charakteristiken aus der Literatur bestimmt. Die "effektive Vorwarnzeit" ist die Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken. Vgl. Methodenpapier.
+
+Row
+------------------------------------------------------------------------
+### **Entwicklung des Impffortschritts**
+
+```{r plotimpfungen}
+ggplotly(vaccination_plot + labs(title="")) %>% 
+   config(displayModeBar = FALSE, responsive=TRUE)
+```
+
+Row
+------------------------------------------------------------------------
+### Erläuterung
+
+Dargestellt ist die Entwicklung der Anzahl der mindestens einmal geimpften Personen in Deutschland. Einige Impfungen setzen eine zweite Impfdosis zum vollständigen Impfschutz voraus.
 
 Row
 ------------------------------------------------------------------------
