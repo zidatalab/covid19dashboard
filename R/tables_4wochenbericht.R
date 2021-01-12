@@ -354,7 +354,7 @@ sterbeKW <- case_when(thisKW==202101 ~ 202053-4,
                       TRUE ~ thisKW-5)#-1
 sterbeJahr <- floor(sterbeKW/100)
 vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
-vorsterbeJahr <- floor(vorsterbeKW)
+vorsterbeJahr <- floor(vorsterbeKW/100)
 sterbestichtag <- max(rki%>%filter(YearKW==sterbeKW)%>%pull(Meldedatum))
 vorsterbestichtag <- max(rki%>%filter(YearKW==vorsterbeKW)%>%pull(Meldedatum))
 sterberki <- rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
@@ -581,6 +581,8 @@ rwert7ti <- rwert7ti %>%
 
 testmaxkw <- max(almev$KW)
 testmaxjahr <- floor(testmaxkw/100)
+vortestmaxkw <- ifelse(testmaxkw==202101, 202053, testmaxkw-1)
+vortestmaxjahr <- floor(vortestmaxkw/100)
 almev <- almev %>%
   mutate(positivrate=positivtests/pcrtests,
          auslastung=pcrtests/testkapazitaet)
@@ -593,11 +595,11 @@ testtabelle <- tibble(
     "Auslastung"
   ),
   Vorwoche=c(
-    almev %>% filter(KW==testmaxkw-1) %>% pull(pcrtests),
-    almev %>% filter(KW==testmaxkw-1) %>% pull(positivtests),
-    paste0(format(round((almev %>% filter(KW==testmaxkw-1) %>% pull(positivrate))*100, 2), decimal.mark = ","), " %"),
-    almev %>% filter(KW==testmaxkw-1) %>% pull(testkapazitaet),
-    paste0(round((almev %>% filter(KW==testmaxkw-1) %>% pull(auslastung))*100, 0), " %")
+    almev %>% filter(KW==vortestmaxkw) %>% pull(pcrtests),
+    almev %>% filter(KW==vortestmaxkw) %>% pull(positivtests),
+    paste0(format(round((almev %>% filter(KW==vortestmaxkw) %>% pull(positivrate))*100, 2), decimal.mark = ","), " %"),
+    almev %>% filter(KW==vortestmaxkw) %>% pull(testkapazitaet),
+    paste0(round((almev %>% filter(KW==vortestmaxkw) %>% pull(auslastung))*100, 0), " %")
   ),
   dieseWoche=c(
     almev %>% filter(KW==testmaxkw) %>% pull(pcrtests),
@@ -607,17 +609,19 @@ testtabelle <- tibble(
     paste0(round((almev %>% filter(KW==testmaxkw) %>% pull(auslastung))*100, 0), " %")
   ),
   Veraenderung=c(
-    paste0(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(pcrtests) - almev %>% filter(KW==testmaxkw-1) %>% pull(pcrtests))/almev %>% filter(KW==testmaxkw-1) %>% pull(pcrtests), 0), " %"),
-    paste0(format(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(positivtests) - almev %>% filter(KW==testmaxkw-1) %>% pull(positivtests))/almev %>% filter(KW==testmaxkw-1) %>% pull(positivtests), 1), decimal.mark = ","), " %"),
-    paste0(format(round((almev %>% filter(KW==testmaxkw) %>% pull(positivrate))*100, 2)- round((almev %>% filter(KW==testmaxkw-1) %>% pull(positivrate))*100, 2), decimal.mark = ","), " PP"),
-    paste0(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(testkapazitaet) - almev %>% filter(KW==testmaxkw-1) %>% pull(testkapazitaet))/almev %>% filter(KW==testmaxkw-1) %>% pull(testkapazitaet), 0), " %"),
-    paste0(round((almev %>% filter(KW==testmaxkw) %>% pull(auslastung))*100, 0)- round((almev %>% filter(KW==testmaxkw-1) %>% pull(auslastung))*100, 0), " PP")
+    paste0(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(pcrtests) - almev %>% filter(KW==vortestmaxkw) %>% pull(pcrtests))/almev %>% filter(KW==vortestmaxkw) %>% pull(pcrtests), 0), " %"),
+    paste0(format(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(positivtests) - almev %>% filter(KW==vortestmaxkw) %>% pull(positivtests))/almev %>% filter(KW==vortestmaxkw) %>% pull(positivtests), 1), decimal.mark = ","), " %"),
+    paste0(format(round((almev %>% filter(KW==testmaxkw) %>% pull(positivrate))*100, 2)- round((almev %>% filter(KW==vortestmaxkw) %>% pull(positivrate))*100, 2), decimal.mark = ","), " PP"),
+    paste0(round(100*(almev %>% filter(KW==testmaxkw) %>% pull(testkapazitaet) - almev %>% filter(KW==vortestmaxkw) %>% pull(testkapazitaet))/almev %>% filter(KW==vortestmaxkw) %>% pull(testkapazitaet), 0), " %"),
+    paste0(round((almev %>% filter(KW==testmaxkw) %>% pull(auslastung))*100, 0)- round((almev %>% filter(KW==vortestmaxkw) %>% pull(auslastung))*100, 0), " PP")
   )
 )  %>%
   select(Testungen, Vorwoche, !!paste0("KW ", testmaxkw-testmaxjahr*100):=dieseWoche, Veraenderung)
 
 ifsgmaxkw <- max(rki_ifsg$KW, rki_hosp$YearKW, na.rm = TRUE) # min(max(rki_ifsg$KW), max(rki_hosp$KW))
 ifsgmaxjahr <- floor(ifsgmaxkw/100)
+vorifsgmaxkw <- ifelse(ifsgmaxkw==202101, 202053, ifsgmaxkw-1)
+vorifsgmaxjahr <- floor(vorifsgmaxkw/100)
 c19erkranktetabelle <- tibble(
   Erkrankte=c(
     "Ohne Symptomatik",
@@ -634,18 +638,18 @@ c19erkranktetabelle <- tibble(
     "Neu verstorben"
   ),
   Vorwoche=c(
-    paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
-    paste0(format(round(100-100*(rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark = ","), " %"),
+    paste0(format(round(100*(rki_hosp %>% filter(YearKW==vorifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
+    paste0(format(round(100-100*(rki_hosp %>% filter(YearKW==vorifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark = ","), " %"),
     paste0(format(agefatality_data %>% filter(Meldedatum==maxdate-7 & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark = ","), " %"),
     NA,
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert),
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer),
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuverstorben),
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neuinfiziert),
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neustationaer),
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neuverstorben),
     NA,
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert),
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60),
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer),
-    rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben)
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuinfiziert),
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuinfiziert60),
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neustationaer),
+    rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuverstorben)
   ),
   dieseWoche=c(
     paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark = ","), " %"),
@@ -663,17 +667,17 @@ c19erkranktetabelle <- tibble(
   ),
   Veraenderung=c(
     paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)-rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil keine, bzw. keine für COVID-19 bedeutsamen Symptome`)), 1), decimal.mark=","), " PP"),
-    paste0(format(round(100*(rki_hosp %>% filter(YearKW==ifsgmaxkw-1) %>% pull(`Anteil hospitalisiert`)-rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark=","), " PP"),
+    paste0(format(round(100*(rki_hosp %>% filter(YearKW==vorifsgmaxkw) %>% pull(`Anteil hospitalisiert`)-rki_hosp %>% filter(YearKW==ifsgmaxkw) %>% pull(`Anteil hospitalisiert`)), 1), decimal.mark=","), " PP"),
     paste0(format(agefatality_data %>% filter(Meldedatum==maxdate & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil)-agefatality_data %>% filter(Meldedatum==maxdate-7 & Merkmal=="ITS-Fälle an Fällen") %>% pull(Anteil), decimal.mark=","), " PP"),
     NA,
-    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert) - rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neuinfiziert)), " %"),
-    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neustationaer)- rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg23neustationaer)), " %"),
+    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neuinfiziert) - rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neuinfiziert))/rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neuinfiziert)), " %"),
+    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg23neustationaer)- rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neustationaer))/rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg23neustationaer)), " %"),
     NA,
     NA,
-    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert) - rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert)), " %"),
-    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert60) - rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuinfiziert60)), " %"),
-    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neustationaer)- rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neustationaer)), " %"),
-    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuverstorben)- rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben))/rki_ifsg %>% filter(KW==ifsgmaxkw-1) %>% pull(ifsg36neuverstorben)), " %")
+    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert) - rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuinfiziert))/rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuinfiziert)), " %"),
+    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuinfiziert60) - rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuinfiziert60))/rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuinfiziert60)), " %"),
+    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neustationaer)- rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neustationaer))/rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neustationaer)), " %"),
+    paste0(round(100*(rki_ifsg %>% filter(KW==ifsgmaxkw) %>% pull(ifsg36neuverstorben)- rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuverstorben))/rki_ifsg %>% filter(KW==vorifsgmaxkw) %>% pull(ifsg36neuverstorben)), " %")
   )
 ) %>%
   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
