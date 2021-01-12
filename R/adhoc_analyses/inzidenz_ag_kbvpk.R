@@ -49,3 +49,9 @@ todesfaelle_novdez <- rki %>%
 
 View(vaccinations %>%
   filter(region=="DE" & datum=="2021-01-09"))
+
+plotdata_7ti_bund <- rki_7ti_alle %>%
+  filter(id==0) %>%
+  select(JahrKW, datesunday, Altersgruppe, STI)
+library(openxlsx)
+write.xlsx(plotdata_7ti_bund, "data/plotdata/sti_ag_bund_plot_data.xlsx")
