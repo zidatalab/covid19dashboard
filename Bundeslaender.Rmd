@@ -27,6 +27,7 @@ Row
 DT::datatable(bundeslaender_table,
               extensions = 'Responsive',
               options = list(paging = FALSE,
+                             columnDefs = list(list(className = 'dt-center', targets = 2:3)),
                              searching = FALSE,
                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
                              server = FALSE,

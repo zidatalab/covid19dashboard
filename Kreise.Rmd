@@ -30,6 +30,7 @@ Row
 DT::datatable(kreise_table,
               extensions = 'Responsive',
               options = list(paging = TRUE,
+                             # columnDefs = list(list(className = 'dt-center', targets = 2:3)),
                              searching = TRUE,
                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
                              server = FALSE,
