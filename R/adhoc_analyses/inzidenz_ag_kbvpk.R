@@ -48,7 +48,7 @@ todesfaelle_novdez <- rki %>%
             .groups="drop")
 
 View(vaccinations %>%
-  filter(region=="DE" & datum=="2021-01-09"))
+  filter(region=="DE" & datum=="2021-01-11"))
 
 plotdata_7ti_bund <- rki_7ti_alle %>%
   filter(id==0) %>%
