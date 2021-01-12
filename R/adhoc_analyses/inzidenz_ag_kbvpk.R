@@ -1,3 +1,4 @@
+maxdatum<-as_date("2021-01-10")
 letzte_7_tage_altersgruppen_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
@@ -36,7 +37,7 @@ todesfaelle_gesamt <- rki %>%
   group_by(Altersgruppe) %>%
   summarise(sumFaelle=sum(AnzahlFall, na.rm = TRUE),
             sumTodesfaelle=sum(AnzahlTodesfall, na.rm=TRUE),
-            AnteilTodesfaelle=sumTodesfaelle/sumFaelle,
+            AnteilTodesfaelle=sumTodesfaelle/sumFaelle*100,
             .groups="drop")
 
 todesfaelle_novdez <- rki %>%
@@ -44,7 +45,7 @@ todesfaelle_novdez <- rki %>%
   group_by(Altersgruppe) %>%
   summarise(sumFaelle=sum(AnzahlFall, na.rm = TRUE),
             sumTodesfaelle=sum(AnzahlTodesfall, na.rm=TRUE),
-            AnteilTodesfaelle=sumTodesfaelle/sumFaelle,
+            AnteilTodesfaelle=sumTodesfaelle/sumFaelle*100,
             .groups="drop")
 
 View(vaccinations %>%
