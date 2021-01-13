@@ -180,6 +180,26 @@ divi0 <- divi_all %>%
 # ifsg36 neuhosp:
 # ifsg36 neuverstorben:
 
+todrki_kw <- rki %>%
+  mutate(yearkw=year(Meldedatum)*100+isoweek(Meldedatum)) %>%
+  mutate(Altersgruppe3=case_when(
+    Altersgruppe=="A80+" ~ "80+",
+    Altersgruppe=="A60-A79" ~ "60-79",
+    Altersgruppe=="unbekannt" ~ "unbekannt",
+    TRUE ~ "0-59"
+  )) %>%
+  group_by(yearkw, Altersgruppe3) %>%
+  summarise(Todesfaelle=sum(AnzahlTodesfall, na.rm=TRUE),
+            Faelle=sum(AnzahlFall, na.rm = TRUE),
+            AnteilTodesfaelle=Todesfaelle/Faelle*100)
+
+todrki_kw_gesamt <- rki %>%
+  mutate(yearkw=year(Meldedatum)*100+isoweek(Meldedatum)) %>%
+  group_by(yearkw) %>%
+  summarise(Todesfaelle=sum(AnzahlTodesfall, na.rm=TRUE),
+            Faelle=sum(AnzahlFall, na.rm = TRUE),
+            AnteilTodesfaelle=Todesfaelle/Faelle*100)
+
 # tod (zahl (prozent))
 # HJ1
 # c 0-59:
@@ -209,3 +229,21 @@ divi0 <- divi_all %>%
 # Bund:
 # kürzeste:
 # längste: 
+
+inf_bev_bl <- rki %>%
+  group_by(IdBundesland, Bundesland) %>%
+  summarise(SumFaelle=sum(AnzahlFall, na.rm=TRUE),
+            .groups="keep") %>%
+  left_join(., kreise_regstat_alter %>%
+              mutate(ewinsgesamt=ag_1+ag_2+ag_3+ag_4+ag_5+ag_6),
+            by=c("IdBundesland"="id")) %>%
+  mutate(anteil_inf=SumFaelle/ewinsgesamt*100) %>%
+  select(Bundesland, anteil_inf)
+
+inf_bev_gesamt <- rki %>%
+  summarise(SumFaelle=sum(AnzahlFall, na.rm=TRUE),
+            .groups="keep") %>%
+  bind_cols(., kreise_regstat_alter %>%
+              mutate(ewinsgesamt=ag_1+ag_2+ag_3+ag_4+ag_5+ag_6) %>%
+              filter(id==0) %>% select(ewinsgesamt)) %>%
+  mutate(anteil_inf=SumFaelle/ewinsgesamt*100)
