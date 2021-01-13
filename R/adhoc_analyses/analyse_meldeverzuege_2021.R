@@ -123,7 +123,7 @@ meldeverzuege_bund_plot <- ggplot(meldeverzuege_bund,
   labs(title="Meldeverzug von COVID-19-Fällen\n(BRD gesamt, gemittelt)",
        subtitle="vorliegende Fälle zum Meldedatum in Prozent\nder gemeldeten Fälle nach einer Woche")
 
-finalise_plot(meldeverzuege_bund_plot, "static/meldeverzuege_bund.png",
+finalise_plot(meldeverzuege_bund_plot, "../../static/meldeverzuege_bund.png",
               source_name = 
                 paste0("Datenbasis: Meldedaten des RKI für den ",
                        format(startdate-1, "%d.%m.%Y"),
@@ -243,7 +243,7 @@ belastungkreise_niveausti <- ggplot(mk_d1,
 cor(100-(meldeverzuege_kreise %>% filter(datediff==1))$mean_prozentSTI,
     (meldeverzuege_kreise %>% filter(datediff==1))$mean_STI)
 
-finalise_plot(belastungkreise_niveausti, "static/belastungkreise_niveausti.png",
+finalise_plot(belastungkreise_niveausti, "../../static/belastungkreise_niveausti.png",
               source_name = 
                 paste0("Datenbasis: Meldedaten des RKI für den ",
                        format(startdate-1, "%d.%m.%Y"),
@@ -258,7 +258,7 @@ finalise_plot(belastungkreise_niveausti, "static/belastungkreise_niveausti.png",
 
 
 ## karte prozent sti
-KRS <- read_sf("./data/shp/kreise.shp")
+KRS <- read_sf("../../data/shp/kreise.shp")
 REG <- KRS %>%
   group_by(RS) %>%
   count() %>%
@@ -303,7 +303,7 @@ plot_karte_sti_cat <-
        title="Regionale Unterschiede bei der Berechnung der\nSieben-Tage-Inzidenz durch Nachmeldungen")
 plot_karte_sti_cat
 
-finalise_plot(plot_karte_sti_cat, "static/niveau_sti_karte.png",
+finalise_plot(plot_karte_sti_cat, "../../static/niveau_sti_karte.png",
               source_name = 
                 paste0("Datenbasis: Meldedaten des RKI für den ",
                        format(startdate-1, "%d.%m.%Y"),
