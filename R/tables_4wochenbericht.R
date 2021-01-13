@@ -183,7 +183,9 @@ divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(da
 rki <- tbl(conn,"rki") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
-rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum))
+rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum)) %>%
+  mutate(AnzahlFall=ifelse(NeuerFall>=0, AnzahlFall, 0),
+         AnzahlTodesfall=ifelse(NeuerTodesfall>=0, AnzahlTodesfall, 0))
 international <- tbl(conn,"trends") %>%
   filter(Country %in% c(
     "France",

@@ -8,7 +8,7 @@ library(ggbeeswarm)
 mindate <- as_date("2020-11-01")
 
 startdate <- as_date("2020-11-25")
-enddate <- as_date("2021-01-03")
+enddate <- as_date("2021-01-12")
 
 tagehorizont <- 7
 
@@ -41,6 +41,7 @@ for (thisdate in seq(startdate, enddate, 1)) {
   thisrki <- tbl(conn, "rki_archive") %>% 
     filter(Datenstand==thisdate) %>% 
     filter(Meldedatum>=mindate) %>%
+    mutate(AnzahlFall=ifelse(NeuerFall>=0, AnzahlFall, 0)) %>%
     select(AnzahlFall, Meldedatum, IdLandkreis) %>% collect()
   thisrki <- thisrki %>%
     full_join(., allkreisedates %>% filter(Meldedatum<=max(thisrki$Meldedatum)), by=c("IdLandkreis", "Meldedatum")) %>%

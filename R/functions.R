@@ -137,6 +137,9 @@ if (max(divi$daten_stand!=maxdatum)) {
   divi_all <- bind_rows(divi_all, divi %>% mutate(daten_stand=as_date(maxdatum)))
 }
 ## rki imputation because of delayed gesundheitsamt-meldungen
+rki <- rki %>%
+  mutate(AnzahlFall=ifelse(NeuerFall>=0, AnzahlFall, 0),
+         AnzahlTodesfall=ifelse(NeuerTodesfall>=0, AnzahlTodesfall, 0))
 rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), maxdate=max(date(Meldedatum)))
 rkiidkreise <- unique(rki$IdLandkreis)
 rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")

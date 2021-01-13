@@ -144,17 +144,17 @@ divi0 <- divi_all %>%
 
 # intensivbetten
 # HJ1
-# gesamtbetten:  28.6., 32109 oder 17.5. 32236
+# gesamtbetten:  28.6., 32309 oder 17.5. 32236
 # belegung covid19 prozent: 3.5., 6.3%
-# belegung covid19 zahl:
-# freie betten prozent:
-# freie betten zahl:
+# belegung covid19 zahl: 3.5., 1979
+# freie betten prozent: 28.6., 36.6% oder 21.6., 36.7%
+# freie betten zahl: 21.6., 10389
 # HJ2
 # gesamtbetten: 2.8., 33116
-# belegung covid19 prozent: kw 53, 21.7%
-# belegung covid19 zahl:
-# freie betten prozent:
-# freie betten zahl:
+# belegung covid19 prozent: kw 52, 27.12., 21%
+# belegung covid19 zahl: 27.12., 5562
+# freie betten prozent: 20.12, 18.9%
+# freie betten zahl: 20.12., 5047
 
 # c19erkrankte
 # HJ1
