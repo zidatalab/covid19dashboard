@@ -82,3 +82,5 @@ brd <- rki %>%
 
 lmloggrowth <- lm(loggrowth ~ 1 + feiertag + feiertag_lag7 + lockdown_light_lag7 + lockdown_bund_lag7, data=brd)
 summary(lmloggrowth)
+library(broom)
+tidy(lmloggrowth) %>% mutate(estimate=exp(estimate))
