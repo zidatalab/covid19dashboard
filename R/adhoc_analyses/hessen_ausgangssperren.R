@@ -84,3 +84,11 @@ lmloggrowth <- lm(loggrowth ~ 1 + feiertag + feiertag_lag7 + lockdown_light_lag7
 summary(lmloggrowth)
 library(broom)
 tidy(lmloggrowth) %>% mutate(estimate=exp(estimate))
+
+# library(lme4)
+# lmmloggrowth <- lmer(loggrowth ~ 1 + feiertag + feiertag_lag7 + lockdown_light_lag7 + lockdown_bund_lag7 + (1|IdLandkreis), data=brd)
+# summary(lmmloggrowth)
+# library(MuMIn)
+# r.squaredGLMM(lmmloggrowth)
+# r.squaredGLMM(lmloggrowth)
+# library(rstanarm) # ?
