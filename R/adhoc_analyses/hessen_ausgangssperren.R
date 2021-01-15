@@ -4,7 +4,8 @@ hessen_as <- rki %>%
   filter(IdBundesland==6) %>%
   filter(Meldedatum>=as_date("2020-09-01")-7) %>%
   group_by(Meldedatum, IdLandkreis) %>%
-  summarise(AnzahlFall=sum(AnzahlFall, na.rm=TRUE)) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm=TRUE),
+            Landkreis=Landkreis[1]) %>%
   mutate(IdLandkreis=as.integer(IdLandkreis),
          lockdown_bund=ifelse(Meldedatum>="2020-12-17", 1, 0),
          lockdown_light=ifelse(Meldedatum>="2020-11-02", 1, 0),
@@ -39,6 +40,7 @@ hessen_as <- rki %>%
   
 lmloggrowth <- lm(loggrowth ~ 1 + feiertag + feiertag_lag7  + ausgangssperre_lag7 + lockdown_light_lag7 + lockdown_bund_lag7, data=hessen_as)
 summary(lmloggrowth)
+# cor(hessen_as%>%select(loggrowth, feiertag, feiertag_lag7, ausgangssperre_lag7,lockdown_bund_lag7,lockdown_light_lag7), use="complete")
 
 ggplot(hessen_as,
        aes(x=Meldedatum, y=STI)) +
@@ -52,6 +54,17 @@ ggplot(hessen_as,
   facet_wrap(.~factor(IdLandkreis)) +
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = as_date("2020-11-02"))
+
+ggplot(hessen_as,
+       aes(x=Meldedatum, y=STI)) +
+  geom_line(aes(col=factor(ausgangssperre))) +
+  facet_wrap(.~Landkreis) +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = as_date("2020-11-02"), linetype="dashed") +
+  geom_vline(xintercept = as_date("2020-12-17"), linetype="dashed") +
+  scale_color_zi(name = "Ausgangssperre", labels = c("ohne", "mit")) +
+  # scale_x_date(breaks = "2 month",date_labels = "%d.%m.") +
+  theme_zi()
 
 ### gesamt brd
 brd <- rki %>%
