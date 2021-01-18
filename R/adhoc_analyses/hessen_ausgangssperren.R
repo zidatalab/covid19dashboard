@@ -1,4 +1,4 @@
-ausgangssperren <- c(6631, 6531, 6533, 6535, 6632)
+# ausgangssperren <- c(6631, 6531, 6533, 6535, 6632)
 
 hessen_as <- rki %>%
   filter(IdBundesland==6) %>%
@@ -15,11 +15,23 @@ hessen_as <- rki %>%
            TRUE ~ 0
          ), 
          ausgangssperre=case_when(
-           IdLandkreis==6631 & Meldedatum>="2020-12-12" ~ 1,
+           IdLandkreis==6413 & Meldedatum>="2020-12-12" & Meldedatum<="2021-01-05" ~ 1,
+           IdLandkreis==6431 & Meldedatum>="2020-12-21" & Meldedatum<="2021-01-04" ~ 1,
+           IdLandkreis==6432 & Meldedatum>="2020-12-21" & Meldedatum<="2021-01-05" ~ 1,
+           IdLandkreis==6433 & Meldedatum>="2020-12-12" & Meldedatum<="2020-12-20" ~ 1,
+           IdLandkreis==6435 & Meldedatum>="2020-12-12" & Meldedatum<="2021-01-14" ~ 1,
+           IdLandkreis==6437 & Meldedatum>="2020-12-15" & Meldedatum<="2021-01-06" ~ 1,
+           IdLandkreis==6438 & Meldedatum>="2020-12-12" & Meldedatum<="2021-01-05" ~ 1,
+           IdLandkreis==6439 & Meldedatum>="2020-12-16" & Meldedatum<="2020-12-23" ~ 1,
+           IdLandkreis==6440 & Meldedatum>="2020-12-15" & Meldedatum<="2021-01-05" ~ 1,
            IdLandkreis==6531 & Meldedatum>="2020-12-13" ~ 1,
            IdLandkreis==6533 & Meldedatum>="2020-12-12" ~ 1,
            IdLandkreis==6535 & Meldedatum>="2020-12-17" ~ 1,
-           IdLandkreis==6632 & Meldedatum>="2021-01-12" ~ 1,
+           IdLandkreis==6631 & Meldedatum>="2020-12-12" ~ 1,
+           IdLandkreis==6632 & Meldedatum>="2021-01-12" & Meldedatum<="2021-01-18" ~ 1,
+           IdLandkreis==6632 & Meldedatum>="2020-12-16" & Meldedatum<="2021-01-04" ~ 1,
+           IdLandkreis==6634 & Meldedatum>="2021-01-17" & Meldedatum<="2021-01-05" ~ 1,
+           IdLandkreis==6635 & Meldedatum>="2020-12-21" & Meldedatum<="2021-01-04" ~ 1,
            TRUE ~ 0
          )) %>%
   left_join(., kreise_regstat_alter %>%
@@ -40,6 +52,8 @@ hessen_as <- rki %>%
   
 lmloggrowth <- lm(loggrowth ~ 1 + feiertag + feiertag_lag7  + ausgangssperre_lag7 + lockdown_light_lag7 + lockdown_bund_lag7, data=hessen_as)
 summary(lmloggrowth)
+library(broom)
+tidy(lmloggrowth) %>% mutate(estimate=exp(estimate))
 # cor(hessen_as%>%select(loggrowth, feiertag, feiertag_lag7, ausgangssperre_lag7,lockdown_bund_lag7,lockdown_light_lag7), use="complete")
 
 ggplot(hessen_as,
@@ -57,7 +71,7 @@ ggplot(hessen_as,
 
 ggplot(hessen_as,
        aes(x=Meldedatum, y=STI)) +
-  geom_line(aes(col=factor(ausgangssperre))) +
+  geom_line(aes(col=factor(ausgangssperre), group=1)) +
   facet_wrap(.~Landkreis) +
   geom_hline(yintercept = 0) +
   geom_vline(xintercept = as_date("2020-11-02"), linetype="dashed") +

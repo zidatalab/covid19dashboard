@@ -17,6 +17,7 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(dtplyr)
+library(zoo)
 
 ##### Source files
 source("R/aux_functions.R")
@@ -92,7 +93,7 @@ kreise_ror <- read_delim("data/kreise_2016_ror_kv_etc.csv",
 pflegeheimbewohnende_2019_bundeslaender <- read_delim("data/pflegeheimbewohnende_2019_bundeslaender.csv", 
                                                       ";", escape_double = FALSE, trim_ws = TRUE)
 ## get data from db
-brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect() %>% mutate(date=as.Date(date))
+brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect() %>% mutate(date=base::as.Date(date))
 rki <- tbl(conn,"rki") %>% collect()
 # for assessment of meldeverzug
 # write_csv(rki, paste0("data/rki_", max(as_date(rki$Meldedatum)), ".csv"))
@@ -101,7 +102,15 @@ divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stan
 divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 aktuell <- tbl(conn,"params") %>% collect()
+jhu_germany <- tbl(conn, "trends") %>% filter(Country=="Germany") %>% select(date, cases, deaths, incident_cases) %>% collect()
 vaccinations <- tbl(conn, "vaccinations") %>% collect() %>% mutate(datum=as_date(as_datetime(date)))
+# tt <- system.time({rki_dailycases <- tbl(conn, "rki_archive") %>%
+#   filter(NeuerFall==1 | NeuerFall==-1) %>%
+#   select(AnzahlFall, Datenstand) %>% 
+#   group_by(Datenstand) %>%
+#   summarise(newcases=sum(AnzahlFall)) %>%
+#   collect()})
+
 ## read/update RKI-R-estimates
 RKI_R <- tryCatch(
   {
@@ -129,6 +138,12 @@ RKI_R <- tryCatch(
 )
 
 ##### make data for downstream analysis/plots
+## daily cases from jhu
+jhu_germany <- jhu_germany %>%
+  arrange(date) %>%
+  mutate(incident_deaths=deaths-lag(deaths),
+         incident_mean7_deaths=round(rollapply(incident_deaths, 7, mean, align="right", fill=NA)), 
+         date=as_date(date))
 ## if last divi report missing
 maxdatum <- max(as_date(rki$Meldedatum))
 lastsunday <- floor_date(maxdatum, "week")
@@ -576,16 +591,16 @@ rki_7ti_alle <- bind_rows(rki_7ti_bund %>%
               summarise(Einwohnende=sum(Einwohnende, na.rm=TRUE),
                         .groups="drop"), by=c("id", "Altersgruppe")) %>%
   mutate(STI=round(AnzahlFall/Einwohnende*100000),
-         datesunday=case_when(JahrKW=="2020-53" ~ as.Date("2021-01-03"),
-                              JahrKW<"2020-53" ~ as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w"),
-                              JahrKW>="2021-01" ~ as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7)
+         datesunday=case_when(JahrKW=="2020-53" ~ base::as.Date("2021-01-03"),
+                              JahrKW<"2020-53" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w"),
+                              JahrKW>="2021-01" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7)
                            ) %>%
   filter(datesunday<=lastsunday)
 ## rki-r-wert und vorwarnzeit
 rki_reformat_r_ts <- RKI_R %>%
   dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
 colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
-rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=as.Date(date)+5)
+rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=base::as.Date(date)+5)
 rki_r_und_zi_vwz_data <- full_join(vorwarnzeitergebnis %>%
                                      filter(id==0) %>%
                                      mutate(Vorwarnzeit=Vorwarnzeit), # _effektiv
@@ -640,6 +655,29 @@ vacc_bl <- vaccinations %>%
               select(Kuerzel, Bundesland_ID),
             by=c("region"="Kuerzel")) %>%
   mutate(impfungen_prozent=format(round(value/10, 1), decimal.mark = ","))
+## vaccination effects plot data
+brd_sti <- rki %>%
+  filter(Meldedatum>=as_date("2020-12-01")-7) %>%
+  group_by(Meldedatum) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm=TRUE),
+            einwohnende=kreise_regstat_alter %>%
+              filter(id==0) %>%
+              mutate(einwohnende=ag_1+ag_2+ag_3+ag_4+ag_5+ag_6) %>%
+              pull(einwohnende),
+            .groups="drop") %>%
+  mutate(STI=round((AnzahlFall+lag(AnzahlFall, 1)+lag(AnzahlFall, 2)+lag(AnzahlFall, 3)+
+                      lag(AnzahlFall, 4)+lag(AnzahlFall, 5)+lag(AnzahlFall, 6))/einwohnende*100000))
+vaccination_sti_its_death_data <- vaccinations %>%
+  filter(region=="DE" & metric=="impfungen_kumulativ") %>%
+  select(datum, impfungen_kumulativ=value) %>%
+  right_join(., brd_sti %>%
+               select(Meldedatum, STI),
+             by=c("datum"="Meldedatum")) %>%
+  left_join(., divi_all %>%
+              filter(id==0) %>%
+              select(faelle_covid_aktuell, daten_stand),
+            by=c("datum"="daten_stand")) %>%
+  left_join(., jhu_germany %>% select(date, incident_mean7_deaths), by=c("datum"="date"))
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
@@ -860,6 +898,33 @@ vaccination_plot <- ggplot(vaccinations %>%
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE)) +
   theme(legend.position='none') +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
+## two axis plot for vacc against its
+# Value used to transform the data for two-axis plot (don't do this at home)
+coeff <- max(vaccination_sti_its_death_data$impfungen_kumulativ, na.rm=TRUE)/max(vaccination_sti_its_death_data$faelle_covid_aktuell, na.rm=TRUE)
+twoaxis_vacc_vs_its <- ggplot(vaccination_sti_its_death_data, aes(x=datum)) +
+  geom_line(aes(y=faelle_covid_aktuell)) + 
+  geom_line(aes(y=impfungen_kumulativ/coeff)) + # Divide by coeff to get the same range like the covid its cases
+  scale_y_continuous(
+    # Features of the first axis
+    name = "ITS-Fälle COVID-19",
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Impfungen")
+  )
+
+vaccination_sti_its_death_plot <- ggplot(vaccination_sti_its_death_data %>%
+                                           pivot_longer(cols=!datum),
+                           aes(x=datum, y=value)) +
+  geom_line(size=2, col=zi_cols("ziblue")) +
+  facet_wrap(.~name, nrow=2, ncol=2, scales="free_y") +
+  ylim(0, NA) +
+  labs(subtitle="bla",x="Datum",y="blay") +
+  theme_minimal() +
+  scale_x_date(date_labels = "%d.%m.") + # , breaks="3 days"
+  # scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE)) +
+  theme(legend.position='none') +
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
+
 
 bundeslaender_r_und_vwz_plot <- function(myid) {
   myname <- bundeslaender_r_und_vwz_data %>% filter(id==myid) %>% head(1) %>% pull(name)
