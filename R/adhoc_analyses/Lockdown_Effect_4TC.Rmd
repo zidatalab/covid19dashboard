@@ -1,0 +1,56 @@
+---
+title: "Lockdown - wie lange noch?"
+output:
+  html_document:
+    df_print: paged
+---
+ 
+Ausgangsbasis: Aktuelle Fallzahlen Stand 2021-01-19.
+ 
+### Berechnungen 
+ 
+```{r}
+library("tidyverse")
+library("jsonlite")
+
+current_cases <- jsonlite::read_json('../../data/tabledata/bundeslaender_table.json',simplifyVector = TRUE) %>%
+  filter(Bundesland%in%c("Gesamt", "Thüringen", "Bremen")) %>%
+  select(Bundesland, current_cases_daily=`Neue Fälle pro Tag`)
+
+Lockdown_aktuell <- 0.9
+Lockdown_neu <- 0.7
+
+all_scens <- expand_grid(effect=c(Lockdown_aktuell, Lockdown_neu),
+                         Bundesland=c("Gesamt", "Bremen", "Thüringen")) %>%
+  left_join(., tibble(Bundesland=c("Gesamt", "Bremen", "Thüringen"),
+                      Einwohnende=c(83166711, 567559, 2133378))) %>%
+  left_join(., current_cases)
+
+estimate_duration <- function(df, goal){
+  newdf = df %>%
+    mutate(goal_daily = round((Einwohnende/100000)*(goal)/7),
+           Reduction_daily = effect^(1/10), # 10 Tage ansteckend
+           days_till_goal = round((-1*log(current_cases_daily/goal_daily)/log(Reduction_daily))),
+    date = lubridate::now()-lubridate::days(1)+lubridate::days(days_till_goal),
+    result = ifelse(effect<1,format(date,format="%d.%m.%Y"),"never"))
+  newdf$result
+}
+```
+
+
+### wie lange bis 50/25/10?
+
+```{r}
+all_scens %>% mutate("Ziel Inzidenz<50"=estimate_duration(.,50),
+                     "Ziel Inzidenz<25"=estimate_duration(.,25),
+                     "Ziel Inzidenz<10"=estimate_duration(.,10)) %>% rename("R(t)"=effect) %>%
+  select(-Einwohnende, -current_cases_daily)
+```
+
+
+
+
+
+
+ 
+

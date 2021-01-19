@@ -30,7 +30,7 @@ hessen_as <- rki %>%
            IdLandkreis==6631 & Meldedatum>="2020-12-12" ~ 1,
            IdLandkreis==6632 & Meldedatum>="2021-01-12" & Meldedatum<="2021-01-18" ~ 1,
            IdLandkreis==6632 & Meldedatum>="2020-12-16" & Meldedatum<="2021-01-04" ~ 1,
-           IdLandkreis==6634 & Meldedatum>="2021-01-17" & Meldedatum<="2021-01-05" ~ 1,
+           IdLandkreis==6634 & Meldedatum>="2020-12-17" & Meldedatum<="2021-01-05" ~ 1,
            IdLandkreis==6635 & Meldedatum>="2020-12-21" & Meldedatum<="2021-01-04" ~ 1,
            TRUE ~ 0
          )) %>%
