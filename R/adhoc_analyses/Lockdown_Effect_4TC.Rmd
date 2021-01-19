@@ -35,6 +35,12 @@ estimate_duration <- function(df, goal){
     result = ifelse(effect<1,format(date,format="%d.%m.%Y"),"never"))
   newdf$result
 }
+
+estimate_sti <- function(df, days_till_goal){
+  newdf <- df %>%
+    mutate(goal_daily=current_cases_daily*effect)
+  newdf$result
+}
 ```
 
 
