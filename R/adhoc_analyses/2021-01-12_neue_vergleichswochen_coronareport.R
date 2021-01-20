@@ -238,7 +238,7 @@ inf_bev_bl <- rki %>%
               mutate(ewinsgesamt=ag_1+ag_2+ag_3+ag_4+ag_5+ag_6),
             by=c("IdBundesland"="id")) %>%
   mutate(anteil_inf=SumFaelle/ewinsgesamt*100) %>%
-  select(Bundesland, anteil_inf)
+  select(Bundesland, anteil_inf, ewinsgesamt)
 
 inf_bev_gesamt <- rki %>%
   summarise(SumFaelle=sum(AnzahlFall, na.rm=TRUE),

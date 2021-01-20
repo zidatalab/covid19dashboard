@@ -58,10 +58,8 @@ Row
 ### Impfungen 
 
 ```{r indicatorVacc}
-indicatorVacc <- vaccinations %>% filter(datum==max(vaccinations$datum) &
-                                           region=="DE" &
-                                           metric=="impfungen_pro_1000_einwohner") %>% pull(value)
-indicatorVacc <- paste0(format(round(indicatorVacc/10, 1), decimal.mark = ","), "%")
+indicatorVacc <- bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`geimpfte Bevölkerung %`)
+indicatorVacc <- paste0(indicatorVacc, " %")
 valueBox(value=indicatorVacc,
          caption="Prozentsatz der Bevölkerung mit mindestens einer Impfdosis",
          color = "#0086C5", # ziblue
@@ -247,5 +245,6 @@ rmarkdown::render('Bundeslaender.Rmd')
 rmarkdown::render('Kreise.Rmd')
 rmarkdown::render('Report.Rmd')
 rmarkdown::render('Impressum.Rmd')
+rmarkdown::render('Kreise_select.Rmd')
 ```
 

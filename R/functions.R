@@ -103,7 +103,8 @@ divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(d
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 aktuell <- tbl(conn,"params") %>% collect()
 jhu_germany <- tbl(conn, "trends") %>% filter(Country=="Germany") %>% select(date, cases, deaths, incident_cases) %>% collect()
-vaccinations <- tbl(conn, "vaccinations") %>% collect() %>% mutate(datum=as_date(as_datetime(date)))
+vaccinations <- tbl(conn, "vaccinations") %>% collect() %>% mutate(datum=as_date(date),
+                                                                   pubdatum=as_date(as_datetime(publication_date)))
 # tt <- system.time({rki_dailycases <- tbl(conn, "rki_archive") %>%
 #   filter(NeuerFall==1 | NeuerFall==-1) %>%
 #   select(AnzahlFall, Datenstand) %>% 
@@ -650,11 +651,11 @@ bundeslaender_r_und_vwz_data <- myblmitidata %>%
 ## vaccination gesamt bundesländer
 vacc_bl <- vaccinations %>%
   filter(datum==max(vaccinations$datum) &
-           metric=="impfungen_pro_1000_einwohner") %>%
+           metric=="impfungen_kumulativ") %>%
   left_join(., pflegeheimbewohnende_2019_bundeslaender %>%
               select(Kuerzel, Bundesland_ID),
             by=c("region"="Kuerzel")) %>%
-  mutate(impfungen_prozent=format(round(value/10, 1), decimal.mark = ","))
+  mutate(impfungen_kumulativ=value)
 ## vaccination effects plot data
 brd_sti <- rki %>%
   filter(Meldedatum>=as_date("2020-12-01")-7) %>%
@@ -684,8 +685,9 @@ bundeslaender_table <- vorwarnzeitergebnis %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
          R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
-  left_join(., vacc_bl %>% select(Bundesland_ID, impfungen_prozent),
+  left_join(., vacc_bl %>% select(Bundesland_ID, impfungen_kumulativ),
             by=c("id"="Bundesland_ID")) %>%
+  mutate(impfungen_prozent=format(round(impfungen_kumulativ/EW_insgesamt*100, 1), decimal.mark = ",")) %>%
   select(Bundesland=name,
          "geimpfte Bevölkerung %"=impfungen_prozent,
          "R(t)"=R0,
