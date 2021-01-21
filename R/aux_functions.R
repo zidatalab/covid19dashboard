@@ -105,3 +105,17 @@ projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=1
   }
   return(result)
 }
+
+projektion_datum2 <- function(STI_aktuell, STI_Ziel=50, STI_alt) {
+  if (STI_aktuell<=STI_Ziel) {
+    result <- "\U2713"
+  } else if (STI_alt<=STI_aktuell) {
+    result <- "nie"
+  } else {
+    x <- 7/log(STI_aktuell/STI_alt)
+    tage_bis_ziel <- round(x*log(STI_Ziel/STI_aktuell))
+    datum <- lubridate::now()-lubridate::days(1)+lubridate::days(tage_bis_ziel)
+    result <- format(datum, format="%d.%m.%Y")
+  }
+  return(result)
+}

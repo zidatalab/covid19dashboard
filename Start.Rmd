@@ -6,6 +6,7 @@ output:
        - { title: "Dashboard", href: "Start.html", align: left }
        - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
        - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
        - { title: "KBV-Report", href: "Report.html", align: left }
        - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
     orientation: rows
@@ -64,6 +65,29 @@ valueBox(value=indicatorVacc,
          caption="Prozentsatz der Bevölkerung mit mindestens einer Impfdosis",
          color = "#0086C5", # ziblue
          icon = "fa-syringe"
+        )
+```
+
+Row 
+------------------------------------------------------------------------
+
+### Inzidenzprojektionen 
+
+```{r indicatorIncProj}
+indicatorIncProj <- bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<50 bei R(t) aktuell`)
+valueBox(value=indicatorIncProj,
+         caption=paste0("Datum, bei dem mit aktuellem R-Wert die Sieben-Tage-Inzidenz den Zielwert 50 unterschreitet. \n unter 35: ",
+                        bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<35 bei R(t) aktuell`),
+                        ", unter 10: ",
+                        bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<10 bei R(t) aktuell`),
+                        ",\n mit R=0,7, unter 50: ",
+                        bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<50 bei R(t)=0,7`),
+                        ", unter 35: ",
+                        bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<35 bei R(t)=0,7`),
+                        ", unter 10: ",
+                        bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<10 bei R(t)=0,7`)),
+         color = "#0086C5", # ziblue
+         icon = "fa-sign-in-alt"
         )
 ```
 
