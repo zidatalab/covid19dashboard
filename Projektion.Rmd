@@ -18,9 +18,17 @@ output:
 ---
 
 Row
+------------------------------------------------------------------------
+
+### **Zi-Projektionen zum Erreichen einer Zielinzidenz** 
+
+Wie lange dauert es, bis das Infektionsgeschehen auf ein bestimmtes Zielniveau abgesunken ist, ausgehend von der aktuellen Pandemiesituation? Wir verwenden die aktuelle Sieben-Tage-Inzidenz sowie den aktuellen R-Wert, um für eine gegebene Ziel-Sieben-Tage-Inzidenz das Datum zu berechnen, an dem diese Zielinzidenz erreicht wird. Als Zielinzidenzen verwenden wir dabei Werte aus dem Bereich des derzeit politisch Diskutierten (50, 25 und 10). Für einen aktuellen R-Wert von größer oder gleich 1 kann eine niedrigere Zielinzidenz nicht erreicht werden. Zusätzlich berechnen wir auch das Datum, bei dem mit einem R-Wert von 0,7 die Zielinzidenz erreicht wird. Wir nehmen dabei an, dass aktuell bei gleichzeitiger Umsetzung von verschiedenen Maßnahmen zur Pandemiebegrenzung ein R=0,7 erreicht werden kann.
+Zur Berechnung des Zeitpunkts, an dem die Zielinzidenz erreicht wird, verwenden wir den R-Wert als Basis für "negative Zinsen" für den Infektionszeitraum d=10 Tage, in dem eine infektiöse Person R weitere Personen ansteckt. Ausgehend vom "Startkapital", der aktuellen Inzidenz S0, können wir dann die Zeit t bzw. den Zeitpunkt bis zum Erreichen des "Wunschkapitals", also der Zielinzidenz St, mit einer einfachen Formel der Zinseszinsrechnung bestimmen: t=d*log(St/S0)/log(R). In den untenstehenden Tabellen geben wir das Datum der verschiedenen Inzidenzprojektionen auf Bundesebene sowie für Bundesländer und Landkreise/kreisfreie Städte in Deutschland an.
+
+Row
 -----------------------------------------------------------------------
 
-### **Projektionen der Bundesländer**
+### **Inzidenzprojektionen Bundesländer**
 
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableBL_projektionen}
@@ -39,7 +47,7 @@ DT::datatable(bl_projektionen,
 Row
 -----------------------------------------------------------------------
 
-### **Projektionen der Kreise**
+### **Inzidenzprojektionen Kreise**
 
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableKreise_projektionen}
