@@ -92,3 +92,16 @@ vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt, K
   }
   return(myresult)
 }
+
+projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=10) {
+  if (STI_aktuell<=STI_Ziel) {
+    result <- "\U2713"
+  } else if (Rt>=1) {
+    result <- "nie"
+  } else {
+    tage_bis_ziel <- round(tage_infektioes*log(STI_Ziel/STI_aktuell)/log(Rt))
+    datum <- lubridate::now()-lubridate::days(1)+lubridate::days(tage_bis_ziel)
+    result <- format(datum, format="%d.%m.%Y")
+  }
+  return(result)
+}

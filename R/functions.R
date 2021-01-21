@@ -790,6 +790,60 @@ kreise_table_faktenblatt <- vorwarnzeitergebnis %>%
          "Vorwarnzeit ROR"=Vorwarnzeit_ROR, 
          "Vorwarnzeit"=Vorwarnzeit #, # needs communication
   )
+
+#projektions tables
+bl_projektionen <- ausgangsdaten %>%
+  filter(id<17 & date==maxdatum) %>%
+  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw) %>%
+  left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
+  rowwise() %>%
+  mutate(RaktuellSTI50=projektion_datum(STI_aktuell = STI_aktuell,
+                                        STI_Ziel = 50,
+                                        Rt = R0),
+         RaktuellSTI35=projektion_datum(STI_aktuell, 35, R0),
+         RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
+         R07STI50=projektion_datum(STI_aktuell, 50),
+         R07STI35=projektion_datum(STI_aktuell, 35),
+         R07STI10=projektion_datum(STI_aktuell, 10)) %>%
+  arrange(id) %>%
+  select(-id, -R0,
+         "7-Tage-Inzidenz"=STI_aktuell,
+         `R(t)`,
+         Bundesland=name,
+         "Inzidenz<50 bei R(t) aktuell"=RaktuellSTI50,
+         "Inzidenz<35 bei R(t) aktuell"=RaktuellSTI35,
+         "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
+         "Inzidenz<50 bei R(t)=0,7"=R07STI50,
+         "Inzidenz<35 bei R(t)=0,7"=R07STI35,
+         "Inzidenz<10 bei R(t)=0,7"=R07STI10)
+  
+kreise_projektionen <- ausgangsdaten %>%
+  filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
+  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw) %>%
+  left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
+  rowwise() %>%
+  mutate(RaktuellSTI50=projektion_datum(STI_aktuell = STI_aktuell,
+                                        STI_Ziel = 50,
+                                        Rt = R0),
+         RaktuellSTI35=projektion_datum(STI_aktuell, 35, R0),
+         RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
+         R07STI50=projektion_datum(STI_aktuell, 50),
+         R07STI35=projektion_datum(STI_aktuell, 35),
+         R07STI10=projektion_datum(STI_aktuell, 10)) %>%
+  arrange(id) %>%
+  select(-id, -R0,
+         "7-Tage-Inzidenz"=STI_aktuell,
+         `R(t)`,
+         Kreis=name,
+         "Inzidenz<50 bei R(t) aktuell"=RaktuellSTI50,
+         "Inzidenz<35 bei R(t) aktuell"=RaktuellSTI35,
+         "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
+         "Inzidenz<50 bei R(t)=0,7"=R07STI50,
+         "Inzidenz<35 bei R(t)=0,7"=R07STI35,
+         "Inzidenz<10 bei R(t)=0,7"=R07STI10)
+  
 ##### write data for displayed tables/plots to jsons
 write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
 write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_table_faktenblatt.json")
