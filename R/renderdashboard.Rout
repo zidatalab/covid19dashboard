@@ -24,7 +24,7 @@ processing file: Start.Rmd
   |                                                                              |                                                                      |   0%  |                                                                              |...                                                                   |   4%
   ordinary text without R code
 
-  |                                                                              |......                                                                |   8%
+  |                                                                              |.....                                                                 |   7%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
@@ -140,7 +140,7 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 33383  100 33383    0     0   350k      0 --:--:-- --:--:-- --:--:--  346k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 34666  100 34666    0     0   193k      0 --:--:-- --:--:-- --:--:--  194k
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -213,57 +213,62 @@ Joining, by = "blid"
 Joining, by = "blid"
 Scale for 'y' is already present. Adding another scale for 'y', which will
 replace the existing scale.
-  |                                                                              |........                                                              |  12%
+  |                                                                              |........                                                              |  11%
    inline R code fragments
 
-  |                                                                              |...........                                                           |  16%
+  |                                                                              |..........                                                            |  15%
 label: indicatorVacc
-  |                                                                              |..............                                                        |  20%
+  |                                                                              |.............                                                         |  19%
   ordinary text without R code
 
-  |                                                                              |.................                                                     |  24%
+  |                                                                              |................                                                      |  22%
+label: indicatorIncProj
+  |                                                                              |..................                                                    |  26%
+  ordinary text without R code
+
+  |                                                                              |.....................                                                 |  30%
 label: indicatorR
-  |                                                                              |....................                                                  |  28%
+  |                                                                              |.......................                                               |  33%
   ordinary text without R code
 
-  |                                                                              |......................                                                |  32%
+  |                                                                              |..........................                                            |  37%
 label: indicator7TI
-  |                                                                              |.........................                                             |  36%
+  |                                                                              |.............................                                         |  41%
   ordinary text without R code
 
-  |                                                                              |............................                                          |  40%
-label: indicatorVWZ
   |                                                                              |...............................                                       |  44%
+label: indicatorVWZ
+  |                                                                              |..................................                                    |  48%
    inline R code fragments
 
-  |                                                                              |..................................                                    |  48%
-label: plotimpfungen
   |                                                                              |....................................                                  |  52%
-  ordinary text without R code
-
+label: plotimpfungen
   |                                                                              |.......................................                               |  56%
+  ordinary text without R code
+
+  |                                                                              |.........................................                             |  59%
 label: plotakutinfiziert
-  |                                                                              |..........................................                            |  60%
+  |                                                                              |............................................                          |  63%
   ordinary text without R code
 
-  |                                                                              |.............................................                         |  64%
+  |                                                                              |...............................................                       |  67%
 label: plotstiagbund
-  |                                                                              |................................................                      |  68%
+  |                                                                              |.................................................                     |  70%
   ordinary text without R code
 
-  |                                                                              |..................................................                    |  72%
+  |                                                                              |....................................................                  |  74%
 label: plotagefatality
-  |                                                                              |.....................................................                 |  76%
+  |                                                                              |......................................................                |  78%
   ordinary text without R code
 
-  |                                                                              |........................................................              |  80%
+  |                                                                              |.........................................................             |  81%
 label: plotBLR
-  |                                                                              |...........................................................           |  84%
+  |                                                                              |............................................................          |  85%
   ordinary text without R code
 
-  |                                                                              |..............................................................        |  88%
+  |                                                                              |..............................................................        |  89%
 label: plotVWZR
-  |                                                                              |................................................................      |  92%
+  |                                                                              |.................................................................     |  93%
   ordinary text without R code
 
   |                                                                              |...................................................................   |  96%
@@ -306,17 +311,24 @@ output file: Kreise_select.knit.md
 
 
 Output created: Kreise_select.html
+
+
+processing file: Projektion.Rmd
+output file: Projektion.knit.md
+
+
+Output created: Projektion.html
   |                                                                              |......................................................................| 100%
   ordinary text without R code
 
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpvQyzEX/rmarkdown-str1d697f1b3905.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpvQyzEX/rmarkdown-str1d6976de0aea6.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpvQyzEX/file1d69723038313html --highlight-style pygments --include-before-body /tmp/RtmpvQyzEX/file1d6971c674c29.html --include-after-body /tmp/RtmpvQyzEX/file1d6971c4453dc.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpPn0lw2/rmarkdown-str12a22761c1b27.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpPn0lw2/rmarkdown-str12a221c7c9d3e.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpPn0lw2/file12a227f404009html --highlight-style pygments --include-before-body /tmp/RtmpPn0lw2/file12a22110ed3b6.html --include-after-body /tmp/RtmpPn0lw2/file12a223f3ecce5.html --css static/styles.css 
 
 Output created: Start.html
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
    user  system elapsed 
-555.471   3.770 657.252 
+556.854   4.238 646.704 
