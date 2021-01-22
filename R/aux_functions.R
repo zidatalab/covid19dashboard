@@ -106,6 +106,18 @@ projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=1
   return(result)
 }
 
+projektion_dauer <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=10) {
+  if (STI_aktuell<=STI_Ziel) {
+    result <- 0
+  } else if (Rt>=1) {
+    result <- NA
+  } else {
+    tage_bis_ziel <- round(tage_infektioes*log(STI_Ziel/STI_aktuell)/log(Rt))
+    result <- tage_bis_ziel
+  }
+  return(result)
+}
+
 projektion_datum2 <- function(STI_aktuell, STI_Ziel=50, STI_alt) {
   if (STI_aktuell<=STI_Ziel) {
     result <- "\U2713"

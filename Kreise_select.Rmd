@@ -22,7 +22,9 @@ Row
 ### **Überblick zur Inzidenz ausgewählter Kreise**
 
 Nachfolgend erhalten Sie einen Überblick zur Situation einzelner Kreise.
-Die berichteten Inzidenzen können sich wegen der Zi-Korrektur für Meldeverzüge leicht unterscheiden von der offiziellen Sieben-Tage-Inzidenz, wie sie vom RKI berichtet wird. 
+Die berichteten Inzidenzen können sich wegen der Zi-Korrektur für Meldeverzüge leicht unterscheiden von der offiziellen Sieben-Tage-Inzidenz, wie sie vom RKI berichtet wird.
+
+Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),format="%d.%m.%Y")` (sollte Stand gestern sein, sonst bitte auf corona.rki.de die aktuellen Zahlen anschauen!).
 
 Row
 -----------------------------------------------------------------------
