@@ -23,11 +23,13 @@ output:
 frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
                                            "Neue Fälle pro Tag",
                                            "Vorwarnzeit aktuell in Tagen",
-                                           "Handlungsgrenze"),
+                                           "Handlungsgrenze",
+                                           "Inzidenzprojektion"),
                              "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
                                       faelleprotag,
                                       paste(vorwarnzeitaktuell,"Tage"),
-                                      faelle7tage100kEW))
+                                      faelle7tage100kEW,
+                                      indicatorIncProj))
 
 write_json(frueindikatoren,"data/frueindikatoren.json")
 ```
