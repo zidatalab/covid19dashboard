@@ -171,7 +171,7 @@ Row
 ------------------------------------------------------------------------
 ### Erläuterung
 
-Dargestellt ist die Entwicklung der Anzahl der mindestens einmal geimpften Personen in Deutschland. Einige Impfungen setzen eine zweite Impfdosis zum vollständigen Impfschutz voraus.
+Dargestellt ist die Entwicklung der Anzahl der verabreichten Impfdosen und damit das "Impftempo". Die derzeit verfügbaren Impfstoffe setzen eine zweite Impfdosis zum vollständigen Impfschutz voraus (seit dem 17.1.2021 besteht die Gesamtzahl der Impfungen also aus durchgeführten Erst- und Zweitimpfungen).
 
 Row
 ------------------------------------------------------------------------
@@ -271,5 +271,6 @@ rmarkdown::render('Report.Rmd')
 rmarkdown::render('Impressum.Rmd')
 rmarkdown::render('Kreise_select.Rmd')
 rmarkdown::render('Projektion.Rmd')
+rmarkdown::render('Impfungen.Rmd')
 ```
 

@@ -138,6 +138,27 @@ RKI_R <- tryCatch(
   }
 )
 
+## read/update rki impf data from github
+rki_vacc <- tryCatch(
+  {
+    mytemp <- tempfile()
+    rki_vacc_data <- "https://raw.githubusercontent.com/n0rdlicht/rki-vaccination-scraper/main/data/de-vaccinations.csv"
+    download.file(rki_vacc_data, mytemp, method = "curl")
+    vacc_zahlen <- read_csv(mytemp)
+    if (dim(vacc_zahlen)[2] != 8){
+      stop("they changed the vacc table")
+    } else {
+      write_csv(vacc_zahlen, "./data/vacc_zahlen.csv")
+      vacc_zahlen
+    }
+  },
+  error=function(e) {
+    # read old data
+    vacc_zahlen <- read_csv("./data/vacc_zahlen.csv")
+    return(vacc_zahlen)
+  }
+)
+
 ##### make data for downstream analysis/plots
 ## daily cases from jhu
 jhu_germany <- jhu_germany %>%
@@ -649,13 +670,17 @@ bundeslaender_r_und_vwz_data <- myblmitidata %>%
          y_max=ifelse(Variable=="R", range_r[2], range_vwz[2])) %>%
   select(id, name, Datum, Wert, Variable, I_cases, y_min, y_max)
 ## vaccination gesamt bundesländer
-vacc_bl <- vaccinations %>%
-  filter(datum==max(vaccinations$datum) &
-           metric=="impfungen_kumulativ") %>%
-  left_join(., pflegeheimbewohnende_2019_bundeslaender %>%
-              select(Kuerzel, Bundesland_ID),
-            by=c("region"="Kuerzel")) %>%
-  mutate(impfungen_kumulativ=value)
+# vacc_bl <- vaccinations %>%
+#   filter(datum==max(vaccinations$datum) &
+#            metric=="impfungen_kumulativ") %>%
+#   left_join(., pflegeheimbewohnende_2019_bundeslaender %>%
+#               select(Kuerzel, Bundesland_ID),
+#             by=c("region"="Kuerzel")) %>%
+#   mutate(impfungen_kumulativ=value)
+vacc_bl <- rki_vacc %>%
+  filter(date==max(rki_vacc$date) &
+           key=="sum_initial") %>% # mit mindestens erster impfung
+  mutate(impfungen_initial=value)
 ## vaccination effects plot data
 brd_sti <- rki %>%
   filter(Meldedatum>=as_date("2020-12-01")-7) %>%
@@ -668,9 +693,9 @@ brd_sti <- rki %>%
             .groups="drop") %>%
   mutate(STI=round((AnzahlFall+lag(AnzahlFall, 1)+lag(AnzahlFall, 2)+lag(AnzahlFall, 3)+
                       lag(AnzahlFall, 4)+lag(AnzahlFall, 5)+lag(AnzahlFall, 6))/einwohnende*100000))
-vaccination_sti_its_death_data <- vaccinations %>%
-  filter(region=="DE" & metric=="impfungen_kumulativ") %>%
-  select(datum, impfungen_kumulativ=value) %>%
+vaccination_sti_its_death_data <- rki_vacc %>%
+  filter(geo=="Germany" & key=="sum") %>%
+  select(datum=date, impfungen_kumulativ=value) %>%
   right_join(., brd_sti %>%
                select(Meldedatum, STI),
              by=c("datum"="Meldedatum")) %>%
@@ -679,17 +704,67 @@ vaccination_sti_its_death_data <- vaccinations %>%
               select(faelle_covid_aktuell, daten_stand),
             by=c("datum"="daten_stand")) %>%
   left_join(., jhu_germany %>% select(date, incident_mean7_deaths), by=c("datum"="date"))
+## data table for subpage Impfungen
+rki_vacc_complete <- rki_vacc %>%
+  arrange(geotype) %>%
+  bind_rows(rki_vacc %>% filter(date<="2021-01-15" & key=="sum") %>%
+              mutate(key="sum_initial")) %>%
+  mutate(geo=ifelse(geo=="Germany", "Deutschland", geo))
+vacc_gesamt <- rki_vacc_complete %>%
+  filter(key=="sum_initial" | key=="sum_booster") %>%
+  filter(date==max(date)) %>%
+  select(geo, key, value, population, date)
+vacc_age <- rki_vacc_complete %>%
+  filter(key=="ind_alter_initial" | key=="ind_alter_booster") %>%
+  filter(date==max(date)) %>%
+  left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID),
+            by=c("geo"="Bundesland")) %>%
+  left_join(kreise_regstat_alter %>% select(id, ag_6),
+            by=c("Bundesland_ID"="id")) %>%
+  mutate(population=ag_6) %>%
+  select(geo, key, value, population, date)
+vacc_pflege <- rki_vacc_complete %>%
+  filter(key=="ind_pflege_initial" | key=="ind_pflege_booster") %>%
+  filter(date==max(date)) %>%
+  left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID, vollstationaere_dauerpflege),
+            by=c("geo"="Bundesland")) %>%
+  mutate(population=vollstationaere_dauerpflege) %>%
+  select(geo, key, value, population, date)
+vacc_alle <- vacc_gesamt %>%
+  bind_rows(vacc_age, vacc_pflege) %>%
+  mutate(population=ifelse(population<value, value, population))
+vacc_table <- vacc_alle %>%
+  pivot_wider(id_cols=c("geo"), names_from="key", values_from=c("value", "population")) %>%
+  mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster)/population_sum_initial,
+         quote_booster_gesamt=value_sum_booster/population_sum_initial,
+         quote_initial_pflege=(value_ind_pflege_initial-value_ind_pflege_booster)/population_ind_pflege_initial,
+         quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
+         quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
+         quote_booster_alter=value_ind_alter_booster/population_ind_alter_initial,
+         impfungen_gesamt=value_sum_initial+value_sum_booster) %>%
+  mutate(Bundesland=ifelse(geo=="Deutschland", "Gesamt", geo),
+         "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
+         "PHB 2x"=format(round(100*quote_booster_pflege, 1), decimal.mark=","),
+         "Alter nur 1x"=format(round(100*quote_initial_alter, 1), decimal.mark=","),
+         "Alter 2x"=format(round(100*quote_booster_alter, 1), decimal.mark=","),
+         "Gesamt nur 1x"=format(round(100*quote_initial_gesamt, 1), decimal.mark=","),
+         "Gesamt 2x"=format(round(100*quote_booster_gesamt, 1), decimal.mark=","),
+         "Impfungen pro 100k EW"=format(round(impfungen_gesamt/population_sum_initial*100000), decimal.mark=",")
+         ) %>%
+  select(Bundesland, "Impfungen pro 100k EW", "PHB nur 1x", "PHB 2x", "Alter nur 1x", "Alter 2x",
+         "Gesamt nur 1x", "Gesamt 2x")
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
          R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
-  left_join(., vacc_bl %>% select(Bundesland_ID, impfungen_kumulativ),
-            by=c("id"="Bundesland_ID")) %>%
-  mutate(impfungen_prozent=format(round(impfungen_kumulativ/EW_insgesamt*100, 1), decimal.mark = ",")) %>%
+  left_join(., vacc_bl %>% select(geo, impfungen_initial) %>%
+              mutate(geo=ifelse(geo=="Germany", "Gesamt", geo)),
+            by=c("name"="geo")) %>%
+  mutate(impfungen_prozent=format(round(impfungen_initial/EW_insgesamt*100, 1), decimal.mark = ",")) %>%
   select(Bundesland=name,
-         "geimpfte Bevölkerung %"=impfungen_prozent,
+         "min. 1x geimpfte Bevölkerung %"=impfungen_prozent,
          "R(t)"=R0,
          "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
          "Vorwarnzeit aktuell"=Vorwarnzeit,
@@ -805,7 +880,9 @@ bl_projektionen <- ausgangsdaten %>%
          RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
          R07STI50=projektion_datum(STI_aktuell, 50),
          R07STI35=projektion_datum(STI_aktuell, 35),
-         R07STI10=projektion_datum(STI_aktuell, 10)) %>%
+         R07STI10=projektion_datum(STI_aktuell, 10),
+         invisibleRaktuellsort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         invisibleR07sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
   arrange(id) %>%
   select(-id, -R0,
          "7-Tage-Inzidenz"=STI_aktuell,
@@ -816,7 +893,9 @@ bl_projektionen <- ausgangsdaten %>%
          "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
          "Inzidenz<50 bei R(t)=0,7"=R07STI50,
          "Inzidenz<35 bei R(t)=0,7"=R07STI35,
-         "Inzidenz<10 bei R(t)=0,7"=R07STI10)
+         "Inzidenz<10 bei R(t)=0,7"=R07STI10,
+         invisibleRaktuellsort,
+         invisibleR07sort)
   
 kreise_projektionen <- ausgangsdaten %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
@@ -831,7 +910,9 @@ kreise_projektionen <- ausgangsdaten %>%
          RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
          R07STI50=projektion_datum(STI_aktuell, 50),
          R07STI35=projektion_datum(STI_aktuell, 35),
-         R07STI10=projektion_datum(STI_aktuell, 10)) %>%
+         R07STI10=projektion_datum(STI_aktuell, 10),
+         invisibleRaktuellsort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         invisibleR07sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
   arrange(id) %>%
   select(-id, -R0,
          "7-Tage-Inzidenz"=STI_aktuell,
@@ -842,7 +923,9 @@ kreise_projektionen <- ausgangsdaten %>%
          "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
          "Inzidenz<50 bei R(t)=0,7"=R07STI50,
          "Inzidenz<35 bei R(t)=0,7"=R07STI35,
-         "Inzidenz<10 bei R(t)=0,7"=R07STI10)
+         "Inzidenz<10 bei R(t)=0,7"=R07STI10,
+         invisibleRaktuellsort,
+         invisibleR07sort)
   
 ##### write data for displayed tables/plots to jsons
 write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
@@ -943,9 +1026,9 @@ age_its_death_plot <- ggplot(age_its_death_data %>%
   scale_x_date(breaks="2 months", date_labels = "%d.%m.") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
-vaccination_plot <- ggplot(vaccinations %>%
-                             filter(metric=="impfungen_kumulativ" & region=="DE"),
-                           aes(x=datum, y=value)) +
+vaccination_plot <- ggplot(rki_vacc %>%
+                             filter(key=="sum" & geo=="Germany"),
+                           aes(x=date, y=value)) +
   geom_line(size=2, col=zi_cols("ziblue")) +
   ylim(0, NA) +
   labs(subtitle="Verabreichte Impfdosen im Zeitverlauf",x="Datum",y="Impfungen") +
