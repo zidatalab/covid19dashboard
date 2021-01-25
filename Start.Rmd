@@ -51,7 +51,7 @@ Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die 
 
 Stand Zi-Dashboard: `r format(now(),format="%d.%m.%Y %H:%M Uhr")`
 
-Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand DIVI-Intensivregister: `r format(as_date(max(divi$daten_stand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand Impfdaten (RKI/ARD-Data): `r format(as_date(max(vaccinations$pubdatum, na.rm = TRUE)),format="%d.%m.%Y")`.
+Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand DIVI-Intensivregister: `r format(as_date(max(divi$daten_stand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand Impfdaten (RKI): `r format(as_date(max(rki_vacc$date, na.rm = TRUE))+1,format="%d.%m.%Y")`.
 
 Row 
 ------------------------------------------------------------------------
