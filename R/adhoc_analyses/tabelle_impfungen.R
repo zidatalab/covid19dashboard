@@ -20,3 +20,6 @@ bl_impftable <- bl_table %>%
          impfungen_kumulativ, AnteilInfiziert, geimpftAnteilPHB, geimpftAnteilAlter)
 library(openxlsx)
 write.xlsx(bl_impftable, "../../data/kbvreport_export/impftabelle_vorschlag.xlsx")
+
+### n0rdlicht
+"https://github.com/n0rdlicht/rki-vaccination-scraper/blob/main/data/de-vaccinations.csv"
