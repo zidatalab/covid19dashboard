@@ -93,7 +93,7 @@ vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt, K
   return(myresult)
 }
 
-projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=10) {
+projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=5) {
   if (STI_aktuell<=STI_Ziel) {
     result <- "\U2713"
   } else if (Rt>=1) {
@@ -106,7 +106,7 @@ projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=1
   return(result)
 }
 
-projektion_dauer <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=10) {
+projektion_dauer <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=5) {
   if (STI_aktuell<=STI_Ziel) {
     result <- 0
   } else if (Rt>=1) {
