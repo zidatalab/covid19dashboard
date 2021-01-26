@@ -140,7 +140,23 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 34710  100 34710    0     0   477k      0 --:--:-- --:--:-- --:--:--  477k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 34790  100 34790    0     0   343k      0 --:--:-- --:--:-- --:--:--  346k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  262k  100  262k    0     0   976k      0 --:--:-- --:--:-- --:--:--  973k
+
+── Column specification ────────────────────────────────────────────────────────
+cols(
+  geo = col_character(),
+  `iso-cc` = col_character(),
+  geotype = col_character(),
+  key = col_character(),
+  value = col_double(),
+  population = col_double(),
+  quote = col_double(),
+  date = col_date(format = "")
+)
+
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
@@ -218,117 +234,37 @@ replace the existing scale.
 
   |                                                                              |..........                                                            |  15%
 label: indicatorVacc
-  |                                                                              |.............                                                         |  19%
-  ordinary text without R code
-
-  |                                                                              |................                                                      |  22%
-label: indicatorIncProj
-  |                                                                              |..................                                                    |  26%
-  ordinary text without R code
-
-  |                                                                              |.....................                                                 |  30%
-label: indicatorR
-  |                                                                              |.......................                                               |  33%
-  ordinary text without R code
-
-  |                                                                              |..........................                                            |  37%
-label: indicator7TI
-  |                                                                              |.............................                                         |  41%
-  ordinary text without R code
-
-  |                                                                              |...............................                                       |  44%
-label: indicatorVWZ
-  |                                                                              |..................................                                    |  48%
-   inline R code fragments
-
-  |                                                                              |....................................                                  |  52%
-label: plotimpfungen
-  |                                                                              |.......................................                               |  56%
-  ordinary text without R code
-
-  |                                                                              |.........................................                             |  59%
-label: plotakutinfiziert
-  |                                                                              |............................................                          |  63%
-  ordinary text without R code
-
-  |                                                                              |...............................................                       |  67%
-label: plotstiagbund
-  |                                                                              |.................................................                     |  70%
-  ordinary text without R code
-
-  |                                                                              |....................................................                  |  74%
-label: plotagefatality
-  |                                                                              |......................................................                |  78%
-  ordinary text without R code
-
-  |                                                                              |.........................................................             |  81%
-label: plotBLR
-  |                                                                              |............................................................          |  85%
-  ordinary text without R code
-
-  |                                                                              |..............................................................        |  89%
-label: plotVWZR
-  |                                                                              |.................................................................     |  93%
-  ordinary text without R code
-
-  |                                                                              |...................................................................   |  96%
-label: renderothersites (with options) 
-List of 1
- $ include: logi FALSE
-
-
-
-processing file: Bundeslaender.Rmd
-output file: Bundeslaender.knit.md
-
-
-Output created: Bundeslaender.html
-
-
-processing file: Kreise.Rmd
-output file: Kreise.knit.md
-
-
-Output created: Kreise.html
-
-
-processing file: Report.Rmd
-output file: Report.knit.md
-
-
-Output created: Report.html
-
-
-processing file: Impressum.Rmd
-output file: Impressum.knit.md
-
-
-Output created: Impressum.html
-
-
-processing file: Kreise_select.Rmd
-output file: Kreise_select.knit.md
-
-
-Output created: Kreise_select.html
-
-
-processing file: Projektion.Rmd
-output file: Projektion.knit.md
-
-
-Output created: Projektion.html
-  |                                                                              |......................................................................| 100%
-  ordinary text without R code
-
-
-output file: Start.knit.md
-
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/Rtmp6e6pkE/rmarkdown-strf0ab393dcadd.html --variable 'theme:bootstrap' --include-in-header /tmp/Rtmp6e6pkE/rmarkdown-strf0ab16815f85.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/Rtmp6e6pkE/filef0ab48cd07d4html --highlight-style pygments --include-before-body /tmp/Rtmp6e6pkE/filef0ab4e5484a8.html --include-after-body /tmp/Rtmp6e6pkE/filef0ab7975b6eb.html --css static/styles.css 
-
-Output created: Start.html
+Quitting from lines 62-69 (Start.Rmd) 
+Error: object 'geimpfte Bevölkerung %' not found
+Backtrace:
+     █
+  1. ├─rmarkdown::render("../Start.Rmd")
+  2. │ └─knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet)
+  3. │   └─knitr:::process_file(text, output)
+  4. │     ├─base::withCallingHandlers(...)
+  5. │     ├─knitr:::process_group(group)
+  6. │     └─knitr:::process_group.block(group)
+  7. │       └─knitr:::call_block(x)
+  8. │         └─knitr:::block_exec(params)
+  9. │           ├─knitr:::in_dir(...)
+ 10. │           └─knitr:::evaluate(...)
+ 11. │             └─evaluate::evaluate(...)
+ 12. │               └─evaluate:::evaluate_call(...)
+ 13. │                 ├─evaluate:::timing_fn(...)
+ 14. │                 ├─base:::handle(...)
+ 15. │                 ├─base::withCallingHandlers(...)
+ 16. │                 ├─base::withVisible(eval(expr, envir, enclos))
+ 17. │                 └─base::eval(expr, envir, enclos)
+ 18. │                   └─base::eval(expr, envir, enclos)
+ 19. ├─bundeslaender_table %>% filter(Bundesland == "Gesamt") %>% pull(`geimpfte Bevölkerung %`)
+ 20. ├─dplyr::pull(., `geimpfte Bevölkerung %`)
+ 21. ├─dplyr:::pull.data.frame(., `geimpfte Bevölkerung %`)
+ 22. │ └─tidyselect::vars_pull(names(.data), !!enquo(var))
+ 23. │   ├─tidyselect:::instrument_base_errors(...)
+ 24. │   │ └─base::withCallingHandlers(...)
+ 25. │   └─rlang::eval_tidy(enquo(var), set_names(seq_along(vars), vars))
+ 26. └─base::.handleSimpleError(...)
+ 27.   └─tidyselect:::h(simpleError(msg, call))
 There were 50 or more warnings (use warnings() to see the first 50)
-> 
-> proc.time()
-   user  system elapsed 
-575.567   4.978 675.210 
+
+Execution halted
