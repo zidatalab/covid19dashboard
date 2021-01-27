@@ -753,17 +753,6 @@ vacc_table <- vacc_alle %>%
          ) %>%
   select(Bundesland, "Impfungen pro 100k EW", "PHB nur 1x", "PHB 2x", "Alter nur 1x", "Alter 2x",
          "Gesamt nur 1x", "Gesamt 2x")
-# vacc table für datenblatt
-vacc_table_faktenblatt <- vacc_table %>%
-  select(-`Impfungen pro 100k EW`) %>%
-  left_join(vacc_gesamt %>%
-              group_by(geo) %>%
-              summarise("Zahl der Impfungen gesamt"=sum(value), .groups="drop") %>%
-              mutate(geo=ifelse(geo=="Deutschland", "Gesamt", geo)),
-            by=c("Bundesland"="geo")) %>%
-  left_join(bundeslaender_table %>%
-              select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
-            by="Bundesland")
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
@@ -836,6 +825,17 @@ kreise_table <- vorwarnzeitergebnis %>%
          # "ROR"=ROR11,
          "Vorwarnzeit lokal"=Vorwarnzeit #, # needs communication
   )
+# vacc table für datenblatt
+vacc_table_faktenblatt <- vacc_table %>%
+  select(-`Impfungen pro 100k EW`) %>%
+  left_join(vacc_gesamt %>%
+              group_by(geo) %>%
+              summarise("Zahl der Impfungen gesamt"=sum(value), .groups="drop") %>%
+              mutate(geo=ifelse(geo=="Deutschland", "Gesamt", geo)),
+            by=c("Bundesland"="geo")) %>%
+  left_join(bundeslaender_table %>%
+              select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
+            by="Bundesland")
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%

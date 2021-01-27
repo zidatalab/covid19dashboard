@@ -118,12 +118,16 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 2) %>%
   mutate(YearKW=Meldejahr*100+MW)
 
+vacc_zahlen <- read_csv("../data/vacc_zahlen.csv")
+
 bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
 kreise_table_faktenblatt <- read_json("../data/tabledata/kreise_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
   mutate(Datum=as_date(Datum))
+vacc_table_faktenblatt <- read_json("../data/tabledata/vacc_table_faktenblatt.json",
+                                             simplifyVector = TRUE)
 
 agefatality_data <- read_json("../data/plotdata/agefatality.json",
                                              simplifyVector = TRUE) %>%
@@ -233,7 +237,9 @@ bltabelle <- bind_rows(
     arrange(Bundesland)
 ) %>%
   mutate(`R(t)`=format(`R(t)`, decimal.mark = ",")) %>%
-  select(Bundesland, `R(t)`, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`, Vorwarnzeit=`Vorwarnzeit`)
+  select(Bundesland, `R(t)`,
+         `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`,
+         Vorwarnzeit=`Vorwarnzeit`, `Bereits infizierte Bevölkerung`)
 
 eumaxdate <- max(international$date)
 eumaxdate <- maxdate
@@ -684,6 +690,25 @@ c19erkranktetabelle <- tibble(
 ) %>%
   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 
+vaccmaxdate <- max(vacc_zahlen$date)
+vorvaccmaxdate <- vaccmaxdate-7
+geimpfte_gesamt <- tibble(
+  "Geimpfte Personen"=c(
+    "fdsa"
+  ),
+  Vorwoche=c(
+    "fdsf"
+  ),
+  dieseWoche=c(
+    "fdsf"
+  )
+)%>%
+  select("Geimpfte Personen",
+         !!paste0("Stand ", day(vorvaccmaxdate)+1, ".", month(vorvaccmaxdate), "."):=Vorwoche,
+         !!paste0("Stand ", day(vaccmaxdate)+1, ".", month(vaccmaxdate), "."):=dieseWoche)
+
+bl_impfungen <- vacc_table_faktenblatt
+
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
                          "R-Wert und 7-Tage-Inzidenz" = rwert7ti,
@@ -692,5 +717,7 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Todesfälle und Fallsterblichkeit"=sterbetabelle,
                          "Vorwarnzeit"=vwztabelle,
                          "Regionale Daten"=bltabelle,
-                         "Internationaler Vergleich"=EUmal4tabelle)
+                         "Internationaler Vergleich"=EUmal4tabelle,
+                         "Geimpfte Personen"=geimpfte_gesamt,
+                         "Regional Geimpfte"=bl_impfungen)
 write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))
