@@ -753,6 +753,17 @@ vacc_table <- vacc_alle %>%
          ) %>%
   select(Bundesland, "Impfungen pro 100k EW", "PHB nur 1x", "PHB 2x", "Alter nur 1x", "Alter 2x",
          "Gesamt nur 1x", "Gesamt 2x")
+# vacc table für datenblatt
+vacc_table_faktenblatt <- vacc_table %>%
+  select(-`Impfungen pro 100k EW`) %>%
+  left_join(vacc_gesamt %>%
+              group_by(geo) %>%
+              summarise("Zahl der Impfungen gesamt"=sum(value), .groups="drop") %>%
+              mutate(geo=ifelse(geo=="Deutschland", "Gesamt", geo)),
+            by=c("Bundesland"="geo")) %>%
+  left_join(bundeslaender_table %>%
+              select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
+            by="Bundesland")
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
@@ -829,12 +840,14 @@ kreise_table <- vorwarnzeitergebnis %>%
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
   left_join(., myblmitidata %>% select(id, name, date, R_Mean), by=c("id", "date")) %>%
-  mutate(R_Mean=round(R_Mean, 2)) %>%
+  mutate(R_Mean=round(R_Mean, 2),
+         inf_bev=paste0(format(round(100*cases/EW_insgesamt, 1), decimal.mark=","), " %")) %>%
   select(Bundesland=name,
          Datum=date,
          "R(t)"=R_Mean,
          "7-Tage-Inzidenz"=Faelle_letzte_7_Tage_je100TsdEinw,
          "Vorwarnzeit"=Vorwarnzeit,
+         "Bereits infizierte Bevölkerung"=inf_bev,
          "7-Tage-Inzidenz 80+"=`Faelle_letzte_7_Tage_je100TsdEinw_80+`,
          "7-Tage-Inzidenz 60+"=`Faelle_letzte_7_Tage_je100TsdEinw_60+`,
          "7-Tage-Inzidenz 60-79"=`Faelle_letzte_7_Tage_je100TsdEinw_60-79`,
@@ -932,6 +945,7 @@ write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
 write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_table_faktenblatt.json")
 write_json(kreise_table, "./data/tabledata/kreise_table.json")
 write_json(kreise_table_faktenblatt, "./data/tabledata/kreise_table_faktenblatt.json")
+write_json(vacc_table_faktenblatt, "./data/tabledata/vacc_table_faktenblatt.json")
 write_json(rwert_bund_data, "./data/plotdata/rwert_bund.json")
 write_json(rki_r_und_zi_vwz_data, "./data/plotdata/rki_r_und_zi_vwz_data.json")
 write_json(akutinfiziert_data, "./data/plotdata/akutinfiziert.json")
