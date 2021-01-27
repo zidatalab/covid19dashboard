@@ -273,5 +273,6 @@ rmarkdown::render('Impressum.Rmd')
 rmarkdown::render('Kreise_select.Rmd')
 rmarkdown::render('Projektion.Rmd')
 rmarkdown::render('Impfungen.Rmd')
+rmarkdown::render('Daten.Rmd')
 ```
 

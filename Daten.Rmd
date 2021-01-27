@@ -1,0 +1,36 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+---
+
+## Row
+
+### **Datenbasis- und Quellenangaben**
+
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Folgende Quellen benutzen wir:
+
+-   RKI Fälle, Todesfälle, Impfungen, klinische Aspekte, IfSG
+
+-   JHU international
+
+-   DIVI
+
+-   Github Vacc
+
+-   Destatis Pflege, EW, Sterbedaten
+
+-   ALM EV
