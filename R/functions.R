@@ -895,8 +895,12 @@ bl_projektionen <- ausgangsdaten %>%
          R07STI50=projektion_datum(STI_aktuell, 50),
          R07STI35=projektion_datum(STI_aktuell, 35),
          R07STI10=projektion_datum(STI_aktuell, 10),
-         invisibleRaktuellsort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
-         invisibleR07sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
+         invisibleRaktuell50sort=as_date(RaktuellSTI50, format="%d.%m.%Y"),
+         invisibleR0750sort=as_date(R07STI50, format="%d.%m.%Y"),
+         invisibleRaktuell35sort=as_date(RaktuellSTI35, format="%d.%m.%Y"),
+         invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y"),
+         invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
   arrange(id) %>%
   select(-id, -R0,
          "7-Tage-Inzidenz"=STI_aktuell,
@@ -908,8 +912,12 @@ bl_projektionen <- ausgangsdaten %>%
          "Inzidenz<50 bei R(t)=0,7"=R07STI50,
          "Inzidenz<35 bei R(t)=0,7"=R07STI35,
          "Inzidenz<10 bei R(t)=0,7"=R07STI10,
-         invisibleRaktuellsort,
-         invisibleR07sort)
+         invisibleRaktuell50sort,
+         invisibleR0750sort,
+         invisibleRaktuell35sort,
+         invisibleR0735sort,
+         invisibleRaktuell10sort,
+         invisibleR0710sort)
   
 kreise_projektionen <- ausgangsdaten %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
