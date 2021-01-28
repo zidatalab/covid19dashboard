@@ -916,6 +916,10 @@ kreise_projektionen <- ausgangsdaten %>%
   select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
+  mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
+  left_join(., aktuell %>%
+              filter(id>0 & id<17) %>%
+              select(blid=id, Bundesland=name)) %>%
   rowwise() %>%
   mutate(RaktuellSTI50=projektion_datum(STI_aktuell = STI_aktuell,
                                         STI_Ziel = 50,
@@ -925,21 +929,30 @@ kreise_projektionen <- ausgangsdaten %>%
          R07STI50=projektion_datum(STI_aktuell, 50),
          R07STI35=projektion_datum(STI_aktuell, 35),
          R07STI10=projektion_datum(STI_aktuell, 10),
-         invisibleRaktuellsort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
-         invisibleR07sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
-  arrange(id) %>%
-  select(-id, -R0,
+         invisibleRaktuell50sort=as_date(RaktuellSTI50, format="%d.%m.%Y"),
+         invisibleR0750sort=as_date(R07STI50, format="%d.%m.%Y"),
+         invisibleRaktuell35sort=as_date(RaktuellSTI35, format="%d.%m.%Y"),
+         invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y"),
+         invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
+  arrange(name) %>%
+  select(-id, -R0, -blid,
          "7-Tage-Inzidenz"=STI_aktuell,
          `R(t)`,
          Kreis=name,
+         Bundesland=Bundesland,
          "Inzidenz<50 bei R(t) aktuell"=RaktuellSTI50,
          "Inzidenz<35 bei R(t) aktuell"=RaktuellSTI35,
          "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
          "Inzidenz<50 bei R(t)=0,7"=R07STI50,
          "Inzidenz<35 bei R(t)=0,7"=R07STI35,
          "Inzidenz<10 bei R(t)=0,7"=R07STI10,
-         invisibleRaktuellsort,
-         invisibleR07sort)
+         invisibleRaktuell50sort,
+         invisibleR0750sort,
+         invisibleRaktuell35sort,
+         invisibleR0735sort,
+         invisibleRaktuell10sort,
+         invisibleR0710sort)
   
 ##### write data for displayed tables/plots to jsons
 write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
