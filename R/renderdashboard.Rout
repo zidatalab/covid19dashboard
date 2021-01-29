@@ -140,10 +140,10 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 34989  100 34989    0     0   149k      0 --:--:-- --:--:-- --:--:--  148k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 35054  100 35054    0     0   316k      0 --:--:-- --:--:-- --:--:--  316k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  307k  100  307k    0     0   482k      0 --:--:-- --:--:-- --:--:--  482k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  329k  100  329k    0     0  1035k      0 --:--:-- --:--:-- --:--:-- 1035k
 
 ── Column specification ────────────────────────────────────────────────────────
 cols(
@@ -225,6 +225,7 @@ Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
+Joining, by = "blid"
 Joining, by = "blid"
 Joining, by = "blid"
 Scale for 'y' is already present. Adding another scale for 'y', which will
@@ -354,11 +355,11 @@ Output created: Daten.html
 
 output file: Start.knit.md
 
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/Rtmp3wy8LO/rmarkdown-str804c7ddc520b.html --variable 'theme:bootstrap' --include-in-header /tmp/Rtmp3wy8LO/rmarkdown-str804c154d2199.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/Rtmp3wy8LO/file804c530d268chtml --highlight-style pygments --include-before-body /tmp/Rtmp3wy8LO/file804c572a3671.html --include-after-body /tmp/Rtmp3wy8LO/file804c7a33779f.html --css static/styles.css 
+/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/RtmpCECJD4/rmarkdown-str1b8556f98f5c9.html --variable 'theme:bootstrap' --include-in-header /tmp/RtmpCECJD4/rmarkdown-str1b855400e887b.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/RtmpCECJD4/file1b855170a7ae9html --highlight-style pygments --include-before-body /tmp/RtmpCECJD4/file1b85512decbcd.html --include-after-body /tmp/RtmpCECJD4/file1b85542de085f.html --css static/styles.css 
 
 Output created: Start.html
 There were 50 or more warnings (use warnings() to see the first 50)
 > 
 > proc.time()
    user  system elapsed 
-540.186   3.927 636.864 
+560.869   3.577 669.212 
