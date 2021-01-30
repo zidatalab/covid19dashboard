@@ -37,6 +37,7 @@ Row
 DT::datatable(bl_projektionen,
               extensions = 'Responsive',
               options = list(paging = FALSE,
+                             pageLength=20,
                              columnDefs = list(list(className = 'dt-center', targets = 3:9),
                                                list(orderData = 10, targets = 4),
                                                list(visible = FALSE, targets = 10),
