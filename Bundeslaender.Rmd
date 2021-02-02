@@ -180,3 +180,9 @@ bundeslaender_stiag_und_vwz_plot(16) %>%
    config(displayModeBar = FALSE, responsive=T)
 ```
 
+Row
+------------------------------------------------------------------------
+
+### **Datenbasis- und Quellenangaben**
+
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Eine Übersicht über die benutzten Quellen finden Sie [hier](Daten.html).

@@ -17,20 +17,27 @@ output:
     css: static/styles.css
 ---
 
-## Row
+Row
+------------------------------------------------------------------------
 
 ### **Datenbasis- und Quellenangaben**
 
-Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Folgende Quellen benutzen wir:
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Folgende Daten und Quellen benutzen wir:
 
--   RKI Fälle, Todesfälle, Impfungen, klinische Aspekte, IfSG
+-   Robert Koch-Institut (RKI):
 
--   JHU international
+    -   COVID-19-Fallzahlen und -Todesfälle ([Link](https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0/data))
 
--   DIVI
+    -   klinische Aspekte der Infektionen ([Link](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.html))
 
--   Github Vacc
+    -   Infektionen in bestimmten Gruppen nach Infektionsschutzgesetz (tägliche Situationsberichte des RKI, [Link](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Gesamt.html))
 
--   Destatis Pflege, EW, Sterbedaten
+    -   Impfdaten ([Link](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html)), aufbereite Daten von T. Westerhuys/Github ([Link](https://github.com/n0rdlicht/rki-vaccination-scraper))
 
--   ALM EV
+-   internationale COVID-19-Fallzahlen der Johns Hopkins University (JHU, [Link](https://github.com/CSSEGISandData/COVID-19))
+
+-   intensivmedizinische COVID-19-Fälle aus dem Intensivregister der Deutschen Interdisziplinären Vereinigung für Intensiv- und Notfallmedizin (DIVI, [Link](https://www.divi.de/register/tagesreport))
+
+-   demographische Daten zu Bevölkerungszahlen, Pflegeheimen und Sterbezahlen vom Statistischen Bundesamt (Destatis, [Link](https://www.destatis.de/DE/Home/_inhalt.html))
+
+-   Zahlen zu durchgeführten Tests vom Akkreditierte Labore in der Medizin e.V. (ALM e.V., [Link](https://www.alm-ev.de/aktuell/corona-themenseite/datenerhebung-alm-ev/))
