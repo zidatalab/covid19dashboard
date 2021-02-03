@@ -78,7 +78,7 @@ impflinge_gesamt = 83166711*(1-0.184)
 
 # Kapazitäten
 n_impfzentren <- 400
-impfzentrum_kapazitaet_wt <- 400*1e3/n_impfzentren
+impfzentrum_kapazitaet_wt <- 200*1e3/n_impfzentren
 
 n_praxen <- 50000
 praxis_kapoaziteat_wt = 10
