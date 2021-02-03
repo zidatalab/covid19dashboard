@@ -57,6 +57,8 @@ impfzentrum_kapazitaet_wt <- impfzentren_kapazitaet_gesamt_wt/n_impfzentren
 n_praxen <- 50000
 praxis_kapazitaet_wt <- 10
 ## Impfdosen
+hersteller_liste = c( "az" , "bt" , "cv", "gsk" , "jj" ,  "mod")
+hersteller_labels = c("AZ","BNT/Pfizer","Curevac","Sanofi/GSK","J&J","Moderna")
 dosen <- tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6, (17.6+17.1)*1e6, (2.7+10.8)*1e6),
                 dosen_mod=c(0, 1.8*1e6, 6.4*1e6, (17.6+9.1)*1e6, (24.6+18.3)*1e6),
                 dosen_az=c(0, 5.6*1e6, 16.9*1e6, 33.8*1e6, 0*1e6),
@@ -71,7 +73,10 @@ dosen <- tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6, (17.6+17.1)*1e6, (
          abstand=case_when(hersteller=="bt"~4*7,
                            hersteller=="mod"~6*7,
                            hersteller=="jj"~0,
-                           TRUE~3*7))
+                           TRUE~3*7),
+         hersteller=factor(hersteller,levels=hersteller_liste,labels =hersteller_labels ))
+
+
 
 # CHECKs 
 # dosen %>% group_by(hersteller) %>% 
@@ -170,5 +175,10 @@ output.plot <- output %>%
   scale_y_continuous(limits=c(0, 200)) +
   scale_color_zi() + theme_minimal()
 
+
+## Übersichten
+szenarien
+dosen %>% group_by(hersteller) %>% 
+  summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))
 output.plot
 
