@@ -2,7 +2,9 @@
 title: "Ärztliche Praxen werden zur Unterstützung der Impfzentren gebraucht"
 author: "Thomas Czihal, Lars Kroll, Edgar Steiger"
 date: "3 2 2021"
-output: pdf_document
+output:
+  word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r import, include=FALSE}
 library(kableExtra)
-source("Impfmodellierung.R")
+source("R/adhoc_analyses/Impfmodellierung.R")
 ```
 
 # Zusammenfassung
@@ -22,9 +24,9 @@ Mit den bevorstehenden Lieferungen der Impfstoffe wird es bald nötig, zusätzli
 
 <!-- Mit den zugelassenen Impfstoffen sind derzeit nur Impfungen an Personen über 18 Jahren möglich.  -->
 
-Wir modellieren mit 400 Impfzentren in Deutschland, die insgesamt täglich 200.000 Impfungen durchführen können (Montag bis Sonntag). Weiterhin rechnen wir mit bis zu 50.000 vertragsärztlichen Praxen, in denen mindestens jeweils 20 Impfungen pro Tag möglich sind (Montag bis Freitag). Damit können in diesen Praxen theoretisch mehr als 700.000 Impfungen pro Tag im Wochenmittel) bzw. 4.900.000 Impfungen pro Woche durchgeführt werden. In unserer Modellierung gehen wir, davon aus, dass die Praxen einspringen, um Lücken in der Kapazität der Impfzentren zu füllen. 
+Wir modellieren mit 400 Impfzentren in Deutschland, die insgesamt täglich 200.000 Impfungen durchführen können (Montag bis Sonntag). Weiterhin rechnen wir mit etwa 50.000 vertragsärztlichen Praxen, in denen mindestens jeweils 20 Impfungen pro Tag möglich sind (Montag bis Freitag). Damit können in diesen Praxen theoretisch mehr als 700.000 Impfungen pro Tag im Wochenmittel bzw. 5 Millionen Impfungen pro Woche durchgeführt werden. In unserer Modellierung gehen wir, davon aus, dass die Praxen einspringen, um Lücken in der Kapazität der Impfzentren zu füllen. 
 
-Für die zukünftige Planung berücksichtigen wir die verabredeten Impfstofflieferungen je nach Hersteller, sowie die nach heutigem Stand bereits verabreichten (RKI) und gelieferten Impfstoffdosen. In erweiterten Leistungsfähigkeits-Szenarien berechnen wir unsere Ergebnisse für Impfzentren mit erhöhter Leistungsfähigkeit (300.000 Impfungen gesamt pro Tag). Damit ergeben sich für die Impfrentren werk- und wochentägliche Kapazitäten je nach Einrichtung wie in Tabelle X dargestellt.
+Für die zukünftige Planung berücksichtigen wir die verabredeten Impfstofflieferungen je nach Hersteller, sowie die nach heutigem Stand bereits verabreichten (RKI) und gelieferten Impfstoffdosen. In erweiterten Leistungsfähigkeits-Szenarien berechnen wir unsere Ergebnisse für Impfzentren mit erhöhter Leistungsfähigkeit (300.000 Impfungen gesamt pro Tag). Damit ergeben sich für die Impfzentren werk- und wochentägliche Kapazitäten je nach Einrichtung wie in Tabelle X dargestellt.
 
 **Tab. 1: Leistungsfähigkeit der Impfzentren**
 
@@ -33,7 +35,7 @@ szenarien %>% rename("Wochtags"=	kap_wt	, "Wochenende"=kap_we) %>%
   kable(., format.args = list(decimal.mark = ',', big.mark = ".", scientific = FALSE)) 
 ```
 
-Für die Lieferungen berücksichtigen wir zwei Lieferungs-Szenarien: Im ersten Szenario werden die quartalsweise zugesicherten Lieferungen gleichmäßig auf die Tage des Quartals verteilt, im zweiten Szenario verschieben sich die zugesagten Lieferungen bis Juni nach hinten, sodass im 2. Quartal im April 20%, im Mai 35% und dafür im Juni 45% der für das Quartal jeweils durch die Hersteller zugesicherten Dosen geliefert werden. Die zugesagten Lieferungen sind in Abbildung 1 dargestellt.  
+Für die Lieferungen berücksichtigen wir zwei Lieferungs-Szenarien: Im ersten Szenario werden die quartalsweise zugesicherten Lieferungen gleichmäßig auf die Monate des Quartals verteilt ("Gleichverteilung"), im zweiten Szenario ("Linearer Anstieg") verschieben sich die zugesagten Lieferungen bis Juni nach hinten, sodass im 2. Quartal im April 20%, im Mai 35% und dafür im Juni 45% der für das Quartal jeweils durch die Hersteller zugesicherten Dosen geliefert werden. Die zugesagten Lieferungen sind in Abbildung 1 dargestellt. 
 
 **Abb. 1: Bis Quartal 4 zugesagte Impfdosen, Quartal 1 ink. 2020**
 
@@ -45,15 +47,19 @@ dosen_planung %>% ggplot(aes(x=hersteller,y=dosen/1e6,fill=as.character(quartal)
 
 # Modellierung
 
-In unseren Modellierungen für die verschiedenen Leistungsfähigkeits- und Lieferszenarien gehen wir zunächst von den Kapazitäten der Impfzentren aus. Verfügbare tägliche Dosen werden im ersten Schritt für die Auslastung der Impfzentren benutzt, bis diese Kapazität (z.B. 200.000 Impfungen täglich im Normalbetrieb) erschöpft ist. Die überzähligen Dosen werden dann ärztlichen Praxen zugerechnet, die diese dezentral verimpfen können. Wir berechnen, wie viele impfende Praxen pro Tag nötig sind, um die Impfzentren zu unterstützen und die vorhandenen Impfstoffdosen auszuschöpfen. 
+In unseren Modellierungen für die verschiedenen Leistungsfähigkeits- und Lieferszenarien gehen wir zunächst von den Kapazitäten der Impfzentren aus. Verfügbare monatliche Dosen werden im ersten Schritt für die Auslastung der Impfzentren benutzt, bis diese Kapazität (z.B. 200.000 Impfungen täglich im Regelbetrieb) erschöpft ist. Die überzähligen Dosen werden dann ärztlichen Praxen zugerechnet, die diese dezentral verimpfen können. Wir berechnen, wie viele impfende Praxen für einen Monat nötig sind, um die Impfzentren zu unterstützen und die vorhandenen Impfstoffdosen auszuschöpfen. 
 
 In der aktuellen Darstellung wird ohne weitere Rückstellungen für die Folgeimpfung gerechnet und bisher zurückgestellte Impfdosen auf die nächsten 21 Tage verteilt verimpft.
 
 # Ergebnisse
 
-
-
-```{r outputplot, warning=FALSE, echo=FALSE}
+```{r outputplot1, warning=FALSE, echo=FALSE}
 output.plot1 
+```
+
+Es wird deutlich, dass bereits ab April die vertragsärztlichen Praxen unbedingt einspringen müssen, um die gelieferten Impfstoffe zügig zu verimpfen. Ab Juli bzw. im 3. Quartal sollten sämtliche geeignete Praxen Impfungen durchführen.
+
+```{r outputplot2, warning=FALSE, echo=FALSE}
+output.plot2
 ```
 
