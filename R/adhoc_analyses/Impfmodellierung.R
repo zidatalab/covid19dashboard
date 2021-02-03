@@ -55,28 +55,29 @@ n_impfzentren <- 400
 impfzentren_kapazitaet_gesamt_wt <- 200*1e3
 impfzentrum_kapazitaet_wt <- impfzentren_kapazitaet_gesamt_wt/n_impfzentren
 n_praxen <- 50000
-praxis_kapazitaet_wt <- 10
+praxis_kapazitaet_wt <- 20
 ## Impfdosen
 hersteller_liste = c( "az" , "bt" , "cv", "gsk" , "jj" ,  "mod")
 hersteller_labels = c("AZ","BNT/Pfizer","Curevac","Sanofi/GSK","J&J","Moderna")
-dosen <- tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6, (17.6+17.1)*1e6, (2.7+10.8)*1e6),
-                dosen_mod=c(0, 1.8*1e6, 6.4*1e6, (17.6+9.1)*1e6, (24.6+18.3)*1e6),
-                dosen_az=c(0, 5.6*1e6, 16.9*1e6, 33.8*1e6, 0*1e6),
-                dosen_jj=c(0, 0, 10.1*1e6, 22*1e6, 4.6*1e6),
-                dosen_cv=c(0, 0, 3.5*1e6, 9.4*1e6, 11.7*1e6),
-                dosen_gsk=c(0, 0, 0, 0, 27.5*1e6),
-                quartal=c(4, 1, 2, 3, 4),
-                jahr=c(2020, 2021, 2021, 2021, 2021)) %>%
-  gather(hersteller, dosen, contains("dosen")) %>% 
-  mutate(hersteller=str_replace(hersteller, "dosen_", "")) %>%
-  mutate(anwendungen=ifelse(hersteller!="jj", 2, 1),
-         abstand=case_when(hersteller=="bt"~4*7,
-                           hersteller=="mod"~6*7,
-                           hersteller=="jj"~0,
-                           TRUE~3*7),
-         hersteller=factor(hersteller,levels=hersteller_liste,labels =hersteller_labels ))
-
-
+# dosen <- tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6, (17.6+17.1)*1e6, (2.7+10.8)*1e6),
+#                 dosen_mod=c(0, 1.8*1e6, 6.4*1e6, (17.6+9.1)*1e6, (24.6+18.3)*1e6),
+#                 dosen_az=c(0, 5.6*1e6, 16.9*1e6, 33.8*1e6, 0*1e6),
+#                 dosen_jj=c(0, 0, 10.1*1e6, 22*1e6, 4.6*1e6),
+#                 dosen_cv=c(0, 0, 3.5*1e6, 9.4*1e6, 11.7*1e6),
+#                 dosen_gsk=c(0, 0, 0, 0, 27.5*1e6),
+#                 quartal=c(4, 1, 2, 3, 4),
+#                 jahr=c(2020, 2021, 2021, 2021, 2021)) %>%
+#   gather(hersteller, dosen, contains("dosen")) %>% 
+#   mutate(hersteller=str_replace(hersteller, "dosen_", "")) %>%
+#   mutate(anwendungen=ifelse(hersteller!="jj", 2, 1),
+#          abstand=case_when(hersteller=="bt"~4*7,
+#                            hersteller=="mod"~5*7,
+#                            hersteller=="jj"~0,
+#                            hersteller=="az"~10*7,
+#                            TRUE~3*7),
+#          hersteller=factor(hersteller,levels=hersteller_liste,labels =hersteller_labels ))
+# dosen %>% mutate(dosen_geliefert=0,dosen_verabreicht=0) %>% write_csv("R/adhoc_analyses/impfdosen.csv")
+dosen <- read_csv("R/adhoc_analyses/impfdosen.csv")
 
 # CHECKs 
 # dosen %>% group_by(hersteller) %>% 
@@ -110,11 +111,11 @@ kapazitaeten <- bind_rows(
   tibble(einrichtung="iz",
          betriebsart="Regelbetrieb",
          kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,
-         kap_we=0),
+         kap_we=n_impfzentren*impfzentrum_kapazitaet_wt),
   tibble(einrichtung="iz",
          betriebsart="WE-Betrieb",
-         kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,
-         kap_we=n_impfzentren*impfzentrum_kapazitaet_wt),
+         kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt*1.5,
+         kap_we=n_impfzentren*impfzentrum_kapazitaet_wt*1.5),
   tibble(einrichtung="praxen", 
          betriebsart="Regelbetrieb",
          kap_wt=n_praxen*praxis_kapazitaet_wt,
@@ -170,15 +171,24 @@ output.plot <- output %>%
   mutate(Auslastung=100*(cumsum(dosen.verf)/cumsum(Kapazitaet))) %>%
   filter(jahr>=2021) %>% 
   ggplot(aes(x=Datum, y=Auslastung, color=szenario)) +
-  geom_line() +
+  geom_line() + scale_x_date(breaks = "1 month") +
   geom_hline(yintercept=100) +
   scale_y_continuous(limits=c(0, 200)) +
   scale_color_zi() + theme_minimal()
 
 
 ## Übersichten
-szenarien
 dosen %>% group_by(hersteller) %>% 
   summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))
+kapazitaeten
+szenarien
+zeitreihe_impfdosen %>% head()
 output.plot
 
+# 1. Q1 Korrektur mit empirischen Dosen, Speicher der Rückstellstellimfpunegn
+# 2. Auslastung korrigieren, Unterstützungbedarf IZ durch Ärzte quantifizieren
+# 3. Verfügbarkeitszenarien, V1 gleichverteil + emp. , V2 zunehmend + emp.
+# 4. Report 1: Impfkapazität
+# 5. Rückstellungen , Abgeschlossene Impflinge, 
+# 6. Report 2: Durchimpfungsqsquote
+# 7. Dashboard
