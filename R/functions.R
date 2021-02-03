@@ -961,6 +961,44 @@ kreise_projektionen <- ausgangsdaten %>%
          invisibleR0735sort,
          invisibleRaktuell10sort,
          invisibleR0710sort)
+
+# impfdosen historisch
+rki_verabreicht_hersteller <- rki_vacc %>%
+  filter(geo=="Germany" & date==max(rki_vacc$date) & key%in%c("sum_booster", "sum_initial_moderna", "sum_initial_biontech"))
+dosen <- read_csv("R/adhoc_analyses/impfdosen_planung.csv")
+dosen_verabreicht <- dosen %>%
+  filter(jahr==2020 | quartal<=quarter(max(rki_vacc$date))) %>%
+  group_by(hersteller) %>%
+  summarise(dosen=sum(dosen), .groups = "drop") %>%
+  mutate(dosen_verabreicht_erst=case_when(
+    hersteller=="AZ" ~ 0,
+    hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller %>%
+      filter(key=="sum_initial_biontech") %>% pull(value),
+    hersteller=="Curevac" ~ 0,
+    hersteller=="Sanofi/GSK" ~ 0,
+    hersteller=="J&J" ~ 0,
+    hersteller=="Moderna" ~ rki_verabreicht_hersteller %>%
+      filter(key=="sum_initial_moderna") %>% pull(value)
+  ),
+         dosen_verabreicht_zweit=case_when(
+           hersteller=="AZ" ~ 0,
+           hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller %>%
+             filter(key=="sum_booster") %>% pull(value),
+           hersteller=="Curevac" ~ 0,
+           hersteller=="Sanofi/GSK" ~ 0,
+           hersteller=="J&J" ~ 0,
+           hersteller=="Moderna" ~ 0
+         )) %>%
+  mutate(dosen_geliefert=case_when(
+    hersteller=="AZ" ~ 600000,
+    hersteller=="BNT/Pfizer" ~ 1345500+4*672650+747630,
+    hersteller=="Curevac" ~ 0,
+    hersteller=="Sanofi/GSK" ~ 0,
+    hersteller=="J&J" ~ 0,
+    hersteller=="Moderna" ~ 2*(rki_verabreicht_hersteller %>%
+      filter(key=="sum_initial_moderna") %>% pull(value)) + 91200
+  )) %>%
+  select(-dosen)
   
 ##### write data for displayed tables/plots to jsons
 write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
@@ -978,6 +1016,8 @@ write_json(bundeslaender_r_und_vwz_data, "./data/plotdata/bundeslaender_r_und_vw
 #### write csv for aerzteblatt
 write_csv(kreise_projektionen %>% mutate(datenstand=today()) %>%
             select(-contains("invisible")), "./data/tabledata/kreise_projektionen.csv")
+####write csv for impfmodellierung
+write_csv(dosen_verabreicht, "./R/adhoc_analyses/impfdosen_bisher.csv")
 
 ##### Plots
 akutinfiziert_plot <- ggplot(akutinfiziert_data,
