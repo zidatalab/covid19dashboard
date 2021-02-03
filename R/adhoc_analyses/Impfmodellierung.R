@@ -57,38 +57,9 @@ impfzentrum_kapazitaet_wt <- impfzentren_kapazitaet_gesamt_wt/n_impfzentren
 n_praxen <- 50000
 praxis_kapazitaet_wt <- 20
 ## Impfdosen
-hersteller_liste = c( "az" , "bt" , "cv", "gsk" , "jj" ,  "mod")
-hersteller_labels = c("AZ","BNT/Pfizer","Curevac","Sanofi/GSK","J&J","Moderna")
-# dosen <- tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6, (17.6+17.1)*1e6, (2.7+10.8)*1e6),
-#                 dosen_mod=c(0, 1.8*1e6, 6.4*1e6, (17.6+9.1)*1e6, (24.6+18.3)*1e6),
-#                 dosen_az=c(0, 5.6*1e6, 16.9*1e6, 33.8*1e6, 0*1e6),
-#                 dosen_jj=c(0, 0, 10.1*1e6, 22*1e6, 4.6*1e6),
-#                 dosen_cv=c(0, 0, 3.5*1e6, 9.4*1e6, 11.7*1e6),
-#                 dosen_gsk=c(0, 0, 0, 0, 27.5*1e6),
-#                 quartal=c(4, 1, 2, 3, 4),
-#                 jahr=c(2020, 2021, 2021, 2021, 2021)) %>%
-#   gather(hersteller, dosen, contains("dosen")) %>% 
-#   mutate(hersteller=str_replace(hersteller, "dosen_", "")) %>%
-#   mutate(anwendungen=ifelse(hersteller!="jj", 2, 1),
-#          abstand=case_when(hersteller=="bt"~4*7,
-#                            hersteller=="mod"~5*7,
-#                            hersteller=="jj"~0,
-#                            hersteller=="az"~10*7,
-#                            TRUE~3*7),
-#          hersteller=factor(hersteller,levels=hersteller_liste,labels =hersteller_labels ))
-# dosen %>% mutate(dosen_geliefert=0,dosen_verabreicht=0) %>% write_csv("R/adhoc_analyses/impfdosen.csv")
-dosen <- read_csv("R/adhoc_analyses/impfdosen.csv")
+dosen <- read_csv("R/adhoc_analyses/impfdosen_planung.csv")
+dosen_verabreicht <- read_csv("R/adhoc_analyses/impfdosen_bisher.csv")
 
-# CHECKs 
-# dosen %>% group_by(hersteller) %>% 
-#   summarise(dosen=sum(dosen),
-#             anwendungen=sum(dosen)/mean(anwendungen),
-#             abstand=mean(abstand)) 
-# 
-# dosen %>% group_by(hersteller) %>% 
-#   summarise(dosen=sum(dosen),
-#             anwendungen=sum(dosen)/mean(anwendungen),
-#             abstand=mean(abstand)) %>% ungroup() %>% summarise(anwendungen=sum(anwendungen)) 
 
 # Input-Daten
 prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-impfstart), 1))) %>%
