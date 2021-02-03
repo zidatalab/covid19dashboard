@@ -975,6 +975,10 @@ write_json(agefatality_data, "./data/plotdata/agefatality.json")
 write_json(itsbetten_data, "./data/plotdata/itsbetten.json")
 write_json(bundeslaender_r_und_vwz_data, "./data/plotdata/bundeslaender_r_und_vwz.json")
 
+#### write csv for aerzteblatt
+write_csv(kreise_projektionen %>% mutate(datenstand=today()) %>%
+            select(-contains("invisible")), "./data/tabledata/kreise_projektionen.csv")
+
 ##### Plots
 akutinfiziert_plot <- ggplot(akutinfiziert_data,
                              aes(x=date, y=Infected,group=1)) +
