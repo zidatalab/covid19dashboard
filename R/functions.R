@@ -990,13 +990,13 @@ dosen_verabreicht <- dosen %>%
            hersteller=="Moderna" ~ 0
          )) %>%
   mutate(dosen_geliefert=case_when(
-    hersteller=="AZ" ~ 0,
-    hersteller=="BNT/Pfizer" ~ 1345500+4*672650,
+    hersteller=="AZ" ~ 600000,
+    hersteller=="BNT/Pfizer" ~ 1345500+4*672650+747630,
     hersteller=="Curevac" ~ 0,
     hersteller=="Sanofi/GSK" ~ 0,
     hersteller=="J&J" ~ 0,
     hersteller=="Moderna" ~ 2*(rki_verabreicht_hersteller %>%
-      filter(key=="sum_initial_moderna") %>% pull(value))
+      filter(key=="sum_initial_moderna") %>% pull(value)) + 91200
   )) %>%
   select(-dosen)
   
