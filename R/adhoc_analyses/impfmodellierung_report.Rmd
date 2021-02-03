@@ -26,7 +26,13 @@ Wir modellieren mit 400 Impfzentren in Deutschland, die insgesamt täglich 200.0
 
 Für die zukünftige Planung berücksichtigen wir die verabredeten Impfstofflieferungen je nach Hersteller, sowie die nach heutigem Stand bereits verabreichten (RKI) und gelieferten Impfstoffdosen.
 
-In erweiterten Leistungsfähigkeits-Szenarien berechnen wir unsere Ergebnisse für Impfzentren mit erhöhter Leistungsfähigkeit (300.000 Impfungen gesamt pro Tag), sowie Praxen mit Intensivbetrieb und 40 Impfungen pro Tag (etwa 1,4 Millionen Impfungen pro Tag im Wochenmittel). Insgesamt ergeben sich 5 Szenarien für die Leistungsfähigkeit mit werk- und wochenendtäglichen Kapazitäten wie in Tabelle 1 beschrieben.
+In erweiterten Leistungsfähigkeits-Szenarien berechnen wir unsere Ergebnisse für Impfzentren mit erhöhter Leistungsfähigkeit (300.000 Impfungen gesamt pro Tag), sowie Praxen mit Intensivbetrieb und 40 Impfungen pro Tag (etwa 1,4 Millionen Impfungen pro Tag im Wochenmittel). Damit ergeben sich werk- und wochentägliche Kapazitäten je nach Einrichtung wie in Tabelle X dargestellt.
+
+```{r kapazitaetentabelle, echo=FALSE}
+kable(kapazitaeten)
+```
+
+Durch Kombination der Einrichtungen und Betriebsarten ergeben sich 5 Szenarien für die vereinte Leistungsfähigkeit mit werk- und wochenendtäglichen Kapazitäten wie in Tabelle X beschrieben.
 
 ```{r szenarientabelle, echo=FALSE}
 kable(szenarien)
@@ -36,9 +42,9 @@ Für die Lieferungen berücksichtigen wir zwei Lieferungs-Szenarien: Im ersten S
 
 # Modellierung
 
-fdfsa
+In unseren Modellierungen für die verschiedenen Leistungsfähigkeits- und Lieferszenarien gehen wir zunächst immer von den Kapazitäten der Impfzentren aus. Verfügbare tägliche Dosen werden im ersten Schritt für die Auslastung der Impfzentren benutzt, bis diese Kapazität (z.B. 200.000 Impfungen täglich im Normalbetrieb) erschöpft ist. Überzählige Dosen werden dann ärztlichen Praxen zugerechnet, die diese dezentral verimpfen können. Wir berechnen, wie viele impfende Praxen pro Tag nötig sind, um die Impfzentren zu unterstützen und die vorhandenen Impfstoffdosen auszuschöpfen.
 
-# Impfkapazität und Auslastung der Impfzentren
+# Ergebnisse
 
 fdkdsajfkdsafj
 
