@@ -94,13 +94,14 @@ zeitreihe_impfdosen <- bind_rows(
                                        monat_in_quartal==3 ~ 1.45161290322581),
          gewichtungsfaktor = ifelse(Verteilungsszenario=="Linear Ansteigen",
                                     gewichtungsfaktor,1),
-         dosen.verf = dosen.verf*gewichtungsfaktor)
-zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
+         dosen.verf = dosen.verf*gewichtungsfaktor,
+         dosen.verf_plus= dosen_geliefert-dosen_verabreicht_erst-dosen_verabreicht_zweit) %>%
+  group_by(Verteilungsszenario,hersteller) %>% arrange(Verteilungsszenario,hersteller,as.numeric(Datum)) %>%
+  mutate(dosen.verf=ifelse(row_number()<=21,dosen.verf+dosen.verf_plus/21,dosen.verf)) 
 
-zeitreihe_impfdosen %>% group_by(Verteilungsszenario,quartal) %>% 
-  
-  ggplot(aes(x=quartal,y=gewichtungsfaktor,color=Verteilungsszenario)) +
-  geom_line()
+# CHECK zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
+
+
 
 
 
@@ -127,21 +128,13 @@ kapazitaeten <- bind_rows(
 
 szenarien <- 
   bind_rows(
-    tibble(szenario="1 IZ Regelbetrieb", 
+    tibble(szenario="IZ Regelbetrieb", 
            kap_wt=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
            kap_we=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-    tibble(szenario="2 IZ WE-Betrieb", 
+    tibble(szenario="IZ WE-Betrieb", 
            kap_wt=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
            kap_we=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-    tibble(szenario="3 IZ Regelbetrieb + Praxen Normalbetrieb", 
-           kap_wt=kapazitaeten %>% filter(betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-           kap_we=kapazitaeten %>% filter(betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-    tibble(szenario="4 IZ WE-Betrieb + Praxen Normalbetrieb", 
-           kap_wt=kapazitaeten %>% filter((einrichtung=="iz" & betriebsart=="WE-Betrieb") | (einrichtung=="praxen" & betriebsart=="Regelbetrieb")) %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-           kap_we=kapazitaeten %>% filter((einrichtung=="iz" & betriebsart=="WE-Betrieb") | (einrichtung=="praxen" & betriebsart=="Regelbetrieb"))  %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-    tibble(szenario="5 IZ WE-Betrieb + Praxen Intensivbetrieb", 
-           kap_wt=kapazitaeten %>% filter(betriebsart=="WE-Betrieb" | betriebsart=="intensivbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-           kap_we=kapazitaeten %>% filter(betriebsart=="WE-Betrieb" | betriebsart=="intensivbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert))
+  
   ) %>% ungroup()
 
 
@@ -152,27 +145,32 @@ szenarien <-
 # Output-Daten
 output <- 
   zeitreihe_impfdosen %>% 
-  group_by(Datum, kw, jahr, quartal, werktag) %>%
+  group_by(Verteilungsszenario,Datum, kw, jahr, quartal, werktag) %>%
   summarise(dosen.verf=sum(dosen.verf),
-            Patienten.verf=sum(Patienten.verf),
             .groups="drop") %>%
   ungroup() %>%
   full_join(szenarien,
             by = character()) %>%
   mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
-  select(-kap_wt, -kap_we) 
+  select(-kap_wt, -kap_we) %>%
+  mutate(IZ_verimpft=ifelse(dosen.verf<=Kapazitaet,dosen.verf,Kapazitaet),
+         IZ_Auslastung=100*(dosen.verf/Kapazitaet),
+         Zusatzbedarf=ifelse(dosen.verf<=Kapazitaet,0,dosen.verf-IZ_verimpft) ,
+         Zusatzbedarf_n_Aerzte=Zusatzbedarf/praxis_kapazitaet_wt)
 
-output.plot <- output %>%
-  arrange(szenario, Datum) %>% 
-  group_by(szenario) %>%
-  mutate(Auslastung=100*(cumsum(dosen.verf)/cumsum(Kapazitaet))) %>%
+output.plot1 <- output %>% mutate(szenario = paste(szenario,Verteilungsszenario)) %>%
   filter(jahr>=2021) %>% 
-  ggplot(aes(x=Datum, y=Auslastung, color=szenario)) +
+  ggplot(aes(x=Datum, y=IZ_Auslastung, color=szenario)) +
   geom_line() + scale_x_date(breaks = "1 month") +
   geom_hline(yintercept=100) +
-  scale_y_continuous(limits=c(0, 200)) +
-  scale_color_zi() + theme_minimal()
+  scale_color_zi() + theme_minimal() 
 
+output.plot2 <- output %>% mutate(szenario = paste(szenario,Verteilungsszenario)) %>%
+  filter(jahr>=2021) %>% 
+  ggplot(aes(x=Datum, y=Zusatzbedarf_n_Aerzte, color=szenario)) +
+  geom_line() + scale_x_date(breaks = "1 month") +
+  geom_hline(yintercept=100) +
+  scale_color_zi() + theme_minimal() 
 
 ## Übersichten
 dosen %>% group_by(hersteller) %>% 
