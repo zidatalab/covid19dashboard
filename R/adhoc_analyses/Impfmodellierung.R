@@ -283,6 +283,14 @@ dosen = tibble(dosen=c(650*1e3, 9.15*1e6, 43.6*1e6,74.3*1e6,52.4*1e6),
                    quartal=c(4,1,2,3,4),
                    jahr=c(2020,2021,2021,2021,2021))
 
+# Kapazitäten
+n_impfzentren <- 400
+impfzentrum_kapazitaet_wt <- 200e3/n_impfzentren
+
+n_praxen <- 50000
+praxis_kapoaziteat_wt = 10
+
+
 prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-impfstart),1))) %>%
   mutate(kw=isoweek(Datum),
          jahr=year(Datum),
@@ -292,9 +300,21 @@ prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-i
 # Input-Daten
 andata <- left_join(prognosedatensatz , dosen, by=c("jahr","quartal")) %>%
   group_by(jahr,quartal) %>%
-  mutate(dosen.verf= dosen/n()) %>% ungroup() %>%
-  mutate(dosen.verf=cumsum(dosen.verf))
+  mutate(dosen.verf= dosen/n()) %>% ungroup() 
 
 # Output-Daten
+output <- andata %>% 
+  mutate(iz_regelbetrieb=n_impfzentren*impfzentrum_kapazitaet_wt*werktag,
+         iz_7tw=n_impfzentren*impfzentrum_kapazitaet_wt) %>% 
+  gather(Betriebsart,Kapazitaet,contains("iz_")) %>%
+  group_by(Betriebsart) %>%
+  mutate(iz_Restdosen=ifelse(cumsum(Kapazitaet)>=cumsum(dosen.verf),0,
+                             cumsum(dosen.verf)-cumsum(Kapazitaet)),
+         iz_Verimpft = cumsum(dosen.verf)- iz_Restdosen,
+         praxen_kapazitaet=n_praxen*praxis_kapoaziteat_wt*werktag,
+         praxen_Restdosen=ifelse(praxen_kapazitaet>=cumsum(iz_Restdosen),0,
+                                 cumsum(cumsum(iz_Restdosen)-praxen_kapazitaet)) )
 
 
+  
+                          
