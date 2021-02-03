@@ -52,7 +52,7 @@ prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-i
 
 andata <- left_join(prognosedatensatz , dosen, by=c("jahr","quartal")) %>%
   group_by(jahr,quartal) %>%
-  mutate(dosen.verf= dosen/row_number()) %>% ungroup() %>%
+  mutate(dosen.verf= dosen/n()) %>% ungroup() %>%
   mutate(dosen.verf=cumsum(dosen.verf))
 
 
