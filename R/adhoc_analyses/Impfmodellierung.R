@@ -45,8 +45,8 @@ library("zicolors")
 # Datenbasis
 
 # Parameter 
-
-impfstart <- as.Date("2020-12-27")
+impfstart <- as.Date("2020-12-26")
+prognosestart <- lubridate::as_date(now())
 prognoseende <- as.Date("2021-12-31")
 ## Impflinge
 impflinge_gesamt <- 83166711*(1-0.184)
@@ -57,26 +57,52 @@ impfzentrum_kapazitaet_wt <- impfzentren_kapazitaet_gesamt_wt/n_impfzentren
 n_praxen <- 50000
 praxis_kapazitaet_wt <- 20
 ## Impfdosen
-dosen <- read_csv("R/adhoc_analyses/impfdosen_planung.csv")
+
+verhaeltnis_ende_anfang <- 4
+
+#### Hier werden die Dosen for dem aktuellen Quartal dem aktuellen Quartal 
+#### zugerechnet
+dosen_planung <- read_csv("R/adhoc_analyses/impfdosen_planung.csv") %>%
+  group_by(hersteller) %>% mutate(dosen=ifelse(quartal>quarter(now()) & jahr>=2021,dosen,cumsum(dosen))) %>%
+  filter(quartal>=quarter(now()) & jahr==2021)
 dosen_verabreicht <- read_csv("R/adhoc_analyses/impfdosen_bisher.csv")
 
 
 # Input-Daten
-prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-impfstart), 1))) %>%
+prognosedatensatz <- tibble(Datum=prognosestart+days(seq(0,as.integer(prognoseende-prognosestart), 1))) %>%
   mutate(kw=isoweek(Datum),
          jahr=year(Datum),
          quartal=quarter(Datum),
-         werktag=ifelse(weekdays(Datum) %in% c("Samstag","Sonntag"), 0, 1))
+         werktag=ifelse(weekdays(Datum) %in% c("Samstag","Sonntag"), 0, 1)) %>%
+  full_join(.  ,
+  dosen_planung,
+  by=c("jahr","quartal")) %>%
+  group_by(hersteller) %>%
+  arrange(hersteller,as.numeric(Datum)) %>%
+  left_join(.,dosen_verabreicht,by="hersteller") %>%
+  mutate(dosen=ifelse(quarter(Datum)==quarter(now()) & year(Datum)==year(now()),
+                      dosen-dosen_geliefert,dosen))
 
-zeitreihe_impfdosen <- full_join(prognosedatensatz,
-                                 dosen,
-                                 by=c("jahr","quartal")) %>%
-  group_by(hersteller, jahr, quartal) %>%
-  mutate(dosen.verf=dosen/n()) %>% ungroup() %>% 
-  arrange(hersteller, as.numeric(Datum)) %>% 
-  rename("dosen.quartal"=dosen) %>%
-  mutate(Patienten.verf=dosen.verf/anwendungen) %>%
-  ungroup()
+zeitreihe_impfdosen <- bind_rows(
+  prognosedatensatz %>% mutate(Verteilungsszenario="Gleichverteilung"),
+  prognosedatensatz %>% mutate(Verteilungsszenario="Linear Ansteigen")) %>% 
+  group_by(jahr,hersteller,quartal) %>% arrange(as.numeric(Datum)) %>%
+  mutate(dosen.verf = dosen/n(),
+         monat_in_quartal = month(Datum)-(quarter(Datum)-1)*3,
+         gewichtungsfaktor = case_when(monat_in_quartal==1 ~ 0.645161290322581 ,
+                                       monat_in_quartal==2 ~ 0.903225806451613,
+                                       monat_in_quartal==3 ~ 1.45161290322581),
+         gewichtungsfaktor = ifelse(Verteilungsszenario=="Linear Ansteigen",
+                                    gewichtungsfaktor,1),
+         dosen.verf = dosen.verf*gewichtungsfaktor)
+zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
+
+zeitreihe_impfdosen %>% group_by(Verteilungsszenario,quartal) %>% 
+  
+  ggplot(aes(x=quartal,y=gewichtungsfaktor,color=Verteilungsszenario)) +
+  geom_line()
+
+
 
 kapazitaeten <- bind_rows(
   tibble(einrichtung="iz",
