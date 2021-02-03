@@ -376,8 +376,8 @@ sterbeKW <- case_when(thisKW==202101 ~ 202053-4,
 sterbeJahr <- floor(sterbeKW/100)
 vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
 vorsterbeJahr <- floor(vorsterbeKW/100)
-sterbestichtag <- max(rki%>%filter(YearKW==sterbeKW)%>%pull(Meldedatum))
-vorsterbestichtag <- max(rki%>%filter(YearKW==vorsterbeKW)%>%pull(Meldedatum))
+sterbestichtag <- as_date(max(rki%>%filter(YearKW==sterbeKW)%>%pull(Meldedatum)))
+vorsterbestichtag <- as_date(max(rki%>%filter(YearKW==vorsterbeKW)%>%pull(Meldedatum)))
 sterberki <- rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
   mutate(Altersgruppe3=case_when(
     Altersgruppe=="A80+" ~ "80+",
