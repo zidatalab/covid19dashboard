@@ -21,11 +21,248 @@ library("lubridate")
 # Phasen von Impfzentrum in Praxen entwickeln könnten?
   
 
+# Prämissen
+
+# Ärzte sind Überlaufbecken für Impfzentren
+# Dosen gehen kaputt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Outcomes
 
 ## 1. Zahl der zu verimpfenden Dosen
 ## 2. Verfügbare Impfkapazität in den Zentren
 ## 3. Zeitpunkt des Wechsels in die vertragsärztliche  Versorgung
+## 4. Wieviele Personen sollten eingeladen werden? Für Praxen/Zentren?
 
 ## Modellierung
 
@@ -36,7 +273,9 @@ library("lubridate")
 ## Betriebszeit: Normalbetreib / verlängerte Öffnungszeiten / 24/7 Betrieb 
 ## Verfügbarkeit: V1 Biontech, V2 
 
-## Datenbasis
+# Datenbasis
+
+# Parameter 
 impfstart = as.Date("2020-12-20")
 prognoseende = as.Date("2021-12-31")
 
@@ -47,13 +286,15 @@ dosen = tibble(dosen=c(650*1e3, 9.15*1e6, 43.6*1e6,74.3*1e6,52.4*1e6),
 prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-impfstart),1))) %>%
   mutate(kw=isoweek(Datum),
          jahr=year(Datum),
-         quartal=quarter(Datum))
+         quartal=quarter(Datum),
+         werktag=ifelse(weekdays(Datum) %in%c("Samstag","Sonntag"),0,1 ))
 
-
+# Input-Daten
 andata <- left_join(prognosedatensatz , dosen, by=c("jahr","quartal")) %>%
   group_by(jahr,quartal) %>%
   mutate(dosen.verf= dosen/n()) %>% ungroup() %>%
   mutate(dosen.verf=cumsum(dosen.verf))
 
+# Output-Daten
 
 
