@@ -24,6 +24,7 @@ library(readr)
 library(openxlsx)
 library(zoo)
 library(curl)
+source("aux_functions.R")
 
 # daten übersterblichkeit
 url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
@@ -146,11 +147,16 @@ sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk,
   relocate(Jahr,Alter,sex) %>% 
   pivot_longer(cols=-c("Jahr", "Alter", "sex"), names_to="KW", values_to="Tote")
 sterbefaelle_kw.rec <- 
-  left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote)),
+  left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote) & KW!="53"),
             sterbefaelle_kw %>% filter(Jahr<2020) %>%
               group_by(Alter,KW,sex) %>% 
               summarise(Tote_2016_2019=mean(Tote,na.rm=T), .groups="drop"),
             by=c("KW","Alter","sex")) %>% 
+  bind_rows(left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote) & KW=="53"),
+                      sterbefaelle_kw %>% filter(Jahr<2020 & KW=="52") %>%
+                        group_by(Alter,KW,sex) %>% 
+                        summarise(Tote_2016_2019=mean(Tote,na.rm=T), .groups="drop"),
+                      by=c("Alter","sex")) %>% select(-KW.y) %>% rename(KW=KW.x)) %>%
   mutate(
     KW=as.numeric(KW),
     YearKW=as.numeric(Jahr)*100+KW,
@@ -236,10 +242,17 @@ bltabelle <- bind_rows(
     filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
     arrange(Bundesland)
 ) %>%
+  rowwise() %>%
+  mutate(`Inzidenzprojektion`=projektion_datum(STI_aktuell = `7-Tage-Inzidenz`,
+                                               STI_Ziel = 50,
+                                               Rt = `R(t)`,
+                                               tage_infektioes = 5)) %>%
+  ungroup() %>%
   mutate(`R(t)`=format(`R(t)`, decimal.mark = ",")) %>%
   select(Bundesland, `R(t)`,
          `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`,
-         Vorwarnzeit=`Vorwarnzeit`, `Bereits infizierte Bevölkerung`)
+         Vorwarnzeit=`Vorwarnzeit`, `Bereits infizierte Bevölkerung`,
+         Inzidenzprojektion)
 
 eumaxdate <- max(international$date)
 eumaxdate <- maxdate
