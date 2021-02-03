@@ -1,7 +1,6 @@
-
 library("tidyverse")
 library("lubridate")
-library("zicolor")
+library("zicolors")
 
 # Impfmodellierung
 
@@ -20,7 +19,7 @@ library("zicolor")
 # Variante 2: 20 % der 31,5 Mio. Dosen in April, weitere 35 % in Mai und 45 % 
 # in Juni (oder so)), wie sich Kapazitäten entwickeln müssen und wie sich die
 # Phasen von Impfzentrum in Praxen entwickeln könnten?
-  
+
 
 # Prämissen
 
@@ -46,20 +45,33 @@ library("zicolor")
 # Datenbasis
 
 # Parameter 
-impfstart = as.Date("2020-12-20")
-prognoseende = as.Date("2021-12-31")
 
-dosen = tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6,(17.6+17.1)*1e6,(2.7+10.8)*1e6),
-               dosen_mod=c(0, 1.8*1e6, 6.4*1e6,(17.6+9.1)*1e6,(24.6+18.3)*1e6),
-               dosen_az=c(0, 5.6*1e6, 16.9*1e6,33.8*1e6,0*1e6),
-               dosen_jj=c(0, 0, 10.1*1e6,22*1e6,4.6*1e6),
-               dosen_cv=c(0, 0, 3.5*1e6,9.4*1e6,11.7*1e6),
-               dosen_gsk=c(0, 0, 0,0,27.5*1e6),
-                   quartal=c(4,1,2,3,4),
-                   jahr=c(2020,2021,2021,2021,2021)) %>%
-  gather(hersteller,dosen,contains("dosen")) %>% mutate(hersteller=str_replace(hersteller,"dosen_","")) %>% mutate(anwendungen=ifelse(hersteller!="jj",2,1),abstand=case_when(hersteller=="bt"~4*7,hersteller=="mod"~6*7,hersteller=="jj"~0,TRUE~3*7))
-
-
+impfstart <- as.Date("2020-12-27")
+prognoseende <- as.Date("2021-12-31")
+## Impflinge
+impflinge_gesamt <- 83166711*(1-0.184)
+## Kapazitäten
+n_impfzentren <- 400
+impfzentren_kapazitaet_gesamt_wt <- 200*1e3
+impfzentrum_kapazitaet_wt <- impfzentren_kapazitaet_gesamt_wt/n_impfzentren
+n_praxen <- 50000
+praxis_kapazitaet_wt <- 10
+## Impfdosen
+dosen <- tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6, (17.6+17.1)*1e6, (2.7+10.8)*1e6),
+                dosen_mod=c(0, 1.8*1e6, 6.4*1e6, (17.6+9.1)*1e6, (24.6+18.3)*1e6),
+                dosen_az=c(0, 5.6*1e6, 16.9*1e6, 33.8*1e6, 0*1e6),
+                dosen_jj=c(0, 0, 10.1*1e6, 22*1e6, 4.6*1e6),
+                dosen_cv=c(0, 0, 3.5*1e6, 9.4*1e6, 11.7*1e6),
+                dosen_gsk=c(0, 0, 0, 0, 27.5*1e6),
+                quartal=c(4, 1, 2, 3, 4),
+                jahr=c(2020, 2021, 2021, 2021, 2021)) %>%
+  gather(hersteller, dosen, contains("dosen")) %>% 
+  mutate(hersteller=str_replace(hersteller, "dosen_", "")) %>%
+  mutate(anwendungen=ifelse(hersteller!="jj", 2, 1),
+         abstand=case_when(hersteller=="bt"~4*7,
+                           hersteller=="mod"~6*7,
+                           hersteller=="jj"~0,
+                           TRUE~3*7))
 
 # CHECKs 
 # dosen %>% group_by(hersteller) %>% 
@@ -71,56 +83,62 @@ dosen = tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6,(17.6+17.1)*1e6,(2.7
 #   summarise(dosen=sum(dosen),
 #             anwendungen=sum(dosen)/mean(anwendungen),
 #             abstand=mean(abstand)) %>% ungroup() %>% summarise(anwendungen=sum(anwendungen)) 
-  
-
-# Impflinge
-impflinge_gesamt = 83166711*(1-0.184)
-
-# Kapazitäten
-n_impfzentren <- 400
-impfzentrum_kapazitaet_wt <- 200*1e3/n_impfzentren
-
-n_praxen <- 50000
-praxis_kapoaziteat_wt = 10
-
-
 
 # Input-Daten
-zeitreihe_impfdosen <- full_join(prognosedatensatz , dosen, by=c("jahr","quartal")) %>%
-  group_by(hersteller,jahr,quartal) %>%
-  mutate(dosen.verf= dosen/n()) %>% ungroup() %>% 
-  arrange(hersteller,as.numeric(Datum)) %>% 
-  rename("dosen.quartal"= dosen) %>%
-  mutate(Patienten.verf=dosen.verf/anwendungen)
+prognosedatensatz <- tibble(Datum=impfstart+days(seq(0,as.integer(prognoseende-impfstart), 1))) %>%
+  mutate(kw=isoweek(Datum),
+         jahr=year(Datum),
+         quartal=quarter(Datum),
+         werktag=ifelse(weekdays(Datum) %in% c("Samstag","Sonntag"), 0, 1))
 
+zeitreihe_impfdosen <- full_join(prognosedatensatz,
+                                 dosen,
+                                 by=c("jahr","quartal")) %>%
+  group_by(hersteller, jahr, quartal) %>%
+  mutate(dosen.verf=dosen/n()) %>% ungroup() %>% 
+  arrange(hersteller, as.numeric(Datum)) %>% 
+  rename("dosen.quartal"=dosen) %>%
+  mutate(Patienten.verf=dosen.verf/anwendungen) %>%
+  ungroup()
 
 kapazitaeten <- bind_rows(
-  tibble(einrichtung="iz",betriebsart="Regelbetrieb",kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,kap_we=0),
-  tibble(einrichtung="iz",betriebsart="WE-Betrieb",kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,kap_we=n_impfzentren*impfzentrum_kapazitaet_wt),
-  tibble(einrichtung="praxen",betriebsart="Regelbetrieb",kap_wt=n_praxen*praxis_kapoaziteat_wt,kap_we=0),
-  tibble(einrichtung="praxen intensivbetrieb",betriebsart="intensivbetrieb",kap_wt=n_praxen*praxis_kapoaziteat_wt*2,kap_we=0)
+  tibble(einrichtung="iz",
+         betriebsart="Regelbetrieb",
+         kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,
+         kap_we=0),
+  tibble(einrichtung="iz",
+         betriebsart="WE-Betrieb",
+         kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,
+         kap_we=n_impfzentren*impfzentrum_kapazitaet_wt),
+  tibble(einrichtung="praxen", 
+         betriebsart="Regelbetrieb",
+         kap_wt=n_praxen*praxis_kapazitaet_wt,
+         kap_we=0),
+  tibble(einrichtung="praxen",
+         betriebsart="intensivbetrieb",
+         kap_wt=n_praxen*praxis_kapazitaet_wt*2,
+         kap_we=0)
 )
-
 
 # Szenarien
 
 szenarien <- 
   bind_rows(
-  tibble(szenario="1 IZ Regelbetrieb", 
-                    kap_wt=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-                    kap_we=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-  tibble(szenario="2 IZ WE-Betrieb", 
-         kap_wt=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-         kap_we=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-  tibble(szenario="3 IZ Regelbetrieb + Praxen Normalbetrieb", 
-         kap_wt=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-         kap_we=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-  tibble(szenario="4 IZ WE-Betrieb + Praxen Normalbetrieb", 
-         kap_wt=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-         kap_we=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-  tibble(szenario="5 IZ WE-Betrieb + Praxen Intensivbetrieb", 
-         kap_wt=kapazitaeten %>% filter(einrichtung=="praxen intensivbetrieb" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
-         kap_we=kapazitaeten %>% filter(einrichtung=="praxen intensivbetrieb" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert))
+    tibble(szenario="1 IZ Regelbetrieb", 
+           kap_wt=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+           kap_we=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+    tibble(szenario="2 IZ WE-Betrieb", 
+           kap_wt=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+           kap_we=kapazitaeten %>% filter(einrichtung=="iz" & betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+    tibble(szenario="3 IZ Regelbetrieb + Praxen Normalbetrieb", 
+           kap_wt=kapazitaeten %>% filter(betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+           kap_we=kapazitaeten %>% filter(betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+    tibble(szenario="4 IZ WE-Betrieb + Praxen Normalbetrieb", 
+           kap_wt=kapazitaeten %>% filter((einrichtung=="iz" & betriebsart=="WE-Betrieb") | (einrichtung=="praxen" & betriebsart=="Regelbetrieb")) %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+           kap_we=kapazitaeten %>% filter((einrichtung=="iz" & betriebsart=="WE-Betrieb") | (einrichtung=="praxen" & betriebsart=="Regelbetrieb"))  %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+    tibble(szenario="5 IZ WE-Betrieb + Praxen Intensivbetrieb", 
+           kap_wt=kapazitaeten %>% filter(betriebsart=="WE-Betrieb" | betriebsart=="intensivbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+           kap_we=kapazitaeten %>% filter(betriebsart=="WE-Betrieb" | betriebsart=="intensivbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert))
   ) %>% ungroup()
 
 
@@ -130,19 +148,27 @@ szenarien <-
 
 # Output-Daten
 output <- 
-  zeitreihe_impfdosen %>% ungroup() %>% group_by(Datum,         kw  , jahr ,quartal ,werktag) %>%
-  summarise(dosen.verf=sum(dosen.verf), Patienten.verf= sum(Patienten.verf)) %>%
+  zeitreihe_impfdosen %>% 
+  group_by(Datum, kw, jahr, quartal, werktag) %>%
+  summarise(dosen.verf=sum(dosen.verf),
+            Patienten.verf=sum(Patienten.verf),
+            .groups="drop") %>%
   ungroup() %>%
-  full_join(.,szenarien,by = character()) %>%
-  mutate(Kapazitaet=ifelse(werktag,kap_wt, kap_we)) %>% select(-kap_wt,-kap_we) 
-  
+  full_join(szenarien,
+            by = character()) %>%
+  mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
+  select(-kap_wt, -kap_we) 
 
-output %>% arrange(szenario,Datum) %>% group_by(szenario) %>%
+output.plot <- output %>%
+  arrange(szenario, Datum) %>% 
+  group_by(szenario) %>%
   mutate(Auslastung=100*(cumsum(dosen.verf)/cumsum(Kapazitaet))) %>%
-  filter(jahr>=2021) %>% ggplot(aes(x=Datum,y=Auslastung,color=szenario)) +
+  filter(jahr>=2021) %>% 
+  ggplot(aes(x=Datum, y=Auslastung, color=szenario)) +
   geom_line() +
   geom_hline(yintercept=100) +
-  scale_y_continuous(limits=c(0,200)) + scale_color_zi() + theme_minimal()
+  scale_y_continuous(limits=c(0, 200)) +
+  scale_color_zi() + theme_minimal()
 
+output.plot
 
-                          
