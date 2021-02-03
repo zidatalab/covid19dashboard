@@ -1,6 +1,7 @@
 
 library("tidyverse")
 library("lubridate")
+library("zicolor")
 
 # Impfmodellierung
 
@@ -25,237 +26,6 @@ library("lubridate")
 
 # Ärzte sind Überlaufbecken für Impfzentren
 # Dosen gehen kaputt
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # Outcomes
 
@@ -302,9 +72,13 @@ dosen = tibble(dosen_bt=c(1.3*1e6, 10.9*1e6, (31.5+8.7)*1e6,(17.6+17.1)*1e6,(2.7
 #             anwendungen=sum(dosen)/mean(anwendungen),
 #             abstand=mean(abstand)) %>% ungroup() %>% summarise(anwendungen=sum(anwendungen)) 
   
+
+# Impflinge
+impflinge_gesamt = 83166711*(1-0.184)
+
 # Kapazitäten
 n_impfzentren <- 400
-impfzentrum_kapazitaet_wt <- 200e3/n_impfzentren
+impfzentrum_kapazitaet_wt <- 400*1e3/n_impfzentren
 
 n_praxen <- 50000
 praxis_kapoaziteat_wt = 10
@@ -312,32 +86,63 @@ praxis_kapoaziteat_wt = 10
 
 
 # Input-Daten
-andata <- full_join(prognosedatensatz , dosen, by=c("jahr","quartal")) %>%
+zeitreihe_impfdosen <- full_join(prognosedatensatz , dosen, by=c("jahr","quartal")) %>%
   group_by(hersteller,jahr,quartal) %>%
-  mutate(dosen.verf= dosen/n()) %>% ungroup() %>% arrange(hersteller,as.numeric(Datum))
+  mutate(dosen.verf= dosen/n()) %>% ungroup() %>% 
+  arrange(hersteller,as.numeric(Datum)) %>% 
+  rename("dosen.quartal"= dosen) %>%
+  mutate(Patienten.verf=dosen.verf/anwendungen)
+
+
+kapazitaeten <- bind_rows(
+  tibble(einrichtung="iz",betriebsart="Regelbetrieb",kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,kap_we=0),
+  tibble(einrichtung="iz",betriebsart="WE-Betrieb",kap_wt=n_impfzentren*impfzentrum_kapazitaet_wt,kap_we=n_impfzentren*impfzentrum_kapazitaet_wt),
+  tibble(einrichtung="praxen",betriebsart="Regelbetrieb",kap_wt=n_praxen*praxis_kapoaziteat_wt,kap_we=0),
+  tibble(einrichtung="praxen intensivbetrieb",betriebsart="intensivbetrieb",kap_wt=n_praxen*praxis_kapoaziteat_wt*2,kap_we=0)
+)
+
+
+# Szenarien
+
+szenarien <- 
+  bind_rows(
+  tibble(szenario="1 IZ Regelbetrieb", 
+                    kap_wt=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+                    kap_we=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+  tibble(szenario="2 IZ WE-Betrieb", 
+         kap_wt=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+         kap_we=kapazitaeten %>% filter(einrichtung=="iz"& betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+  tibble(szenario="3 IZ Regelbetrieb + Praxen Normalbetrieb", 
+         kap_wt=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+         kap_we=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="Regelbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+  tibble(szenario="4 IZ WE-Betrieb + Praxen Normalbetrieb", 
+         kap_wt=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+         kap_we=kapazitaeten %>% filter(einrichtung=="praxen" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
+  tibble(szenario="5 IZ WE-Betrieb + Praxen Intensivbetrieb", 
+         kap_wt=kapazitaeten %>% filter(einrichtung=="praxen intensivbetrieb" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+         kap_we=kapazitaeten %>% filter(einrichtung=="praxen intensivbetrieb" | betriebsart=="WE-Betrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert))
+  ) %>% ungroup()
+
 
 # check 
 # sum(andata$dosen.verf/andata$anwendungen)/1e6
 
 
 # Output-Daten
-# BROKEN
-# output <- andata %>% 
-#   mutate(iz_regelbetrieb=n_impfzentren*impfzentrum_kapazitaet_wt*werktag,
-#          iz_7tw=n_impfzentren*impfzentrum_kapazitaet_wt) %>% 
-#   gather(Betriebsart,Kapazitaet,contains("iz_")) %>%
-#   group_by(Betriebsart) %>%
-#   mutate(iz_Restdosen=ifelse(cumsum(Kapazitaet)>=cumsum(dosen.verf),0,
-#                              cumsum(dosen.verf)-cumsum(Kapazitaet)),
-#          iz_Verimpft = cumsum(dosen.verf)- iz_Restdosen,
-#          praxen_kapazitaet=n_praxen*praxis_kapoaziteat_wt*werktag,
-#          praxen_Restdosen=ifelse(praxen_kapazitaet>=cumsum(iz_Restdosen),0,
-#                                  cumsum(cumsum(iz_Restdosen)-praxen_kapazitaet)) )
+output <- 
+  zeitreihe_impfdosen %>% ungroup() %>% group_by(Datum,         kw  , jahr ,quartal ,werktag) %>%
+  summarise(dosen.verf=sum(dosen.verf), Patienten.verf= sum(Patienten.verf)) %>%
+  ungroup() %>%
+  full_join(.,szenarien,by = character()) %>%
+  mutate(Kapazitaet=ifelse(werktag,kap_wt, kap_we)) %>% select(-kap_wt,-kap_we) 
+  
 
-# DEBUG PLOTS
-ggplot(andata) + aes(x=Datum,y=cumsum(dosen.verf)/1e6) + geom_line() + scale_y_continuous(limits=c(0,sum(andata$dosen.verf)/1e6))
-ggplot(output) + aes(x=Datum,y=iz_Restdosen/1e6,color=Betriebsart) + geom_line() + scale_y_continuous(limits=c(0,sum(andata$dosen.verf)/1e6))
-ggplot(output) + aes(x=Datum,y=praxen_Restdosen/1e6,color=Betriebsart) + geom_line() + scale_y_continuous(limits=c(0,sum(andata$dosen.verf)/1e6))
+output %>% arrange(szenario,Datum) %>% group_by(szenario) %>%
+  mutate(Auslastung=100*(cumsum(dosen.verf)/cumsum(Kapazitaet))) %>%
+  filter(jahr>=2021) %>% ggplot(aes(x=Datum,y=Auslastung,color=szenario)) +
+  geom_line() +
+  geom_hline(yintercept=100) +
+  scale_y_continuous(limits=c(0,200)) + scale_color_zi() + theme_minimal()
 
 
                           
