@@ -69,7 +69,7 @@ Row
 
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableKreise_projektionen}
-DT::datatable(kreise_projektionen,
+DT::datatable(kreise_projektionen %>% select(-`AGS (num)`),
               extensions = 'Responsive',
               options = list(paging = TRUE,
                              columnDefs = list(list(className = 'dt-center', targets = c(3, 5:10)),
