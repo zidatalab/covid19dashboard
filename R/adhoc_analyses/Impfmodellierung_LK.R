@@ -259,6 +259,22 @@ durchimpfung.ts <- durchimpfung.ts %>%
 
 # Schritt 3: Folgetage iterativ bestimmen...
 
+# Shortcut 
+
+shortcut <- bind_rows(
+  durchimpfung.ts %>% mutate(Patienten=Anwendung/anwendungen) %>% 
+  group_by(Verteilungsszenario, Betriebsszenario,Datum) %>% summarise(Patienten=sum(Patienten)) %>% 
+  mutate(Patienten=cumsum(Patienten)+
+           dosen_verabreicht %>% 
+           summarise(Dosen=sum(dosen_verabreicht_erst+dosen_verabreicht_zweit)) %>% pull(Dosen)),
+durchimpfung.ts %>% filter(Betriebsszenario=="IZ Regelbetrieb") %>% 
+  group_by( Verteilungsszenario,Betriebsszenario,Datum) %>% 
+  summarise(Patienten=sum(dosen.verf/anwendungen) )  %>%
+  ungroup() %>% mutate(Betriebsszenario="IZ + Vertragsärzte") )
+
+ggplot(shortcut %>% mutate(Durchimpfung= 100*(Patienten/impflinge_gesamt)) %>% filter(Durchimpfung<=100),aes(x=Datum,y=Durchimpfung, color=Betriebsszenario)) + geom_line(size=2.5) + facet_grid(.~Verteilungsszenario) + theme_minimal() + scale_color_zi()
+
+# %>%  mutate(Patienten=))
 # 
 # 
 # 
