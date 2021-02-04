@@ -3,8 +3,8 @@ title: "Ärztliche Praxen werden zur Unterstützung der Impfzentren gebraucht"
 author: "Thomas Czihal, Lars Kroll, Edgar Steiger"
 date: "4 2 2021"
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -42,7 +42,7 @@ Für die Lieferungen berücksichtigen wir zwei Lieferungs-Szenarien: Im ersten S
 **Abb. 2: Bis Quartal 4 zugesagte Impfdosen, Quartal 1 ink. 2020**
 
 ```{r hersteller, warning=FALSE,echo=FALSE,}
-dosen_planung %>% ggplot(aes(x=hersteller,y=dosen/1e6,fill=as.character(quartal))) + geom_bar(pos="stack",stat="identity") + coord_flip() + labs(x="",y="Mio. Dosen",fill="Quartal") + 
+dosen_planung %>% ggplot(aes(x=hersteller,y=dosen/1e6,fill=as.character(quartal))) + geom_bar(position = position_stack(reverse = TRUE), stat="identity") + coord_flip() + labs(x="",y="Mio. Dosen",fill="Quartal") + 
   theme_minimal() + scale_fill_zi()
 ```
 
@@ -58,7 +58,30 @@ In der aktuellen Darstellung wird ohne weitere Rückstellungen für die Folgeimp
 **Abb. 4: Modellierte Auslastung der Impfzentren nach KW**
 
 ```{r outputplot1, warning=FALSE, echo=FALSE}
-output.plot1kw 
+# output.plot1 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
+#                                   Monat=month(Datum, label=TRUE)) %>%
+#   filter(jahr>=2021) %>% 
+#   ggplot(aes(x=Monat, y=IZ_Auslastung, fill=szenario)) +
+#   facet_wrap(.~Verteilungsszenario) +
+#   geom_bar(stat="identity", position = "dodge") + #scale_x_date(breaks = "1 month") +
+#   geom_hline(yintercept=100) +
+#   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
+# 
+ann_text <- data.frame(kw = 36.5, IZ_Auslastung = 40, lab = "21.9.", szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+output.plot1kw <- output %>%
+  filter(jahr>=2021 & quartal<=3) %>%
+  ggplot(aes(x=kw, y=IZ_Auslastung, color=szenario, group=szenario)) +
+  facet_wrap(.~Verteilungsszenario , ncol=1) +
+  geom_line(size=3) + # scale_x_date(breaks = "1 month") +
+  geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  # annotate("text", label = "21.9.", x = 37, y = 50, , size = 3) +
+  ylim(0, NA) +
+  scale_y_continuous(breaks = c(100,200,400,600)) +
+  geom_hline(yintercept=100,  linetype="dashed") + 
+  geom_vline(xintercept=38) +
+  labs(color="", x="KW", y="Auslastung der Impfzentren in %")+
+  scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
+output.plot1kw
 ```
 
 Es wird deutlich, dass bereits ab April die vertragsärztlichen Praxen unbedingt einspringen müssen, um die gelieferten Impfstoffe zügig zu verimpfen. Ab Juli bzw. im 3. Quartal sollten sämtliche geeignete Praxen Impfungen durchführen.
@@ -67,10 +90,34 @@ Es wird deutlich, dass bereits ab April die vertragsärztlichen Praxen unbedingt
 **Abb. 5: Modellierte Unterstützungsbedarf durch Vertragsärzte nach KW**
 
 ```{r outputplot2, warning=FALSE, echo=FALSE}
+# output.plot2 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
+#                                   Monat=month(Datum, label=TRUE)) %>%
+#   filter(jahr>=2021) %>% 
+#   ggplot(aes(x=Monat, y=Zusatzbedarf_n_Aerzte, fill=szenario)) +
+#   facet_wrap(.~Verteilungsszenario) +
+#   geom_bar(stat="identity", position = "dodge") + # scale_x_date(breaks = "1 month") +
+#   geom_hline(yintercept=0,) +
+#   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
+# 
+ann_text <- data.frame(kw = 36.5, Zusatzbedarf_n_Aerzte = 10000, lab = "21.9.", szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
+  Monat=month(Datum, label=TRUE)) %>%
+  filter(jahr>=2021 & quartal<=3) %>%
+  ggplot(aes(x=kw, y=Zusatzbedarf_n_Aerzte, color=szenario, group=szenario)) +
+  facet_wrap(.~Verteilungsszenario , ncol=1) +
+  geom_line(size=3) + # scale_x_date(breaks = "1 month") +
+    geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  # annotate("text", label = "21.9.", x = 37, y = 50, , size = 3) +
+  ylim(0, NA) +
+  # scale_y_continuous(breaks = c(0,200,400,600)) +
+  geom_hline(yintercept=0, linetype="dashed") + 
+  geom_vline(xintercept=38) +
+  labs(color="", x="KW", y="Anzahl zusätzlich notwendiger Ärzte")+
+  scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
 output.plot2kw
 ```
 **Abb. 6: Modellierte Durchimpfungsrate nach Datum**
 
-```{r outputplot2, warning=FALSE, echo=FALSE}
-output.plot3
+```{r outputplot3, warning=FALSE, echo=FALSE}
+# output.plot3
 ```

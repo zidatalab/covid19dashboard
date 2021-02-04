@@ -923,6 +923,7 @@ kreise_projektionen <- ausgangsdaten %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
   select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  mutate("AGS (num)"=ifelse(id==11, 11000, id/1000)) %>%
   mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
   mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
   left_join(., aktuell %>%
@@ -960,7 +961,8 @@ kreise_projektionen <- ausgangsdaten %>%
          invisibleRaktuell35sort,
          invisibleR0735sort,
          invisibleRaktuell10sort,
-         invisibleR0710sort)
+         invisibleR0710sort,
+         "AGS (num)")
 
 # impfdosen historisch
 rki_verabreicht_hersteller <- rki_vacc %>%
