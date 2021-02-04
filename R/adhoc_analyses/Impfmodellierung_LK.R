@@ -247,10 +247,17 @@ for(theDatum in Datumsliste) {
   }
 }
 
-durchimpfung <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum)
+durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum)
 
-# Schritt 1: Zweitimpfungen aus alten Erstimpfungen abarbeiten für abstand
-durchimpfung
+# Schritt 1/2: Erst und Zweitimpfungen aus alten Erstimpfungen abarbeiten für abstand Tage
+durchimpfung.ts <- durchimpfung.ts %>% 
+  group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>% 
+  mutate(Zweit_neu = ifelse(row_number()<abstand,
+                            (dosen_verabreicht_erst - dosen_verabreicht_zweit)/abstand,0),
+         Erst_neu = ifelse(row_number()<abstand & (Anwendung - Zweit_neu)>0,
+                           Anwendung - Zweit_neu,0)) 
+
+# Schritt 3: Folgetage iterativ bestimmen...
 
 # 
 # 
