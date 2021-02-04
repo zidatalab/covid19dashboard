@@ -3,8 +3,8 @@ title: "Ärztliche Praxen werden zur Unterstützung der Impfzentren gebraucht"
 author: "Thomas Czihal, Lars Kroll, Edgar Steiger"
 date: "4 2 2021"
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}

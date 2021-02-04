@@ -90,9 +90,9 @@ zeitreihe_impfdosen <- bind_rows(
   # group_by(jahr,hersteller,quartal) %>% arrange(as.numeric(Datum)) %>%
   mutate(gewichtungsfaktor = case_when(
            quartal==1 ~ 1/as.integer(as_date("2021-03-31")-today()),
-           quartal==2 & month(Datum)==4 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.20/30 - (0.20/30)*.1 + (0.20/30)*.2* as.numeric(mday(Datum)/days_in_month(Datum)),
-           quartal==2 & month(Datum)==5 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.35/31 - (0.35/31 )*.1 + (0.35/31)*.2* as.numeric(mday(Datum)/days_in_month(Datum)),
-           quartal==2 & month(Datum)==6 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.45/30 - (0.45/30 )*.1 + (0.45/30)*.2* as.numeric(mday(Datum)/days_in_month(Datum)),
+           quartal==2 & month(Datum)==4 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.20/30 - (0.20/30)*.15 + (0.20/30)*.3* as.numeric(mday(Datum)/days_in_month(Datum)),
+           quartal==2 & month(Datum)==5 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.35/31 - (0.35/31 )*.15 + (0.35/31)*.3* as.numeric(mday(Datum)/days_in_month(Datum)),
+           quartal==2 & month(Datum)==6 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.45/30 - (0.45/30 )*.15 + (0.45/30)*.3* as.numeric(mday(Datum)/days_in_month(Datum)),
            quartal==2 & Verteilungsszenario=="Gleichverteilung" ~ 1/(30+31+30), 
            quartal==3 ~ 1/(31+31+30),
            quartal==4 ~ 1/(31+30+31)
