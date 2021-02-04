@@ -32,7 +32,9 @@ Für die zukünftige Planung berücksichtigen wir die verabredeten Impfstofflief
 **Abb. 1: Leistungsfähigkeit der Impfzentren**
 
 ```{r szenarientabelle, echo=FALSE, fig.height=5 *9/16}
-szenarien %>% rename("Wochtags"=	kap_wt	, "Wochenende"=kap_we)  %>% gather(Merkmal,Wert,2:3) %>% ggplot(aes(x=szenario,fill=Merkmal,y=Wert/1000)) + geom_bar(pos="stack",stat="identity") + coord_flip() + theme_minimal() + scale_fill_zi() + labs(x="",y="Anzahl täglicher Impfungen in Tsd.", fill="")
+szenarien %>% rename("Mo-Fr"=	kap_wt	, "Sa+So"=kap_we)  %>% gather(Merkmal,Wert,2:3) %>%
+  mutate(Wert=ifelse(Merkmal=="Sa+So", 2*Wert, 5*Wert),
+         Merkmal=factor(Merkmal, ordered = TRUE, levels = c("Sa+So", "Mo-Fr"))) %>% ggplot(aes(x=szenario,fill=Merkmal,y=Wert/1000)) + geom_bar(pos="stack",stat="identity") + coord_flip() + theme_minimal() + scale_fill_zi() + labs(x="",y="Anzahl wöchentlicher Impfungen in Tsd.", fill="")
 ```
 
 Für die Lieferungen berücksichtigen wir zwei Lieferungs-Szenarien: Im ersten Szenario werden die quartalsweise zugesicherten Lieferungen gleichmäßig auf die Monate des Quartals verteilt ("Gleichverteilung"), im zweiten Szenario ("Linearer Anstieg") verschieben sich die zugesagten Lieferungen bis Juni nach hinten, sodass im 2. Quartal im April 20%, im Mai 35% und dafür im Juni 45% der für das Quartal jeweils durch die Hersteller zugesicherten Dosen geliefert werden. Die zugesagten Lieferungen sind in Abbildung 2 dargestellt. 
