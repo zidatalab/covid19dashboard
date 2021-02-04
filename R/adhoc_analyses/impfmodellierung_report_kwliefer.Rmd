@@ -3,8 +3,8 @@ title: "Ärztliche Praxen werden zur Unterstützung der Impfzentren gebraucht"
 author: "Thomas Czihal, Lars Kroll, Dominik von Stillfried, Edgar Steiger"
 date: "4 2 2021"
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -74,19 +74,21 @@ In der aktuellen Darstellung wird ohne weitere Rückstellungen für die Folgeimp
 #   geom_hline(yintercept=100) +
 #   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
 # 
-ann_text <- data.frame(kw = 36.5, IZ_Auslastung = 40, lab = "21.9.", szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+ann_text <- data.frame(kw = 36.5, reverseAuslastung = 0, lab = "21.9.", szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+ann_text_q <- data.frame(kw = c(5, 13, 26), reverseAuslastung = 0, lab = c("Q1", "Q2", "Q3"), szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
 output.plot1kw <- output %>%
+  mutate(reverseAuslastung=1/(IZ_Auslastung/100)*100) %>%
   filter(jahr>=2021 & quartal<=3) %>%
-  ggplot(aes(x=kw, y=IZ_Auslastung, color=szenario, group=szenario)) +
-  facet_wrap(.~Verteilungsszenario , ncol=1) +
+  ggplot(aes(x=kw, y=reverseAuslastung, color=szenario, group=szenario)) +
+  facet_wrap(.~Verteilungsszenario, ncol=1) +
   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
   geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
-  # annotate("text", label = "21.9.", x = 37, y = 50, , size = 3) +
+  geom_text(data = ann_text_q, aes(label = lab), col="darkgrey", size=3) +
   ylim(0, NA) +
-  #scale_y_continuous(breaks = c(100,200,400,600)) +
-  geom_hline(yintercept=100,  linetype="dashed") + 
+  # geom_hline(yintercept=100,  linetype="dashed") + 
   geom_vline(xintercept=38) +
-  labs(color="", x="KW", y="Auslastung der Impfzentren in %")+
+  # geom_vline(xintercept = isoweek(as_date(c("2020-04-01", "2020-07-01"))), color="lightgrey", linetype="dotted") +
+  labs(color="", x="KW", y="Anteil (%) in Impfzentren\nverimpfbarer Impfdosen")+
   scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
 output.plot1kw
 ```
@@ -107,15 +109,17 @@ Es wird deutlich, dass bereits ab April die vertragsärztlichen Praxen unbedingt
 #   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
 # 
 ann_text <- data.frame(kw = 36.5, Zusatzbedarf_n_Aerzte = 10000, lab = "21.9.", szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+ann_text_q <- data.frame(kw = c(5, 13, 26), Zusatzbedarf_n_Aerzte = -7000, lab = c("Q1", "Q2", "Q3"), szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
 output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
   Monat=month(Datum, label=TRUE)) %>%
   filter(jahr>=2021 & quartal<=3) %>%
   ggplot(aes(x=kw, y=Zusatzbedarf_n_Aerzte, color=szenario, group=szenario)) +
-  facet_wrap(.~Verteilungsszenario , ncol=1) +
+  facet_wrap(.~Verteilungsszenario, ncol=1) +
   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
   geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  geom_text(data = ann_text_q, aes(label = lab), col="darkgrey", size=3) +
   # annotate("text", label = "21.9.", x = 37, y = 50, , size = 3) +
-  ylim(0, NA) +
+  ylim(-7000, NA) +
   # scale_y_continuous(breaks = c(0,200,400,600)) +
   geom_hline(yintercept=0, linetype="dashed") + 
   geom_vline(xintercept=38) +
@@ -129,18 +133,27 @@ output.plot2kw
 ```{r dosenkumuliert, warning=FALSE, echo=FALSE}
 bisher_verimpft <- dosen_verabreicht %>% ungroup() %>% summarise(verimpft=sum(dosen_verabreicht_erst+dosen_verabreicht_zweit)) %>% pull(verimpft)
 plot6data <-bind_rows(
-    output %>% select(Verteilungsszenario, szenario,Datum,kw,verimpft=IZ_verimpft,Zusatzbedarf) ,
-    output %>% select(Verteilungsszenario, szenario,Datum,kw,IZ_verimpft,Zusatzbedarf)  %>%
-        filter(szenario=="IZ Regelbetrieb") %>% mutate(szenario="IZ + Vertragsärzte") %>%
-        mutate(verimpft=IZ_verimpft+Zusatzbedarf)) %>%
-    group_by(Verteilungsszenario, szenario) %>% arrange(Verteilungsszenario, szenario,Datum) %>% 
-  mutate(kum_verimpft=cumsum(verimpft)+bisher_verimpft,
-         label=factor(szenario,levels=c("IZ Intensivbetrieb", "IZ + Vertragsärzte","IZ Regelbetrieb"),ordered = TRUE)) 
-  
-  
-ggplot(plot6data, aes(x=kw,y=kum_verimpft/1e6,color=label)) + geom_line(size=3) + facet_wrap(.~Verteilungsszenario , ncol=1)  +scale_color_zi() + theme_minimal() + labs(color="Szenario Impforganisation", y="Potentiell verimpfbare Dosen in Mio.") + geom_hline(yintercept = 0) + theme(legend.position = "bottom") +
+output %>% select(Verteilungsszenario, szenario,Datum,kw,verimpft=IZ_verimpft,Zusatzbedarf) ,
+output %>% select(Verteilungsszenario, szenario,Datum,kw,IZ_verimpft,Zusatzbedarf) %>%
+filter(szenario=="IZ Regelbetrieb") %>% mutate(szenario="IZ + Vertragsärzte") %>%
+mutate(verimpft=IZ_verimpft+Zusatzbedarf)) %>%
+group_by(Verteilungsszenario, szenario) %>% arrange(Verteilungsszenario, szenario,Datum) %>%
+mutate(kum_verimpft=cumsum(verimpft)+bisher_verimpft,
+label=factor(szenario,levels=c("IZ Intensivbetrieb", "IZ + Vertragsärzte","IZ Regelbetrieb"),ordered = TRUE))
+
+ann_text <- data.frame(kw = 36, kum_verimpft1e6 = 10, lab = "21.9.", szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+ann_text_q <- data.frame(kw = c(5, 13, 26), kum_verimpft1e6 = -10, lab = c("Q1", "Q2", "Q3"), szenario="IZ Regelbetrieb", Verteilungsszenario="Linearer Anstieg der Produktion in Q2")
+
+ggplot(plot6data %>% filter(quarter(Datum)<=3) %>%
+         mutate(kum_verimpft1e6=kum_verimpft/1e6),
+       aes(x=kw,y=kum_verimpft1e6,color=label)) + geom_line(size=3) +
+facet_wrap(Verteilungsszenario ~. , ncol=2) +scale_color_zi() + theme_minimal() + labs(color="Szenario Impforganisation", y="Potentiell verimpfbare Dosen in Mio.",x="KW") + geom_hline(yintercept = 0) + theme(legend.position = "bottom") +
 geom_vline(xintercept=38) +
-geom_hline(yintercept = 2*impflinge_gesamt/1e6, linetype = "dashed")
+  ylim(-10, NA) +
+geom_hline(yintercept = 2*impflinge_gesamt/1e6, linetype = "dashed") +
+    geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  geom_text(data = ann_text_q, aes(label = lab), col="darkgrey", size=3)
+# geom_vline(xintercept = isoweek(as_date(c("2020-04-01","2020-07-01"))),color="darkgrey")
 
 
 
