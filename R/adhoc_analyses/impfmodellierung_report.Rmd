@@ -113,7 +113,7 @@ output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenar
   ggplot(aes(x=kw, y=Zusatzbedarf_n_Aerzte, color=szenario, group=szenario)) +
   facet_wrap(.~Verteilungsszenario , ncol=1) +
   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
-    geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
   # annotate("text", label = "21.9.", x = 37, y = 50, , size = 3) +
   ylim(0, NA) +
   # scale_y_continuous(breaks = c(0,200,400,600)) +
@@ -136,7 +136,9 @@ plot6data <-bind_rows(
     group_by(Verteilungsszenario, szenario) %>% arrange(Verteilungsszenario, szenario,Datum) %>% 
   mutate(kum_verimpft=cumsum(verimpft)+bisher_verimpft) 
   
-ggplot(plot6data, aes(x=kw,y=kum_verimpft/1e6,color=szenario)) + geom_line(size=3) + facet_wrap(.~Verteilungsszenario , ncol=1)  +scale_color_zi() + theme_minimal() + labs(color="Szenario Impforganisation", y="Potentiell verimpfbare Dosen in Mio.") + geom_hline(yintercept = 0) + theme(legend.position = "bottom")
+ggplot(plot6data, aes(x=kw,y=kum_verimpft/1e6,color=szenario)) + geom_line(size=3) + facet_wrap(.~Verteilungsszenario , ncol=1)  +scale_color_zi() + theme_minimal() + labs(color="Szenario Impforganisation", y="Potentiell verimpfbare Dosen in Mio.") + geom_hline(yintercept = 0) + theme(legend.position = "bottom") +
+geom_vline(xintercept=38) +
+geom_hline(yintercept = 2*impflinge_gesamt/1e6, linetype = "dashed")
 
 
 
