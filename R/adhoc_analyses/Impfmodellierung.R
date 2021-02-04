@@ -199,12 +199,20 @@ output <-
 
 ## Durchimpfung
 
-# Bereits verimpfte dosen fehlen noch!!
-durchimpfung <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
+durchimpfung.base <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
    ungroup() %>% select(Verteilungsszenario,Datum,werktag,dosen.verf,hersteller,anwendungen)   %>%  full_join(szenarien,by = character()) %>% 
   mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
   select(-kap_wt, -kap_we,-werktag) %>% rename("Betriebsszenario"=szenario) %>% 
-  arrange(Verteilungsszenario,Betriebsszenario,Datum) %>% ungroup()
+  arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum) %>% 
+  group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>%
+  left_join(., dosen_verabreicht %>%
+              select(-dosen_geliefert),by=c("hersteller")) %>%
+  left_join(., dosen_planung %>% group_by(hersteller) %>% count(abstand) %>% select(-n),by=c("hersteller")) %>%
+  mutate(rowid=row_number())
+
+durchimpfung <- durchimpfung.base
+
+# HIER HÖRTS AUF...
 
 Datumsliste = durchimpfung %>% count(Datum) %>% arrange(Datum) %>% pull(Datum)
 
@@ -219,55 +227,112 @@ for(theDatum in Datumsliste) {
       group_by(Verteilungsszenario,Betriebsszenario) %>%
       mutate(Auslastung=sum(dosen.verf)/mean(Kapazitaet),
              Anwendung = round(dosen.verf*(1/Auslastung)),
-             Restdosen = dosen.verf-Anwendung) %>%
-      left_join(dosen_verabreicht %>% mutate(zuvor=dosen_verabreicht_erst+ 
-                                               dosen_verabreicht_zweit) %>% 
-                  select(hersteller,zuvor),by="hersteller")    %>% 
-      mutate(Anwendung=Anwendung+zuvor,
-             dosen.verf=dosen.verf+zuvor) %>% select(-zuvor) %>% ungroup()
+             Restdosen = dosen.verf-Anwendung)  # %>%
+      
     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
-    durchimpfung = bind_rows(tagesdaten,durchimpfung) 
+    durchimpfung = bind_rows(tagesdaten,durchimpfung)
   }
   # An anderen Tagen vorherigen Tag und aktuellen Tag nehmen
   if (i>1){
     tagesdaten_old = durchimpfung %>% filter(Datum==(as_date(theDatum)-days(1))) %>% select(Verteilungsszenario,hersteller,Betriebsszenario,Restdosen)
     tagesdaten_new = durchimpfung %>% filter(Datum==(as_date(theDatum))) %>% select(-Restdosen) %>%
-      left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "hersteller", "Betriebsszenario")) %>% 
+      left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "hersteller", "Betriebsszenario")) %>%
       mutate(dosen.verf=dosen.verf+Restdosen) %>% select(-Restdosen) %>%
     mutate(Auslastung=sum(dosen.verf)/mean(Kapazitaet),
            Anwendung = round(dosen.verf*(1/Auslastung)),
-           Restdosen = dosen.verf-Anwendung) %>% ungroup() 
+           Restdosen = dosen.verf-Anwendung) %>% ungroup()
     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
-    durchimpfung = bind_rows(tagesdaten_new,durchimpfung) 
-    
+    durchimpfung = bind_rows(tagesdaten_new,durchimpfung)
+
   }
 }
 
 
 
-durchimpfung.ts <-durchimpfung %>%  
-  mutate(Patienten_IZ=Anwendung/anwendungen,
-         Patienten_IZ_plus=dosen.verf/anwendungen) %>% 
-  group_by(Verteilungsszenario,Betriebsszenario,Datum) %>% 
-  summarise(Patienten_IZ=sum(Patienten_IZ),
-            Patienten_IZ_plus=sum(Patienten_IZ_plus),
-            Anwendung_IZ=sum(Anwendung),
-            Rest_IZ=sum(Restdosen)
-            ) %>%
-  group_by(Verteilungsszenario,Betriebsszenario) %>%
-  arrange(Verteilungsszenario,Betriebsszenario,Datum) %>%
-  mutate(Patienten_IZ_kum=cumsum(Patienten_IZ),
-         Patienten_IZ_plus_kum=cumsum(Patienten_IZ_plus),
-         "Imfquote IZ"      = 100*(Patienten_IZ_kum/impflinge_gesamt),
-         "Imfquote IZ und Vertragsärzte" = 100*(Patienten_IZ_plus_kum/impflinge_gesamt)
-  ) 
 
+# 
+# 
+# 
+# min(Datumsliste)
+# 
+# durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,Datum,hersteller) %>%
+#   left_join(.,dosen_verabreicht %>% mutate(Datum=min(Datumsliste)) %>% 
+#               select(- dosen_geliefert),by=c("hersteller","Datum")) %>%
+#   arrange(Verteilungsszenario,Betriebsszenario, hersteller ,Datum ) %>%
+#   group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>%
+#   left_join(., dosen_planung %>% 
+#               group_by(hersteller) %>% count(abstand) %>% select(-n), by="hersteller") %>% 
+#   mutate(
+#   neu_zweit=ifelse(row_number()<=abstand,
+#                   (first(dosen_verabreicht_erst)-
+#                      first(dosen_verabreicht_zweit))/abstand,0),
+#   neu_erst=ifelse(row_number()<=abstand & (Anwendung-neu_zweit)>=0,
+#                                   Anwendung-neu_zweit,Anwendung)) %>%
+#   mutate(neu_zweit =  ifelse(row_number()>abstand,neu_zweit+
+#            lag(neu_erst,dosen_planung %>% 
+#                  filter(hersteller==hersteller) %>% head(1) %>%
+#                  pull(abstand) )
+#            ,neu_zweit))
+#   
+# Für jedes Szenario muss ab Zeile Abstand + 1 die 
+# Anzahl der Zweitimpfungen iterativ aus den vorangegangenen Erstimpfungen 
+# bestimmt werden, die Zahl der neuen Erstimpfungen reduziert sich dann um die 
+# ZWeitimpfungen
 
-plotdata.imfquote <- durchimpfung.ts %>% select(Verteilungsszenario,Betriebsszenario,Datum,"Imfquote IZ","Imfquote IZ und Vertragsärzte") %>% gather(Merkmal,Wert,4:5)
+# 
+# for(row in seq(1,dim(testds)[1],1)){
+#  thelag =  testds[5,]$abstand
+#  testds <- testds %>% 
+#    mutate(neu_zweit = ifelse(row_number()>thelag & row_number()=,
+#           lag(new_erst,thelag)
+#           ) 
+# }
+# 
+# 
+# 
+# %>%
+#   mutate(lag_neu_erst = lag(neu_erst, dosen_planung %>% 
+#                               filter(hersteller==hersteller) %>% head(1) %>%
+#                               pull(abstand) ),
+#          neu_zweit=ifelse(!is.na(lag_neu_erst),neu_zweit+lag_neu_erst,neu_zweit)) 
+# )
+#                   
+#                   
+#                   
+#                   %>%
+#   mutate(neu_zweit=ifelse(row_number()>abstand,lag(neu_erst,abstand-1),neu_zweit))
+#          
+#          ,
+#          neu_erst= ifelse(row_number()>abstand & (Anwendung-neu_zweit)>=0,
+#                          Anwendung-neu_zweit,neu_erst)
+#   )
 
- ggplot(plotdata.imfquote %>% filter(Wert<=100),aes(x=Datum,color=Merkmal,y=Wert)) + 
-   geom_line(size=2.5) + theme_minimal() + scale_color_zi() +
-   facet_grid(Betriebsszenario~ Verteilungsszenario)
+  
+# 
+# 
+# durchimpfung.ts <-durchimpfung %>% 
+#   mutate(Patienten_IZ=Anwendung/anwendungen,
+#          Patienten_IZ_plus=dosen.verf/anwendungen) %>% 
+#   group_by(Verteilungsszenario,Betriebsszenario,Datum) %>% 
+#   summarise(Patienten_IZ=sum(Patienten_IZ),
+#             Patienten_IZ_plus=sum(Patienten_IZ_plus),
+#             Anwendung_IZ=sum(Anwendung),
+#             Rest_IZ=sum(Restdosen)
+#             ) %>%
+#   group_by(Verteilungsszenario,Betriebsszenario) %>%
+#   arrange(Verteilungsszenario,Betriebsszenario,Datum) %>%
+#   mutate(Patienten_IZ_kum=cumsum(Patienten_IZ),
+#          Patienten_IZ_plus_kum=cumsum(Patienten_IZ_plus),
+#          "Imfquote IZ"      = 100*(Patienten_IZ_kum/impflinge_gesamt),
+#          "Imfquote IZ und Vertragsärzte" = 100*(Patienten_IZ_plus_kum/impflinge_gesamt)
+#   ) 
+# 
+# 
+# plotdata.imfquote <- durchimpfung.ts %>% select(Verteilungsszenario,Betriebsszenario,Datum,"Imfquote IZ","Imfquote IZ und Vertragsärzte") %>% gather(Merkmal,Wert,4:5)
+# 
+#  ggplot(plotdata.imfquote %>% filter(Wert<=100),aes(x=Datum,color=Merkmal,y=Wert)) + 
+#    geom_line(size=2.5) + theme_minimal() + scale_color_zi() +
+#    facet_grid(Betriebsszenario~ Verteilungsszenario)
 
 ## Übersichten
 dosen_planung %>% group_by(hersteller) %>% 
