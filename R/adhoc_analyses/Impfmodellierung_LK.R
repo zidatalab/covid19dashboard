@@ -222,7 +222,7 @@ for(theDatum in Datumsliste) {
   if (i==1){
     tagesdaten   = durchimpfung %>% filter(Datum==as_date(theDatum))  %>%
       group_by(Verteilungsszenario,Betriebsszenario,Datum) %>%
-      mutate(Auslastung=sum(dosen.verf)/mean(Kapazitaet),
+      mutate(Auslastung=sum(dosen.verf)/Kapazitaet,
              Anwendung = round(dosen.verf*(1/Auslastung)),
              Restdosen = dosen.verf-Anwendung) %>% ungroup() 
       
@@ -239,9 +239,9 @@ for(theDatum in Datumsliste) {
                                             ,"hersteller" ))  %>%
      mutate(
        dosen.verf=dosen.verf-Restdosen,
-       Auslastung=sum(dosen.verf)/mean(Kapazitaet),
+       Auslastung=sum(dosen.verf)/Kapazitaet,
               Anwendung = round(dosen.verf*(1/Auslastung)),
-              Restdosen = dosen.verf-Anwendung) %>% ungroup() 
+              Restdosen = round(dosen.verf-Anwendung)) %>% ungroup() 
     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
     durchimpfung = bind_rows(tagesdaten_new,durchimpfung)
   }
