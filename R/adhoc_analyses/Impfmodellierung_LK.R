@@ -238,7 +238,7 @@ for(theDatum in Datumsliste) {
         left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "Betriebsszenario"
                                             ,"hersteller" ))  %>%
      mutate(
-       dosen.verf=dosen.verf-Restdosen,
+       dosen.verf=dosen.verf+Restdosen,
        Auslastung=sum(dosen.verf)/Kapazitaet,
               Anwendung = round(dosen.verf*(1/Auslastung)),
               Restdosen = round(dosen.verf-Anwendung)) %>% ungroup() 
@@ -249,6 +249,8 @@ for(theDatum in Datumsliste) {
 
 durchimpfung <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum)
 
+# Schritt 1: Zweitimpfungen aus alten Erstimpfungen abarbeiten für abstand
+durchimpfung
 
 # 
 # 
