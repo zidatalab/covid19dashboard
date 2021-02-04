@@ -138,7 +138,9 @@ szenarien <-
     tibble(szenario="IZ Intensivbetrieb", 
            kap_wt=kapazitaeten %>% filter(einrichtung=="Impfzentren" & betriebsart=="Intensivbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
            kap_we=kapazitaeten %>% filter(einrichtung=="Impfzentren" & betriebsart=="Intensivbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert)),
-  
+    # tibble(szenario="IZ + Vertragsärzte", 
+    #        kap_wt=kapazitaeten %>% filter(einrichtung=="Impfzentren" & betriebsart=="Intensivbetrieb") %>% summarise(wert=sum(kap_wt)) %>% pull(wert),
+    #        kap_we=kapazitaeten %>% filter(einrichtung=="Impfzentren" & betriebsart=="Intensivbetrieb") %>% summarise(wert=sum(kap_we)) %>% pull(wert))
   ) %>% ungroup()
 
 
@@ -161,41 +163,6 @@ output <-
          IZ_Auslastung=100*(dosen.verf/Kapazitaet),
          Zusatzbedarf=ifelse(dosen.verf<=Kapazitaet,0,dosen.verf-IZ_verimpft) ,
          Zusatzbedarf_n_Aerzte=Zusatzbedarf/praxis_kapazitaet_wt)
-
-# output.plot1 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
-#                                   Monat=month(Datum, label=TRUE)) %>%
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=Monat, y=IZ_Auslastung, fill=szenario)) +
-#   facet_wrap(.~Verteilungsszenario) +
-#   geom_bar(stat="identity", position = "dodge") + #scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=100) +
-#   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
-# 
-# output.plot1kw <- output %>% 
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=kw, y=IZ_Auslastung, color=szenario, group=szenario)) +
-#   facet_wrap(.~Verteilungsszenario , ncol=1) +
-#   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=100,  linetype="dotted") + labs(color="", x="KW", y="Auslastung der Impfzentren")+ 
-#   scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
-# 
-# output.plot2 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
-#                                   Monat=month(Datum, label=TRUE)) %>%
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=Monat, y=Zusatzbedarf_n_Aerzte, fill=szenario)) +
-#   facet_wrap(.~Verteilungsszenario) +
-#   geom_bar(stat="identity", position = "dodge") + # scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=0,) +
-#   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
-# 
-# output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
-#   Monat=month(Datum, label=TRUE)) %>%
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=kw, y=Zusatzbedarf_n_Aerzte, color=szenario, group=szenario)) +
-#   facet_wrap(.~Verteilungsszenario , ncol=1) +
-#   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=0 ) + labs(color="", x="KW", y="Anzahl zuusätzlich notwendiger Ärzte")+ 
-#   scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
 
 ## Durchimpfung
 
@@ -266,111 +233,32 @@ shortcut <- bind_rows(
   group_by(Verteilungsszenario, Betriebsszenario,Datum) %>% summarise(Patienten=sum(Patienten)) %>% 
   mutate(Patienten=cumsum(Patienten)+
            dosen_verabreicht %>% 
-           summarise(Dosen=sum(dosen_verabreicht_erst+dosen_verabreicht_zweit)) %>% pull(Dosen)),
-durchimpfung.ts %>% filter(Betriebsszenario=="IZ Regelbetrieb") %>% 
-  group_by( Verteilungsszenario,Betriebsszenario,Datum) %>% 
-  summarise(Patienten=sum(dosen.verf/anwendungen) )  %>%
-  ungroup() %>% mutate(Betriebsszenario="IZ + Vertragsärzte") )
-
-ggplot(shortcut %>% mutate(Durchimpfung= 100*(Patienten/impflinge_gesamt)) %>% filter(Durchimpfung<=100),aes(x=Datum,y=Durchimpfung, color=Betriebsszenario)) + geom_line(size=2.5) + facet_grid(.~Verteilungsszenario) + theme_minimal() + scale_color_zi()
-
-# %>%  mutate(Patienten=))
-# 
-# 
-# 
-# min(Datumsliste)
-# 
-# durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,Datum,hersteller) %>%
-#   left_join(.,dosen_verabreicht %>% mutate(Datum=min(Datumsliste)) %>% 
-#               select(- dosen_geliefert),by=c("hersteller","Datum")) %>%
-#   arrange(Verteilungsszenario,Betriebsszenario, hersteller ,Datum ) %>%
-#   group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>%
-#   left_join(., dosen_planung %>% 
-#               group_by(hersteller) %>% count(abstand) %>% select(-n), by="hersteller") %>% 
-#   mutate(
-#   neu_zweit=ifelse(row_number()<=abstand,
-#                   (first(dosen_verabreicht_erst)-
-#                      first(dosen_verabreicht_zweit))/abstand,0),
-#   neu_erst=ifelse(row_number()<=abstand & (Anwendung-neu_zweit)>=0,
-#                                   Anwendung-neu_zweit,Anwendung)) %>%
-#   mutate(neu_zweit =  ifelse(row_number()>abstand,neu_zweit+
-#            lag(neu_erst,dosen_planung %>% 
-#                  filter(hersteller==hersteller) %>% head(1) %>%
-#                  pull(abstand) )
-#            ,neu_zweit))
-#   
-# Für jedes Szenario muss ab Zeile Abstand + 1 die 
-# Anzahl der Zweitimpfungen iterativ aus den vorangegangenen Erstimpfungen 
-# bestimmt werden, die Zahl der neuen Erstimpfungen reduziert sich dann um die 
-# ZWeitimpfungen
-
-# 
-# for(row in seq(1,dim(testds)[1],1)){
-#  thelag =  testds[5,]$abstand
-#  testds <- testds %>% 
-#    mutate(neu_zweit = ifelse(row_number()>thelag & row_number()=,
-#           lag(new_erst,thelag)
-#           ) 
-# }
-# 
-# 
-# 
-# %>%
-#   mutate(lag_neu_erst = lag(neu_erst, dosen_planung %>% 
-#                               filter(hersteller==hersteller) %>% head(1) %>%
-#                               pull(abstand) ),
-#          neu_zweit=ifelse(!is.na(lag_neu_erst),neu_zweit+lag_neu_erst,neu_zweit)) 
-# )
-#                   
-#                   
-#                   
-#                   %>%
-#   mutate(neu_zweit=ifelse(row_number()>abstand,lag(neu_erst,abstand-1),neu_zweit))
-#          
-#          ,
-#          neu_erst= ifelse(row_number()>abstand & (Anwendung-neu_zweit)>=0,
-#                          Anwendung-neu_zweit,neu_erst)
-#   )
-
+           summarise(Dosen=sum(dosen_verabreicht_zweit)) %>% pull(Dosen)),
   
-# 
-# 
-# durchimpfung.ts <-durchimpfung %>% 
-#   mutate(Patienten_IZ=Anwendung/anwendungen,
-#          Patienten_IZ_plus=dosen.verf/anwendungen) %>% 
-#   group_by(Verteilungsszenario,Betriebsszenario,Datum) %>% 
-#   summarise(Patienten_IZ=sum(Patienten_IZ),
-#             Patienten_IZ_plus=sum(Patienten_IZ_plus),
-#             Anwendung_IZ=sum(Anwendung),
-#             Rest_IZ=sum(Restdosen)
-#             ) %>%
-#   group_by(Verteilungsszenario,Betriebsszenario) %>%
-#   arrange(Verteilungsszenario,Betriebsszenario,Datum) %>%
-#   mutate(Patienten_IZ_kum=cumsum(Patienten_IZ),
-#          Patienten_IZ_plus_kum=cumsum(Patienten_IZ_plus),
-#          "Imfquote IZ"      = 100*(Patienten_IZ_kum/impflinge_gesamt),
-#          "Imfquote IZ und Vertragsärzte" = 100*(Patienten_IZ_plus_kum/impflinge_gesamt)
-#   ) 
-# 
-# 
-# plotdata.imfquote <- durchimpfung.ts %>% select(Verteilungsszenario,Betriebsszenario,Datum,"Imfquote IZ","Imfquote IZ und Vertragsärzte") %>% gather(Merkmal,Wert,4:5)
-# 
-#  ggplot(plotdata.imfquote %>% filter(Wert<=100),aes(x=Datum,color=Merkmal,y=Wert)) + 
-#    geom_line(size=2.5) + theme_minimal() + scale_color_zi() +
-#    facet_grid(Betriebsszenario~ Verteilungsszenario)
+  durchimpfung.ts %>% filter(Betriebsszenario=="IZ Regelbetrieb") %>% 
+    group_by( Verteilungsszenario,Betriebsszenario,Datum) %>% 
+    summarise(Patienten=sum(dosen.verf/anwendungen) )  %>% mutate(Patienten=Patienten+dosen_verabreicht %>% 
+                                                                    summarise(Dosen=sum(dosen_verabreicht_zweit)) %>% 
+                                                                    pull(Dosen)) %>%
+  ungroup() %>% mutate(Betriebsszenario="IZ + Vertragsärzte") %>%
+  mutate(Patienten)
+)
 
-## Übersichten
-dosen_planung %>% group_by(hersteller) %>% 
-  summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))
-kapazitaeten
-szenarien
-zeitreihe_impfdosen %>% head()
+##
 
+shortcut2 <- durchimpfung.ts %>% mutate(Patienten=Anwendung/anwendungen) %>% 
+  group_by(Verteilungsszenario, Betriebsszenario,Datum) %>% summarise(Patienten=sum(Patienten)) %>% 
+  mutate(Patienten=cumsum(Patienten)+
+           dosen_verabreicht %>% 
+           summarise(Dosen=sum(dosen_verabreicht_zweit)) %>% pull(Dosen))
 
-# 1. Q1 Korrektur mit empirischen Dosen, Speicher der Rückstellstellimfpunegn
-# 2. Auslastung korrigieren, Unterstützungbedarf IZ durch Ärzte quantifizieren
-# 3. Verfügbarkeitszenarien, V1 gleichverteil + emp. , V2 zunehmend + emp.
-# 4. Report 1: Impfkapazität
-# 5. Rückstellungen , Abgeschlossene Impflinge, 
-# 6. Report 2: Durchimpfungsqsquote
-# 7. Dashboard
+## added safety margin 
+shortcut%>% mutate(Durchimpfung= 90*(Patienten/impflinge_gesamt)) %>% 
+  filter(Durchimpfung<=100) %>% ggplot() + 
+  aes(x=Datum,y=Durchimpfung, color=Betriebsszenario) + geom_line(size=2.5) +
+  facet_grid(.~Verteilungsszenario) + theme_minimal() + scale_color_zi() +
+  scale_x_date(breaks="4 weeks", date_labels = "%d.%m.")+
+  labs(y="Durchimpfung der Bevölkerung im Alter 20+ J.") +
+  geom_vline(xintercept = as_date("2021-09-11"), linetype="dashed") + 
+  geom_hline(yintercept = 0) + theme(legend.position = "bottom")
+
