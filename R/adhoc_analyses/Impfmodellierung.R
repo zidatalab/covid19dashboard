@@ -197,6 +197,21 @@ output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenar
   geom_hline(yintercept=0 ) + labs(color="", x="KW", y="Anzahl zuusätzlich notwendiger Ärzte")+ 
   scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
 
+## Durchimpfung
+
+durchimpfung <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
+  mutate(dosen.verf=ifelse(row_number()!=1,dosen.verf,dosen.verf+dosen_verabreicht_erst+dosen_verabreicht_zweit))  %>% 
+  select(Verteilungsszenario,,Datum,dosen.verf,anwendungen) %>% 
+  group_by(Verteilungsszenario,hersteller) %>% 
+  mutate(Patienten=dosen.verf/anwendungen) %>% 
+  group_by(Verteilungsszenario,Datum) %>% 
+  summarise(Patienten=sum(Patienten)) %>% 
+  group_by(Verteilungsszenario) %>% 
+  mutate(Patienten_kum=cumsum(Patienten),
+         Anteil=100*(Patienten_kum/impflinge_gesamt))
+
+output.plot3 <- ggplot(durchimpfung,aes(x=Datum,color=Verteilungsszenario,y=Anteil)) + geom_line(size=2.5) + theme_minimal() + scale_color_zi() 
+
 ## Übersichten
 dosen_planung %>% group_by(hersteller) %>% 
   summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))

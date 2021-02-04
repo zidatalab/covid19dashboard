@@ -67,4 +67,8 @@ Es wird deutlich, dass bereits ab April die vertragsärztlichen Praxen unbedingt
 ```{r outputplot2, warning=FALSE, echo=FALSE}
 output.plot2kw
 ```
+**Abb. 6: Modellierte Durchimpfungsrate nach Datum**
 
+```{r outputplot2, warning=FALSE, echo=FALSE}
+output.plot3
+```
