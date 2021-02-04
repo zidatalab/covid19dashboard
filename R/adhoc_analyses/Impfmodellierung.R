@@ -199,18 +199,75 @@ output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenar
 
 ## Durchimpfung
 
+# Bereits verimpfte dosen fehlen noch!!
 durchimpfung <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
-  mutate(dosen.verf=ifelse(row_number()!=1,dosen.verf,dosen.verf+dosen_verabreicht_erst+dosen_verabreicht_zweit))  %>% 
-  select(Verteilungsszenario,,Datum,dosen.verf,anwendungen) %>% 
-  group_by(Verteilungsszenario,hersteller) %>% 
-  mutate(Patienten=dosen.verf/anwendungen) %>% 
-  group_by(Verteilungsszenario,Datum) %>% 
-  summarise(Patienten=sum(Patienten)) %>% 
-  group_by(Verteilungsszenario) %>% 
-  mutate(Patienten_kum=cumsum(Patienten),
-         Anteil=100*(Patienten_kum/impflinge_gesamt))
+   ungroup() %>% select(Verteilungsszenario,Datum,werktag,dosen.verf,hersteller,anwendungen)   %>%  full_join(szenarien,by = character()) %>% 
+  mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
+  select(-kap_wt, -kap_we,-werktag) %>% rename("Betriebsszenario"=szenario) %>% 
+  arrange(Verteilungsszenario,Betriebsszenario,Datum) %>% ungroup()
 
-output.plot3 <- ggplot(durchimpfung,aes(x=Datum,color=Verteilungsszenario,y=Anteil)) + geom_line(size=2.5) + theme_minimal() + scale_color_zi() 
+Datumsliste = durchimpfung %>% count(Datum) %>% arrange(Datum) %>% pull(Datum)
+
+for(theDatum in Datumsliste) {
+  if (theDatum==Datumsliste[1]){
+    i=0
+  }
+  i = i+1
+  # Am ersten Tag der Prognose alte Daten holen
+  if (i==1){
+    tagesdaten   = durchimpfung %>% filter(Datum==as_date(theDatum))  %>%
+      group_by(Verteilungsszenario,Betriebsszenario) %>%
+      mutate(Auslastung=sum(dosen.verf)/mean(Kapazitaet),
+             Anwendung = round(dosen.verf*(1/Auslastung)),
+             Restdosen = dosen.verf-Anwendung) %>%
+      left_join(dosen_verabreicht %>% mutate(zuvor=dosen_verabreicht_erst+ 
+                                               dosen_verabreicht_zweit) %>% 
+                  select(hersteller,zuvor),by="hersteller")    %>% 
+      mutate(Anwendung=Anwendung+zuvor,
+             dosen.verf=dosen.verf+zuvor) %>% select(-zuvor) %>% ungroup()
+    durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
+    durchimpfung = bind_rows(tagesdaten,durchimpfung) 
+  }
+  # An anderen Tagen vorherigen Tag und aktuellen Tag nehmen
+  if (i>1){
+    tagesdaten_old = durchimpfung %>% filter(Datum==(as_date(theDatum)-days(1))) %>% select(Verteilungsszenario,hersteller,Betriebsszenario,Restdosen)
+    tagesdaten_new = durchimpfung %>% filter(Datum==(as_date(theDatum))) %>% select(-Restdosen) %>%
+      left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "hersteller", "Betriebsszenario")) %>% 
+      mutate(dosen.verf=dosen.verf+Restdosen) %>% select(-Restdosen) %>%
+    mutate(Auslastung=sum(dosen.verf)/mean(Kapazitaet),
+           Anwendung = round(dosen.verf*(1/Auslastung)),
+           Restdosen = dosen.verf-Anwendung) %>% ungroup() 
+    durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
+    durchimpfung = bind_rows(tagesdaten_new,durchimpfung) 
+    
+  }
+}
+
+
+
+durchimpfung.ts <-durchimpfung %>%  
+  mutate(Patienten_IZ=Anwendung/anwendungen,
+         Patienten_IZ_plus=dosen.verf/anwendungen) %>% 
+  group_by(Verteilungsszenario,Betriebsszenario,Datum) %>% 
+  summarise(Patienten_IZ=sum(Patienten_IZ),
+            Patienten_IZ_plus=sum(Patienten_IZ_plus),
+            Anwendung_IZ=sum(Anwendung),
+            Rest_IZ=sum(Restdosen)
+            ) %>%
+  group_by(Verteilungsszenario,Betriebsszenario) %>%
+  arrange(Verteilungsszenario,Betriebsszenario,Datum) %>%
+  mutate(Patienten_IZ_kum=cumsum(Patienten_IZ),
+         Patienten_IZ_plus_kum=cumsum(Patienten_IZ_plus),
+         "Imfquote IZ"      = 100*(Patienten_IZ_kum/impflinge_gesamt),
+         "Imfquote IZ und Vertragsärzte" = 100*(Patienten_IZ_plus_kum/impflinge_gesamt)
+  ) 
+
+
+plotdata.imfquote <- durchimpfung.ts %>% select(Verteilungsszenario,Betriebsszenario,Datum,"Imfquote IZ","Imfquote IZ und Vertragsärzte") %>% gather(Merkmal,Wert,4:5)
+
+ ggplot(plotdata.imfquote %>% filter(Wert<=100),aes(x=Datum,color=Merkmal,y=Wert)) + 
+   geom_line(size=2.5) + theme_minimal() + scale_color_zi() +
+   facet_grid(Betriebsszenario~ Verteilungsszenario)
 
 ## Übersichten
 dosen_planung %>% group_by(hersteller) %>% 
