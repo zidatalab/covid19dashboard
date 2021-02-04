@@ -85,21 +85,14 @@ prognosedatensatz <- tibble(Datum=prognosestart+days(seq(0,as.integer(prognoseen
 
 zeitreihe_impfdosen <- bind_rows(
   prognosedatensatz %>% mutate(Verteilungsszenario="Gleichverteilung"),
-  prognosedatensatz %>% mutate(Verteilungsszenario="Linear Ansteigen")) %>% 
+  prognosedatensatz %>% mutate(Verteilungsszenario="Lineares Ansteigen")) %>% 
   group_by(Datum,hersteller) %>% arrange(as.numeric(Datum)) %>%
   # group_by(jahr,hersteller,quartal) %>% arrange(as.numeric(Datum)) %>%
-  mutate(# dosen.verf = dosen/n(),
-         # monat_in_quartal = month(Datum)-(quarter(Datum)-1)*3,
-         # gewichtungsfaktor = case_when(monat_in_quartal==1 ~ 0.645161290322581 ,
-         #                               monat_in_quartal==2 ~ 0.903225806451613,
-         #                               monat_in_quartal==3 ~ 1.45161290322581),
-         # gewichtungsfaktor = ifelse(Verteilungsszenario=="Linear Ansteigen",
-         #                       gewichtungsfaktor,1),
-         gewichtungsfaktor = case_when(
+  mutate(gewichtungsfaktor = case_when(
            quartal==1 ~ 1/as.integer(as_date("2021-03-31")-today()),
-           quartal==2 & month(Datum)==4 & Verteilungsszenario=="Linear Ansteigen" ~ 0.20/30,
-           quartal==2 & month(Datum)==5 & Verteilungsszenario=="Linear Ansteigen" ~ 0.35/31,
-           quartal==2 & month(Datum)==6 & Verteilungsszenario=="Linear Ansteigen" ~ 0.45/30,
+           quartal==2 & month(Datum)==4 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.20/30,
+           quartal==2 & month(Datum)==5 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.35/31,
+           quartal==2 & month(Datum)==6 & Verteilungsszenario=="Lineares Ansteigen" ~ 0.45/30,
            quartal==2 & Verteilungsszenario=="Gleichverteilung" ~ 1/(30+31+30), 
            quartal==3 ~ 1/(31+31+30),
            quartal==4 ~ 1/(31+30+31)
@@ -178,14 +171,31 @@ output.plot1 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario
   geom_hline(yintercept=100) +
   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
 
+output.plot1kw <- output %>% 
+  filter(jahr>=2021) %>% 
+  ggplot(aes(x=kw, y=IZ_Auslastung, color=szenario, group=szenario)) +
+  facet_wrap(.~Verteilungsszenario , ncol=1) +
+  geom_line(size=3) + # scale_x_date(breaks = "1 month") +
+  geom_hline(yintercept=100,  linetype="dotted") + labs(color="", x="KW", y="Auslastung der Impfzentren")+ 
+  scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
+
 output.plot2 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
                                   Monat=month(Datum, label=TRUE)) %>%
   filter(jahr>=2021) %>% 
   ggplot(aes(x=Monat, y=Zusatzbedarf_n_Aerzte, fill=szenario)) +
   facet_wrap(.~Verteilungsszenario) +
   geom_bar(stat="identity", position = "dodge") + # scale_x_date(breaks = "1 month") +
-  geom_hline(yintercept=100) +
+  geom_hline(yintercept=0,) +
   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
+
+output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
+  Monat=month(Datum, label=TRUE)) %>%
+  filter(jahr>=2021) %>% 
+  ggplot(aes(x=kw, y=Zusatzbedarf_n_Aerzte, color=szenario, group=szenario)) +
+  facet_wrap(.~Verteilungsszenario , ncol=1) +
+  geom_line(size=3) + # scale_x_date(breaks = "1 month") +
+  geom_hline(yintercept=0 ) + labs(color="", x="KW", y="Anzahl zuusätzlich notwendiger Ärzte")+ 
+  scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
 
 ## Übersichten
 dosen_planung %>% group_by(hersteller) %>% 
@@ -193,8 +203,7 @@ dosen_planung %>% group_by(hersteller) %>%
 kapazitaeten
 szenarien
 zeitreihe_impfdosen %>% head()
-output.plot1
-output.plot2
+
 
 # 1. Q1 Korrektur mit empirischen Dosen, Speicher der Rückstellstellimfpunegn
 # 2. Auslastung korrigieren, Unterstützungbedarf IZ durch Ärzte quantifizieren
