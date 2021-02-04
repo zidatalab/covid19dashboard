@@ -134,9 +134,11 @@ plot6data <-bind_rows(
         filter(szenario=="IZ Regelbetrieb") %>% mutate(szenario="IZ + Vertragsärzte") %>%
         mutate(verimpft=IZ_verimpft+Zusatzbedarf)) %>%
     group_by(Verteilungsszenario, szenario) %>% arrange(Verteilungsszenario, szenario,Datum) %>% 
-  mutate(kum_verimpft=cumsum(verimpft)+bisher_verimpft) 
+  mutate(kum_verimpft=cumsum(verimpft)+bisher_verimpft,
+         label=factor(szenario,levels=c("IZ Intensivbetrieb", "IZ + Vertragsärzte","IZ Regelbetrieb"),ordered = TRUE)) 
   
-ggplot(plot6data, aes(x=kw,y=kum_verimpft/1e6,color=szenario)) + geom_line(size=3) + facet_wrap(.~Verteilungsszenario , ncol=1)  +scale_color_zi() + theme_minimal() + labs(color="Szenario Impforganisation", y="Potentiell verimpfbare Dosen in Mio.") + geom_hline(yintercept = 0) + theme(legend.position = "bottom") +
+  
+ggplot(plot6data, aes(x=kw,y=kum_verimpft/1e6,color=label)) + geom_line(size=3) + facet_wrap(.~Verteilungsszenario , ncol=1)  +scale_color_zi() + theme_minimal() + labs(color="Szenario Impforganisation", y="Potentiell verimpfbare Dosen in Mio.") + geom_hline(yintercept = 0) + theme(legend.position = "bottom") +
 geom_vline(xintercept=38) +
 geom_hline(yintercept = 2*impflinge_gesamt/1e6, linetype = "dashed")
 
