@@ -203,14 +203,14 @@ for (h in herstellerliste) {
       if (h_abstand==0) {
         if (as.integer(d-prognosestart)==0) {
           hs_erstzweit[1, "zweit_neu"] <- hs_erstzweit[1, "dosen_pro_tag"]
-          hs_erstzweit[1, "erst_neu"] <- 0
+          hs_erstzweit[1, "erst_neu"] <- hs_erstzweit[1, "zweit_neu"]
           hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
-          hs_erstzweit[1, "dosen_verabreicht_erst"] <- 0
+          hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"]
         } else {
           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i, "dosen_pro_tag"]
-          hs_erstzweit[i, "erst_neu"] <- 0
+          hs_erstzweit[i, "erst_neu"] <- hs_erstzweit[i, "zweit_neu"]
           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
-          hs_erstzweit[i, "dosen_verabreicht_erst"] <- 0
+          hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i, "dosen_verabreicht_zweit"]
         }
       } else {
         if (as.integer(d-prognosestart)<h_abstand) {
@@ -238,10 +238,17 @@ for (h in herstellerliste) {
 }
 
 zweit_agg <- erstzweit %>%
-  filter(Verteilungsszenario=="Gleichverteilung") %>%
-  group_by(Datum) %>%
+  group_by(Datum, Verteilungsszenario) %>%
   summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
-            .groups="drop")
+            mineinmalgeimpft=sum(dosen_verabreicht_erst),
+            .groups="drop") %>%
+  pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft))
+
+ggplot(zweit_agg,
+       aes(x=Datum, y=value, col=name)) +
+  geom_line(aes(linetype=Verteilungsszenario)) +
+  geom_hline(yintercept = impflinge_gesamt) +
+  geom_vline(xintercept = as_date("2021-09-21"))
 
 ## Durchimpfung
 
