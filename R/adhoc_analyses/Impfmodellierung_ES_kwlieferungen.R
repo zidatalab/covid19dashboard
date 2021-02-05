@@ -1,6 +1,7 @@
 library("tidyverse")
 library("lubridate")
 library("zicolors")
+library("jsonlite")
 
 # Impfmodellierung
 
@@ -182,7 +183,7 @@ output <-
          Zusatzbedarf=ifelse(dosen.verf<=Kapazitaet,0,dosen.verf-IZ_verimpft) ,
          Zusatzbedarf_n_Aerzte=Zusatzbedarf/praxis_kapazitaet_wt)
 
-### erst-zweit-schema mit 0.5 erst, 05. zurück
+### erst-zweit-schema mit 0.5 erst, 0.5 zurück
 Datumsliste <- sort(unique(prognosedatensatz$Datum))
 herstellerliste <- unique(prognosedatensatz$hersteller)
 vszenarien <- unique(zeitreihe_impfdosen$Verteilungsszenario)
@@ -237,7 +238,110 @@ for (h in herstellerliste) {
   }
 }
 
-zweit_agg <- erstzweit %>%
+zweit_agg_temp <- erstzweit %>%
+  mutate(zugelassen=ifelse(hersteller%in%c("BNT/Pfizer", "AZ", "Moderna"), 1, 0)) %>%
+  filter(Verteilungsszenario=="Linearer Anstieg der Produktion in Q2")
+zweit_agg <- bind_rows(
+  zweit_agg_temp %>%
+    filter(zugelassen==1) %>%
+    group_by(Datum) %>%
+    summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
+              mineinmalgeimpft=sum(dosen_verabreicht_erst),
+              erst_neu_agg=sum(erst_neu),
+              .groups="drop") %>%
+    mutate(nurzugelassen="nur zugelassen"),
+  zweit_agg_temp %>%
+    group_by(Datum) %>%
+    summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
+              mineinmalgeimpft=sum(dosen_verabreicht_erst),
+              erst_neu_agg=sum(erst_neu),
+              .groups="drop") %>%
+    mutate(nurzugelassen="alle Impfstoffe")
+  ) %>%
+  pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft, erst_neu_agg))
+
+ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
+                       lab = c("21.9.", "Bev. >18 J."), 
+                       nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
+                       value=c(0, 73e6),
+                       name="vollst. geimpft")
+durchimpfung.plot <- ggplot(zweit_agg %>% 
+                              filter(name!="erst_neu_agg" & Datum<="2021-11-01"),
+       aes(x=Datum, y=value/1e6, col=name)) +
+  geom_line(size=2) +
+  facet_wrap(.~nurzugelassen, ncol=2) +
+  ylim(0, 83166711/1e6) +
+  geom_hline(yintercept = impflinge_gesamt/1e6, linetype="dotted") +
+  geom_vline(xintercept = as_date("2021-09-21")) +
+  geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  # scale_color_discrete() +
+  scale_x_date(date_breaks = "2 months", date_labels = "%d. %b.") +
+  labs(y="Anzahl in Mio.", col="") +
+  scale_color_zi(labels = c("min. 1x geimpft", "vollst. geimpft")) + theme_minimal() + theme(legend.position="bottom")
+durchimpfung.plot
+ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot, width = 7, height=7*9/16)
+
+
+
+
+
+###
+### erst-zweit-schema mit voll sofort
+Datumsliste <- sort(unique(prognosedatensatz$Datum))
+herstellerliste <- unique(prognosedatensatz$hersteller)
+vszenarien <- unique(zeitreihe_impfdosen$Verteilungsszenario)
+erstzweit_sofort <- tibble()
+for (h in herstellerliste) {
+  cat(h, "\n")
+  for (v in vszenarien) {
+    cat("  ", v, "\n")
+    h_abstand <- (dosen_planung%>%filter(hersteller==h))$abstand[1]
+    hs_erstzweit <- zeitreihe_impfdosen %>% filter(hersteller==h & Verteilungsszenario==v) %>%
+      select(-c(kw, jahr, quartal, dosen_quartal, abstand, dosen_kw, dosen_geliefert_temp, gewichtungsfaktor)) %>%
+      mutate(erst_neu=0, zweit_neu=0)
+    i <- 0
+    for (d in Datumsliste) {
+      d <- as_date(d)
+      # cat(as.character(d), "\n")
+      i <- i+1
+      if (h_abstand==0) {
+        if (as.integer(d-prognosestart)==0) {
+          hs_erstzweit[1, "zweit_neu"] <- hs_erstzweit[1, "dosen_pro_tag"]
+          hs_erstzweit[1, "erst_neu"] <- hs_erstzweit[1, "zweit_neu"]
+          hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
+          hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"]
+        } else {
+          hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i, "dosen_pro_tag"]
+          hs_erstzweit[i, "erst_neu"] <- hs_erstzweit[i, "zweit_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i, "dosen_verabreicht_zweit"]
+        }
+      } else {
+        if (as.integer(d-prognosestart)<h_abstand) {
+          if (as.integer(d-prognosestart)==0) {
+            hs_erstzweit[1, "erst_neu"] <- round(hs_erstzweit[1, "dosen_pro_tag"])
+            hs_erstzweit[1, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
+            hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_erst"] + hs_erstzweit[1, "erst_neu"]
+            hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
+          } else {
+            hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"])
+            hs_erstzweit[i, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
+            hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+            hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          }
+        } else {
+          hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"]) # hier minus zweitimpfung?
+          hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+        }
+      }
+    }
+    erstzweit_sofort <- bind_rows(erstzweit_sofort, hs_erstzweit)
+  }
+}
+
+zweit_agg_sofort <- erstzweit_sofort %>%
   # filter(hersteller%in%c("BNT/Pfizer", "Moderna", "AZ")) %>%
   group_by(Datum, Verteilungsszenario) %>%
   summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
@@ -245,168 +349,97 @@ zweit_agg <- erstzweit %>%
             .groups="drop") %>%
   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft))
 
-durchimpfung.plot <- ggplot(zweit_agg,
-       aes(x=Datum, y=value, col=name)) +
+durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort,
+                            aes(x=Datum, y=value, col=name)) +
   geom_line(aes(linetype=Verteilungsszenario)) +
   geom_hline(yintercept = impflinge_gesamt) +
   geom_vline(xintercept = as_date("2021-09-21"))
-ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot)
-
-###
-### erst-zweit-schema mit voll sofort
-# Datumsliste <- sort(unique(prognosedatensatz$Datum))
-# herstellerliste <- unique(prognosedatensatz$hersteller)
-# vszenarien <- unique(zeitreihe_impfdosen$Verteilungsszenario)
-# erstzweit_sofort <- tibble()
-# for (h in herstellerliste) {
-#   cat(h, "\n")
-#   for (v in vszenarien) {
-#     cat("  ", v, "\n")
-#     h_abstand <- (dosen_planung%>%filter(hersteller==h))$abstand[1]
-#     hs_erstzweit <- zeitreihe_impfdosen %>% filter(hersteller==h & Verteilungsszenario==v) %>%
-#       select(-c(kw, jahr, quartal, dosen_quartal, abstand, dosen_kw, dosen_geliefert_temp, gewichtungsfaktor)) %>%
-#       mutate(erst_neu=0, zweit_neu=0)
-#     i <- 0
-#     for (d in Datumsliste) {
-#       d <- as_date(d)
-#       # cat(as.character(d), "\n")
-#       i <- i+1
-#       if (h_abstand==0) {
-#         if (as.integer(d-prognosestart)==0) {
-#           hs_erstzweit[1, "zweit_neu"] <- hs_erstzweit[1, "dosen_pro_tag"]
-#           hs_erstzweit[1, "erst_neu"] <- hs_erstzweit[1, "zweit_neu"]
-#           hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
-#           hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"]
-#         } else {
-#           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i, "dosen_pro_tag"]
-#           hs_erstzweit[i, "erst_neu"] <- hs_erstzweit[i, "zweit_neu"]
-#           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
-#           hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i, "dosen_verabreicht_zweit"]
-#         }
-#       } else {
-#         if (as.integer(d-prognosestart)<h_abstand) {
-#           if (as.integer(d-prognosestart)==0) {
-#             hs_erstzweit[1, "erst_neu"] <- round(hs_erstzweit[1, "dosen_pro_tag"])
-#             hs_erstzweit[1, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
-#             hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_erst"] + hs_erstzweit[1, "erst_neu"]
-#             hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
-#           } else {
-#             hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"])
-#             hs_erstzweit[i, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
-#             hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
-#             hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
-#           }
-#         } else {
-#           hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"])
-#           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
-#           hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
-#           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
-#         }
-#       }
-#     }
-#     erstzweit_sofort <- bind_rows(erstzweit_sofort, hs_erstzweit)
-#   }
-# }
-# 
-# zweit_agg_sofort <- erstzweit_sofort %>%
-#   # filter(hersteller%in%c("BNT/Pfizer", "Moderna", "AZ")) %>%
-#   group_by(Datum, Verteilungsszenario) %>%
-#   summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
-#             mineinmalgeimpft=sum(dosen_verabreicht_erst),
-#             .groups="drop") %>%
-#   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft))
-# 
-# durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort,
-#                             aes(x=Datum, y=value, col=name)) +
-#   geom_line(aes(linetype=Verteilungsszenario)) +
-#   geom_hline(yintercept = impflinge_gesamt) +
-#   geom_vline(xintercept = as_date("2021-09-21"))
-# ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort)
+ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort)
 
 ## Durchimpfung
 
-durchimpfung.base <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
-   ungroup() %>% select(Verteilungsszenario,Datum,werktag,dosen.verf,hersteller,anwendungen)   %>%  full_join(szenarien,by = character()) %>% 
-  mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
-  select(-kap_wt, -kap_we,-werktag) %>% rename("Betriebsszenario"=szenario) %>% 
-  left_join(., dosen_verabreicht %>%
-              select(-dosen_geliefert),by=c("hersteller")) %>%
-  left_join(., dosen_planung %>% group_by(hersteller) %>% count(abstand) %>% select(-n),by=c("hersteller")) %>%
-  relocate(Verteilungsszenario,Betriebsszenario,Datum,hersteller) %>%
-  arrange(Verteilungsszenario,Betriebsszenario,Datum,hersteller)
-
-Datumsliste = sort(unique(durchimpfung.base$Datum))
-
-for(theDatum in Datumsliste) {
-  if (theDatum==Datumsliste[1]){
-    i=0
-    durchimpfung <- durchimpfung.base
-  }
-  i = i+1
-  
-  # Am ersten Tag der Prognose alte Daten holen
-  if (i==1){
-    tagesdaten   = durchimpfung %>% filter(Datum==as_date(theDatum))  %>%
-      group_by(Verteilungsszenario,Betriebsszenario,Datum) %>%
-      mutate(Auslastung=sum(dosen.verf)/Kapazitaet,
-             Anwendung = round(dosen.verf*(1/Auslastung)),
-             Restdosen = dosen.verf-Anwendung) %>% ungroup() 
-      
-    durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
-    durchimpfung = bind_rows(tagesdaten,durchimpfung)
-  }
-  # An anderen Tagen vorherigen Tag und aktuellen Tag nehmen
-  if (i>1){
-     tagesdaten_old = durchimpfung %>% filter(Datum==(as_date(theDatum)-days(1))) %>% 
-       select(Verteilungsszenario,hersteller,Betriebsszenario,Restdosen)
-     tagesdaten_new = durchimpfung %>% filter(Datum==(as_date(theDatum))) %>% 
-       select(-Restdosen) %>%
-        left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "Betriebsszenario"
-                                            ,"hersteller" ))  %>%
-     mutate(
-       dosen.verf=dosen.verf+Restdosen,
-       Auslastung=sum(dosen.verf)/Kapazitaet,
-              Anwendung = round(dosen.verf*(1/Auslastung)),
-              Restdosen = round(dosen.verf-Anwendung)) %>% ungroup() 
-    durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
-    durchimpfung = bind_rows(tagesdaten_new,durchimpfung)
-  }
-}
-
-durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum)
-
-# Schritt 1/2: Erst und Zweitimpfungen aus alten Erstimpfungen abarbeiten für abstand Tage
-durchimpfung.ts <- durchimpfung.ts %>% 
-  group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>% 
-  mutate(Zweit_neu = ifelse(row_number()<=abstand,
-                            (dosen_verabreicht_erst - dosen_verabreicht_zweit)/abstand,0),
-         Erst_neu = ifelse(row_number()<=abstand & (Anwendung - Zweit_neu)>0,
-                           Anwendung - Zweit_neu,0))
-di.ts <- tibble()
-for (hs in unique(durchimpfung.ts$hersteller)) {
-  di.ts.hersteller <- durchimpfung.ts %>%
-    filter(hersteller==hs)
-  thisabstand <- di.ts.hersteller$abstand[1]
-  for (d in seq(length(Datumsliste))) {
-    if (d>thisabstand) {
-      di.ts.hersteller[d, "Zweit_neu"] <- di.ts.hersteller$Erst_neu[d-thisabstand]
-      if (di.ts.hersteller[d, "Anwendung"]-di.ts.hersteller[d, "Zweit_neu"]>0) {
-        di.ts.hersteller[d, "Erst_neu"] <- di.ts.hersteller[d, "Anwendung"]-di.ts.hersteller[d, "Zweit_neu"]
-      }
-    }
-  }
-  di.ts <- bind_rows(di.ts, di.ts.hersteller)
-}
-
-di.ts_LK <- di.ts %>% 
-  group_by(Verteilungsszenario ,Betriebsszenario, hersteller) %>% 
-  mutate(dosen_verabreicht_erst= dosen_verabreicht_erst+ cumsum(Erst_neu),
-         dosen_verabreicht_zweit = dosen_verabreicht_zweit+cumsum(Zweit_neu)) %>%
-  group_by(Verteilungsszenario ,Betriebsszenario, Datum) %>% 
-  summarise(dosen_verabreicht_erst=sum(dosen_verabreicht_erst/anwendungen),
-            dosen_verabreicht_zweit=sum(dosen_verabreicht_zweit/anwendungen))
-ggplot(di.ts_LK, aes(x=Datum,y=dosen_verabreicht_zweit,color=Betriebsszenario)) + 
-  geom_line() + facet_grid(.~Verteilungsszenario)
+# durchimpfung.base <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
+#    ungroup() %>% select(Verteilungsszenario,Datum,werktag,dosen.verf,hersteller,anwendungen)   %>%  full_join(szenarien,by = character()) %>% 
+#   mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
+#   select(-kap_wt, -kap_we,-werktag) %>% rename("Betriebsszenario"=szenario) %>% 
+#   left_join(., dosen_verabreicht %>%
+#               select(-dosen_geliefert),by=c("hersteller")) %>%
+#   left_join(., dosen_planung %>% group_by(hersteller) %>% count(abstand) %>% select(-n),by=c("hersteller")) %>%
+#   relocate(Verteilungsszenario,Betriebsszenario,Datum,hersteller) %>%
+#   arrange(Verteilungsszenario,Betriebsszenario,Datum,hersteller)
+# 
+# Datumsliste = sort(unique(durchimpfung.base$Datum))
+# 
+# for(theDatum in Datumsliste) {
+#   if (theDatum==Datumsliste[1]){
+#     i=0
+#     durchimpfung <- durchimpfung.base
+#   }
+#   i = i+1
+#   
+#   # Am ersten Tag der Prognose alte Daten holen
+#   if (i==1){
+#     tagesdaten   = durchimpfung %>% filter(Datum==as_date(theDatum))  %>%
+#       group_by(Verteilungsszenario,Betriebsszenario,Datum) %>%
+#       mutate(Auslastung=sum(dosen.verf)/Kapazitaet,
+#              Anwendung = round(dosen.verf*(1/Auslastung)),
+#              Restdosen = dosen.verf-Anwendung) %>% ungroup() 
+#       
+#     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
+#     durchimpfung = bind_rows(tagesdaten,durchimpfung)
+#   }
+#   # An anderen Tagen vorherigen Tag und aktuellen Tag nehmen
+#   if (i>1){
+#      tagesdaten_old = durchimpfung %>% filter(Datum==(as_date(theDatum)-days(1))) %>% 
+#        select(Verteilungsszenario,hersteller,Betriebsszenario,Restdosen)
+#      tagesdaten_new = durchimpfung %>% filter(Datum==(as_date(theDatum))) %>% 
+#        select(-Restdosen) %>%
+#         left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "Betriebsszenario"
+#                                             ,"hersteller" ))  %>%
+#      mutate(
+#        dosen.verf=dosen.verf+Restdosen,
+#        Auslastung=sum(dosen.verf)/Kapazitaet,
+#               Anwendung = round(dosen.verf*(1/Auslastung)),
+#               Restdosen = round(dosen.verf-Anwendung)) %>% ungroup() 
+#     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
+#     durchimpfung = bind_rows(tagesdaten_new,durchimpfung)
+#   }
+# }
+# 
+# durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum)
+# 
+# # Schritt 1/2: Erst und Zweitimpfungen aus alten Erstimpfungen abarbeiten für abstand Tage
+# durchimpfung.ts <- durchimpfung.ts %>% 
+#   group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>% 
+#   mutate(Zweit_neu = ifelse(row_number()<=abstand,
+#                             (dosen_verabreicht_erst - dosen_verabreicht_zweit)/abstand,0),
+#          Erst_neu = ifelse(row_number()<=abstand & (Anwendung - Zweit_neu)>0,
+#                            Anwendung - Zweit_neu,0))
+# di.ts <- tibble()
+# for (hs in unique(durchimpfung.ts$hersteller)) {
+#   di.ts.hersteller <- durchimpfung.ts %>%
+#     filter(hersteller==hs)
+#   thisabstand <- di.ts.hersteller$abstand[1]
+#   for (d in seq(length(Datumsliste))) {
+#     if (d>thisabstand) {
+#       di.ts.hersteller[d, "Zweit_neu"] <- di.ts.hersteller$Erst_neu[d-thisabstand]
+#       if (di.ts.hersteller[d, "Anwendung"]-di.ts.hersteller[d, "Zweit_neu"]>0) {
+#         di.ts.hersteller[d, "Erst_neu"] <- di.ts.hersteller[d, "Anwendung"]-di.ts.hersteller[d, "Zweit_neu"]
+#       }
+#     }
+#   }
+#   di.ts <- bind_rows(di.ts, di.ts.hersteller)
+# }
+# 
+# di.ts_LK <- di.ts %>% 
+#   group_by(Verteilungsszenario ,Betriebsszenario, hersteller) %>% 
+#   mutate(dosen_verabreicht_erst= dosen_verabreicht_erst+ cumsum(Erst_neu),
+#          dosen_verabreicht_zweit = dosen_verabreicht_zweit+cumsum(Zweit_neu)) %>%
+#   group_by(Verteilungsszenario ,Betriebsszenario, Datum) %>% 
+#   summarise(dosen_verabreicht_erst=sum(dosen_verabreicht_erst/anwendungen),
+#             dosen_verabreicht_zweit=sum(dosen_verabreicht_zweit/anwendungen))
+# ggplot(di.ts_LK, aes(x=Datum,y=dosen_verabreicht_zweit,color=Betriebsszenario)) + 
+#   geom_line() + facet_grid(.~Verteilungsszenario)
 
 # Schritt 3: Folgetage iterativ bestimmen...
 
@@ -495,11 +528,11 @@ ggplot(di.ts_LK, aes(x=Datum,y=dosen_verabreicht_zweit,color=Betriebsszenario)) 
 #    facet_grid(Betriebsszenario~ Verteilungsszenario)
 
 ## Übersichten
-dosen_planung %>% group_by(hersteller) %>% 
-  summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))
-kapazitaeten
-szenarien
-zeitreihe_impfdosen %>% head()
+# dosen_planung %>% group_by(hersteller) %>% 
+#   summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))
+# kapazitaeten
+# szenarien
+# zeitreihe_impfdosen %>% head()
 
 
 # 1. Q1 Korrektur mit empirischen Dosen, Speicher der Rückstellstellimfpunegn
