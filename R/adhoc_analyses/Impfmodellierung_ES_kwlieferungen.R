@@ -331,8 +331,8 @@ for (h in herstellerliste) {
             hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
           }
         } else {
-          hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"]) # hier minus zweitimpfung?
           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
+          hs_erstzweit[i, "erst_neu"] <- max(0, as.numeric(round(hs_erstzweit[i, "dosen_pro_tag"]) - hs_erstzweit[i, "zweit_neu"]))
           hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
         }
@@ -342,20 +342,53 @@ for (h in herstellerliste) {
   }
 }
 
-zweit_agg_sofort <- erstzweit_sofort %>%
-  # filter(hersteller%in%c("BNT/Pfizer", "Moderna", "AZ")) %>%
-  group_by(Datum, Verteilungsszenario) %>%
-  summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
-            mineinmalgeimpft=sum(dosen_verabreicht_erst),
-            .groups="drop") %>%
-  pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft))
+probleme_bei_allesraus <- erstzweit_sofort %>%
+  filter(zweit_neu>dosen_pro_tag) %>% 
+  select(Datum, hersteller, dosen_pro_tag, Verteilungsszenario, zweit_neu)
+write_csv(probleme_bei_allesraus, "R/adhoc_analyses/probleme_bei_alles_raus.csv")
 
-durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort,
-                            aes(x=Datum, y=value, col=name)) +
-  geom_line(aes(linetype=Verteilungsszenario)) +
-  geom_hline(yintercept = impflinge_gesamt) +
-  geom_vline(xintercept = as_date("2021-09-21"))
-ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort)
+zweit_agg_temp_sofort <- erstzweit_sofort %>%
+  mutate(zugelassen=ifelse(hersteller%in%c("BNT/Pfizer", "AZ", "Moderna"), 1, 0)) %>%
+  filter(Verteilungsszenario=="Linearer Anstieg der Produktion in Q2")
+zweit_agg_sofort <- bind_rows(
+  zweit_agg_temp_sofort %>%
+    filter(zugelassen==1) %>%
+    group_by(Datum) %>%
+    summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
+              mineinmalgeimpft=sum(dosen_verabreicht_erst),
+              erst_neu_agg=sum(erst_neu),
+              .groups="drop") %>%
+    mutate(nurzugelassen="nur zugelassen"),
+  zweit_agg_temp_sofort %>%
+    group_by(Datum) %>%
+    summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
+              mineinmalgeimpft=sum(dosen_verabreicht_erst),
+              erst_neu_agg=sum(erst_neu),
+              .groups="drop") %>%
+    mutate(nurzugelassen="alle Impfstoffe")
+) %>%
+  pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft, erst_neu_agg))
+
+ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
+                       lab = c("21.9.", "Bev. >18 J."), 
+                       nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
+                       value=c(0, 73e6),
+                       name="vollst. geimpft")
+durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort %>% 
+                              filter(name!="erst_neu_agg" & Datum<="2021-11-01"),
+                            aes(x=Datum, y=value/1e6, col=name)) +
+  geom_line(size=2) +
+  facet_wrap(.~nurzugelassen, ncol=2) +
+  ylim(0, 83166711/1e6) +
+  geom_hline(yintercept = impflinge_gesamt/1e6, linetype="dotted") +
+  geom_vline(xintercept = as_date("2021-09-21")) +
+  geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  # scale_color_discrete() +
+  scale_x_date(date_breaks = "2 months", date_labels = "%d. %b.") +
+  labs(y="Anzahl in Mio.", col="") +
+  scale_color_zi(labels = c("min. 1x geimpft", "vollst. geimpft")) + theme_minimal() + theme(legend.position="bottom")
+durchimpfung.plot_sofort
+ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort, width = 7, height=7*9/16)
 
 ## Durchimpfung
 
