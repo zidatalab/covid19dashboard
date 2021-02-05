@@ -1093,8 +1093,8 @@ write_json(bundeslaender_r_und_vwz_data, "./data/plotdata/bundeslaender_r_und_vw
 write_csv(kreise_projektionen %>% mutate(datenstand=today()) %>%
             select(-contains("invisible")), "./data/tabledata/kreise_projektionen.csv")
 ####write csv for impfmodellierung
-write_csv(dosen_verabreicht, "./R/adhoc_analyses/impfdosen_bisher.csv")
-write_csv(dosen_verabreicht_bl_gesamt, "./R/adhoc_analyses/impfdosen_bisher_bl.csv")
+# write_csv(dosen_verabreicht, "./R/adhoc_analyses/impfdosen_bisher.csv")
+# write_csv(dosen_verabreicht_bl_gesamt, "./R/adhoc_analyses/impfdosen_bisher_bl.csv")
 
 ##### Plots
 akutinfiziert_plot <- ggplot(akutinfiziert_data,
