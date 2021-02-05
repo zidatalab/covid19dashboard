@@ -140,10 +140,10 @@ cols(
 
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 36527  100 36527    0     0   254k      0 --:--:-- --:--:-- --:--:--  254k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100 35275  100 35275    0     0   366k      0 --:--:-- --:--:-- --:--:--  370k
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  440k  100  440k    0     0  1273k      0 --:--:-- --:--:-- --:--:-- 1273k
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  465k  100  465k    0     0  1075k      0 --:--:-- --:--:-- --:--:-- 1075k
 
 ── Column specification ────────────────────────────────────────────────────────
 cols(
@@ -225,152 +225,44 @@ Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
 Default config will estimate R on weekly sliding windows.
     To change this change the t_start and t_end arguments. 
-Joining, by = "blid"
-Joining, by = "blid"
-Joining, by = "blid"
-
-── Column specification ────────────────────────────────────────────────────────
-cols(
-  quartal = col_double(),
-  jahr = col_double(),
-  hersteller = col_character(),
-  dosen = col_double(),
-  anwendungen = col_double(),
-  abstand = col_double()
-)
-
-Scale for 'y' is already present. Adding another scale for 'y', which will
-replace the existing scale.
-  |                                                                              |........                                                              |  11%
-   inline R code fragments
-
-  |                                                                              |..........                                                            |  15%
-label: indicatorVacc
-  |                                                                              |.............                                                         |  19%
-  ordinary text without R code
-
-  |                                                                              |................                                                      |  22%
-label: indicatorIncProj
-  |                                                                              |..................                                                    |  26%
-  ordinary text without R code
-
-  |                                                                              |.....................                                                 |  30%
-label: indicatorR
-  |                                                                              |.......................                                               |  33%
-  ordinary text without R code
-
-  |                                                                              |..........................                                            |  37%
-label: indicator7TI
-  |                                                                              |.............................                                         |  41%
-  ordinary text without R code
-
-  |                                                                              |...............................                                       |  44%
-label: indicatorVWZ
-  |                                                                              |..................................                                    |  48%
-   inline R code fragments
-
-  |                                                                              |....................................                                  |  52%
-label: plotimpfungen
-  |                                                                              |.......................................                               |  56%
-  ordinary text without R code
-
-  |                                                                              |.........................................                             |  59%
-label: plotakutinfiziert
-  |                                                                              |............................................                          |  63%
-  ordinary text without R code
-
-  |                                                                              |...............................................                       |  67%
-label: plotstiagbund
-  |                                                                              |.................................................                     |  70%
-  ordinary text without R code
-
-  |                                                                              |....................................................                  |  74%
-label: plotagefatality
-  |                                                                              |......................................................                |  78%
-  ordinary text without R code
-
-  |                                                                              |.........................................................             |  81%
-label: plotBLR
-  |                                                                              |............................................................          |  85%
-  ordinary text without R code
-
-  |                                                                              |..............................................................        |  89%
-label: plotVWZR
-  |                                                                              |.................................................................     |  93%
-  ordinary text without R code
-
-  |                                                                              |...................................................................   |  96%
-label: renderothersites (with options) 
-List of 1
- $ include: logi FALSE
-
-
-
-processing file: Bundeslaender.Rmd
-output file: Bundeslaender.knit.md
-
-
-Output created: Bundeslaender.html
-
-
-processing file: Kreise.Rmd
-output file: Kreise.knit.md
-
-
-Output created: Kreise.html
-
-
-processing file: Report.Rmd
-output file: Report.knit.md
-
-
-Output created: Report.html
-
-
-processing file: Impressum.Rmd
-output file: Impressum.knit.md
-
-
-Output created: Impressum.html
-
-
-processing file: Kreise_select.Rmd
-output file: Kreise_select.knit.md
-
-
-Output created: Kreise_select.html
-
-
-processing file: Projektion.Rmd
-output file: Projektion.knit.md
-
-
-Output created: Projektion.html
-
-
-processing file: Impfungen.Rmd
-output file: Impfungen.knit.md
-
-
-Output created: Impfungen.html
-
-
-processing file: Daten.Rmd
-output file: Daten.knit.md
-
-
-Output created: Daten.html
-  |                                                                              |......................................................................| 100%
-  ordinary text without R code
-
-
-output file: Start.knit.md
-
-/home/jupyter-esteiger/.conda/envs/edgar_covid_r4/bin/pandoc +RTS -K512m -RTS Start.utf8.md --to html4 --from markdown+autolink_bare_uris+tex_math_single_backslash --output Start.html --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --email-obfuscation none --self-contained --standalone --section-divs --template /home/jupyter-esteiger/.conda/envs/edgar_covid_r4/lib/R/library/flexdashboard/rmarkdown/templates/flex_dashboard/resources/default.html --include-in-header /tmp/Rtmpmc5FT2/rmarkdown-str185d76d654438.html --variable 'theme:bootstrap' --include-in-header /tmp/Rtmpmc5FT2/rmarkdown-str185d7c8e11b8.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' --variable logo=static/logo.png --include-in-header /tmp/Rtmpmc5FT2/file185d7270b4ccfhtml --highlight-style pygments --include-before-body /tmp/Rtmpmc5FT2/file185d71570cbd4.html --include-after-body /tmp/Rtmpmc5FT2/file185d7355c5cde.html --css static/styles.css 
-
-Output created: Start.html
+Quitting from lines 21-43 (Start.Rmd) 
+Error: Problem with `mutate()` input `quote_initial_gesamt`.
+✖ object 'value_sum_booster' not found
+ℹ Input `quote_initial_gesamt` is `(value_sum_initial - value_sum_booster)/population_sum_initial`.
+Backtrace:
+     █
+  1. ├─rmarkdown::render("../Start.Rmd")
+  2. │ └─knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet)
+  3. │   └─knitr:::process_file(text, output)
+  4. │     ├─base::withCallingHandlers(...)
+  5. │     ├─knitr:::process_group(group)
+  6. │     └─knitr:::process_group.block(group)
+  7. │       └─knitr:::call_block(x)
+  8. │         └─knitr:::block_exec(params)
+  9. │           ├─knitr:::in_dir(...)
+ 10. │           └─knitr:::evaluate(...)
+ 11. │             └─evaluate::evaluate(...)
+ 12. │               └─evaluate:::evaluate_call(...)
+ 13. │                 ├─evaluate:::timing_fn(...)
+ 14. │                 ├─base:::handle(...)
+ 15. │                 ├─base::withCallingHandlers(...)
+ 16. │                 ├─base::withVisible(eval(expr, envir, enclos))
+ 17. │                 └─base::eval(expr, envir, enclos)
+ 18. │                   └─base::eval(expr, envir, enclos)
+ 19. ├─base::source("R/functions.R", encoding = "UTF-8")
+ 20. │ ├─base::withVisible(eval(ei, envir))
+ 21. │ └─base::eval(ei, envir)
+ 22. │   └─base::eval(ei, envir)
+ 23. ├─`%>%`(...)
+ 24. ├─dplyr::select(...)
+ 25. ├─dplyr::mutate(...)
+ 26. ├─dplyr::mutate(...)
+ 27. ├─dplyr:::mutate.data.frame(...)
+ 28. │ └─dplyr:::mutate_cols(.data, ...)
+ 29. │   ├─base::withCallingHandlers(...)
+ 30. │   └─mask$eval_all_mutate(dots[[i]])
+ 31. └─base::.handleSimpleError(...)
+ 32.   └─dplyr:::h(simpleError(msg, call))
 There were 50 or more warnings (use warnings() to see the first 50)
-> 
-> proc.time()
-   user  system elapsed 
-582.741   4.373 706.422 
+
+Execution halted
