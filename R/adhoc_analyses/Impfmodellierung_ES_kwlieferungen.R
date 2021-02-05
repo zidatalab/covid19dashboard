@@ -121,13 +121,14 @@ zeitreihe_impfdosen <- bind_rows(
   ungroup() %>%
   group_by(Verteilungsszenario, hersteller) %>% arrange(Datum) %>%
   mutate(dosen_geliefert=dosen_geliefert+cumsum(dosen_pro_tag)) %>%
-  ungroup()
+  ungroup() %>%
+  mutate(zugelassen=ifelse(hersteller%in%c("BNT/Pfizer", "AZ", "Moderna"), 1, 0))
 # CHECK zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
 
 export_newdashboard <- zeitreihe_impfdosen %>% 
   filter(jahr>=2021) %>% ungroup() %>%
-  select(Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum) %>% group_by(Verteilungsszenario,kw) %>%
-  summarise(Dosen=sum(dosen.verf),Patienten=sum(dosen.verf/anwendungen),mindate=min(Datum),maxdate=max(Datum))
+  select(Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>% group_by(Verteilungsszenario,kw) %>%
+  summarise(Dosen=sum(dosen.verf),dosen_zugelassen=sum(dosen.verf[zugelassen==1]), Patienten=sum(dosen.verf/anwendungen), patienten_zugelassen=sum(dosen.verf[zugelassen==1]/anwendungen[zugelassen==1]),mindate=min(Datum),maxdate=max(Datum))
 write_json(export_newdashboard, "./data/tabledata/impfsim_data.json")
 
 kapazitaeten <- bind_rows(
