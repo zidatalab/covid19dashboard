@@ -46,7 +46,7 @@ library("zicolors")
 
 # Parameter 
 impfstart <- as.Date("2020-12-26")
-prognosestart <- lubridate::as_date(now())
+prognosestart <- as_date("2021-02-01") # lubridate::as_date(now())
 prognoseende <- as.Date("2021-12-31")
 ## Impflinge
 impflinge_gesamt <- 83166711*(1-0.184)
@@ -58,8 +58,6 @@ n_praxen <- 50000
 praxis_kapazitaet_wt <- 20
 ## Impfdosen
 
-verhaeltnis_ende_anfang <- 4
-
 #### Hier werden die Dosen for dem aktuellen Quartal dem aktuellen Quartal 
 #### zugerechnet
 dosen_planung <- read_csv("R/adhoc_analyses/impfdosen_planung.csv") %>%
@@ -70,32 +68,35 @@ dosen_planung_kw <- read_csv("R/adhoc_analyses/impfdosen_planung_nextkw.csv")
 
 
 prognosedatensatz <- 
-  #   tibble(
-  #   kw=5:52,
-  #   quartal=c(rep(1, 8), rep(2, 13), rep(3, 14), rep(4, 13)),
-  #   jahr=2021
-  # ) %>%
   tibble(Datum=prognosestart+days(seq(0,as.integer(prognoseende-prognosestart), 1))) %>%
   mutate(kw=isoweek(Datum),
          jahr=year(Datum),
          quartal=quarter(Datum),
          werktag=ifelse(weekdays(Datum) %in% c("Samstag","Sonntag"), 0, 1)) %>%
   full_join(.  ,
-            dosen_planung,
+            dosen_planung %>% rename(dosen_quartal=dosen),
             by=c("jahr","quartal")) %>%
   group_by(hersteller) %>%
   arrange(hersteller, kw) %>%
-  left_join(dosen_verabreicht%>%select(-dosen_geliefert) %>%
-              mutate(Datum=prognosestart), by=c("hersteller", "Datum")) %>%
-  left_join(dosen_planung_kw %>% rename(dosen_kw="dosen"), by=c("kw", "quartal", "jahr", "hersteller", "Datum")) %>%
-  mutate(dosen_kw=ifelse(Datum==prognosestart, dosen_kw-dosen_verabreicht_erst-dosen_verabreicht_zweit, dosen_kw),
-         dosen_kw=ifelse(is.na(dosen_kw), 0, dosen_kw)) %>%
-  group_by(hersteller) %>%
-  mutate(
-    dosen_kw_cumsum=cumsum(dosen_kw),
-    dosen=ifelse(quartal==1 & dosen_kw_cumsum>0,
-                 dosen-dosen_kw_cumsum-dosen_verabreicht_erst[1]-dosen_verabreicht_zweit[1], 
-                 dosen)) #%>%
+  left_join(dosen_verabreicht, # %>% select(-dosen_geliefert) %>% mutate(Datum=prognosestart), 
+              by=c("hersteller")) %>%
+  left_join(dosen_planung_kw %>% rename(dosen_kw="dosen") %>% select(-Datum), by=c("kw", "quartal", "jahr", "hersteller")) %>%
+  mutate(dosen_pro_tag=ifelse(kw<=8, round(dosen_kw/7), 0)) %>%
+  group_by(hersteller) %>% arrange(Datum) %>%
+  mutate(dosen_geliefert_temp=dosen_geliefert+cumsum(dosen_pro_tag)) %>%
+  ungroup() %>%
+  mutate(dosen_pro_tag=ifelse(quartal==1 & kw>=9, round((dosen_quartal-dosen_geliefert_temp)/31), dosen_pro_tag),
+         dosen_kw=ifelse(quartal==1 & kw>=9, dosen_pro_tag*7, dosen_kw),
+         dosen_pro_tag=ifelse(quartal>=3, round(dosen_quartal/92), dosen_pro_tag),
+         dosen_kw=ifelse(quartal>=3, 7*dosen_pro_tag, dosen_kw))
+  # mutate(dosen_kw=ifelse(Datum==prognosestart, dosen_kw-dosen_verabreicht_erst-dosen_verabreicht_zweit, dosen_kw),
+  #        dosen_kw=ifelse(is.na(dosen_kw), 0, dosen_kw)) %>%
+  # group_by(hersteller) %>%
+  # mutate(
+  #   dosen_kw_cumsum=cumsum(dosen_kw),
+  #   dosen=ifelse(quartal==1 & dosen_kw_cumsum>0,
+  #                dosen-dosen_kw_cumsum-dosen_verabreicht_erst[1]-dosen_verabreicht_zweit[1], 
+  #                dosen)) #%>%
 # full_join(tibble(Datum=prognosestart+days(seq(0,as.integer(prognoseende-prognosestart), 1)))%>%
 #             mutate(kw=isoweek(Datum)),
 #           by="kw")
@@ -105,18 +106,18 @@ zeitreihe_impfdosen <- bind_rows(
   prognosedatensatz %>% mutate(Verteilungsszenario="Linearer Anstieg der Produktion in Q2")) %>% 
   group_by(Datum, hersteller) %>% arrange(Datum) %>%
   mutate(gewichtungsfaktor = case_when(
-    quartal==1 ~ 1/(31),
     quartal==2 & (month(Datum)==4) & Verteilungsszenario=="Linearer Anstieg der Produktion in Q2" ~ 0.20/30 - (0.20/30)*.15 + (0.20/30)*.3* as.numeric(mday(Datum)/days_in_month(Datum)),
     quartal==2 & month(Datum)==5 & Verteilungsszenario=="Linearer Anstieg der Produktion in Q2" ~ 0.35/31 - (0.35/31 )*.15 + (0.35/31)*.3* as.numeric(mday(Datum)/days_in_month(Datum)),
     quartal==2 & month(Datum)==6 & Verteilungsszenario=="Linearer Anstieg der Produktion in Q2" ~ 0.45/30 - (0.45/30 )*.15 + (0.45/30)*.3* as.numeric(mday(Datum)/days_in_month(Datum)),
-    quartal==2 & Verteilungsszenario=="Gleichverteilung" ~ 1/(30+31+30), 
-    quartal==3 ~ 1/(31+31+30),
-    quartal==4 ~ 1/(31+30+31)
+    quartal==2 & Verteilungsszenario=="Gleichverteilung" ~ 1/(30+31+30),
+    quartal!=2 ~ 1
   ),
-  
-  dosen.verf = ifelse(kw > 8, dosen*gewichtungsfaktor, dosen/4/7),
-  dosen.verf = ifelse(is.na(dosen.verf), 0, dosen.verf)) %>%
-  mutate(werktag=ifelse(weekdays(Datum) %in% c("Samstag","Sonntag"), 0, 1))
+  dosen_pro_tag = ifelse(quartal==2, round(dosen_quartal*gewichtungsfaktor), dosen_pro_tag),
+  dosen_kw=ifelse(quartal==2, 7*dosen_pro_tag, dosen_kw)) %>%
+  ungroup() %>%
+  group_by(Verteilungsszenario, hersteller) %>% arrange(Datum) %>%
+  mutate(dosen_geliefert=dosen_geliefert+cumsum(dosen_pro_tag)) %>%
+  ungroup()
 # CHECK zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
 
 
