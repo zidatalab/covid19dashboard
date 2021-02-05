@@ -88,7 +88,10 @@ prognosedatensatz <-
   mutate(dosen_pro_tag=ifelse(quartal==1 & kw>=9, round((dosen_quartal-dosen_geliefert_temp)/31), dosen_pro_tag),
          dosen_kw=ifelse(quartal==1 & kw>=9, dosen_pro_tag*7, dosen_kw),
          dosen_pro_tag=ifelse(quartal>=3, round(dosen_quartal/92), dosen_pro_tag),
-         dosen_kw=ifelse(quartal>=3, 7*dosen_pro_tag, dosen_kw))
+         dosen_kw=ifelse(quartal>=3, 7*dosen_pro_tag, dosen_kw)) %>%
+  mutate(dosen_kw=ifelse(is.na(dosen_kw), 0, dosen_kw),
+         dosen_pro_tag=ifelse(is.na(dosen_pro_tag), 0, dosen_pro_tag),
+         dosen_geliefert=ifelse(is.na(dosen_geliefert), 0, dosen_geliefert))
   # mutate(dosen_kw=ifelse(Datum==prognosestart, dosen_kw-dosen_verabreicht_erst-dosen_verabreicht_zweit, dosen_kw),
   #        dosen_kw=ifelse(is.na(dosen_kw), 0, dosen_kw)) %>%
   # group_by(hersteller) %>%
@@ -120,9 +123,11 @@ zeitreihe_impfdosen <- bind_rows(
   ungroup()
 # CHECK zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
 
-
-
-
+export_newdashboard <- zeitreihe_impfdosen %>% 
+  filter(jahr>=2021) %>% ungroup() %>%
+  select(Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum) %>% group_by(Verteilungsszenario,kw) %>%
+  summarise(Dosen=sum(dosen.verf),Patienten=sum(dosen.verf/anwendungen),mindate=min(Datum),maxdate=max(Datum))
+write_json(export_newdashboard, "./data/tabledata/impfsim_data.json")
 
 kapazitaeten <- bind_rows(
   tibble(einrichtung="Impfzentren",
@@ -165,7 +170,7 @@ szenarien <-
 output <- 
   zeitreihe_impfdosen %>% 
   group_by(Verteilungsszenario,Datum, kw, jahr, quartal, werktag) %>%
-  summarise(dosen.verf=sum(dosen.verf),
+  summarise(dosen.verf=sum(dosen_pro_tag),
             .groups="drop") %>%
   ungroup() %>%
   full_join(szenarien,
