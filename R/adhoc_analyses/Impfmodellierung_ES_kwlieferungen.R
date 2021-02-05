@@ -331,8 +331,8 @@ for (h in herstellerliste) {
             hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
           }
         } else {
-          hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"]) # hier minus zweitimpfung?
           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
+          hs_erstzweit[i, "erst_neu"] <- max(0, as.numeric(round(hs_erstzweit[i, "dosen_pro_tag"]) - hs_erstzweit[i, "zweit_neu"]))
           hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
         }
@@ -342,6 +342,10 @@ for (h in herstellerliste) {
   }
 }
 
+probleme_bei_allesraus <- erstzweit_sofort %>%
+  filter(zweit_neu>dosen_pro_tag) %>% 
+  select(Datum, hersteller, dosen_pro_tag, Verteilungsszenario, zweit_neu)
+write_csv(probleme_bei_allesraus, "R/adhoc_analyses/probleme_bei_alles_raus.csv")
 zweit_agg_sofort <- erstzweit_sofort %>%
   # filter(hersteller%in%c("BNT/Pfizer", "Moderna", "AZ")) %>%
   group_by(Datum, Verteilungsszenario) %>%
