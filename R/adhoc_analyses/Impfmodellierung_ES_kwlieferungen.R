@@ -182,40 +182,66 @@ output <-
          Zusatzbedarf=ifelse(dosen.verf<=Kapazitaet,0,dosen.verf-IZ_verimpft) ,
          Zusatzbedarf_n_Aerzte=Zusatzbedarf/praxis_kapazitaet_wt)
 
-# output.plot1 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
-#                                   Monat=month(Datum, label=TRUE)) %>%
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=Monat, y=IZ_Auslastung, fill=szenario)) +
-#   facet_wrap(.~Verteilungsszenario) +
-#   geom_bar(stat="identity", position = "dodge") + #scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=100) +
-#   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
-# 
-# output.plot1kw <- output %>% 
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=kw, y=IZ_Auslastung, color=szenario, group=szenario)) +
-#   facet_wrap(.~Verteilungsszenario , ncol=1) +
-#   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=100,  linetype="dotted") + labs(color="", x="KW", y="Auslastung der Impfzentren")+ 
-#   scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
-# 
-# output.plot2 <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
-#                                   Monat=month(Datum, label=TRUE)) %>%
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=Monat, y=Zusatzbedarf_n_Aerzte, fill=szenario)) +
-#   facet_wrap(.~Verteilungsszenario) +
-#   geom_bar(stat="identity", position = "dodge") + # scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=0,) +
-#   scale_fill_zi() + theme_minimal() + theme(legend.position="bottom")
-# 
-# output.plot2kw <- output %>% mutate(#szenario = paste(szenario,Verteilungsszenario),
-#   Monat=month(Datum, label=TRUE)) %>%
-#   filter(jahr>=2021) %>% 
-#   ggplot(aes(x=kw, y=Zusatzbedarf_n_Aerzte, color=szenario, group=szenario)) +
-#   facet_wrap(.~Verteilungsszenario , ncol=1) +
-#   geom_line(size=3) + # scale_x_date(breaks = "1 month") +
-#   geom_hline(yintercept=0 ) + labs(color="", x="KW", y="Anzahl zuusätzlich notwendiger Ärzte")+ 
-#   scale_color_zi() + theme_minimal() + theme(legend.position="bottom")
+### erst-zweit-schema mit 0.5 erst, 05. zurück
+Datumsliste <- sort(unique(prognosedatensatz$Datum))
+herstellerliste <- unique(prognosedatensatz$hersteller)
+vszenarien <- unique(zeitreihe_impfdosen$Verteilungsszenario)
+erstzweit <- tibble()
+for (h in herstellerliste) {
+  cat(h, "\n")
+  for (v in vszenarien) {
+    cat("  ", v, "\n")
+    h_abstand <- (dosen_planung%>%filter(hersteller==h))$abstand[1]
+    hs_erstzweit <- zeitreihe_impfdosen %>% filter(hersteller==h & Verteilungsszenario==v) %>%
+      select(-c(kw, jahr, quartal, dosen_quartal, abstand, dosen_kw, dosen_geliefert_temp, gewichtungsfaktor)) %>%
+      mutate(erst_neu=0, zweit_neu=0)
+    i <- 0
+    for (d in Datumsliste) {
+      d <- as_date(d)
+      # cat(as.character(d), "\n")
+      i <- i+1
+      if (h_abstand==0) {
+        if (as.integer(d-prognosestart)==0) {
+          hs_erstzweit[1, "zweit_neu"] <- hs_erstzweit[1, "dosen_pro_tag"]
+          hs_erstzweit[1, "erst_neu"] <- 0
+          hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
+          hs_erstzweit[1, "dosen_verabreicht_erst"] <- 0
+        } else {
+          hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i, "dosen_pro_tag"]
+          hs_erstzweit[i, "erst_neu"] <- 0
+          hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_erst"] <- 0
+        }
+      } else {
+        if (as.integer(d-prognosestart)<h_abstand) {
+          if (as.integer(d-prognosestart)==0) {
+            hs_erstzweit[1, "erst_neu"] <- round(hs_erstzweit[1, "dosen_pro_tag"]/2)
+            hs_erstzweit[1, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
+            hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_erst"] + hs_erstzweit[1, "erst_neu"]
+            hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
+          } else {
+            hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"]/2)
+            hs_erstzweit[i, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
+            hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+            hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          }
+        } else {
+          hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"]/2)
+          hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+          hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+        }
+      }
+    }
+    erstzweit <- bind_rows(erstzweit, hs_erstzweit)
+  }
+}
+
+zweit_agg <- erstzweit %>%
+  filter(Verteilungsszenario=="Gleichverteilung") %>%
+  group_by(Datum) %>%
+  summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
+            .groups="drop")
 
 ## Durchimpfung
 
