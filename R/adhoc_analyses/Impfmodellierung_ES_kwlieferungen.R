@@ -238,17 +238,90 @@ for (h in herstellerliste) {
 }
 
 zweit_agg <- erstzweit %>%
+  # filter(hersteller%in%c("BNT/Pfizer", "Moderna", "AZ")) %>%
   group_by(Datum, Verteilungsszenario) %>%
   summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
             mineinmalgeimpft=sum(dosen_verabreicht_erst),
             .groups="drop") %>%
   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft))
 
-ggplot(zweit_agg,
+durchimpfung.plot <- ggplot(zweit_agg,
        aes(x=Datum, y=value, col=name)) +
   geom_line(aes(linetype=Verteilungsszenario)) +
   geom_hline(yintercept = impflinge_gesamt) +
   geom_vline(xintercept = as_date("2021-09-21"))
+ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot)
+
+###
+### erst-zweit-schema mit voll sofort
+# Datumsliste <- sort(unique(prognosedatensatz$Datum))
+# herstellerliste <- unique(prognosedatensatz$hersteller)
+# vszenarien <- unique(zeitreihe_impfdosen$Verteilungsszenario)
+# erstzweit_sofort <- tibble()
+# for (h in herstellerliste) {
+#   cat(h, "\n")
+#   for (v in vszenarien) {
+#     cat("  ", v, "\n")
+#     h_abstand <- (dosen_planung%>%filter(hersteller==h))$abstand[1]
+#     hs_erstzweit <- zeitreihe_impfdosen %>% filter(hersteller==h & Verteilungsszenario==v) %>%
+#       select(-c(kw, jahr, quartal, dosen_quartal, abstand, dosen_kw, dosen_geliefert_temp, gewichtungsfaktor)) %>%
+#       mutate(erst_neu=0, zweit_neu=0)
+#     i <- 0
+#     for (d in Datumsliste) {
+#       d <- as_date(d)
+#       # cat(as.character(d), "\n")
+#       i <- i+1
+#       if (h_abstand==0) {
+#         if (as.integer(d-prognosestart)==0) {
+#           hs_erstzweit[1, "zweit_neu"] <- hs_erstzweit[1, "dosen_pro_tag"]
+#           hs_erstzweit[1, "erst_neu"] <- hs_erstzweit[1, "zweit_neu"]
+#           hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
+#           hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"]
+#         } else {
+#           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i, "dosen_pro_tag"]
+#           hs_erstzweit[i, "erst_neu"] <- hs_erstzweit[i, "zweit_neu"]
+#           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+#           hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i, "dosen_verabreicht_zweit"]
+#         }
+#       } else {
+#         if (as.integer(d-prognosestart)<h_abstand) {
+#           if (as.integer(d-prognosestart)==0) {
+#             hs_erstzweit[1, "erst_neu"] <- round(hs_erstzweit[1, "dosen_pro_tag"])
+#             hs_erstzweit[1, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
+#             hs_erstzweit[1, "dosen_verabreicht_erst"] <- hs_erstzweit[1, "dosen_verabreicht_erst"] + hs_erstzweit[1, "erst_neu"]
+#             hs_erstzweit[1, "dosen_verabreicht_zweit"] <- hs_erstzweit[1, "dosen_verabreicht_zweit"] + hs_erstzweit[1, "zweit_neu"]
+#           } else {
+#             hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"])
+#             hs_erstzweit[i, "zweit_neu"] <- round(hs_erstzweit[1, "dosen_verabreicht_zweit"]/h_abstand)
+#             hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+#             hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+#           }
+#         } else {
+#           hs_erstzweit[i, "erst_neu"] <- round(hs_erstzweit[i, "dosen_pro_tag"])
+#           hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
+#           hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+#           hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+#         }
+#       }
+#     }
+#     erstzweit_sofort <- bind_rows(erstzweit_sofort, hs_erstzweit)
+#   }
+# }
+# 
+# zweit_agg_sofort <- erstzweit_sofort %>%
+#   # filter(hersteller%in%c("BNT/Pfizer", "Moderna", "AZ")) %>%
+#   group_by(Datum, Verteilungsszenario) %>%
+#   summarise(vollgeimpft=sum(dosen_verabreicht_zweit),
+#             mineinmalgeimpft=sum(dosen_verabreicht_erst),
+#             .groups="drop") %>%
+#   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft))
+# 
+# durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort,
+#                             aes(x=Datum, y=value, col=name)) +
+#   geom_line(aes(linetype=Verteilungsszenario)) +
+#   geom_hline(yintercept = impflinge_gesamt) +
+#   geom_vline(xintercept = as_date("2021-09-21"))
+# ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort)
 
 ## Durchimpfung
 
