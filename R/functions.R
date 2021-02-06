@@ -712,7 +712,7 @@ rki_vacc_complete <- rki_vacc %>%
               mutate(key="sum_initial")) %>%
   mutate(geo=ifelse(geo=="Germany", "Deutschland", geo))
 vacc_gesamt <- rki_vacc_complete %>%
-  filter(key=="sum_initial" | key=="sum_booster") %>%
+  filter(key=="sum_initial" | key=="sum_booster_moderna" | key=="sum_booster_biontech") %>%
   filter(date==max(date)) %>%
   select(geo, key, value, population, date)
 vacc_age <- rki_vacc_complete %>%
@@ -736,13 +736,13 @@ vacc_alle <- vacc_gesamt %>%
   mutate(population=ifelse(population<value, value, population))
 vacc_table <- vacc_alle %>%
   pivot_wider(id_cols=c("geo"), names_from="key", values_from=c("value", "population")) %>%
-  mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster)/population_sum_initial,
-         quote_booster_gesamt=value_sum_booster/population_sum_initial,
+  mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster_moderna-value_sum_booster_biontech)/population_sum_initial,
+         quote_booster_gesamt=(value_sum_booster_moderna+value_sum_booster_biontech)/population_sum_initial,
          quote_initial_pflege=(value_ind_pflege_initial-value_ind_pflege_booster)/population_ind_pflege_initial,
          quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
          quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
          quote_booster_alter=value_ind_alter_booster/population_ind_alter_initial,
-         impfungen_gesamt=value_sum_initial+value_sum_booster) %>%
+         impfungen_gesamt=value_sum_initial+(value_sum_booster_moderna+value_sum_booster_biontech)) %>%
   mutate(Bundesland=ifelse(geo=="Deutschland", "Gesamt", geo),
          "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
          "PHB 2x"=format(round(100*quote_booster_pflege, 1), decimal.mark=","),
@@ -964,116 +964,116 @@ kreise_projektionen <- ausgangsdaten %>%
          invisibleR0710sort,
          "AGS (num)")
 
-# impfdosen historisch
-rki_verabreicht_hersteller <- rki_vacc %>%
-  filter(geo=="Germany" & date==max(rki_vacc$date) & key%in%c("sum_booster", "sum_initial_moderna", "sum_initial_biontech"))
-dosen <- read_csv("R/adhoc_analyses/impfdosen_planung.csv")
-dosen_verabreicht <- dosen %>%
-  filter(jahr==2020 | quartal<=quarter(max(rki_vacc$date))) %>%
-  group_by(hersteller) %>%
-  summarise(dosen=sum(dosen), .groups = "drop") %>%
-  mutate(dosen_verabreicht_erst=case_when(
-    hersteller=="AZ" ~ 0,
-    hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller %>%
-      filter(key=="sum_initial_biontech") %>% pull(value),
-    hersteller=="Curevac" ~ 0,
-    hersteller=="Sanofi/GSK" ~ 0,
-    hersteller=="J&J" ~ 0,
-    hersteller=="Moderna" ~ rki_verabreicht_hersteller %>%
-      filter(key=="sum_initial_moderna") %>% pull(value)
-  ),
-         dosen_verabreicht_zweit=case_when(
-           hersteller=="AZ" ~ 0,
-           hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller %>%
-             filter(key=="sum_booster") %>% pull(value),
-           hersteller=="Curevac" ~ 0,
-           hersteller=="Sanofi/GSK" ~ 0,
-           hersteller=="J&J" ~ 0,
-           hersteller=="Moderna" ~ 0
-         )) %>%
-  mutate(dosen_geliefert=case_when(
-    hersteller=="AZ" ~ 600000,
-    hersteller=="BNT/Pfizer" ~ 1345500+4*672650+747630,
-    hersteller=="Curevac" ~ 0,
-    hersteller=="Sanofi/GSK" ~ 0,
-    hersteller=="J&J" ~ 0,
-    hersteller=="Moderna" ~ 2*(rki_verabreicht_hersteller %>%
-      filter(key=="sum_initial_moderna") %>% pull(value)) + 91200
-  )) %>%
-  select(-dosen)
-# nach bundeslaendern
-map_bl <- tibble(
-  BL_ID=1:16,
-  geo=c("Schleswig-Holstein",
-        "Hamburg",
-        "Niedersachsen",
-        "Bremen",
-        "Nordrhein-Westfalen",
-        "Hessen",
-        "Rheinland-Pfalz",
-        "Baden-Württemberg",
-        "Bayern",
-        "Saarland",
-        "Berlin",
-        "Brandenburg",
-        "Mecklenburg-Vorpommern",
-        "Sachsen",
-        "Sachsen-Anhalt",
-        "Thüringen")
-)
-rki_verabreicht_hersteller_bl <- rki_vacc %>%
-  filter(geo!="Germany" & date==max(rki_vacc$date) & key%in%c("sum_booster", "sum_initial_moderna", "sum_initial_biontech")) %>%
-  left_join(map_bl, by="geo")
-dosen_bl <- read_csv("R/adhoc_analyses/impfdosen_planung_bl.csv")
-dosen_verabreicht_bl <- dosen_bl %>%
-  filter(jahr==2020 | quartal<=quarter(max(rki_vacc$date))) %>%
-  group_by(BL_ID, hersteller) %>%
-  summarise(dosen=sum(dosen), .groups = "drop")
-dosen_verabreicht_bl_gesamt <- tibble()
-for (bl_id in 1:16) {
-  this_bl_dosen_verabreicht <- dosen_verabreicht_bl %>%
-    filter(BL_ID==bl_id) %>%
-    mutate(dosen_verabreicht_erst=case_when(
-      hersteller=="AZ" ~ 0,
-      hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller_bl %>%
-        filter(BL_ID==bl_id) %>%
-        filter(key=="sum_initial_biontech") %>% pull(value),
-      hersteller=="Curevac" ~ 0,
-      hersteller=="Sanofi/GSK" ~ 0,
-      hersteller=="J&J" ~ 0,
-      hersteller=="Moderna" ~ rki_verabreicht_hersteller_bl %>%
-        filter(BL_ID==bl_id) %>%
-        filter(key=="sum_initial_moderna") %>% pull(value)
-    ),
-    dosen_verabreicht_zweit=case_when(
-      hersteller=="AZ" ~ 0,
-      hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller_bl %>%
-        filter(BL_ID==bl_id) %>%
-        filter(key=="sum_booster") %>% pull(value),
-      hersteller=="Curevac" ~ 0,
-      hersteller=="Sanofi/GSK" ~ 0,
-      hersteller=="J&J" ~ 0,
-      hersteller=="Moderna" ~ 0
-    )) %>%
-    mutate(dosen_geliefert=case_when(
-      hersteller=="AZ" ~ round(600000*(rki_verabreicht_hersteller_bl %>%
-                                         filter(BL_ID==bl_id) %>%
-                                         filter(key=="sum_booster") %>% pull(population))/83166711),
-      hersteller=="BNT/Pfizer" ~ round((1345500+4*672650+747630)*(rki_verabreicht_hersteller_bl %>%
-        filter(BL_ID==bl_id) %>%
-        filter(key=="sum_booster") %>% pull(population))/83166711),
-      hersteller=="Curevac" ~ 0,
-      hersteller=="Sanofi/GSK" ~ 0,
-      hersteller=="J&J" ~ 0,
-      hersteller=="Moderna" ~ round((2*(rki_verabreicht_hersteller %>%
-                                   filter(key=="sum_initial_moderna") %>% pull(value)) + 91200)*(rki_verabreicht_hersteller_bl %>%
-                                                                                                  filter(BL_ID==bl_id) %>%
-                                                                                                  filter(key=="sum_booster") %>% pull(population))/83166711)
-    )) %>%
-    select(-dosen)
-  dosen_verabreicht_bl_gesamt <- bind_rows(dosen_verabreicht_bl_gesamt,
-                                           this_bl_dosen_verabreicht)
-}
+# # impfdosen historisch
+# rki_verabreicht_hersteller <- rki_vacc %>%
+#   filter(geo=="Germany" & date==max(rki_vacc$date) & key%in%c("sum_booster", "sum_initial_moderna", "sum_initial_biontech"))
+# dosen <- read_csv("R/adhoc_analyses/impfdosen_planung.csv")
+# dosen_verabreicht <- dosen %>%
+#   filter(jahr==2020 | quartal<=quarter(max(rki_vacc$date))) %>%
+#   group_by(hersteller) %>%
+#   summarise(dosen=sum(dosen), .groups = "drop") %>%
+#   mutate(dosen_verabreicht_erst=case_when(
+#     hersteller=="AZ" ~ 0,
+#     hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller %>%
+#       filter(key=="sum_initial_biontech") %>% pull(value),
+#     hersteller=="Curevac" ~ 0,
+#     hersteller=="Sanofi/GSK" ~ 0,
+#     hersteller=="J&J" ~ 0,
+#     hersteller=="Moderna" ~ rki_verabreicht_hersteller %>%
+#       filter(key=="sum_initial_moderna") %>% pull(value)
+#   ),
+#          dosen_verabreicht_zweit=case_when(
+#            hersteller=="AZ" ~ 0,
+#            hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller %>%
+#              filter(key=="sum_booster") %>% pull(value),
+#            hersteller=="Curevac" ~ 0,
+#            hersteller=="Sanofi/GSK" ~ 0,
+#            hersteller=="J&J" ~ 0,
+#            hersteller=="Moderna" ~ 0
+#          )) %>%
+#   mutate(dosen_geliefert=case_when(
+#     hersteller=="AZ" ~ 600000,
+#     hersteller=="BNT/Pfizer" ~ 1345500+4*672650+747630,
+#     hersteller=="Curevac" ~ 0,
+#     hersteller=="Sanofi/GSK" ~ 0,
+#     hersteller=="J&J" ~ 0,
+#     hersteller=="Moderna" ~ 2*(rki_verabreicht_hersteller %>%
+#       filter(key=="sum_initial_moderna") %>% pull(value)) + 91200
+#   )) %>%
+#   select(-dosen)
+# # nach bundeslaendern
+# map_bl <- tibble(
+#   BL_ID=1:16,
+#   geo=c("Schleswig-Holstein",
+#         "Hamburg",
+#         "Niedersachsen",
+#         "Bremen",
+#         "Nordrhein-Westfalen",
+#         "Hessen",
+#         "Rheinland-Pfalz",
+#         "Baden-Württemberg",
+#         "Bayern",
+#         "Saarland",
+#         "Berlin",
+#         "Brandenburg",
+#         "Mecklenburg-Vorpommern",
+#         "Sachsen",
+#         "Sachsen-Anhalt",
+#         "Thüringen")
+# )
+# rki_verabreicht_hersteller_bl <- rki_vacc %>%
+#   filter(geo!="Germany" & date==max(rki_vacc$date) & key%in%c("sum_booster", "sum_initial_moderna", "sum_initial_biontech")) %>%
+#   left_join(map_bl, by="geo")
+# dosen_bl <- read_csv("R/adhoc_analyses/impfdosen_planung_bl.csv")
+# dosen_verabreicht_bl <- dosen_bl %>%
+#   filter(jahr==2020 | quartal<=quarter(max(rki_vacc$date))) %>%
+#   group_by(BL_ID, hersteller) %>%
+#   summarise(dosen=sum(dosen), .groups = "drop")
+# dosen_verabreicht_bl_gesamt <- tibble()
+# for (bl_id in 1:16) {
+#   this_bl_dosen_verabreicht <- dosen_verabreicht_bl %>%
+#     filter(BL_ID==bl_id) %>%
+#     mutate(dosen_verabreicht_erst=case_when(
+#       hersteller=="AZ" ~ 0,
+#       hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller_bl %>%
+#         filter(BL_ID==bl_id) %>%
+#         filter(key=="sum_initial_biontech") %>% pull(value),
+#       hersteller=="Curevac" ~ 0,
+#       hersteller=="Sanofi/GSK" ~ 0,
+#       hersteller=="J&J" ~ 0,
+#       hersteller=="Moderna" ~ rki_verabreicht_hersteller_bl %>%
+#         filter(BL_ID==bl_id) %>%
+#         filter(key=="sum_initial_moderna") %>% pull(value)
+#     ),
+#     dosen_verabreicht_zweit=case_when(
+#       hersteller=="AZ" ~ 0,
+#       hersteller=="BNT/Pfizer" ~ rki_verabreicht_hersteller_bl %>%
+#         filter(BL_ID==bl_id) %>%
+#         filter(key=="sum_booster") %>% pull(value),
+#       hersteller=="Curevac" ~ 0,
+#       hersteller=="Sanofi/GSK" ~ 0,
+#       hersteller=="J&J" ~ 0,
+#       hersteller=="Moderna" ~ 0
+#     )) %>%
+#     mutate(dosen_geliefert=case_when(
+#       hersteller=="AZ" ~ round(600000*(rki_verabreicht_hersteller_bl %>%
+#                                          filter(BL_ID==bl_id) %>%
+#                                          filter(key=="sum_booster") %>% pull(population))/83166711),
+#       hersteller=="BNT/Pfizer" ~ round((1345500+4*672650+747630)*(rki_verabreicht_hersteller_bl %>%
+#         filter(BL_ID==bl_id) %>%
+#         filter(key=="sum_booster") %>% pull(population))/83166711),
+#       hersteller=="Curevac" ~ 0,
+#       hersteller=="Sanofi/GSK" ~ 0,
+#       hersteller=="J&J" ~ 0,
+#       hersteller=="Moderna" ~ round((2*(rki_verabreicht_hersteller %>%
+#                                    filter(key=="sum_initial_moderna") %>% pull(value)) + 91200)*(rki_verabreicht_hersteller_bl %>%
+#                                                                                                   filter(BL_ID==bl_id) %>%
+#                                                                                                   filter(key=="sum_booster") %>% pull(population))/83166711)
+#     )) %>%
+#     select(-dosen)
+#   dosen_verabreicht_bl_gesamt <- bind_rows(dosen_verabreicht_bl_gesamt,
+#                                            this_bl_dosen_verabreicht)
+# }
   
   
 ##### write data for displayed tables/plots to jsons
