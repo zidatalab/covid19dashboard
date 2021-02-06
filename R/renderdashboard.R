@@ -12,7 +12,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 RepoStand <- as_date((tbl(conn,"Stand") %>% collect())$Datum)
 DashboardStand <- as_date((tbl(conn,"Dashboardstand") %>% collect())$Datum)
 
-if (Dashboardstand<RepoStand) {
+if (DashboardStand<RepoStand) {
   rmarkdown::render('../Start.Rmd')
   Dashboardstand <- tibble("Datum"=as.character(date(now())),
                          "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),
