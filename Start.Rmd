@@ -60,7 +60,7 @@ Row
 ### Impfungen 
 
 ```{r indicatorVacc}
-indicatorVacc <- bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`min. 1x geimpfte Bevölkerung %`)
+indicatorVacc <- (bundeslaender_table %>% filter(Bundesland=="Gesamt") %>% pull(`min. 1x geimpfte Bevölkerung %`))[1]
 indicatorVacc <- paste0(indicatorVacc, " %")
 valueBox(value=indicatorVacc,
          caption="Prozentsatz der Bevölkerung mit mindestens einer Impfdosis",
