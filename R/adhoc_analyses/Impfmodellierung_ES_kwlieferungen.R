@@ -229,30 +229,6 @@ zweit_agg <- bind_rows(
   ) %>%
   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft, erst_neu_agg))
 
-ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
-                       lab = c("21.9.", "Bev. >18 J."), 
-                       nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
-                       value=c(0, 73e6),
-                       name="vollst. geimpft")
-durchimpfung.plot <- ggplot(zweit_agg %>% 
-                              filter(name!="erst_neu_agg" & Datum<="2021-11-01"),
-       aes(x=Datum, y=value/1e6, col=name)) +
-  geom_line(size=2) +
-  facet_wrap(.~nurzugelassen, ncol=2) +
-  ylim(0, 83166711/1e6) +
-  geom_hline(yintercept = impflinge_gesamt/1e6, linetype="dotted") +
-  geom_vline(xintercept = as_date("2021-09-21")) +
-  geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
-  # scale_color_discrete() +
-  scale_x_date(date_breaks = "2 months", date_labels = "%d. %b.") +
-  labs(y="Anzahl in Mio.", col="") +
-  scale_color_zi(labels = c("min. 1x geimpft", "vollst. geimpft")) + theme_minimal() + theme(legend.position="bottom")
-durchimpfung.plot
-ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot, width = 7, height=7*9/16)
-
-
-
-
 
 ###
 ### erst-zweit-schema mit voll sofort und zweit abarbeiten
@@ -363,12 +339,59 @@ zweit_agg_sofort <- bind_rows(
 ) %>%
   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft, erst_neu_agg))
 
+
+## Durchimpfung
+stufen <- tibble(
+  stufe=1:6,
+  kumanzahl=cumsum(c(8.6, 7, 5.7, 6.9, 8.4, 45))
+)
+
+meilensteine <- stufen %>%
+  rowwise() %>%
+  mutate(
+    zweit_zuruecklegen_zugelassen=min(zweit_agg %>%
+                                        filter(nurzugelassen=="nur zugelassen" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                                        pull(Datum)),
+    zweit_zuruecklegen_alle=min(zweit_agg %>%
+                                  filter(nurzugelassen=="alle Impfstoffe" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                                  pull(Datum)),
+    erst_zuruecklegen_zugelassen=min(zweit_agg %>%
+                                       filter(nurzugelassen=="nur zugelassen" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                       pull(Datum)),
+    erst_zuruecklegen_alle=min(zweit_agg %>%
+                                 filter(nurzugelassen=="alle Impfstoffe" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                 pull(Datum)),
+    zweit_allesraus_zugelassen=min(zweit_agg_sofort %>%
+                                     filter(nurzugelassen=="nur zugelassen" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                                     pull(Datum)),
+    zweit_allesraus_alle=min(zweit_agg_sofort %>%
+                               filter(nurzugelassen=="alle Impfstoffe" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                               pull(Datum)),
+    erst_allesraus_zugelassen=min(zweit_agg_sofort %>%
+                                    filter(nurzugelassen=="nur zugelassen" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                    pull(Datum)),
+    erst_allesraus_alle=min(zweit_agg_sofort %>%
+                              filter(nurzugelassen=="alle Impfstoffe" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                              pull(Datum))
+  )
+write_csv(meilensteine, "R/adhoc_analyses/impfmeilensteine.csv")
+
+
+
 ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
                        lab = c("21.9.", "Bev. >18 J."), 
                        nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
                        value=c(0, 73e6),
                        name="vollst. geimpft")
-durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort %>% 
+stufenlabels <- data_frame(Datum=as_date(meilensteine$zweit_zuruecklegen_zugelassen,
+                                         meilensteine$zweit_zuruecklegen_alle,
+                                         meilensteine$erst_zuruecklegen_zugelassen,
+                                         meilensteine$erst_zuruecklegen_alle),
+                           lab=rep(1:6, 4),
+                           nurzugelassen=rep(c(rep("nur zugelassen", 6), rep("alle Impfstoffe", 6)), 2),
+                           value=rep(meilensteine$kumanzahl, 6)*1e6,
+                           name="vollst. geimpft")
+durchimpfung.plot <- ggplot(zweit_agg %>% 
                               filter(name!="erst_neu_agg" & Datum<="2021-11-01"),
                             aes(x=Datum, y=value/1e6, col=name)) +
   geom_line(size=2) +
@@ -381,41 +404,29 @@ durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort %>%
   scale_x_date(date_breaks = "2 months", date_labels = "%d. %b.") +
   labs(y="Anzahl in Mio.", col="") +
   scale_color_zi(labels = c("min. 1x geimpft", "vollst. geimpft")) + theme_minimal() + theme(legend.position="bottom")
+durchimpfung.plot
+ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot, width = 7, height=7*9/16)
+
+
+
+
+ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
+                       lab = c("21.9.", "Bev. >18 J."), 
+                       nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
+                       value=c(0, 73e6),
+                       name="vollst. geimpft")
+durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort %>% 
+                                     filter(name!="erst_neu_agg" & Datum<="2021-11-01"),
+                                   aes(x=Datum, y=value/1e6, col=name)) +
+  geom_line(size=2) +
+  facet_wrap(.~nurzugelassen, ncol=2) +
+  ylim(0, 83166711/1e6) +
+  geom_hline(yintercept = impflinge_gesamt/1e6, linetype="dotted") +
+  geom_vline(xintercept = as_date("2021-09-21")) +
+  geom_text(data = ann_text, aes(label = lab), col="black", size=3.5) +
+  # scale_color_discrete() +
+  scale_x_date(date_breaks = "2 months", date_labels = "%d. %b.") +
+  labs(y="Anzahl in Mio.", col="") +
+  scale_color_zi(labels = c("min. 1x geimpft", "vollst. geimpft")) + theme_minimal() + theme(legend.position="bottom")
 durchimpfung.plot_sofort
 ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort, width = 7, height=7*9/16)
-
-## Durchimpfung
-stufen <- tibble(
-  stufe=1:6,
-  kumanzahl=cumsum(c(8.6, 7, 5.7, 6.9, 8.4, 45))
-)
-
-meilensteine <- stufen %>%
-  rowwise() %>%
-  mutate(
-    zweit_zuruecklegen_zugelassen=min(zweit_agg %>%
-           filter(nurzugelassen=="nur zugelassen" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
-           pull(Datum)),
-    zweit_zuruecklegen_alle=min(zweit_agg %>%
-                                        filter(nurzugelassen=="alle Impfstoffe" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
-                                        pull(Datum)),
-    erst_zuruecklegen_zugelassen=min(zweit_agg %>%
-                                        filter(nurzugelassen=="nur zugelassen" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
-                                        pull(Datum)),
-    erst_zuruecklegen_alle=min(zweit_agg %>%
-                                  filter(nurzugelassen=="alle Impfstoffe" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
-                                  pull(Datum)),
-    zweit_allesraus_zugelassen=min(zweit_agg_sofort %>%
-                                        filter(nurzugelassen=="nur zugelassen" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
-                                        pull(Datum)),
-    zweit_allesraus_alle=min(zweit_agg_sofort %>%
-                                  filter(nurzugelassen=="alle Impfstoffe" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
-                                  pull(Datum)),
-    erst_allesraus_zugelassen=min(zweit_agg_sofort %>%
-                                       filter(nurzugelassen=="nur zugelassen" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
-                                       pull(Datum)),
-    erst_allesraus_alle=min(zweit_agg_sofort %>%
-                                 filter(nurzugelassen=="alle Impfstoffe" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
-                                 pull(Datum))
-    )
-write_csv(meilensteine, "R/adhoc_analyses/impfmeilensteine.csv")
