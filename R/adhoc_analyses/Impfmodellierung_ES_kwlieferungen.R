@@ -5,49 +5,10 @@ library("jsonlite")
 
 # Impfmodellierung
 
-# das Corona-Kabinett hat Modellierungen erbeten, wie sich die Zahl der zu 
-# verimpfenden Dosen, die verfügbare Impfkapazität in den Zentren 
-#  (Annahmen u.a. unter Normalbetreib / verlängerte Öffnungszeiten / 
-# unter 24/7 Betrieb etc) und Zeitpunkt des Wechsels in die vertragsärztliche 
-# Versorgung entwickeln könnte. Dabei ist ja auch zu berücksichtigen, welcher 
-# Impfstoff sich überhaupt eignet für die vertragsärztliche Versorgung.
-
-# In der Anlage finden Sie unter III. die erwarteten Zahlen bezogen auf die 
-# Quartale. Könnten Sie für Q2 und Q3 Modellierungen vornehmen lassen, auch
-# da mit verschiedenen Varianten (zB Variante 1 bezogen auf BioNTech:
-# Quartalsdosenzahl verteilt sich gleichmäßig auf die drei Monate 
-# (also 31,5 Mio. Dosen BioNtech : 3 Monate = 10,5 Mio. Dosen / Monat); 
-# Variante 2: 20 % der 31,5 Mio. Dosen in April, weitere 35 % in Mai und 45 % 
-# in Juni (oder so)), wie sich Kapazitäten entwickeln müssen und wie sich die
-# Phasen von Impfzentrum in Praxen entwickeln könnten?
-
-
-# Prämissen
-
-# Ärzte sind Überlaufbecken für Impfzentren
-# Dosen gehen kaputt
-
-# Outcomes
-
-## 1. Zahl der zu verimpfenden Dosen
-## 2. Verfügbare Impfkapazität in den Zentren
-## 3. Zeitpunkt des Wechsels in die vertragsärztliche  Versorgung
-## 4. Wieviele Personen sollten eingeladen werden? Für Praxen/Zentren?
-
-## Modellierung
-
-## Zeit: 
-### Q2 und Q3 nach KW
-
-## Parameter:
-## Betriebszeit: Normalbetreib / verlängerte Öffnungszeiten / 24/7 Betrieb 
-## Verfügbarkeit: V1 Biontech, V2 
-
-# Datenbasis
-
 # Parameter 
 impfstart <- as.Date("2020-12-26")
-prognosestart <- as_date("2021-02-01") # lubridate::as_date(now())
+prognosestart <- as_date("2021-02-08") # lubridate::as_date(now())
+startkw <- isoweek(prognosestart)
 prognoseende <- as.Date("2021-12-31")
 ## Impflinge
 impflinge_gesamt <- 83166711*(1-0.184)
@@ -81,13 +42,20 @@ prognosedatensatz <-
   arrange(hersteller, kw) %>%
   left_join(dosen_verabreicht, # %>% select(-dosen_geliefert) %>% mutate(Datum=prognosestart), 
               by=c("hersteller")) %>%
-  left_join(dosen_planung_kw %>% rename(dosen_kw="dosen") %>% select(-Datum), by=c("kw", "quartal", "jahr", "hersteller")) %>%
-  mutate(dosen_pro_tag=ifelse(kw<=8, round(dosen_kw/7), 0)) %>%
+  left_join(dosen_planung_kw %>% 
+              rename(dosen_kw="dosen") %>%
+              select(-Datum),
+            by=c("kw", "quartal", "jahr", "hersteller")) %>%
+  mutate(dosen_pro_tag=ifelse(kw<=8 | (hersteller=="AZ" & kw<=9), round(dosen_kw/7), 0)) %>%
   group_by(hersteller) %>% arrange(Datum) %>%
   mutate(dosen_geliefert_temp=dosen_geliefert+cumsum(dosen_pro_tag)) %>%
   ungroup() %>%
-  mutate(dosen_pro_tag=ifelse(quartal==1 & kw>=9, round((dosen_quartal-dosen_geliefert_temp)/31), dosen_pro_tag),
-         dosen_kw=ifelse(quartal==1 & kw>=9, dosen_pro_tag*7, dosen_kw),
+  mutate(dosen_pro_tag=ifelse(quartal==1 & kw>=9 & hersteller!="AZ",
+                              round((dosen_quartal-dosen_geliefert_temp)/31), 
+                              ifelse(quartal==1 & kw>=10 & hersteller=="AZ", round((dosen_quartal-dosen_geliefert_temp)/24), dosen_pro_tag)),
+         dosen_kw=ifelse(quartal==1 & kw>=9 & hersteller!="AZ", 
+                         dosen_pro_tag*7, 
+                         ifelse(quartal==1 & kw>=10 & hersteller=="AZ", dosen_pro_tag*7, dosen_kw)),
          dosen_pro_tag=ifelse(quartal>=3, round(dosen_quartal/92), dosen_pro_tag),
          dosen_kw=ifelse(quartal>=3, 7*dosen_pro_tag, dosen_kw)) %>%
   mutate(dosen_kw=ifelse(is.na(dosen_kw), 0, dosen_kw),
