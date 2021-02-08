@@ -550,7 +550,7 @@ write_csv(meilensteine, "R/adhoc_analyses/impfmeilensteine.csv")
 
 
 
-ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
+ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-27")), 
                        lab = c("21.9.", "Bev. >18 J."), 
                        nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
                        value=c(0, 73e6),
@@ -583,7 +583,7 @@ ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot, width = 7, height
 
 
 
-ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
+ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-27")), 
                        lab = c("21.9.", "Bev. >18 J."), 
                        nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
                        value=c(0, 73e6),
@@ -613,7 +613,7 @@ durchimpfung.plot_sofort <- ggplot(zweit_agg_sofort %>%
 durchimpfung.plot_sofort
 ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort, width = 7, height=7*9/16)
 
-ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-20")), 
+ann_text <- data.frame(Datum=as_date(c("2021-09-05", "2021-02-27")), 
                        lab = c("21.9.", "Bev. >18 J."), 
                        nurzugelassen=c("nur zugelassen", "alle Impfstoffe"), 
                        value=c(0, 73e6),
