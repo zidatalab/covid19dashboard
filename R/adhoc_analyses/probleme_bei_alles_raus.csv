@@ -1,200 +1,332 @@
-Datum,hersteller,dosen_pro_tag,Verteilungsszenario,zweit_neu
-2021-10-01,AZ,0,Gleichverteilung,313083
-2021-10-02,AZ,0,Gleichverteilung,313083
-2021-10-03,AZ,0,Gleichverteilung,313083
-2021-10-04,AZ,0,Gleichverteilung,313083
-2021-10-05,AZ,0,Gleichverteilung,313083
-2021-10-06,AZ,0,Gleichverteilung,313083
-2021-10-07,AZ,0,Gleichverteilung,313083
-2021-10-08,AZ,0,Gleichverteilung,313083
-2021-10-09,AZ,0,Gleichverteilung,313083
-2021-10-10,AZ,0,Gleichverteilung,313083
-2021-10-11,AZ,0,Gleichverteilung,313083
-2021-10-12,AZ,0,Gleichverteilung,313083
-2021-10-13,AZ,0,Gleichverteilung,313083
-2021-10-14,AZ,0,Gleichverteilung,313083
-2021-10-15,AZ,0,Gleichverteilung,313083
-2021-10-16,AZ,0,Gleichverteilung,313083
-2021-10-17,AZ,0,Gleichverteilung,313083
-2021-10-18,AZ,0,Gleichverteilung,313083
-2021-10-19,AZ,0,Gleichverteilung,313083
-2021-10-20,AZ,0,Gleichverteilung,313083
-2021-10-21,AZ,0,Gleichverteilung,313083
-2021-10-22,AZ,0,Gleichverteilung,313083
-2021-10-23,AZ,0,Gleichverteilung,313083
-2021-10-24,AZ,0,Gleichverteilung,313083
-2021-10-25,AZ,0,Gleichverteilung,313083
-2021-10-26,AZ,0,Gleichverteilung,313083
-2021-10-27,AZ,0,Gleichverteilung,313083
-2021-10-28,AZ,0,Gleichverteilung,367391
-2021-10-29,AZ,0,Gleichverteilung,367391
-2021-10-30,AZ,0,Gleichverteilung,367391
-2021-10-31,AZ,0,Gleichverteilung,367391
-2021-11-01,AZ,0,Gleichverteilung,367391
-2021-11-02,AZ,0,Gleichverteilung,367391
-2021-11-03,AZ,0,Gleichverteilung,367391
-2021-11-04,AZ,0,Gleichverteilung,367391
-2021-11-05,AZ,0,Gleichverteilung,367391
-2021-11-06,AZ,0,Gleichverteilung,367391
-2021-11-07,AZ,0,Gleichverteilung,367391
-2021-11-08,AZ,0,Gleichverteilung,281677
-2021-11-09,AZ,0,Gleichverteilung,281677
-2021-11-10,AZ,0,Gleichverteilung,281677
-2021-11-11,AZ,0,Gleichverteilung,281677
-2021-11-12,AZ,0,Gleichverteilung,281677
-2021-11-13,AZ,0,Gleichverteilung,281677
-2021-11-14,AZ,0,Gleichverteilung,281677
-2021-11-15,AZ,0,Gleichverteilung,367391
-2021-11-16,AZ,0,Gleichverteilung,367391
-2021-11-17,AZ,0,Gleichverteilung,367391
-2021-11-18,AZ,0,Gleichverteilung,185714
-2021-11-19,AZ,0,Gleichverteilung,185714
-2021-11-20,AZ,0,Gleichverteilung,185714
-2021-11-21,AZ,0,Gleichverteilung,185714
-2021-11-22,AZ,0,Gleichverteilung,53371
-2021-11-23,AZ,0,Gleichverteilung,53371
-2021-11-24,AZ,0,Gleichverteilung,53371
-2021-11-25,AZ,0,Gleichverteilung,53371
-2021-11-26,AZ,0,Gleichverteilung,53371
-2021-11-27,AZ,0,Gleichverteilung,53371
-2021-11-28,AZ,0,Gleichverteilung,53371
-2021-11-29,AZ,0,Gleichverteilung,185714
-2021-11-30,AZ,0,Gleichverteilung,185714
-2021-12-01,AZ,0,Gleichverteilung,185714
-2021-12-02,AZ,0,Gleichverteilung,185714
-2021-12-03,AZ,0,Gleichverteilung,185714
-2021-12-04,AZ,0,Gleichverteilung,185714
-2021-12-05,AZ,0,Gleichverteilung,185714
-2021-12-06,AZ,0,Gleichverteilung,54308
-2021-12-07,AZ,0,Gleichverteilung,54308
-2021-12-08,AZ,0,Gleichverteilung,54308
-2021-12-09,AZ,0,Gleichverteilung,54308
-2021-04-26,AZ,125060,Linearer Anstieg der Produktion in Q2,132343
-2021-04-27,AZ,126187,Linearer Anstieg der Produktion in Q2,132343
-2021-04-28,AZ,127313,Linearer Anstieg der Produktion in Q2,132343
-2021-04-29,AZ,128440,Linearer Anstieg der Produktion in Q2,132343
-2021-04-30,AZ,129567,Linearer Anstieg der Produktion in Q2,132343
-2021-10-01,AZ,0,Linearer Anstieg der Produktion in Q2,310760
-2021-10-02,AZ,0,Linearer Anstieg der Produktion in Q2,308914
-2021-10-03,AZ,0,Linearer Anstieg der Produktion in Q2,307067
-2021-10-04,AZ,0,Linearer Anstieg der Produktion in Q2,305221
-2021-10-05,AZ,0,Linearer Anstieg der Produktion in Q2,303374
-2021-10-06,AZ,0,Linearer Anstieg der Produktion in Q2,301528
-2021-10-07,AZ,0,Linearer Anstieg der Produktion in Q2,299681
-2021-10-08,AZ,0,Linearer Anstieg der Produktion in Q2,297835
-2021-10-09,AZ,0,Linearer Anstieg der Produktion in Q2,295988
-2021-10-10,AZ,0,Linearer Anstieg der Produktion in Q2,294142
-2021-10-11,AZ,0,Linearer Anstieg der Produktion in Q2,292295
-2021-10-12,AZ,0,Linearer Anstieg der Produktion in Q2,290449
-2021-10-13,AZ,0,Linearer Anstieg der Produktion in Q2,288602
-2021-10-14,AZ,0,Linearer Anstieg der Produktion in Q2,286756
-2021-10-15,AZ,0,Linearer Anstieg der Produktion in Q2,284909
-2021-10-16,AZ,0,Linearer Anstieg der Produktion in Q2,283063
-2021-10-17,AZ,0,Linearer Anstieg der Produktion in Q2,281216
-2021-10-18,AZ,0,Linearer Anstieg der Produktion in Q2,279370
-2021-10-19,AZ,0,Linearer Anstieg der Produktion in Q2,280787
-2021-10-20,AZ,0,Linearer Anstieg der Produktion in Q2,278252
-2021-10-21,AZ,0,Linearer Anstieg der Produktion in Q2,275717
-2021-10-22,AZ,0,Linearer Anstieg der Produktion in Q2,273182
-2021-10-23,AZ,0,Linearer Anstieg der Produktion in Q2,270647
-2021-10-24,AZ,0,Linearer Anstieg der Produktion in Q2,268112
-2021-10-25,AZ,0,Linearer Anstieg der Produktion in Q2,265577
-2021-10-26,AZ,0,Linearer Anstieg der Produktion in Q2,263042
-2021-10-27,AZ,0,Linearer Anstieg der Produktion in Q2,260507
-2021-10-28,AZ,0,Linearer Anstieg der Produktion in Q2,223459
-2021-10-29,AZ,0,Linearer Anstieg der Produktion in Q2,222051
-2021-10-30,AZ,0,Linearer Anstieg der Produktion in Q2,220643
-2021-10-31,AZ,0,Linearer Anstieg der Produktion in Q2,219234
-2021-11-01,AZ,0,Linearer Anstieg der Produktion in Q2,217826
-2021-11-02,AZ,0,Linearer Anstieg der Produktion in Q2,216418
-2021-11-03,AZ,0,Linearer Anstieg der Produktion in Q2,215009
-2021-11-04,AZ,0,Linearer Anstieg der Produktion in Q2,213601
-2021-11-05,AZ,0,Linearer Anstieg der Produktion in Q2,212193
-2021-11-06,AZ,0,Linearer Anstieg der Produktion in Q2,210784
-2021-11-07,AZ,0,Linearer Anstieg der Produktion in Q2,209376
-2021-11-08,AZ,0,Linearer Anstieg der Produktion in Q2,122254
-2021-11-09,AZ,0,Linearer Anstieg der Produktion in Q2,120845
-2021-11-10,AZ,0,Linearer Anstieg der Produktion in Q2,119437
-2021-11-11,AZ,0,Linearer Anstieg der Produktion in Q2,118029
-2021-11-12,AZ,0,Linearer Anstieg der Produktion in Q2,116620
-2021-11-13,AZ,0,Linearer Anstieg der Produktion in Q2,115212
-2021-11-14,AZ,0,Linearer Anstieg der Produktion in Q2,113804
-2021-11-15,AZ,0,Linearer Anstieg der Produktion in Q2,198109
-2021-11-16,AZ,0,Linearer Anstieg der Produktion in Q2,196701
-2021-11-17,AZ,0,Linearer Anstieg der Produktion in Q2,195293
-2021-11-18,AZ,0,Linearer Anstieg der Produktion in Q2,120553
-2021-11-19,AZ,0,Linearer Anstieg der Produktion in Q2,121680
-2021-11-20,AZ,0,Linearer Anstieg der Produktion in Q2,122807
-2021-11-21,AZ,0,Linearer Anstieg der Produktion in Q2,123933
-2021-11-27,AZ,0,Linearer Anstieg der Produktion in Q2,31689
-2021-11-28,AZ,0,Linearer Anstieg der Produktion in Q2,33536
-2021-11-29,AZ,0,Linearer Anstieg der Produktion in Q2,167725
-2021-11-30,AZ,0,Linearer Anstieg der Produktion in Q2,169572
-2021-12-01,AZ,0,Linearer Anstieg der Produktion in Q2,171418
-2021-12-02,AZ,0,Linearer Anstieg der Produktion in Q2,173265
-2021-12-03,AZ,0,Linearer Anstieg der Produktion in Q2,175111
-2021-12-04,AZ,0,Linearer Anstieg der Produktion in Q2,176958
-2021-12-05,AZ,0,Linearer Anstieg der Produktion in Q2,178804
-2021-12-06,AZ,0,Linearer Anstieg der Produktion in Q2,49245
-2021-12-07,AZ,0,Linearer Anstieg der Produktion in Q2,51091
-2021-12-08,AZ,0,Linearer Anstieg der Produktion in Q2,52938
-2021-12-09,AZ,0,Linearer Anstieg der Produktion in Q2,54784
-2021-07-01,BNT/Pfizer,377174,Gleichverteilung,391517
-2021-07-02,BNT/Pfizer,377174,Gleichverteilung,391517
-2021-07-03,BNT/Pfizer,377174,Gleichverteilung,391517
-2021-07-04,BNT/Pfizer,377174,Gleichverteilung,391517
-2021-07-05,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-06,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-07,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-08,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-09,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-10,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-11,BNT/Pfizer,377174,Gleichverteilung,414080
-2021-07-12,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-07-13,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-07-14,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-07-15,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-07-16,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-07-17,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-07-18,BNT/Pfizer,377174,Gleichverteilung,417423
-2021-10-14,BNT/Pfizer,146739,Gleichverteilung,327600
-2021-10-15,BNT/Pfizer,146739,Gleichverteilung,327600
-2021-10-16,BNT/Pfizer,146739,Gleichverteilung,327600
-2021-10-17,BNT/Pfizer,146739,Gleichverteilung,327600
-2021-10-18,BNT/Pfizer,146739,Gleichverteilung,326933
-2021-10-19,BNT/Pfizer,146739,Gleichverteilung,326933
-2021-10-20,BNT/Pfizer,146739,Gleichverteilung,326933
-2021-10-21,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-22,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-23,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-24,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-25,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-26,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-27,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-10-28,BNT/Pfizer,146739,Gleichverteilung,377174
-2021-07-10,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,378917
-2021-07-11,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,383235
-2021-07-12,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,390896
-2021-07-13,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,395213
-2021-07-14,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,399531
-2021-07-15,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,403849
-2021-07-16,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,408166
-2021-07-17,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,412484
-2021-07-18,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,416802
-2021-07-27,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,378561
-2021-07-28,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,380273
-2021-10-21,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,317495
-2021-10-22,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,321813
-2021-10-23,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,326130
-2021-10-24,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,330448
-2021-10-25,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,357329
-2021-10-26,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,361646
-2021-10-27,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,365964
-2021-10-28,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,370282
-2021-04-05,Moderna,38400,Linearer Anstieg der Produktion in Q2,46971
-2021-04-06,Moderna,38827,Linearer Anstieg der Produktion in Q2,46971
-2021-04-07,Moderna,39253,Linearer Anstieg der Produktion in Q2,46971
-2021-04-08,Moderna,39680,Linearer Anstieg der Produktion in Q2,46971
-2021-04-09,Moderna,40107,Linearer Anstieg der Produktion in Q2,46971
-2021-04-10,Moderna,40533,Linearer Anstieg der Produktion in Q2,46971
-2021-04-11,Moderna,40960,Linearer Anstieg der Produktion in Q2,46971
+Datum,hersteller,dosen_pro_tag,Verteilungsszenario,erst_neu,zweit_neu,zweit_abzuarbeiten,quartal
+2021-05-10,AZ,185714,Gleichverteilung,0,185714,24115,2
+2021-05-11,AZ,185714,Gleichverteilung,0,185714,48230,2
+2021-05-12,AZ,185714,Gleichverteilung,0,185714,72345,2
+2021-05-13,AZ,185714,Gleichverteilung,0,185714,96460,2
+2021-05-14,AZ,185714,Gleichverteilung,0,185714,120575,2
+2021-05-15,AZ,185714,Gleichverteilung,0,185714,144690,2
+2021-05-16,AZ,185714,Gleichverteilung,0,185714,168805,2
+2021-05-17,AZ,185714,Gleichverteilung,0,185714,82424,2
+2021-10-01,AZ,0,Gleichverteilung,0,0,367391,4
+2021-10-02,AZ,0,Gleichverteilung,0,0,734782,4
+2021-10-03,AZ,0,Gleichverteilung,0,0,1102173,4
+2021-10-04,AZ,0,Gleichverteilung,0,0,1469564,4
+2021-10-05,AZ,0,Gleichverteilung,0,0,1832998,4
+2021-10-06,AZ,0,Gleichverteilung,0,0,2114008,4
+2021-10-07,AZ,0,Gleichverteilung,0,0,2395018,4
+2021-10-08,AZ,0,Gleichverteilung,0,0,2676028,4
+2021-10-09,AZ,0,Gleichverteilung,0,0,2957038,4
+2021-10-10,AZ,0,Gleichverteilung,0,0,3238048,4
+2021-10-11,AZ,0,Gleichverteilung,0,0,3519058,4
+2021-10-12,AZ,0,Gleichverteilung,0,0,3800068,4
+2021-10-13,AZ,0,Gleichverteilung,0,0,4081078,4
+2021-10-14,AZ,0,Gleichverteilung,0,0,4362088,4
+2021-10-15,AZ,0,Gleichverteilung,0,0,4643098,4
+2021-10-16,AZ,0,Gleichverteilung,0,0,4924108,4
+2021-10-17,AZ,0,Gleichverteilung,0,0,5205118,4
+2021-10-18,AZ,0,Gleichverteilung,0,0,5486128,4
+2021-10-19,AZ,0,Gleichverteilung,0,0,5767138,4
+2021-10-20,AZ,0,Gleichverteilung,0,0,6048148,4
+2021-10-21,AZ,0,Gleichverteilung,0,0,6329158,4
+2021-10-22,AZ,0,Gleichverteilung,0,0,6610168,4
+2021-10-23,AZ,0,Gleichverteilung,0,0,6891178,4
+2021-10-24,AZ,0,Gleichverteilung,0,0,7172188,4
+2021-10-25,AZ,0,Gleichverteilung,0,0,7453198,4
+2021-10-26,AZ,0,Gleichverteilung,0,0,7734208,4
+2021-10-27,AZ,0,Gleichverteilung,0,0,8015218,4
+2021-10-28,AZ,0,Gleichverteilung,0,0,8382609,4
+2021-10-29,AZ,0,Gleichverteilung,0,0,8750000,4
+2021-10-30,AZ,0,Gleichverteilung,0,0,9117391,4
+2021-10-31,AZ,0,Gleichverteilung,0,0,9484782,4
+2021-11-01,AZ,0,Gleichverteilung,0,0,9852173,4
+2021-11-02,AZ,0,Gleichverteilung,0,0,10219564,4
+2021-11-03,AZ,0,Gleichverteilung,0,0,10586955,4
+2021-11-04,AZ,0,Gleichverteilung,0,0,10954346,4
+2021-11-05,AZ,0,Gleichverteilung,0,0,11321737,4
+2021-11-06,AZ,0,Gleichverteilung,0,0,11689128,4
+2021-11-07,AZ,0,Gleichverteilung,0,0,12056519,4
+2021-11-08,AZ,0,Gleichverteilung,0,0,12423910,4
+2021-11-09,AZ,0,Gleichverteilung,0,0,12791301,4
+2021-11-10,AZ,0,Gleichverteilung,0,0,13158692,4
+2021-11-11,AZ,0,Gleichverteilung,0,0,13526083,4
+2021-11-12,AZ,0,Gleichverteilung,0,0,13893474,4
+2021-11-13,AZ,0,Gleichverteilung,0,0,14260865,4
+2021-11-14,AZ,0,Gleichverteilung,0,0,14628256,4
+2021-11-15,AZ,0,Gleichverteilung,0,0,14995647,4
+2021-11-16,AZ,0,Gleichverteilung,0,0,15363038,4
+2021-11-17,AZ,0,Gleichverteilung,0,0,15730429,4
+2021-11-18,AZ,0,Gleichverteilung,0,0,15916143,4
+2021-11-19,AZ,0,Gleichverteilung,0,0,16101857,4
+2021-11-20,AZ,0,Gleichverteilung,0,0,16287571,4
+2021-11-21,AZ,0,Gleichverteilung,0,0,16473285,4
+2021-11-22,AZ,0,Gleichverteilung,0,0,16603113,4
+2021-11-23,AZ,0,Gleichverteilung,0,0,16732941,4
+2021-11-24,AZ,0,Gleichverteilung,0,0,16862769,4
+2021-11-25,AZ,0,Gleichverteilung,0,0,16992597,4
+2021-11-26,AZ,0,Gleichverteilung,0,0,17122425,4
+2021-11-27,AZ,0,Gleichverteilung,0,0,17252253,4
+2021-11-28,AZ,0,Gleichverteilung,0,0,17382081,4
+2021-11-29,AZ,0,Gleichverteilung,0,0,17423452,4
+2021-11-30,AZ,0,Gleichverteilung,0,0,17464823,4
+2021-12-01,AZ,0,Gleichverteilung,0,0,17506194,4
+2021-12-02,AZ,0,Gleichverteilung,0,0,17547565,4
+2021-12-03,AZ,0,Gleichverteilung,0,0,17588936,4
+2021-12-04,AZ,0,Gleichverteilung,0,0,17630307,4
+2021-12-05,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-06,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-07,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-08,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-09,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-10,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-11,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-12,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-13,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-14,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-15,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-16,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-17,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-18,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-19,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-20,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-21,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-22,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-23,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-24,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-25,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-26,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-27,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-28,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-29,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-30,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-12-31,AZ,0,Gleichverteilung,0,0,17671678,4
+2021-05-10,AZ,180651,Linearer Anstieg der Produktion in Q2,0,180651,29178,2
+2021-05-11,AZ,182497,Linearer Anstieg der Produktion in Q2,0,182497,56510,2
+2021-05-12,AZ,184344,Linearer Anstieg der Produktion in Q2,0,184344,81995,2
+2021-05-13,AZ,186190,Linearer Anstieg der Produktion in Q2,0,186190,105634,2
+2021-05-14,AZ,188037,Linearer Anstieg der Produktion in Q2,0,188037,127426,2
+2021-05-15,AZ,189883,Linearer Anstieg der Produktion in Q2,0,189883,147372,2
+2021-05-16,AZ,191730,Linearer Anstieg der Produktion in Q2,0,191730,165471,2
+2021-05-17,AZ,193576,Linearer Anstieg der Produktion in Q2,0,193576,71228,2
+2021-10-01,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,367391,4
+2021-10-02,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,734782,4
+2021-10-03,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,1102173,4
+2021-10-04,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,1469564,4
+2021-10-05,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,1812093,4
+2021-10-06,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,2081548,4
+2021-10-07,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,2349156,4
+2021-10-08,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,2614918,4
+2021-10-09,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,2878833,4
+2021-10-10,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,3140902,4
+2021-10-11,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,3401124,4
+2021-10-12,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,3659500,4
+2021-10-13,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,3916029,4
+2021-10-14,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,4170712,4
+2021-10-15,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,4423548,4
+2021-10-16,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,4674538,4
+2021-10-17,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,4923681,4
+2021-10-18,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,5170978,4
+2021-10-19,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,5419692,4
+2021-10-20,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,5665871,4
+2021-10-21,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,5909515,4
+2021-10-22,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,6150624,4
+2021-10-23,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,6389198,4
+2021-10-24,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,6625237,4
+2021-10-25,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,6858741,4
+2021-10-26,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,7089710,4
+2021-10-27,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,7318144,4
+2021-10-28,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,7541603,4
+2021-10-29,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,7763654,4
+2021-10-30,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,7984297,4
+2021-10-31,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,8203531,4
+2021-11-01,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,8421357,4
+2021-11-02,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,8637775,4
+2021-11-03,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,8852784,4
+2021-11-04,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,9066385,4
+2021-11-05,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,9278578,4
+2021-11-06,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,9489362,4
+2021-11-07,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,9698738,4
+2021-11-08,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,9906706,4
+2021-11-09,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,10113265,4
+2021-11-10,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,10318416,4
+2021-11-11,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,10522159,4
+2021-11-12,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,10724493,4
+2021-11-13,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,10925419,4
+2021-11-14,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,11124937,4
+2021-11-15,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,11323046,4
+2021-11-16,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,11519747,4
+2021-11-17,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,11715040,4
+2021-11-18,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,11835593,4
+2021-11-19,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,11957273,4
+2021-11-20,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12080080,4
+2021-11-21,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12204013,4
+2021-11-22,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12273187,4
+2021-11-23,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12343488,4
+2021-11-24,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12414915,4
+2021-11-25,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12487469,4
+2021-11-26,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12561150,4
+2021-11-27,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12669296,4
+2021-11-28,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12779289,4
+2021-11-29,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12802671,4
+2021-11-30,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12827900,4
+2021-12-01,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12854975,4
+2021-12-02,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12883897,4
+2021-12-03,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12914665,4
+2021-12-04,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12947280,4
+2021-12-05,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-06,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-07,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-08,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-09,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-10,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-11,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-12,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-13,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-14,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-15,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-16,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-17,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-18,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-19,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-20,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-21,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-22,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-23,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-24,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-25,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-26,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-27,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-28,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-29,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-30,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-12-31,AZ,0,Linearer Anstieg der Produktion in Q2,0,0,12981741,4
+2021-07-05,BNT/Pfizer,377174,Gleichverteilung,0,377174,14594,3
+2021-07-06,BNT/Pfizer,377174,Gleichverteilung,0,377174,29188,3
+2021-07-07,BNT/Pfizer,377174,Gleichverteilung,0,377174,43782,3
+2021-07-08,BNT/Pfizer,377174,Gleichverteilung,0,377174,58376,3
+2021-07-09,BNT/Pfizer,377174,Gleichverteilung,0,377174,72970,3
+2021-07-10,BNT/Pfizer,377174,Gleichverteilung,0,377174,87564,3
+2021-07-11,BNT/Pfizer,377174,Gleichverteilung,0,377174,102158,3
+2021-07-12,BNT/Pfizer,377174,Gleichverteilung,0,377174,120095,3
+2021-07-13,BNT/Pfizer,377174,Gleichverteilung,0,377174,138032,3
+2021-07-14,BNT/Pfizer,377174,Gleichverteilung,0,377174,155969,3
+2021-07-15,BNT/Pfizer,377174,Gleichverteilung,0,377174,173906,3
+2021-07-16,BNT/Pfizer,377174,Gleichverteilung,0,377174,191843,3
+2021-07-17,BNT/Pfizer,377174,Gleichverteilung,0,377174,209780,3
+2021-07-18,BNT/Pfizer,377174,Gleichverteilung,0,377174,227717,3
+2021-07-19,BNT/Pfizer,377174,Gleichverteilung,0,377174,292301,3
+2021-07-20,BNT/Pfizer,377174,Gleichverteilung,0,377174,356885,3
+2021-07-21,BNT/Pfizer,377174,Gleichverteilung,0,377174,421469,3
+2021-07-22,BNT/Pfizer,377174,Gleichverteilung,0,377174,222985,3
+2021-07-23,BNT/Pfizer,377174,Gleichverteilung,0,377174,24501,3
+2021-10-16,BNT/Pfizer,146739,Gleichverteilung,0,146739,27244,4
+2021-10-17,BNT/Pfizer,146739,Gleichverteilung,0,146739,78989,4
+2021-10-18,BNT/Pfizer,146739,Gleichverteilung,0,146739,236870,4
+2021-10-19,BNT/Pfizer,146739,Gleichverteilung,0,146739,394751,4
+2021-10-20,BNT/Pfizer,146739,Gleichverteilung,0,146739,552632,4
+2021-10-21,BNT/Pfizer,146739,Gleichverteilung,0,146739,775097,4
+2021-10-22,BNT/Pfizer,146739,Gleichverteilung,0,146739,997562,4
+2021-10-23,BNT/Pfizer,146739,Gleichverteilung,0,146739,1220027,4
+2021-10-24,BNT/Pfizer,146739,Gleichverteilung,0,146739,1442492,4
+2021-10-25,BNT/Pfizer,146739,Gleichverteilung,0,146739,1672927,4
+2021-10-26,BNT/Pfizer,146739,Gleichverteilung,0,146739,1903362,4
+2021-10-27,BNT/Pfizer,146739,Gleichverteilung,0,146739,2133797,4
+2021-10-28,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-10-29,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-10-30,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-10-31,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-01,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-02,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-03,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-04,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-05,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-06,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-07,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-08,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-09,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-10,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-11,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-12,BNT/Pfizer,146739,Gleichverteilung,0,146739,2364232,4
+2021-11-13,BNT/Pfizer,146739,Gleichverteilung,0,146739,2217493,4
+2021-11-14,BNT/Pfizer,146739,Gleichverteilung,0,146739,2070754,4
+2021-11-15,BNT/Pfizer,146739,Gleichverteilung,0,146739,1924015,4
+2021-11-16,BNT/Pfizer,146739,Gleichverteilung,0,146739,1777276,4
+2021-11-17,BNT/Pfizer,146739,Gleichverteilung,0,146739,1630537,4
+2021-11-18,BNT/Pfizer,146739,Gleichverteilung,0,146739,1483798,4
+2021-11-19,BNT/Pfizer,146739,Gleichverteilung,0,146739,1337059,4
+2021-11-20,BNT/Pfizer,146739,Gleichverteilung,0,146739,1190320,4
+2021-11-21,BNT/Pfizer,146739,Gleichverteilung,0,146739,1043581,4
+2021-11-22,BNT/Pfizer,146739,Gleichverteilung,0,146739,896842,4
+2021-11-23,BNT/Pfizer,146739,Gleichverteilung,0,146739,750103,4
+2021-11-24,BNT/Pfizer,146739,Gleichverteilung,0,146739,603364,4
+2021-11-25,BNT/Pfizer,146739,Gleichverteilung,0,146739,456625,4
+2021-11-26,BNT/Pfizer,146739,Gleichverteilung,0,146739,309886,4
+2021-11-27,BNT/Pfizer,146739,Gleichverteilung,0,146739,163147,4
+2021-11-28,BNT/Pfizer,146739,Gleichverteilung,0,146739,16408,4
+2021-07-14,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,45,3
+2021-07-15,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,4408,3
+2021-07-16,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,13088,3
+2021-07-17,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,26086,3
+2021-07-18,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,43402,3
+2021-07-19,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,111682,3
+2021-07-20,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,184280,3
+2021-07-21,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,261196,3
+2021-07-22,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,290640,3
+2021-07-23,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,321721,3
+2021-07-24,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,433743,3
+2021-07-25,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,549115,3
+2021-07-26,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,561700,3
+2021-07-27,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,585400,3
+2021-07-28,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,610812,3
+2021-07-29,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,315630,3
+2021-07-30,BNT/Pfizer,377174,Linearer Anstieg der Produktion in Q2,0,377174,16130,3
+2021-10-23,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,140948,4
+2021-10-24,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,302344,4
+2021-10-25,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,490622,4
+2021-10-26,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,683217,4
+2021-10-27,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,880130,4
+2021-10-28,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1081361,4
+2021-10-29,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1056474,4
+2021-10-30,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1035905,4
+2021-10-31,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1019654,4
+2021-11-01,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1011064,4
+2021-11-02,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-03,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-04,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-05,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-06,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-07,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-08,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-09,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-10,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-11,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-12,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-13,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-14,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-15,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-16,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-17,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-18,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-19,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,1006791,4
+2021-11-20,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,860052,4
+2021-11-21,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,713313,4
+2021-11-22,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,566574,4
+2021-11-23,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,419835,4
+2021-11-24,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,273096,4
+2021-11-25,BNT/Pfizer,146739,Linearer Anstieg der Produktion in Q2,0,146739,126357,4
+2021-04-05,Moderna,38400,Linearer Anstieg der Produktion in Q2,0,38400,8826,2
+2021-04-06,Moderna,38827,Linearer Anstieg der Produktion in Q2,0,38827,17225,2
+2021-04-07,Moderna,39253,Linearer Anstieg der Produktion in Q2,0,39253,25198,2
+2021-04-08,Moderna,39680,Linearer Anstieg der Produktion in Q2,0,39680,32744,2
+2021-04-09,Moderna,40107,Linearer Anstieg der Produktion in Q2,0,40107,39863,2
+2021-04-10,Moderna,40533,Linearer Anstieg der Produktion in Q2,0,40533,46556,2
+2021-04-11,Moderna,40960,Linearer Anstieg der Produktion in Q2,0,40960,52822,2
+2021-04-12,Moderna,41387,Linearer Anstieg der Produktion in Q2,0,41387,58661,2
+2021-04-13,Moderna,41813,Linearer Anstieg der Produktion in Q2,0,41813,64074,2
+2021-04-14,Moderna,42240,Linearer Anstieg der Produktion in Q2,0,42240,69060,2
+2021-04-15,Moderna,42667,Linearer Anstieg der Produktion in Q2,0,42667,73619,2
+2021-04-16,Moderna,43093,Linearer Anstieg der Produktion in Q2,0,43093,77752,2
+2021-04-17,Moderna,43520,Linearer Anstieg der Produktion in Q2,0,43520,81458,2
+2021-04-18,Moderna,43947,Linearer Anstieg der Produktion in Q2,0,43947,84737,2
+2021-04-19,Moderna,44373,Linearer Anstieg der Produktion in Q2,0,44373,61533,2
+2021-04-20,Moderna,44800,Linearer Anstieg der Produktion in Q2,0,44800,37902,2
+2021-04-21,Moderna,45227,Linearer Anstieg der Produktion in Q2,0,45227,13844,2

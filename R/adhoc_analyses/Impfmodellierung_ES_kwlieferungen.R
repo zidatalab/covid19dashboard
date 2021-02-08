@@ -255,7 +255,7 @@ ggsave("R/adhoc_analyses/durchimpfung.png", durchimpfung.plot, width = 7, height
 
 
 ###
-### erst-zweit-schema mit voll sofort
+### erst-zweit-schema mit voll sofort und zweit abarbeiten
 Datumsliste <- sort(unique(prognosedatensatz$Datum))
 herstellerliste <- unique(prognosedatensatz$hersteller)
 vszenarien <- unique(zeitreihe_impfdosen$Verteilungsszenario)
@@ -267,7 +267,7 @@ for (h in herstellerliste) {
     h_abstand <- (dosen_planung%>%filter(hersteller==h))$abstand[1]
     hs_erstzweit <- zeitreihe_impfdosen %>% filter(hersteller==h & Verteilungsszenario==v) %>%
       select(-c(kw, jahr, quartal, dosen_quartal, abstand, dosen_kw, dosen_geliefert_temp, gewichtungsfaktor)) %>%
-      mutate(erst_neu=0, zweit_neu=0)
+      mutate(erst_neu=0, zweit_neu=0, zweit_abzuarbeiten=0)
     i <- 0
     for (d in Datumsliste) {
       d <- as_date(d)
@@ -299,10 +299,35 @@ for (h in herstellerliste) {
             hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
           }
         } else {
-          hs_erstzweit[i, "zweit_neu"] <- hs_erstzweit[i-h_abstand, "erst_neu"]
-          hs_erstzweit[i, "erst_neu"] <- max(0, as.numeric(round(hs_erstzweit[i, "dosen_pro_tag"]) - hs_erstzweit[i, "zweit_neu"]))
-          hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
-          hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          if (hs_erstzweit[i-1, "zweit_abzuarbeiten"]>0) {
+            aufholen <- min(
+              hs_erstzweit[i-1, "zweit_abzuarbeiten"],
+              round(hs_erstzweit[i, "dosen_pro_tag"])
+            )
+            ontime <- min(
+              hs_erstzweit[i-h_abstand, "erst_neu"], 
+              round(hs_erstzweit[i, "dosen_pro_tag"]) - aufholen
+            )
+            nichtgeschafft <- hs_erstzweit[i-h_abstand, "erst_neu"] - ontime
+            hs_erstzweit[i, "zweit_neu"] <- aufholen + ontime
+            hs_erstzweit[i, "zweit_abzuarbeiten"] <- hs_erstzweit[i-1, "zweit_abzuarbeiten"] - aufholen + nichtgeschafft
+            hs_erstzweit[i, "erst_neu"] <- max(0, as.numeric(round(hs_erstzweit[i, "dosen_pro_tag"]) - hs_erstzweit[i, "zweit_neu"]))
+            hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+            hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          } else {
+            hs_erstzweit[i, "zweit_neu"] <- min(
+              hs_erstzweit[i-h_abstand, "erst_neu"], 
+              round(hs_erstzweit[i, "dosen_pro_tag"])
+              )
+            nichtgeschafft <- max(0 , as.numeric(hs_erstzweit[i-h_abstand, "erst_neu"] - round(hs_erstzweit[i, "dosen_pro_tag"])))
+            hs_erstzweit[i, "zweit_abzuarbeiten"] <- nichtgeschafft
+            hs_erstzweit[i, "erst_neu"] <- max(
+              0, 
+              as.numeric(round(hs_erstzweit[i, "dosen_pro_tag"]) - hs_erstzweit[i, "zweit_neu"])
+              )
+            hs_erstzweit[i, "dosen_verabreicht_erst"] <- hs_erstzweit[i-1, "dosen_verabreicht_erst"] + hs_erstzweit[i, "erst_neu"]
+            hs_erstzweit[i, "dosen_verabreicht_zweit"] <- hs_erstzweit[i-1, "dosen_verabreicht_zweit"] + hs_erstzweit[i, "zweit_neu"]
+          }
         }
       }
     }
@@ -311,8 +336,9 @@ for (h in herstellerliste) {
 }
 
 probleme_bei_allesraus <- erstzweit_sofort %>%
-  filter(zweit_neu>dosen_pro_tag) %>% 
-  select(Datum, hersteller, dosen_pro_tag, Verteilungsszenario, zweit_neu)
+  filter(zweit_abzuarbeiten>0) %>% 
+  select(Datum, hersteller, dosen_pro_tag, Verteilungsszenario, erst_neu, zweit_neu, zweit_abzuarbeiten) %>%
+  mutate(quartal=quarter(Datum))
 write_csv(probleme_bei_allesraus, "R/adhoc_analyses/probleme_bei_alles_raus.csv")
 
 zweit_agg_temp_sofort <- erstzweit_sofort %>%
