@@ -385,188 +385,37 @@ durchimpfung.plot_sofort
 ggsave("R/adhoc_analyses/durchimpfung_sofort.png", durchimpfung.plot_sofort, width = 7, height=7*9/16)
 
 ## Durchimpfung
+stufen <- tibble(
+  stufe=1:6,
+  kumanzahl=cumsum(c(8.6, 7, 5.7, 6.9, 8.4, 45))
+)
 
-# durchimpfung.base <- zeitreihe_impfdosen %>% group_by(Verteilungsszenario,hersteller) %>% 
-#    ungroup() %>% select(Verteilungsszenario,Datum,werktag,dosen.verf,hersteller,anwendungen)   %>%  full_join(szenarien,by = character()) %>% 
-#   mutate(Kapazitaet=ifelse(werktag, kap_wt, kap_we)) %>%
-#   select(-kap_wt, -kap_we,-werktag) %>% rename("Betriebsszenario"=szenario) %>% 
-#   left_join(., dosen_verabreicht %>%
-#               select(-dosen_geliefert),by=c("hersteller")) %>%
-#   left_join(., dosen_planung %>% group_by(hersteller) %>% count(abstand) %>% select(-n),by=c("hersteller")) %>%
-#   relocate(Verteilungsszenario,Betriebsszenario,Datum,hersteller) %>%
-#   arrange(Verteilungsszenario,Betriebsszenario,Datum,hersteller)
-# 
-# Datumsliste = sort(unique(durchimpfung.base$Datum))
-# 
-# for(theDatum in Datumsliste) {
-#   if (theDatum==Datumsliste[1]){
-#     i=0
-#     durchimpfung <- durchimpfung.base
-#   }
-#   i = i+1
-#   
-#   # Am ersten Tag der Prognose alte Daten holen
-#   if (i==1){
-#     tagesdaten   = durchimpfung %>% filter(Datum==as_date(theDatum))  %>%
-#       group_by(Verteilungsszenario,Betriebsszenario,Datum) %>%
-#       mutate(Auslastung=sum(dosen.verf)/Kapazitaet,
-#              Anwendung = round(dosen.verf*(1/Auslastung)),
-#              Restdosen = dosen.verf-Anwendung) %>% ungroup() 
-#       
-#     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
-#     durchimpfung = bind_rows(tagesdaten,durchimpfung)
-#   }
-#   # An anderen Tagen vorherigen Tag und aktuellen Tag nehmen
-#   if (i>1){
-#      tagesdaten_old = durchimpfung %>% filter(Datum==(as_date(theDatum)-days(1))) %>% 
-#        select(Verteilungsszenario,hersteller,Betriebsszenario,Restdosen)
-#      tagesdaten_new = durchimpfung %>% filter(Datum==(as_date(theDatum))) %>% 
-#        select(-Restdosen) %>%
-#         left_join(. ,tagesdaten_old, by = c("Verteilungsszenario", "Betriebsszenario"
-#                                             ,"hersteller" ))  %>%
-#      mutate(
-#        dosen.verf=dosen.verf+Restdosen,
-#        Auslastung=sum(dosen.verf)/Kapazitaet,
-#               Anwendung = round(dosen.verf*(1/Auslastung)),
-#               Restdosen = round(dosen.verf-Anwendung)) %>% ungroup() 
-#     durchimpfung = durchimpfung %>% filter(Datum!=as_date(theDatum))
-#     durchimpfung = bind_rows(tagesdaten_new,durchimpfung)
-#   }
-# }
-# 
-# durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,hersteller,Datum)
-# 
-# # Schritt 1/2: Erst und Zweitimpfungen aus alten Erstimpfungen abarbeiten für abstand Tage
-# durchimpfung.ts <- durchimpfung.ts %>% 
-#   group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>% 
-#   mutate(Zweit_neu = ifelse(row_number()<=abstand,
-#                             (dosen_verabreicht_erst - dosen_verabreicht_zweit)/abstand,0),
-#          Erst_neu = ifelse(row_number()<=abstand & (Anwendung - Zweit_neu)>0,
-#                            Anwendung - Zweit_neu,0))
-# di.ts <- tibble()
-# for (hs in unique(durchimpfung.ts$hersteller)) {
-#   di.ts.hersteller <- durchimpfung.ts %>%
-#     filter(hersteller==hs)
-#   thisabstand <- di.ts.hersteller$abstand[1]
-#   for (d in seq(length(Datumsliste))) {
-#     if (d>thisabstand) {
-#       di.ts.hersteller[d, "Zweit_neu"] <- di.ts.hersteller$Erst_neu[d-thisabstand]
-#       if (di.ts.hersteller[d, "Anwendung"]-di.ts.hersteller[d, "Zweit_neu"]>0) {
-#         di.ts.hersteller[d, "Erst_neu"] <- di.ts.hersteller[d, "Anwendung"]-di.ts.hersteller[d, "Zweit_neu"]
-#       }
-#     }
-#   }
-#   di.ts <- bind_rows(di.ts, di.ts.hersteller)
-# }
-# 
-# di.ts_LK <- di.ts %>% 
-#   group_by(Verteilungsszenario ,Betriebsszenario, hersteller) %>% 
-#   mutate(dosen_verabreicht_erst= dosen_verabreicht_erst+ cumsum(Erst_neu),
-#          dosen_verabreicht_zweit = dosen_verabreicht_zweit+cumsum(Zweit_neu)) %>%
-#   group_by(Verteilungsszenario ,Betriebsszenario, Datum) %>% 
-#   summarise(dosen_verabreicht_erst=sum(dosen_verabreicht_erst/anwendungen),
-#             dosen_verabreicht_zweit=sum(dosen_verabreicht_zweit/anwendungen))
-# ggplot(di.ts_LK, aes(x=Datum,y=dosen_verabreicht_zweit,color=Betriebsszenario)) + 
-#   geom_line() + facet_grid(.~Verteilungsszenario)
-
-# Schritt 3: Folgetage iterativ bestimmen...
-
-# 
-# 
-# 
-# min(Datumsliste)
-# 
-# durchimpfung.ts <- durchimpfung %>% arrange(Verteilungsszenario,Betriebsszenario,Datum,hersteller) %>%
-#   left_join(.,dosen_verabreicht %>% mutate(Datum=min(Datumsliste)) %>% 
-#               select(- dosen_geliefert),by=c("hersteller","Datum")) %>%
-#   arrange(Verteilungsszenario,Betriebsszenario, hersteller ,Datum ) %>%
-#   group_by(Verteilungsszenario,Betriebsszenario,hersteller) %>%
-#   left_join(., dosen_planung %>% 
-#               group_by(hersteller) %>% count(abstand) %>% select(-n), by="hersteller") %>% 
-#   mutate(
-#   neu_zweit=ifelse(row_number()<=abstand,
-#                   (first(dosen_verabreicht_erst)-
-#                      first(dosen_verabreicht_zweit))/abstand,0),
-#   neu_erst=ifelse(row_number()<=abstand & (Anwendung-neu_zweit)>=0,
-#                                   Anwendung-neu_zweit,Anwendung)) %>%
-#   mutate(neu_zweit =  ifelse(row_number()>abstand,neu_zweit+
-#            lag(neu_erst,dosen_planung %>% 
-#                  filter(hersteller==hersteller) %>% head(1) %>%
-#                  pull(abstand) )
-#            ,neu_zweit))
-#   
-# Für jedes Szenario muss ab Zeile Abstand + 1 die 
-# Anzahl der Zweitimpfungen iterativ aus den vorangegangenen Erstimpfungen 
-# bestimmt werden, die Zahl der neuen Erstimpfungen reduziert sich dann um die 
-# ZWeitimpfungen
-
-# 
-# for(row in seq(1,dim(testds)[1],1)){
-#  thelag =  testds[5,]$abstand
-#  testds <- testds %>% 
-#    mutate(neu_zweit = ifelse(row_number()>thelag & row_number()=,
-#           lag(new_erst,thelag)
-#           ) 
-# }
-# 
-# 
-# 
-# %>%
-#   mutate(lag_neu_erst = lag(neu_erst, dosen_planung %>% 
-#                               filter(hersteller==hersteller) %>% head(1) %>%
-#                               pull(abstand) ),
-#          neu_zweit=ifelse(!is.na(lag_neu_erst),neu_zweit+lag_neu_erst,neu_zweit)) 
-# )
-#                   
-#                   
-#                   
-#                   %>%
-#   mutate(neu_zweit=ifelse(row_number()>abstand,lag(neu_erst,abstand-1),neu_zweit))
-#          
-#          ,
-#          neu_erst= ifelse(row_number()>abstand & (Anwendung-neu_zweit)>=0,
-#                          Anwendung-neu_zweit,neu_erst)
-#   )
-
-  
-# 
-# 
-# durchimpfung.ts <-durchimpfung %>% 
-#   mutate(Patienten_IZ=Anwendung/anwendungen,
-#          Patienten_IZ_plus=dosen.verf/anwendungen) %>% 
-#   group_by(Verteilungsszenario,Betriebsszenario,Datum) %>% 
-#   summarise(Patienten_IZ=sum(Patienten_IZ),
-#             Patienten_IZ_plus=sum(Patienten_IZ_plus),
-#             Anwendung_IZ=sum(Anwendung),
-#             Rest_IZ=sum(Restdosen)
-#             ) %>%
-#   group_by(Verteilungsszenario,Betriebsszenario) %>%
-#   arrange(Verteilungsszenario,Betriebsszenario,Datum) %>%
-#   mutate(Patienten_IZ_kum=cumsum(Patienten_IZ),
-#          Patienten_IZ_plus_kum=cumsum(Patienten_IZ_plus),
-#          "Imfquote IZ"      = 100*(Patienten_IZ_kum/impflinge_gesamt),
-#          "Imfquote IZ und Vertragsärzte" = 100*(Patienten_IZ_plus_kum/impflinge_gesamt)
-#   ) 
-# 
-# 
-# plotdata.imfquote <- durchimpfung.ts %>% select(Verteilungsszenario,Betriebsszenario,Datum,"Imfquote IZ","Imfquote IZ und Vertragsärzte") %>% gather(Merkmal,Wert,4:5)
-# 
-#  ggplot(plotdata.imfquote %>% filter(Wert<=100),aes(x=Datum,color=Merkmal,y=Wert)) + 
-#    geom_line(size=2.5) + theme_minimal() + scale_color_zi() +
-#    facet_grid(Betriebsszenario~ Verteilungsszenario)
-
-## Übersichten
-# dosen_planung %>% group_by(hersteller) %>% 
-#   summarise(dosen=sum(dosen),anwendungen=sum(dosen)/mean(anwendungen),abstand=mean(abstand))
-# kapazitaeten
-# szenarien
-# zeitreihe_impfdosen %>% head()
-
-
-# 1. Q1 Korrektur mit empirischen Dosen, Speicher der Rückstellstellimfpunegn
-# 2. Auslastung korrigieren, Unterstützungbedarf IZ durch Ärzte quantifizieren
-# 3. Verfügbarkeitszenarien, V1 gleichverteil + emp. , V2 zunehmend + emp.
-# 4. Report 1: Impfkapazität
-# 5. Rückstellungen , Abgeschlossene Impflinge, 
-# 6. Report 2: Durchimpfungsqsquote
-# 7. Dashboard
+meilensteine <- stufen %>%
+  rowwise() %>%
+  mutate(
+    zweit_zuruecklegen_zugelassen=min(zweit_agg %>%
+           filter(nurzugelassen=="nur zugelassen" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+           pull(Datum)),
+    zweit_zuruecklegen_alle=min(zweit_agg %>%
+                                        filter(nurzugelassen=="alle Impfstoffe" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                                        pull(Datum)),
+    erst_zuruecklegen_zugelassen=min(zweit_agg %>%
+                                        filter(nurzugelassen=="nur zugelassen" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                        pull(Datum)),
+    erst_zuruecklegen_alle=min(zweit_agg %>%
+                                  filter(nurzugelassen=="alle Impfstoffe" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                  pull(Datum)),
+    zweit_allesraus_zugelassen=min(zweit_agg_sofort %>%
+                                        filter(nurzugelassen=="nur zugelassen" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                                        pull(Datum)),
+    zweit_allesraus_alle=min(zweit_agg_sofort %>%
+                                  filter(nurzugelassen=="alle Impfstoffe" & name=="vollgeimpft" & value>=kumanzahl*1e6) %>%
+                                  pull(Datum)),
+    erst_allesraus_zugelassen=min(zweit_agg_sofort %>%
+                                       filter(nurzugelassen=="nur zugelassen" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                       pull(Datum)),
+    erst_allesraus_alle=min(zweit_agg_sofort %>%
+                                 filter(nurzugelassen=="alle Impfstoffe" & name=="mineinmalgeimpft" & value>=kumanzahl*1e6) %>%
+                                 pull(Datum))
+    )
+write_csv(meilensteine, "R/adhoc_analyses/impfmeilensteine.csv")
