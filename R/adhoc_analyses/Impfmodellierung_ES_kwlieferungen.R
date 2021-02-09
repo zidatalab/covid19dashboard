@@ -118,7 +118,7 @@ bl_ew <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt",
   bind_rows(tibble(BL_ID=0, EW=sum(.$EW))) %>%
   left_join(tibble(
   BL_ID=0:16,
-  geo=c("Deutschland",
+  geo=c("Gesamt",
         "Schleswig-Holstein",
         "Hamburg",
         "Niedersachsen",
@@ -141,7 +141,7 @@ bl_ew <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt",
 export_newdashboard <- zeitreihe_impfdosen %>% 
   filter(jahr>=2021) %>% ungroup() %>%
   full_join(bl_ew, by=character()) %>%
-  select(BL_ID, geo, EW, Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>% 
+  select(BL_ID, Bundesland=geo, EW, Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>% 
   group_by(BL_ID,Verteilungsszenario,kw) %>%
   summarise(Dosen=round(sum(dosen.verf)/83166711*EW),
             dosen_zugelassen=round(sum(dosen.verf[zugelassen==1])/83166711*EW), 
@@ -149,7 +149,7 @@ export_newdashboard <- zeitreihe_impfdosen %>%
             patienten_zugelassen=round(sum(dosen.verf[zugelassen==1]/anwendungen[zugelassen==1])/83166711*EW),
             mindate=min(Datum),
             maxdate=max(Datum),
-            geo=geo[1])
+            Bundesland=Bundesland[1])
 write_json(export_newdashboard, "./data/tabledata/impfsim_data.json")
 
 kapazitaeten <- bind_rows(
@@ -551,6 +551,20 @@ zweit_agg_sofortAZ <- bind_rows(
   pivot_longer(cols=c(vollgeimpft, mineinmalgeimpft, erst_neu_agg))
 #####
 
+impfstau_zugelassen <- erstzweit_sofortAZ %>%
+  mutate(KW=isoweek(Datum)) %>%
+  filter(zugelassen==1 & Verteilungsszenario=="Linearer Anstieg der Produktion in Q2") %>%
+  group_by(KW) %>%
+  summarise(dosen_kw=sum(dosen_pro_tag))
+  
+impfstau_alle <- erstzweit_sofortAZ %>%
+  mutate(KW=isoweek(Datum)) %>%
+  filter(Verteilungsszenario=="Linearer Anstieg der Produktion in Q2") %>%
+  group_by(KW) %>%
+  summarise(dosen_kw=sum(dosen_pro_tag))
+
+write_csv(impfstau_zugelassen, "R/adhoc_analyses/impfstau_zugelassen.csv")
+write_csv(impfstau_alle, "R/adhoc_analyses/impfstau_alle.csv")
 
 
 ## Durchimpfung
