@@ -715,6 +715,11 @@ vacc_gesamt <- rki_vacc_complete %>%
   filter(key=="sum_initial" | key=="sum_booster_moderna" | key=="sum_booster_biontech") %>%
   filter(date==max(date)) %>%
   select(geo, key, value, population, date)
+vacc_prof <- rki_vacc_complete %>%
+  filter(key=="ind_prof_initial" | key=="ind_prof_booster") %>%
+  filter(date==max(date)) %>%
+  mutate(population=round(3600000/83166711*population)) %>%
+  select(geo, key, value, population, date)
 vacc_age <- rki_vacc_complete %>%
   filter(key=="ind_alter_initial" | key=="ind_alter_booster") %>%
   filter(date==max(date)) %>%
@@ -732,9 +737,9 @@ vacc_pflege <- rki_vacc_complete %>%
   mutate(population=vollstationaere_dauerpflege) %>%
   select(geo, key, value, population, date)
 vacc_alle <- vacc_gesamt %>%
-  bind_rows(vacc_age, vacc_pflege) %>%
+  bind_rows(vacc_age, vacc_pflege, vacc_prof) %>%
   mutate(population=ifelse(population<value, value, population))
-vacc_table <- vacc_alle %>%
+vacc_alle_faktenblatt <- vacc_alle %>%
   pivot_wider(id_cols=c("geo"), names_from="key", values_from=c("value", "population")) %>%
   mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster_moderna-value_sum_booster_biontech)/population_sum_initial,
          quote_booster_gesamt=(value_sum_booster_moderna+value_sum_booster_biontech)/population_sum_initial,
@@ -742,7 +747,10 @@ vacc_table <- vacc_alle %>%
          quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
          quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
          quote_booster_alter=value_ind_alter_booster/population_ind_alter_initial,
-         impfungen_gesamt=value_sum_initial+(value_sum_booster_moderna+value_sum_booster_biontech)) %>%
+         quote_initial_prof=(value_ind_prof_initial-value_ind_prof_booster)/population_ind_prof_initial,
+         quote_booster_prof=value_ind_prof_booster/population_ind_prof_initial,         
+         impfungen_gesamt=value_sum_initial+(value_sum_booster_moderna+value_sum_booster_biontech))
+vacc_table <- vacc_alle_faktenblatt %>%
   mutate(Bundesland=ifelse(geo=="Deutschland", "Gesamt", geo),
          "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
          "PHB 2x"=format(round(100*quote_booster_pflege, 1), decimal.mark=","),
@@ -751,7 +759,7 @@ vacc_table <- vacc_alle %>%
          "Gesamt nur 1x"=format(round(100*quote_initial_gesamt, 1), decimal.mark=","),
          "Gesamt 2x"=format(round(100*quote_booster_gesamt, 1), decimal.mark=","),
          "Impfungen pro 100k EW"=format(round(impfungen_gesamt/population_sum_initial*100000), decimal.mark=",")
-         ) %>%
+  ) %>%
   select(Bundesland, "Impfungen pro 100k EW", "PHB nur 1x", "PHB 2x", "Alter nur 1x", "Alter 2x",
          "Gesamt nur 1x", "Gesamt 2x")
 ## data for table on subpage Bundeslaender
@@ -1082,6 +1090,7 @@ write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_tabl
 write_json(kreise_table, "./data/tabledata/kreise_table.json")
 write_json(kreise_table_faktenblatt, "./data/tabledata/kreise_table_faktenblatt.json")
 write_json(vacc_table_faktenblatt, "./data/tabledata/vacc_table_faktenblatt.json")
+write_json(vacc_alle_faktenblatt, "./data/tabledata/vacc_alle_faktenblatt.json")
 write_json(rwert_bund_data, "./data/plotdata/rwert_bund.json")
 write_json(rki_r_und_zi_vwz_data, "./data/plotdata/rki_r_und_zi_vwz_data.json")
 write_json(akutinfiziert_data, "./data/plotdata/akutinfiziert.json")

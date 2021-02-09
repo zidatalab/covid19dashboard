@@ -129,17 +129,19 @@ kreise_table_faktenblatt <- read_json("../data/tabledata/kreise_table_faktenblat
   mutate(Datum=as_date(Datum))
 vacc_table_faktenblatt <- read_json("../data/tabledata/vacc_table_faktenblatt.json",
                                              simplifyVector = TRUE)
+vacc_alle_faktenblatt <- read_json("../data/tabledata/vacc_alle_faktenblatt.json",
+                                    simplifyVector = TRUE)
 
 agefatality_data <- read_json("../data/plotdata/agefatality.json",
                                              simplifyVector = TRUE) %>%
   mutate(Meldedatum=as_date(Meldedatum))
 
 sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
-                                        sheet = "D_2016_2020_KW_AG_Männlich", 
+                                        sheet = "D_2016_2021_KW_AG_Männlich", 
                                         skip = 8,
                                         na="X") %>% mutate(sex="maennlich"),
                              read_excel(destfile_sterblk, 
-                                        sheet = "D_2016_2020_KW_AG_Weiblich", 
+                                        sheet = "D_2016_2021_KW_AG_Weiblich", 
                                         skip = 8,
                                         na="X") %>% mutate(sex="weiblich")) %>%
   select(-"Nr.") %>% 
@@ -147,12 +149,12 @@ sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk,
   relocate(Jahr,Alter,sex) %>% 
   pivot_longer(cols=-c("Jahr", "Alter", "sex"), names_to="KW", values_to="Tote")
 sterbefaelle_kw.rec <- 
-  left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote) & KW!="53"),
+  left_join(sterbefaelle_kw %>% filter(Jahr>=2020 & !is.na(Tote) & KW!="53"),
             sterbefaelle_kw %>% filter(Jahr<2020) %>%
               group_by(Alter,KW,sex) %>% 
               summarise(Tote_2016_2019=mean(Tote,na.rm=T), .groups="drop"),
             by=c("KW","Alter","sex")) %>% 
-  bind_rows(left_join(sterbefaelle_kw %>% filter(Jahr==2020 & !is.na(Tote) & KW=="53"),
+  bind_rows(left_join(sterbefaelle_kw %>% filter(Jahr>=2020 & !is.na(Tote) & KW=="53"),
                       sterbefaelle_kw %>% filter(Jahr<2020 & KW=="52") %>%
                         group_by(Alter,KW,sex) %>% 
                         summarise(Tote_2016_2019=mean(Tote,na.rm=T), .groups="drop"),
@@ -248,10 +250,13 @@ bltabelle <- bind_rows(
                                                Rt = `R(t)`,
                                                tage_infektioes = 5)) %>%
   ungroup() %>%
-  mutate(`R(t)`=format(`R(t)`, decimal.mark = ",")) %>%
-  select(Bundesland, `R(t)`,
-         `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`,
-         Vorwarnzeit=`Vorwarnzeit`, `Bereits infizierte Bevölkerung`,
+  mutate(`R(t)`=format(`R(t)`, decimal.mark = ","),
+         Inzidenzprojektion=ifelse(Inzidenzprojektion=="nie", "wird nicht erreicht", Inzidenzprojektion)) %>%
+  select(Bundesland, 
+         `Bereits infizierte Bevölkerung`, 
+         Vorwarnzeit=`Vorwarnzeit`, 
+         `R(t)`,
+         `7-Tage-Inzidenz 60+`, `7-Tage-Inzidenz`, 
          Inzidenzprojektion)
 
 eumaxdate <- max(international$date)
@@ -367,12 +372,7 @@ vwztabelle <- tibble(
 rki <- rki %>% mutate(KW=isoweek(Meldedatum),
                       YearKW=ifelse(KW==53, 202053, year(Meldedatum)*100+KW))
 thisKW <- max(rki$YearKW)
-sterbeKW <- case_when(thisKW==202101 ~ 202053-4,
-                      thisKW==202102 ~ 202053-3,
-                      thisKW==202103 ~ 202053-2,
-                      thisKW==202104 ~ 202053-1,
-                      thisKW==202105 ~ 202053,
-                      TRUE ~ thisKW-5)#-1
+sterbeKW <- thisKW-4
 sterbeJahr <- floor(sterbeKW/100)
 vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
 vorsterbeJahr <- floor(vorsterbeKW/100)
@@ -704,23 +704,80 @@ c19erkranktetabelle <- tibble(
   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 
 vaccmaxdate <- max(vacc_zahlen$date)
-vorvaccmaxdate <- vaccmaxdate-7
+vacc_brd <- vacc_alle_faktenblatt %>% filter(geo=="Deutschland")
 geimpfte_gesamt <- tibble(
   "Geimpfte Personen"=c(
-    "fdsa"
-  ),
-  Vorwoche=c(
-    "fdsf"
+    "Gesamt-Bevölkerung",
+    "Gesamt",
+    "Mit nur 1 Impfung",
+    "Mit 2 Impfungen",
+    "Pflegeheimbewohnende",
+    "Gesamt",
+    "Mit nur 1 Impfung",
+    "Mit 2 Impfungen",
+    "Über-80-Jährige",
+    "Gesamt",
+    "Mit nur 1 Impfung",
+    "Mit 2 Impfungen",
+    "Personal in ...",
+    "Gesamt",
+    "Mit nur 1 Impfung",
+    "Mit 2 Impfungen"
   ),
   dieseWoche=c(
-    "fdsf"
+    NA,
+    vacc_brd$value_sum_initial,
+    vacc_brd$value_sum_initial - vacc_brd$value_sum_booster_biontech - vacc_brd$value_sum_booster_moderna,
+    vacc_brd$value_sum_booster_biontech + vacc_brd$value_sum_booster_moderna,
+    NA,
+    vacc_brd$value_ind_pflege_initial,
+    vacc_brd$value_ind_pflege_initial-vacc_brd$value_ind_pflege_booster,
+    vacc_brd$value_ind_pflege_booster,
+    NA,
+    vacc_brd$value_ind_alter_initial,
+    vacc_brd$value_ind_alter_initial - vacc_brd$value_ind_alter_booster,
+    vacc_brd$value_ind_alter_booster,
+    NA,
+    vacc_brd$value_ind_prof_initial,
+    vacc_brd$value_ind_prof_initial - vacc_brd$value_ind_prof_booster,
+    vacc_brd$value_ind_prof_booster
+  ),
+  dieseWocheAnteil=c(
+    NA,
+    vacc_brd$value_sum_initial/vacc_brd$population_sum_initial*100,
+    (vacc_brd$value_sum_initial - vacc_brd$value_sum_booster_biontech - vacc_brd$value_sum_booster_moderna)/vacc_brd$population_sum_initial*100,
+    (vacc_brd$value_sum_booster_biontech + vacc_brd$value_sum_booster_moderna)/vacc_brd$population_sum_initial*100,
+    NA,
+    vacc_brd$value_ind_pflege_initial/vacc_brd$population_ind_pflege_initial*100,
+    (vacc_brd$value_ind_pflege_initial-vacc_brd$value_ind_pflege_booster)/vacc_brd$population_ind_pflege_initial*100,
+    (vacc_brd$value_ind_pflege_booster)/vacc_brd$population_ind_pflege_initial*100,
+    NA,
+    vacc_brd$value_ind_alter_initial/vacc_brd$population_ind_alter_initial*100,
+    (vacc_brd$value_ind_alter_initial - vacc_brd$value_ind_alter_booster)/vacc_brd$population_ind_alter_initial*100,
+    (vacc_brd$value_ind_alter_booster)/vacc_brd$population_ind_alter_initial*100,
+    NA,
+    vacc_brd$value_ind_prof_initial/vacc_brd$population_ind_prof_initial*100,
+    (vacc_brd$value_ind_prof_initial - vacc_brd$value_ind_prof_booster)/vacc_brd$population_ind_prof_initial*100,
+    (vacc_brd$value_ind_prof_booster)/vacc_brd$population_ind_prof_initial*100
   )
-)%>%
+) %>%
+  mutate(dieseWoche=ifelse(is.na(dieseWoche), NA, paste0(dieseWoche, 
+                           " (",
+                           format(round(dieseWocheAnteil, 1), decimal.mark=","), 
+                           " %)"))) %>%
   select("Geimpfte Personen",
-         !!paste0("Stand ", day(vorvaccmaxdate)+1, ".", month(vorvaccmaxdate), "."):=Vorwoche,
          !!paste0("Stand ", day(vaccmaxdate)+1, ".", month(vaccmaxdate), "."):=dieseWoche)
 
-bl_impfungen <- vacc_table_faktenblatt
+bl_impfungen <- vacc_table_faktenblatt %>%
+  select(`Gesamt nur 1x`,
+         `Gesamt 2x`,
+         `PHB nur 1x`,
+         `PHB 2x`,
+         `Alter nur 1x`,
+         `Alter 2x`,
+         `Zahl der Impfungen gesamt`,
+         `7-Tage-Inzidenz`,
+         `7-Tage-Inzidenz 80+`)
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
