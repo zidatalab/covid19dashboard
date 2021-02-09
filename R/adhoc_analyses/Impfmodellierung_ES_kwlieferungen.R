@@ -28,6 +28,19 @@ dosen_planung <- read_csv("R/adhoc_analyses/impfdosen_planung.csv") %>%
 dosen_verabreicht <- read_csv("R/adhoc_analyses/impfdosen_bisher.csv")
 dosen_planung_kw <- read_csv("R/adhoc_analyses/impfdosen_planung_nextkw.csv")
 
+# fuer übersicht dosenplanung
+write_csv(read_csv("R/adhoc_analyses/impfdosen_planung.csv") %>%
+  select(-abstand, -anwendungen) %>%
+  pivot_wider(id_cols=hersteller, 
+              names_from = c(quartal, jahr), 
+              values_from = dosen),
+  "R/adhoc_analyses/uebersicht_dosen_planung.csv")
+write_csv(dosen_planung_kw %>%
+            select(-quartal, -jahr, -Datum) %>%
+            pivot_wider(id_cols=hersteller, 
+                        names_from = c(kw), 
+                        values_from = dosen),
+          "R/adhoc_analyses/uebersicht_dosen_planung_kw.csv")
 
 prognosedatensatz <- 
   tibble(Datum=prognosestart+days(seq(0,as.integer(prognoseende-prognosestart), 1))) %>%
