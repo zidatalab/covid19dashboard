@@ -93,10 +93,50 @@ zeitreihe_impfdosen <- bind_rows(
   mutate(zugelassen=ifelse(hersteller%in%c("BNT/Pfizer", "AZ", "Moderna"), 1, 0))
 # CHECK zeitreihe_impfdosen %>% ggplot(aes(x=Datum,y=gewichtungsfaktor,color=Verteilungsszenario)) + geom_line()
 
+bl_ew <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt", 
+                                   ";",
+                                   escape_double = FALSE,
+                                   col_types = cols(X1 = col_skip()), 
+                                   trim_ws = TRUE) %>%
+  mutate(BL_ID=floor(Kreis/1000)) %>%
+  select(-Kreis, -m, -w) %>%
+  group_by(BL_ID) %>%
+  summarise(EW=sum(ges)) %>%
+  bind_rows(tibble(BL_ID=0, EW=sum(.$EW))) %>%
+  left_join(tibble(
+  BL_ID=0:16,
+  geo=c("Deutschland",
+        "Schleswig-Holstein",
+        "Hamburg",
+        "Niedersachsen",
+        "Bremen",
+        "Nordrhein-Westfalen",
+        "Hessen",
+        "Rheinland-Pfalz",
+        "Baden-Württemberg",
+        "Bayern",
+        "Saarland",
+        "Berlin",
+        "Brandenburg",
+        "Mecklenburg-Vorpommern",
+        "Sachsen",
+        "Sachsen-Anhalt",
+        "Thüringen")
+  ),
+  by="BL_ID")
+
 export_newdashboard <- zeitreihe_impfdosen %>% 
   filter(jahr>=2021) %>% ungroup() %>%
-  select(Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>% group_by(Verteilungsszenario,kw) %>%
-  summarise(Dosen=sum(dosen.verf),dosen_zugelassen=sum(dosen.verf[zugelassen==1]), Patienten=sum(dosen.verf/anwendungen), patienten_zugelassen=sum(dosen.verf[zugelassen==1]/anwendungen[zugelassen==1]),mindate=min(Datum),maxdate=max(Datum))
+  full_join(bl_ew, by=character()) %>%
+  select(BL_ID, geo, EW, Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>% 
+  group_by(BL_ID,Verteilungsszenario,kw) %>%
+  summarise(Dosen=round(sum(dosen.verf)/83166711*EW),
+            dosen_zugelassen=round(sum(dosen.verf[zugelassen==1])/83166711*EW), 
+            Patienten=round(sum(dosen.verf/anwendungen)/83166711*EW), 
+            patienten_zugelassen=round(sum(dosen.verf[zugelassen==1]/anwendungen[zugelassen==1])/83166711*EW),
+            mindate=min(Datum),
+            maxdate=max(Datum),
+            geo=geo[1])
 write_json(export_newdashboard, "./data/tabledata/impfsim_data.json")
 
 kapazitaeten <- bind_rows(
