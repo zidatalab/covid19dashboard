@@ -140,16 +140,21 @@ bl_ew <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt",
 
 export_newdashboard <- zeitreihe_impfdosen %>% 
   filter(jahr>=2021) %>% ungroup() %>%
-  full_join(bl_ew, by=character()) %>%
-  select(BL_ID, Bundesland=geo, EW, Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>% 
-  group_by(BL_ID,Verteilungsszenario,kw) %>%
-  summarise(Dosen=round(sum(dosen.verf)/83166711*EW),
-            dosen_zugelassen=round(sum(dosen.verf[zugelassen==1])/83166711*EW), 
-            Patienten=round(sum(dosen.verf/anwendungen)/83166711*EW), 
-            patienten_zugelassen=round(sum(dosen.verf[zugelassen==1]/anwendungen[zugelassen==1])/83166711*EW),
+  select(Verteilungsszenario,kw, dosen.verf=dosen_pro_tag,anwendungen, Datum, zugelassen) %>%
+  group_by(Verteilungsszenario,kw) %>%
+  summarise(Dosen=sum(dosen.verf),
+            dosen_zugelassen=sum(dosen.verf[zugelassen==1]), 
+            Patienten=sum(dosen.verf/anwendungen), 
+            patienten_zugelassen=sum(dosen.verf[zugelassen==1]/anwendungen[zugelassen==1]),
             mindate=min(Datum),
-            maxdate=max(Datum),
-            Bundesland=Bundesland[1])
+            maxdate=max(Datum)) %>%
+  full_join(bl_ew, by=character()) %>%
+  mutate(
+    Dosen=round(Dosen/83166711*EW),
+    dosen_zugelassen=round(dosen_zugelassen/83166711*EW),
+    Patienten=round(Patienten/83166711*EW),
+    patienten_zugelassen=round(patienten_zugelassen/83166711*EW)
+  )
 write_json(export_newdashboard, "./data/tabledata/impfsim_data.json")
 
 kapazitaeten <- bind_rows(
