@@ -769,7 +769,7 @@ geimpfte_gesamt <- tibble(
          !!paste0("Stand ", day(vaccmaxdate)+1, ".", month(vaccmaxdate), "."):=dieseWoche)
 
 bl_impfungen <- vacc_table_faktenblatt %>%
-  select(`Gesamt nur 1x`,
+  select(Bundesland, `Gesamt nur 1x`,
          `Gesamt 2x`,
          `PHB nur 1x`,
          `PHB 2x`,
