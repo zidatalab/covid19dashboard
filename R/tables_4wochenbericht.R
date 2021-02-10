@@ -372,7 +372,7 @@ vwztabelle <- tibble(
 rki <- rki %>% mutate(KW=isoweek(Meldedatum),
                       YearKW=ifelse(KW==53, 202053, year(Meldedatum)*100+KW))
 thisKW <- max(rki$YearKW)
-sterbeKW <- thisKW-4
+sterbeKW <- thisKW-5
 sterbeJahr <- floor(sterbeKW/100)
 vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
 vorsterbeJahr <- floor(vorsterbeKW/100)
