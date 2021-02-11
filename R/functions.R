@@ -712,7 +712,7 @@ rki_vacc_complete <- rki_vacc %>%
               mutate(key="sum_initial")) %>%
   mutate(geo=ifelse(geo=="Germany", "Deutschland", geo))
 vacc_gesamt <- rki_vacc_complete %>%
-  filter(key=="sum_initial" | key=="sum_booster_moderna" | key=="sum_booster_biontech") %>%
+  filter(key=="sum_initial" | key=="sum_booster") %>%
   filter(date==max(date)) %>%
   select(geo, key, value, population, date)
 vacc_prof <- rki_vacc_complete %>%
@@ -741,15 +741,15 @@ vacc_alle <- vacc_gesamt %>%
   mutate(population=ifelse(population<value, value, population))
 vacc_alle_faktenblatt <- vacc_alle %>%
   pivot_wider(id_cols=c("geo"), names_from="key", values_from=c("value", "population")) %>%
-  mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster_moderna-value_sum_booster_biontech)/population_sum_initial,
-         quote_booster_gesamt=(value_sum_booster_moderna+value_sum_booster_biontech)/population_sum_initial,
+  mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster)/population_sum_initial,
+         quote_booster_gesamt=(value_sum_booster)/population_sum_initial,
          quote_initial_pflege=(value_ind_pflege_initial-value_ind_pflege_booster)/population_ind_pflege_initial,
          quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
          quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
          quote_booster_alter=value_ind_alter_booster/population_ind_alter_initial,
          quote_initial_prof=(value_ind_prof_initial-value_ind_prof_booster)/population_ind_prof_initial,
          quote_booster_prof=value_ind_prof_booster/population_ind_prof_initial,         
-         impfungen_gesamt=value_sum_initial+(value_sum_booster_moderna+value_sum_booster_biontech))
+         impfungen_gesamt=value_sum_initial+(value_sum_booster))
 vacc_table <- vacc_alle_faktenblatt %>%
   mutate(Bundesland=ifelse(geo=="Deutschland", "Gesamt", geo),
          "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
