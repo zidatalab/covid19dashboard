@@ -57,7 +57,8 @@ DT::datatable(bl_projektionen,
                              initComplete = DT::JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}"))) %>% formatStyle(
   'Bundesland',
   target = 'row',
-  fontWeight = styleEqual(c("Gesamt"), c('bold')))
+  fontWeight = styleEqual(c("Gesamt"), c('bold'))) %>%
+  formatStyle(columns = c("Inzidenz<35 bei R(t) aktuell"), fontWeight = 'bold')
 
 ```
 </div>
@@ -88,7 +89,8 @@ DT::datatable(kreise_projektionen %>% select(-`AGS (num)`),
                              searching = TRUE,
                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
                              server = FALSE,
-                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
+                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}"))) %>%
+  formatStyle(columns = c("Inzidenz<35 bei R(t) aktuell"), fontWeight = 'bold')
 
 ```
 </div>
