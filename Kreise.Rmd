@@ -15,6 +15,8 @@ output:
     logo: static/logo.png
     theme: bootstrap
     css: static/styles.css
+    
+    
 ---
 
 Row
@@ -22,10 +24,12 @@ Row
 
 ### **Überblick zu den Kennzahlen der Kreise**
 
-Nachfolgend erhalten Sie einen Überblick zur Situation der einzelnen Kreise. Bitte beachten Sie, dass der Indikator Vorwarnzeit auf Ebene der Kreise und Städte nicht losgelöst von der Situation in der jeweiligen Region betrachtet werden sollte. Wir berichten deshalb eine Vorwarnzeit der übergeordneten Raumordnungsregion (ROR) sowie die Vorwarnzeit lokal auf Kreisebene. Die Risikostufe bezieht sich auf die Unterstützungsnotwendigkeit durch besondere Maßnahmen im medizinischen bzw. mittelbar im pflegerischen Bereich und erlaubt so eine weitere Differenzierung der Kreise.
+Nachfolgend erhalten Sie einen Überblick zur Situation der einzelnen Kreise. Bitte beachten Sie, dass der Indikator Vorwarnzeit auf Ebene der Kreise und Städte nicht losgelöst von der Situation in der jeweiligen Region betrachtet werden sollte. Wir berichten deshalb eine Vorwarnzeit der übergeordneten Raumordnungsregion (ROR) sowie die Vorwarnzeit lokal auf Kreisebene. Die Risikostufe bezieht sich auf die Unterstützungsnotwendigkeit durch besondere Maßnahmen im medizinischen bzw. mittelbar im pflegerischen Bereich und erlaubt so eine weitere Differenzierung der Kreise.\
 
 Row
 -----------------------------------------------------------------------
+
+### **Kennzahlen Kreise**
 
 <div style = "width:99% !important; height:auto; margin: auto;">
 ```{r tableKreise}
