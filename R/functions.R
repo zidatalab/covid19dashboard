@@ -845,8 +845,8 @@ vacc_table_faktenblatt <- vacc_table %>%
             by=c("Bundesland"="geo")) %>%
   left_join(bundeslaender_table %>%
               select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
-            by="Bundesland") %>%
-  select(-`Zahl der Impfungen gesamt`)
+            by="Bundesland") # %>%
+  # select(-`Zahl der Impfungen gesamt`)
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
