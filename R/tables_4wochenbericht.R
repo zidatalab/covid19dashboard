@@ -246,7 +246,7 @@ bltabelle <- bind_rows(
 ) %>%
   rowwise() %>%
   mutate(`Inzidenzprojektion`=projektion_datum(STI_aktuell = `7-Tage-Inzidenz`,
-                                               STI_Ziel = 50,
+                                               STI_Ziel = 35,
                                                Rt = `R(t)`,
                                                tage_infektioes = 5)) %>%
   ungroup() %>%
@@ -727,8 +727,8 @@ geimpfte_gesamt <- tibble(
   dieseWoche=c(
     NA,
     vacc_brd$value_sum_initial,
-    vacc_brd$value_sum_initial - vacc_brd$value_sum_booster_biontech - vacc_brd$value_sum_booster_moderna,
-    vacc_brd$value_sum_booster_biontech + vacc_brd$value_sum_booster_moderna,
+    vacc_brd$value_sum_initial - vacc_brd$value_sum_booster,
+    vacc_brd$value_sum_booster,
     NA,
     vacc_brd$value_ind_pflege_initial,
     vacc_brd$value_ind_pflege_initial-vacc_brd$value_ind_pflege_booster,
@@ -745,8 +745,8 @@ geimpfte_gesamt <- tibble(
   dieseWocheAnteil=c(
     NA,
     vacc_brd$value_sum_initial/vacc_brd$population_sum_initial*100,
-    (vacc_brd$value_sum_initial - vacc_brd$value_sum_booster_biontech - vacc_brd$value_sum_booster_moderna)/vacc_brd$population_sum_initial*100,
-    (vacc_brd$value_sum_booster_biontech + vacc_brd$value_sum_booster_moderna)/vacc_brd$population_sum_initial*100,
+    (vacc_brd$value_sum_initial - vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100,
+    (vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100,
     NA,
     vacc_brd$value_ind_pflege_initial/vacc_brd$population_ind_pflege_initial*100,
     (vacc_brd$value_ind_pflege_initial-vacc_brd$value_ind_pflege_booster)/vacc_brd$population_ind_pflege_initial*100,
@@ -775,9 +775,50 @@ bl_impfungen <- vacc_table_faktenblatt %>%
          `PHB 2x`,
          `Alter nur 1x`,
          `Alter 2x`,
-         `Zahl der Impfungen gesamt`,
+         `Impfquote`,
          `7-Tage-Inzidenz`,
          `7-Tage-Inzidenz 80+`)
+
+hersteller_brd <- vacc_zahlen %>%
+  filter(date==vaccmaxdate & geo=="Germany")
+hersteller_table <- tibble(
+  "Impfstoffdosen"=c(
+    "Verabreichte Impfstoffdosen",
+    "Gesamt",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "Nach Herstellern",
+    "Biontech/Pfizer",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "Moderna",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "AstraZeneca",
+    "Erstimpfungen",
+    "Zweitimpfungen"
+  ),
+  "dieseWoche"=c(
+    NA,
+    hersteller_brd %>% filter(key=="sum") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_initial") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster") %>% pull(value),
+    NA,
+    (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
+    hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
+    (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value)),
+    hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
+    NA
+  )
+) %>%
+  mutate(anteil=paste0(" (", format(round(100*dieseWoche/max(dieseWoche, na.rm=TRUE), 1), decimal.mark=","), " %)")) %>%
+  mutate(dieseWoche=ifelse(Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca"), paste0(dieseWoche, anteil), dieseWoche)) %>%
+  select(-anteil)
+  
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
@@ -789,5 +830,6 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Regionale Daten"=bltabelle,
                          "Internationaler Vergleich"=EUmal4tabelle,
                          "Geimpfte Personen"=geimpfte_gesamt,
-                         "Regional Geimpfte"=bl_impfungen)
+                         "Regional Geimpfte"=bl_impfungen,
+                         "Impfstoffdosen"=hersteller_table)
 write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))

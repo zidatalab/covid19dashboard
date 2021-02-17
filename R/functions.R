@@ -758,10 +758,11 @@ vacc_table <- vacc_alle_faktenblatt %>%
          "Alter 2x"=format(round(100*quote_booster_alter, 1), decimal.mark=","),
          "Gesamt nur 1x"=format(round(100*quote_initial_gesamt, 1), decimal.mark=","),
          "Gesamt 2x"=format(round(100*quote_booster_gesamt, 1), decimal.mark=","),
+         "Impfquote"=format(round(100*(quote_booster_gesamt+quote_initial_gesamt), 1), decimal.mark=","),
          "Impfungen pro 100k EW"=format(round(impfungen_gesamt/population_sum_initial*100000), decimal.mark=",")
   ) %>%
   select(Bundesland, "Impfungen pro 100k EW", "PHB nur 1x", "PHB 2x", "Alter nur 1x", "Alter 2x",
-         "Gesamt nur 1x", "Gesamt 2x")
+         "Gesamt nur 1x", "Gesamt 2x", "Impfquote")
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
@@ -844,7 +845,8 @@ vacc_table_faktenblatt <- vacc_table %>%
             by=c("Bundesland"="geo")) %>%
   left_join(bundeslaender_table %>%
               select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
-            by="Bundesland")
+            by="Bundesland") %>%
+  select(-`Zahl der Impfungen gesamt`)
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
