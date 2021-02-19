@@ -863,6 +863,8 @@ vacc_table_vaccsim <- bind_rows(
          zweitimpfungen=sum_booster[2],
          .groups="drop") %>%
   mutate(geo=ifelse(geo=="Germany", "Gesamt", geo))
+vacc_table_vaccsim <- vacc_table_faktenblatt %>%
+  left_join(vacc_table_vaccsim, by=c("Bundesland"="geo"))
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
