@@ -76,6 +76,9 @@ Row
 
 ```{r indicatorIncProj}
 indicatorIncProj <- bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<35 bei R(t) aktuell`)
+if(indicatorIncProj=="nie") {
+  indicatorIncProj <- "Inzidenz steigt!"
+}
 valueBox(value=indicatorIncProj,
          caption=paste0("Datum, bei dem mit aktuellem R-Wert die Sieben-Tage-Inzidenz den Zielwert 35 unterschreitet. \n unter 50: ",
                         bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<50 bei R(t) aktuell`),
@@ -88,7 +91,7 @@ valueBox(value=indicatorIncProj,
                         # ", unter 10: ",
                         # bl_projektionen %>% filter(Bundesland=="Gesamt") %>% pull(`Inzidenz<10 bei R(t)=0,7`)
                         ),
-         color = "#0086C5", # ziblue
+         color = ifelse(indicatorIncProj!="Inzidenz steigt!", "#0086C5", "#E40000"), # ziblue
          icon = "fa-sign-in-alt"
         )
 ```
