@@ -847,6 +847,21 @@ vacc_table_faktenblatt <- vacc_table %>%
               select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
             by="Bundesland") # %>%
   # select(-`Zahl der Impfungen gesamt`)
+vacc_table_vaccsim <- bind_rows(
+  rki_vacc %>%
+    filter(date==max(date) & (key=="sum" | key=="delta_vortag")),
+  rki_vacc %>%
+    filter(date==max(date)-7 & (key=="sum" | key=="delta_vortag"))
+) %>%
+  pivot_wider(id_cols=c("geo", "date"),
+              names_from=key,
+              values_from=value) %>%
+  group_by(geo) %>%
+  arrange(date) %>%
+  summarise(impfungen_letzter_tag=delta_vortag[2],
+         impfungen_letzte_woche=sum[2]-sum[1],
+         .groups="drop") %>%
+  mutate(geo=ifelse(geo=="Germany", "Gesamt", geo))
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
@@ -1092,6 +1107,7 @@ write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_tabl
 write_json(kreise_table, "./data/tabledata/kreise_table.json")
 write_json(kreise_table_faktenblatt, "./data/tabledata/kreise_table_faktenblatt.json")
 write_json(vacc_table_faktenblatt, "./data/tabledata/vacc_table_faktenblatt.json")
+write_json(vacc_table_vaccsim, "./data/tabledata/vacc_table_vaccsim.json")
 write_json(vacc_alle_faktenblatt, "./data/tabledata/vacc_alle_faktenblatt.json")
 write_json(rwert_bund_data, "./data/plotdata/rwert_bund.json")
 write_json(rki_r_und_zi_vwz_data, "./data/plotdata/rki_r_und_zi_vwz_data.json")
