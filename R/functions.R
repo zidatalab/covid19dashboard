@@ -849,9 +849,9 @@ vacc_table_faktenblatt <- vacc_table %>%
   # select(-`Zahl der Impfungen gesamt`)
 vacc_table_vaccsim <- bind_rows(
   rki_vacc %>%
-    filter(date==max(date) & (key=="sum" | key=="delta_vortag")),
+    filter(date==max(date) & (key=="sum" | key=="delta_vortag" | key=="sum_booster")),
   rki_vacc %>%
-    filter(date==max(date)-7 & (key=="sum" | key=="delta_vortag"))
+    filter(date==max(date)-7 & (key=="sum" | key=="delta_vortag" | key=="sum_booster"))
 ) %>%
   pivot_wider(id_cols=c("geo", "date"),
               names_from=key,
@@ -860,6 +860,7 @@ vacc_table_vaccsim <- bind_rows(
   arrange(date) %>%
   summarise(impfungen_letzter_tag=delta_vortag[2],
          impfungen_letzte_woche=sum[2]-sum[1],
+         zweitimpfungen=sum_booster[2],
          .groups="drop") %>%
   mutate(geo=ifelse(geo=="Germany", "Gesamt", geo))
 ## data for Bundeslaender faktenblatt
