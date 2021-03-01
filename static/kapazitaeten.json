@@ -1,0 +1,140 @@
+{   "stand":"2021-02-25",
+    "data":[
+    {
+        "Bundesland": "Gesamt",
+        "EW_insgesamt": 83166711,
+        "EW_u20": 15330502,
+        "EW_20plus": 67836209,
+        "Anteil_20plus": 100,
+        "Impfkapazitaet": 341670
+    },
+    {
+        "Bundesland": "Schleswig-Holstein",
+        "EW_insgesamt": 2903773,
+        "EW_u20": 532729,
+        "EW_20plus": 2371044,
+        "Anteil_20plus": 3.4952,
+        "Impfkapazitaet": 3200
+    },
+    {
+        "Bundesland": "Hamburg",
+        "EW_insgesamt": 1847253,
+        "EW_u20": 345026,
+        "EW_20plus": 1502227,
+        "Anteil_20plus": 2.2145,
+        "Impfkapazitaet": 8450
+    },
+    {
+        "Bundesland": "Niedersachsen",
+        "EW_insgesamt": 7993608,
+        "EW_u20": 1503439,
+        "EW_20plus": 6490169,
+        "Anteil_20plus": 9.5674,
+        "Impfkapazitaet": 20000
+    },
+    {
+        "Bundesland": "Bremen",
+        "EW_insgesamt": 681202,
+        "EW_u20": 125150,
+        "EW_20plus": 556052,
+        "Anteil_20plus": 0.8197,
+        "Impfkapazitaet": 2840
+    },
+    {
+        "Bundesland": "Nordrhein-Westfalen",
+        "EW_insgesamt": 17947221,
+        "EW_u20": 3382151,
+        "EW_20plus": 14565070,
+        "Anteil_20plus": 21.4709,
+        "Impfkapazitaet": 70000
+    },
+    {
+        "Bundesland": "Hessen",
+        "EW_insgesamt": 6288080,
+        "EW_u20": 1181386,
+        "EW_20plus": 5106694,
+        "Anteil_20plus": 7.528,
+        "Impfkapazitaet": 45000
+    },
+    {
+        "Bundesland": "Rheinland-Pfalz",
+        "EW_insgesamt": 4093903,
+        "EW_u20": 747994,
+        "EW_20plus": 3345909,
+        "Anteil_20plus": 4.9323,
+        "Impfkapazitaet": 23300        
+
+    },
+    {
+        "Bundesland": "Baden-Württemberg",
+        "EW_insgesamt": 11100394,
+        "EW_u20": 2113298,
+        "EW_20plus": 8987096,
+        "Anteil_20plus": 13.2482,
+        "Impfkapazitaet": 61700
+    },
+    {
+        "Bundesland": "Bayern",
+        "EW_insgesamt": 13124737,
+        "EW_u20": 2424729,
+        "EW_20plus": 10700008,
+        "Anteil_20plus": 15.7733,
+        "Impfkapazitaet": 45650
+    },
+    {
+        "Bundesland": "Saarland",
+        "EW_insgesamt": 986887,
+        "EW_u20": 164214,
+        "EW_20plus": 822673,
+        "Anteil_20plus": 1.2127,
+        "Impfkapazitaet": 2700
+    },
+    {
+        "Bundesland": "Berlin",
+        "EW_insgesamt": 3669491,
+        "EW_u20": 667943,
+        "EW_20plus": 3001548,
+        "Anteil_20plus": 4.4247,
+        "Impfkapazitaet": 20000
+    },
+    {
+        "Bundesland": "Brandenburg",
+        "EW_insgesamt": 2521893,
+        "EW_u20": 439334,
+        "EW_20plus": 2082559,
+        "Anteil_20plus": 3.07,
+        "Impfkapazitaet": 5500
+    },
+    {
+        "Bundesland": "Mecklenburg-Vorpommern",
+        "EW_insgesamt": 1608138,
+        "EW_u20": 272319,
+        "EW_20plus": 1335819,
+        "Anteil_20plus": 1.9692,
+        "Impfkapazitaet": 7300
+    },
+    {
+        "Bundesland": "Sachsen",
+        "EW_insgesamt": 4071971,
+        "EW_u20": 712014,
+        "EW_20plus": 3359957,
+        "Anteil_20plus": 4.953,
+        "Impfkapazitaet": 13000
+    },
+    {
+        "Bundesland": "Sachsen-Anhalt",
+        "EW_insgesamt": 2194782,
+        "EW_u20": 358651,
+        "EW_20plus": 1836131,
+        "Anteil_20plus": 2.7067,
+        "Impfkapazitaet": 5000
+    },
+    {
+        "Bundesland": "Thüringen",
+        "EW_insgesamt": 2133378,
+        "EW_u20": 360125,
+        "EW_20plus": 1773253,
+        "Anteil_20plus": 2.614,
+        "Impfkapazitaet": 8000
+    }]
+}
