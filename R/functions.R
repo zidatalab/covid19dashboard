@@ -947,10 +947,11 @@ bl_projektionen <- ausgangsdaten %>%
          invisibleR0735sort,
          invisibleRaktuell10sort,
          invisibleR0710sort)
-  
+
 kreise_projektionen <- ausgangsdaten %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
-  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw) %>%
+  left_join(vorwarnzeitergebnis %>% filter(date==maxdatum) %>% select(id, Vorwarnzeit_ROR), by="id") %>% 
+  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw, Vorwarnzeit_ROR) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate("AGS (num)"=ifelse(id==11, 11000, id/1000)) %>%
   mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
@@ -991,7 +992,8 @@ kreise_projektionen <- ausgangsdaten %>%
          invisibleR0735sort,
          invisibleRaktuell10sort,
          invisibleR0710sort,
-         "AGS (num)")
+         "AGS (num)",
+         Vorwarnzeit_ROR)
 
 # # impfdosen historisch
 # rki_verabreicht_hersteller <- rki_vacc %>%
