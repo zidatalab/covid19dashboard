@@ -116,7 +116,7 @@ almev <- read_csv("../data/almev.csv")
 rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 rki_hosp <- read_excel(destfile_rkihosp, 
                        # sheet = "Daten", 
-                       skip = 2) %>%
+                       skip = 1) %>%
   mutate(YearKW=Meldejahr*100+MW)
 
 vacc_zahlen <- read_csv("../data/vacc_zahlen.csv")
