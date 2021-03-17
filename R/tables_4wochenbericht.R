@@ -810,9 +810,9 @@ hersteller_table <- tibble(
     (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value)),
     hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value),
     hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value),
+    (hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value))++(hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value)),
     hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
-    NA
+    hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value)
   )
 ) %>%
   mutate(anteil=paste0(" (", format(round(100*dieseWoche/max(dieseWoche, na.rm=TRUE), 1), decimal.mark=","), " %)")) %>%
