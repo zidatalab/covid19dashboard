@@ -46,38 +46,41 @@ wellen_data <- rki %>%
          anstiege=case_when(
            Datum>="2020-03-01" & Datum<="2020-03-27" ~ "Welle 1",
            Datum>="2020-09-25" & Datum<="2020-11-07" ~ "Welle 2",
-           Datum>="2021-03-05" & Datum<=max(Datum) ~ "Welle 3",
+           Datum>="2021-03-05" & Datum<=max(Datum)-4 ~ "Welle 3",
            TRUE ~ ""
          )) # %>% 
   # filter(Datum>="2020-03-07" & Datum<="2020-03-21") # %>%
   # filter(Datum>="2020-10-01") # %>%
   # filter(Datum>="2021-03-05") # %>%
   
-ggplot(wellen_data,
-       aes(x=Datum, y=dailycases_rm, color=anstiege)) +
-  geom_line(aes(group=NA))
+# Fälle
+wellen_data %>% filter(anstiege!="") %>% group_by(anstiege) %>% arrange(anstiege,Datum) %>% mutate(Wellentag=row_number())%>%
+  ggplot(aes(x=Wellentag,y=dailycases_rm,color=anstiege)) + geom_line(size=3) + 
+  theme_minimal() + labs(y="Fälle pro Tag",color="Welle") +
+  theme(legend.position = "bottom")
 
-mult_lm_1 <- lm(log(dailycases_rm) ~ 0 + daycount, data=wellen_data %>%
-                  filter(anstiege=="Welle 1") %>% 
-                  mutate(daycount=daycount-min(daycount),
-                         dailycases_rm=dailycases_rm-min(dailycases_rm)+1))
-coef(mult_lm_1)
+ggsave("~/Desktop/plot_1.png", width=20,height = 20*9/16,dpi=300,units="cm")
 
-mult_lm_2 <- lm(log(dailycases_rm) ~ 0 + daycount, data=wellen_data %>%
-                  filter(anstiege=="Welle 2") %>% 
-                  mutate(daycount=daycount-min(daycount),
-                         dailycases_rm=dailycases_rm-min(dailycases_rm)+1))
-coef(mult_lm_2)
+# Anstieg
+wellen_data %>% filter(anstiege!="") %>% group_by(anstiege) %>% arrange(anstiege,Datum) %>% mutate(Wellentag=row_number())%>%
+  ggplot(aes(x=Wellentag,y=100*(anstieg-1),color=anstiege)) + geom_line(size=3) + 
+  theme_minimal() + labs(y="Anstieg zum Vortag in % (log Skala)",color="Welle") +
+  theme(legend.position = "bottom") + scale_y_log10()
 
-mult_lm_3 <- lm(log(dailycases_rm) ~ 0 + daycount, data=wellen_data %>%
-                  filter(anstiege=="Welle 3") %>% 
-                  mutate(daycount=daycount-min(daycount),
-                         dailycases_rm=dailycases_rm-min(dailycases_rm)+1))
-coef(mult_lm_3)
+ggsave("~/Desktop/plot_2.png", width=20,height = 20*9/16,dpi=300,units="cm")
 
 
-# inflection points?
-library(inflection)
+# Regression log(Faelle)
+larsmodell <- wellen_data %>% filter(anstiege!="") %>% group_by(anstiege) %>% 
+  arrange(anstiege,Datum) %>% mutate(Wellentag=row_number()) %>% 
+  lm(log(dailycases_rm) ~ 1 + Wellentag  *I(anstiege), data=. )
 
-findiplist(wellen_data$daycount[1:100], wellen_data$dailycases_rm[1:100], 0)
-findiplist(wellen_data$daycount[1:200], wellen_data$dailycases_rm[1:200], 0)
+# Plot vorhergesagte Fälle
+tibble(expand.grid(Wellentag=seq(1,30,1),anstiege=unique(wellen_data %>% filter(anstiege!="") %>% 
+                                                           count(anstiege) %>% pull(anstiege)))) %>% 
+  mutate(yhat=exp(predict(larsmodell,newdata = .))) %>% 
+  ggplot(aes(x=Wellentag,y=yhat,color=anstiege)) + geom_line(size=3) + 
+  theme_minimal() + labs(y="Vorhergesagte Fälle pro Tag",color="Welle") +
+  theme(legend.position = "bottom")
+
+ggsave("~/Desktop/plot_3.png", width=20,height = 20*9/16,dpi=300,units="cm")
