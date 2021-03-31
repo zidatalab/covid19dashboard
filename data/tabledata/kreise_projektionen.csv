@@ -1,402 +1,402 @@
 7-Tage-Inzidenz,Vorwarnzeit_ROR,Kreis,AGS (num),R(t),Bundesland,Inzidenz<50 bei R(t) aktuell,Inzidenz<35 bei R(t) aktuell,Inzidenz<10 bei R(t) aktuell,"Inzidenz<50 bei R(t)=0,7","Inzidenz<35 bei R(t)=0,7","Inzidenz<10 bei R(t)=0,7",datenstand
-80,49,Ahrweiler,7131,"1,01",Rheinland-Pfalz,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-103,48,Aichach-Friedberg,9771,"1,17",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-130,51,Alb-Donau-Kreis,8425,"1,20",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-235,8,Altenburger Land,16077,"1,17",Thüringen,nie,nie,nie,20.04.2021,25.04.2021,12.05.2021,2021-03-30
-211,49,Altenkirchen (Westerwald),7132,"1,13",Rheinland-Pfalz,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-53,21,Altmarkkreis Salzwedel,15081,"1,05",Sachsen-Anhalt,nie,nie,nie,30.03.2021,04.04.2021,21.04.2021,2021-03-30
-133,41,Altötting,9171,"1,17",Bayern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-170,45,Alzey-Worms,7331,"1,56",Rheinland-Pfalz,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-254,39,Amberg-Sulzbach,9371,"1,15",Bayern,nie,nie,nie,21.04.2021,26.04.2021,13.05.2021,2021-03-30
-178,39,"Amberg, Stadt",9361,"0,87",Bayern,13.05.2021,26.05.2021,09.07.2021,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-99,46,Ammerland,3451,"1,07",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-76,46,Anhalt-Bitterfeld,15082,"1,18",Sachsen-Anhalt,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-30
-179,39,Ansbach,9571,"1,38",Bayern,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-55,39,"Ansbach, Stadt",9561,"0,83",Bayern,01.04.2021,10.04.2021,14.05.2021,30.03.2021,04.04.2021,22.04.2021,2021-03-30
-113,28,Aschaffenburg,9671,"1,14",Bayern,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-69,28,"Aschaffenburg, Stadt",9661,"0,70",Bayern,03.04.2021,08.04.2021,25.04.2021,03.04.2021,08.04.2021,25.04.2021,2021-03-30
-107,48,Augsburg,9772,"1,09",Bayern,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-163,48,"Augsburg, Stadt",9761,"1,34",Bayern,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-75,48,Aurich,3452,"1,69",Niedersachsen,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-30
-102,50,Bad Dürkheim,7332,"1,56",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-89,62,Bad Kissingen,9672,"1,07",Bayern,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-104,45,Bad Kreuznach,7133,"1,46",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-101,56,Bad Tölz-Wolfratshausen,9173,"1,21",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-158,16,"Baden-Baden, Stadt",8211,"1,24",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-90,59,Bamberg,9471,"1,63",Bayern,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-156,59,"Bamberg, Stadt",9461,"2,00",Bayern,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-127,41,Barnim,12060,"1,22",Brandenburg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-196,29,Bautzen,14625,"1,27",Sachsen,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-168,37,Bayreuth,9472,"1,38",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-177,37,"Bayreuth, Stadt",9462,"1,43",Bayern,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-104,41,Berchtesgadener Land,9172,"0,64",Bayern,06.04.2021,10.04.2021,24.04.2021,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-115,49,Bergstraße,6431,"1,18",Hessen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-136,58,Berlin,11000,"1,27",Berlin,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-25,77,Bernkastel-Wittlich,7231,"0,81",Rheinland-Pfalz,✓,✓,20.04.2021,✓,✓,11.04.2021,2021-03-30
-169,51,Biberach,8426,"1,39",Baden-Württemberg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-115,34,"Bielefeld, Stadt",5711,"1,59",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-162,45,Birkenfeld,7134,"1,35",Rheinland-Pfalz,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-78,35,Böblingen,8115,"1,16",Baden-Württemberg,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-139,41,"Bochum, Stadt",5911,"1,41",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-118,49,Bodenseekreis,8435,"1,36",Baden-Württemberg,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-111,53,"Bonn, Stadt",5314,"1,40",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-153,29,Börde,15083,"0,90",Sachsen-Anhalt,23.05.2021,09.06.2021,10.08.2021,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-151,45,Borken,5554,"1,20",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-130,46,"Bottrop, Stadt",5512,"1,22",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-134,46,"Brandenburg an der Havel, Stadt",12051,"1,20",Brandenburg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-114,38,"Braunschweig, Stadt",3101,"1,23",Niedersachsen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-99,47,Breisgau-Hochschwarzwald,8315,"1,11",Baden-Württemberg,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-115,53,"Bremen, Stadt",4011,"1,22",Bremen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-252,33,"Bremerhaven, Stadt",4012,"1,38",Bremen,nie,nie,nie,21.04.2021,26.04.2021,13.05.2021,2021-03-30
-296,21,Burgenlandkreis,15084,"1,27",Sachsen-Anhalt,nie,nie,nie,23.04.2021,28.04.2021,15.05.2021,2021-03-30
-94,43,Calw,8235,"1,03",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-145,27,Celle,3351,"1,03",Niedersachsen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-331,37,Cham,9372,"1,13",Bayern,nie,nie,nie,24.04.2021,29.04.2021,17.05.2021,2021-03-30
-334,15,"Chemnitz, Stadt",14511,"1,44",Sachsen,nie,nie,nie,25.04.2021,30.04.2021,17.05.2021,2021-03-30
-204,46,Cloppenburg,3453,"0,97",Niedersachsen,20.11.2021,19.01.2022,17.08.2022,18.04.2021,23.04.2021,10.05.2021,2021-03-30
-90,59,Coburg,9473,"1,32",Bayern,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-88,59,"Coburg, Stadt",9463,"1,13",Bayern,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-78,49,Cochem-Zell,7135,"2,43",Rheinland-Pfalz,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-78,45,Coesfeld,5558,"1,26",Nordrhein-Westfalen,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-154,30,"Cottbus, Stadt",12052,"0,93",Brandenburg,16.06.2021,12.07.2021,08.10.2021,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-68,33,Cuxhaven,3352,"0,97",Niedersachsen,13.05.2021,04.07.2021,02.01.2022,02.04.2021,07.04.2021,25.04.2021,2021-03-30
-201,42,Dachau,9174,"1,41",Bayern,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-30
-108,30,Dahme-Spreewald,12061,"1,16",Brandenburg,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-115,49,Darmstadt-Dieburg,6432,"1,19",Hessen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-102,49,"Darmstadt, Stadt",6411,"1,29",Hessen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-246,36,Deggendorf,9271,"1,37",Bayern,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-30
-135,30,"Delmenhorst, Stadt",3401,"1,26",Niedersachsen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-155,46,"Dessau-Roßlau, Stadt",15001,"1,33",Sachsen-Anhalt,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-78,30,Diepholz,3251,"1,20",Niedersachsen,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-104,48,Dillingen a.d.Donau,9773,"1,67",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-180,37,Dingolfing-Landau,9279,"1,31",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-37,49,Dithmarschen,1051,"1,07",Schleswig-Holstein,✓,nie,nie,✓,30.03.2021,16.04.2021,2021-03-30
-150,48,Donau-Ries,9779,"1,21",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-85,78,Donnersbergkreis,7333,"1,00",Rheinland-Pfalz,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-128,61,"Dortmund, Stadt",5913,"1,20",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-119,80,"Dresden, Stadt",14612,"1,23",Sachsen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-165,50,"Duisburg, Stadt",5112,"1,13",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-170,45,Düren,5358,"1,07",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-100,43,"Düsseldorf, Stadt",5111,"1,28",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-88,42,Ebersberg,9175,"1,07",Bayern,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-180,34,Eichsfeld,16061,"0,96",Thüringen,24.09.2021,13.11.2021,06.05.2022,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-175,28,Eichstätt,9176,"1,72",Bayern,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-90,77,Eifelkreis Bitburg-Prüm,7232,"1,02",Rheinland-Pfalz,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-270,38,"Eisenach, Stadt",16056,"1,07",Thüringen,nie,nie,nie,22.04.2021,27.04.2021,14.05.2021,2021-03-30
-280,30,Elbe-Elster,12062,"1,16",Brandenburg,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-30
-136,48,"Emden, Stadt",3402,"1,91",Niedersachsen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-102,47,Emmendingen,8316,"0,97",Baden-Württemberg,12.07.2021,02.09.2021,06.03.2022,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-197,45,Emsland,3454,"1,30",Niedersachsen,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-130,41,Ennepe-Ruhr-Kreis,5954,"1,16",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-88,43,Enzkreis,8236,"1,25",Baden-Württemberg,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-80,42,Erding,9177,"1,06",Bayern,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-149,23,"Erfurt, Stadt",16051,"1,17",Thüringen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-129,45,Erlangen-Höchstadt,9572,"1,11",Bayern,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-87,45,"Erlangen, Stadt",9562,"1,16",Bayern,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-257,15,Erzgebirgskreis,14521,"1,15",Sachsen,nie,nie,nie,21.04.2021,26.04.2021,14.05.2021,2021-03-30
-125,50,"Essen, Stadt",5113,"1,12",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-125,35,Esslingen,8116,"1,11",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-139,45,Euskirchen,5366,"1,45",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-101,73,"Flensburg, Stadt",1001,"1,18",Schleswig-Holstein,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-114,59,Forchheim,9474,"1,16",Bayern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-105,50,"Frankenthal (Pfalz), Stadt",7311,"0,80",Rheinland-Pfalz,14.04.2021,22.04.2021,20.05.2021,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-208,36,"Frankfurt (Oder), Stadt",12053,"2,36",Brandenburg,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-137,44,"Frankfurt am Main, Stadt",6412,"1,08",Hessen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-93,47,"Freiburg im Breisgau, Stadt",8311,"1,29",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-131,42,Freising,9178,"1,14",Bayern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-121,43,Freudenstadt,8237,"1,16",Baden-Württemberg,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-144,36,Freyung-Grafenau,9272,"1,15",Bayern,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-62,48,Friesland,3455,"1,11",Niedersachsen,nie,nie,nie,01.04.2021,06.04.2021,24.04.2021,2021-03-30
-190,32,Fulda,6631,"1,14",Hessen,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-30
-114,42,Fürstenfeldbruck,9179,"1,21",Bayern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-101,45,Fürth,9573,"1,06",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-152,45,"Fürth, Stadt",9563,"1,03",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-105,56,Garmisch-Partenkirchen,9180,"1,10",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-172,46,"Gelsenkirchen, Stadt",5513,"1,18",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-364,8,"Gera, Stadt",16052,"1,13",Thüringen,nie,nie,nie,26.04.2021,01.05.2021,18.05.2021,2021-03-30
-161,50,Germersheim,7334,"1,28",Rheinland-Pfalz,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-174,43,Gießen,6531,"1,21",Hessen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-177,38,Gifhorn,3151,"1,68",Niedersachsen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-124,35,Göppingen,8117,"1,03",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-175,29,Görlitz,14626,"1,25",Sachsen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-48,38,Goslar,3153,"1,55",Niedersachsen,✓,nie,nie,✓,02.04.2021,20.04.2021,2021-03-30
-292,23,Gotha,16067,"1,07",Thüringen,nie,nie,nie,23.04.2021,28.04.2021,15.05.2021,2021-03-30
-67,59,Göttingen,3159,"1,33",Niedersachsen,nie,nie,nie,02.04.2021,07.04.2021,25.04.2021,2021-03-30
-89,45,Grafschaft Bentheim,3456,"0,96",Niedersachsen,06.06.2021,18.07.2021,14.12.2021,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-610,8,Greiz,16076,"1,00",Thüringen,31.07.2031,20.01.2033,26.03.2038,03.05.2021,08.05.2021,26.05.2021,2021-03-30
-168,49,Groß-Gerau,6433,"1,14",Hessen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-118,14,Günzburg,9774,"1,24",Bayern,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-130,34,Gütersloh,5754,"1,53",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-208,41,"Hagen, Stadt",5914,"1,30",Nordrhein-Westfalen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-217,21,"Halle (Saale), Stadt",15002,"1,09",Sachsen-Anhalt,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-30
-140,56,"Hamburg, Stadt",2000,"1,23",Hamburg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-96,67,Hameln-Pyrmont,3252,"1,05",Niedersachsen,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-89,61,"Hamm, Stadt",5915,"0,94",Nordrhein-Westfalen,11.05.2021,07.06.2021,08.09.2021,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-114,37,Harburg,3353,"1,17",Niedersachsen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-173,29,Harz,15085,"1,19",Sachsen-Anhalt,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-132,62,Haßberge,9674,"1,28",Bayern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-184,46,Havelland,12063,"1,60",Brandenburg,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-69,27,Heidekreis,3358,"1,41",Niedersachsen,nie,nie,nie,03.04.2021,08.04.2021,25.04.2021,2021-03-30
-87,54,"Heidelberg, Stadt",8221,"1,25",Baden-Württemberg,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-128,30,Heidenheim,8135,"1,65",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-123,23,Heilbronn,8125,"1,21",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-148,23,"Heilbronn, Stadt",8121,"1,43",Baden-Württemberg,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-96,45,Heinsberg,5370,"1,24",Nordrhein-Westfalen,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-82,38,Helmstedt,3154,"0,84",Niedersachsen,12.04.2021,23.04.2021,30.05.2021,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-140,34,Herford,5758,"0,99",Nordrhein-Westfalen,17.04.2023,01.01.2024,30.06.2026,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-166,41,"Herne, Stadt",5916,"1,13",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-292,32,Hersfeld-Rotenburg,6632,"1,32",Hessen,nie,nie,nie,23.04.2021,28.04.2021,15.05.2021,2021-03-30
-89,33,Herzogtum Lauenburg,1053,"1,21",Schleswig-Holstein,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-142,38,Hildburghausen,16069,"1,13",Thüringen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-107,67,Hildesheim,3254,"1,18",Niedersachsen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-125,65,Hochsauerlandkreis,5958,"1,17",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-141,44,Hochtaunuskreis,6434,"1,51",Hessen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-234,37,Hof,9475,"1,20",Bayern,nie,nie,nie,20.04.2021,25.04.2021,12.05.2021,2021-03-30
-319,37,"Hof, Stadt",9464,"1,13",Bayern,nie,nie,nie,24.04.2021,29.04.2021,17.05.2021,2021-03-30
-265,23,Hohenlohekreis,8126,"1,41",Baden-Württemberg,nie,nie,nie,21.04.2021,26.04.2021,14.05.2021,2021-03-30
-89,59,Holzminden,3255,"1,31",Niedersachsen,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-76,66,Höxter,5762,"1,30",Nordrhein-Westfalen,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-30
-281,23,Ilm-Kreis,16070,"1,29",Thüringen,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-30
-110,28,"Ingolstadt, Stadt",9161,"1,07",Bayern,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-120,8,"Jena, Stadt",16053,"1,19",Thüringen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-232,29,Jerichower Land,15086,"1,24",Sachsen-Anhalt,nie,nie,nie,20.04.2021,25.04.2021,12.05.2021,2021-03-30
-74,78,Kaiserslautern,7335,"1,62",Rheinland-Pfalz,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-30
-42,78,"Kaiserslautern, Stadt",7312,"1,11",Rheinland-Pfalz,✓,nie,nie,✓,01.04.2021,18.04.2021,2021-03-30
-139,16,Karlsruhe,8215,"1,05",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-101,16,"Karlsruhe, Stadt",8212,"0,92",Baden-Württemberg,12.05.2021,04.06.2021,21.08.2021,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-106,71,Kassel,6633,"1,44",Hessen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-108,71,"Kassel, Stadt",6611,"1,05",Hessen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-209,17,"Kaufbeuren, Stadt",9762,"1,26",Bayern,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-281,37,Kelheim,9273,"1,54",Bayern,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-30
-210,17,"Kempten (Allgäu), Stadt",9763,"1,57",Bayern,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-60,93,"Kiel, Stadt",1002,"1,10",Schleswig-Holstein,nie,nie,nie,01.04.2021,06.04.2021,23.04.2021,2021-03-30
-97,68,Kitzingen,9675,"2,04",Bayern,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-118,50,Kleve,5154,"1,04",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-128,49,"Koblenz, Stadt",7111,"1,26",Rheinland-Pfalz,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-130,39,"Köln, Stadt",5315,"1,18",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-139,32,Konstanz,8335,"1,12",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-163,43,"Krefeld, Stadt",5114,"1,08",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-241,59,Kronach,9476,"1,05",Bayern,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-30
-313,37,Kulmbach,9477,"1,00",Bayern,nie,nie,nie,24.04.2021,29.04.2021,16.05.2021,2021-03-30
-58,78,Kusel,7336,"1,32",Rheinland-Pfalz,nie,nie,nie,31.03.2021,05.04.2021,23.04.2021,2021-03-30
-186,34,Kyffhäuserkreis,16065,"1,05",Thüringen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-211,43,Lahn-Dill-Kreis,6532,"1,16",Hessen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-73,50,"Landau in der Pfalz, Stadt",7313,"1,33",Rheinland-Pfalz,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-30
-81,72,Landkreis Rostock,13072,"1,09",Mecklenburg-Vorpommern,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-82,42,Landsberg am Lech,9181,"1,57",Bayern,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-151,37,Landshut,9274,"1,16",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-117,37,"Landshut, Stadt",9261,"1,08",Bayern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-210,48,Leer,3457,"1,49",Niedersachsen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-158,59,Leipzig,14729,"1,15",Sachsen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-99,59,"Leipzig, Stadt",14713,"1,08",Sachsen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-115,39,"Leverkusen, Stadt",5316,"1,06",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-172,59,Lichtenfels,9478,"1,32",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-187,43,Limburg-Weilburg,6533,"1,37",Hessen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-115,17,Lindau (Bodensee),9776,"1,17",Bayern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-216,34,Lippe,5766,"1,38",Nordrhein-Westfalen,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-30
-94,32,Lörrach,8336,"1,11",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-61,104,"Lübeck, Stadt",1003,"1,24",Schleswig-Holstein,nie,nie,nie,01.04.2021,06.04.2021,23.04.2021,2021-03-30
-64,83,Lüchow-Dannenberg,3354,"1,43",Niedersachsen,nie,nie,nie,01.04.2021,06.04.2021,24.04.2021,2021-03-30
-134,35,Ludwigsburg,8118,"1,21",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-173,50,"Ludwigshafen am Rhein, Stadt",7314,"1,18",Rheinland-Pfalz,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-175,51,Ludwigslust-Parchim,13076,"1,35",Mecklenburg-Vorpommern,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-83,83,Lüneburg,3355,"1,31",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-140,29,"Magdeburg, Stadt",15003,"1,37",Sachsen-Anhalt,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-167,44,Main-Kinzig-Kreis,6435,"1,13",Hessen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-89,68,Main-Spessart,9677,"0,81",Bayern,12.04.2021,20.04.2021,20.05.2021,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-171,23,Main-Tauber-Kreis,8128,"1,24",Baden-Württemberg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-109,44,Main-Taunus-Kreis,6436,"1,11",Hessen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-94,45,Mainz-Bingen,7339,"1,56",Rheinland-Pfalz,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-105,45,"Mainz, Stadt",7315,"1,33",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-183,54,"Mannheim, Stadt",8222,"1,17",Baden-Württemberg,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-153,21,Mansfeld-Südharz,15087,"1,46",Sachsen-Anhalt,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-147,43,Marburg-Biedenkopf,6534,"1,08",Hessen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-123,36,Märkisch-Oderland,12064,"1,18",Brandenburg,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-232,41,Märkischer Kreis,5962,"1,13",Nordrhein-Westfalen,nie,nie,nie,20.04.2021,25.04.2021,12.05.2021,2021-03-30
-131,49,Mayen-Koblenz,7137,"1,27",Rheinland-Pfalz,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-108,36,Mecklenburgische Seenplatte,13071,"1,46",Mecklenburg-Vorpommern,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-161,80,Meißen,14627,"1,12",Sachsen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-195,14,"Memmingen, Stadt",9764,"2,15",Bayern,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-59,76,Merzig-Wadern,10042,"1,08",Saarland,nie,nie,nie,31.03.2021,05.04.2021,23.04.2021,2021-03-30
-131,43,Mettmann,5158,"1,21",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-98,56,Miesbach,9182,"1,34",Bayern,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-85,28,Miltenberg,9676,"0,97",Bayern,28.06.2021,29.08.2021,02.04.2022,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-185,34,Minden-Lübbecke,5770,"1,21",Nordrhein-Westfalen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-233,15,Mittelsachsen,14522,"1,24",Sachsen,nie,nie,nie,20.04.2021,25.04.2021,12.05.2021,2021-03-30
-108,43,"Mönchengladbach, Stadt",5116,"1,12",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-148,41,Mühldorf a.Inn,9183,"1,22",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-153,50,"Mülheim an der Ruhr, Stadt",5117,"1,38",Nordrhein-Westfalen,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-102,42,München,9184,"1,25",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-97,42,"München, Stadt",9162,"1,17",Bayern,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-67,45,"Münster, Stadt",5515,"0,90",Nordrhein-Westfalen,12.04.2021,29.04.2021,29.06.2021,02.04.2021,07.04.2021,25.04.2021,2021-03-30
-93,54,Neckar-Odenwald-Kreis,8225,"1,39",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-94,14,Neu-Ulm,9775,"1,73",Bayern,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-155,28,Neuburg-Schrobenhausen,9185,"1,23",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-199,37,Neumarkt i.d.OPf.,9373,"1,59",Bayern,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-82,93,"Neumünster, Stadt",1004,"0,82",Schleswig-Holstein,10.04.2021,19.04.2021,20.05.2021,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-135,76,Neunkirchen,10043,"1,17",Saarland,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-97,39,Neustadt a.d.Aisch-Bad Windsheim,9575,"1,31",Bayern,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-114,39,Neustadt a.d.Waldnaab,9374,"0,99",Bayern,22.01.2022,31.05.2022,29.08.2023,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-60,50,"Neustadt an der Weinstraße, Stadt",7316,"1,56",Rheinland-Pfalz,nie,nie,nie,01.04.2021,06.04.2021,23.04.2021,2021-03-30
-212,49,Neuwied,7138,"1,70",Rheinland-Pfalz,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-43,34,Nienburg (Weser),3256,"1,08",Niedersachsen,✓,nie,nie,✓,01.04.2021,18.04.2021,2021-03-30
-25,73,Nordfriesland,1054,"0,82",Schleswig-Holstein,✓,✓,22.04.2021,✓,✓,11.04.2021,2021-03-30
-88,34,Nordhausen,16062,"1,20",Thüringen,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-240,59,Nordsachsen,14730,"1,02",Sachsen,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-30
-126,51,Nordwestmecklenburg,13074,"1,28",Mecklenburg-Vorpommern,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-44,59,Northeim,3155,"1,00",Niedersachsen,✓,10.04.2022,06.12.2027,✓,01.04.2021,19.04.2021,2021-03-30
-188,45,"Nürnberg, Stadt",9564,"1,23",Bayern,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-30
-148,45,Nürnberger Land,9574,"1,38",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-153,17,Oberallgäu,9780,"1,37",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-158,39,Oberbergischer Kreis,5374,"1,03",Nordrhein-Westfalen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-147,50,"Oberhausen, Stadt",5119,"1,05",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-169,24,Oberhavel,12065,"1,11",Brandenburg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-197,30,Oberspreewald-Lausitz,12066,"1,11",Brandenburg,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-105,49,Odenwaldkreis,6437,"1,22",Hessen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-172,36,Oder-Spree,12067,"1,22",Brandenburg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-150,44,Offenbach,6438,"1,07",Hessen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-259,44,"Offenbach am Main, Stadt",6413,"1,16",Hessen,nie,nie,nie,21.04.2021,26.04.2021,14.05.2021,2021-03-30
-167,46,Oldenburg,3458,"1,44",Niedersachsen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-90,46,"Oldenburg (Oldenburg), Stadt",3403,"1,00",Niedersachsen,23.08.2023,05.02.2025,21.03.2030,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-117,51,Olpe,5966,"1,43",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-154,47,Ortenaukreis,8317,"1,31",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-138,51,Osnabrück,3459,"1,30",Niedersachsen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-203,51,"Osnabrück, Stadt",3404,"1,14",Niedersachsen,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-30
-172,30,Ostalbkreis,8136,"1,30",Baden-Württemberg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-366,17,Ostallgäu,9777,"1,47",Bayern,nie,nie,nie,26.04.2021,01.05.2021,18.05.2021,2021-03-30
-78,30,Osterholz,3356,"1,40",Niedersachsen,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-37,104,Ostholstein,1055,"1,12",Schleswig-Holstein,✓,nie,nie,✓,30.03.2021,16.04.2021,2021-03-30
-162,24,Ostprignitz-Ruppin,12068,"1,61",Brandenburg,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-80,66,Paderborn,5774,"1,24",Nordrhein-Westfalen,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-124,36,Passau,9275,"1,08",Bayern,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-134,36,"Passau, Stadt",9262,"0,88",Bayern,05.05.2021,19.05.2021,05.07.2021,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-197,38,Peine,3157,"0,97",Niedersachsen,06.12.2021,10.02.2022,28.09.2022,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-165,28,Pfaffenhofen a.d.Ilm,9186,"1,27",Bayern,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-30
-75,43,"Pforzheim, Stadt",8231,"1,02",Baden-Württemberg,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-30
-115,33,Pinneberg,1056,"1,16",Schleswig-Holstein,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-169,78,"Pirmasens, Stadt",7317,"1,27",Rheinland-Pfalz,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-26,93,Plön,1057,"1,22",Schleswig-Holstein,✓,✓,nie,✓,✓,11.04.2021,2021-03-30
-111,46,Potsdam-Mittelmark,12069,"1,09",Brandenburg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-105,46,"Potsdam, Stadt",12054,"1,07",Brandenburg,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-117,24,Prignitz,12070,"1,60",Brandenburg,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-170,16,Rastatt,8216,"0,90",Baden-Württemberg,26.05.2021,13.06.2021,11.08.2021,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-111,49,Ravensburg,8436,"1,24",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-141,46,Recklinghausen,5562,"1,17",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-161,36,Regen,9276,"1,42",Bayern,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-208,37,Regensburg,9375,"1,44",Bayern,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-153,37,"Regensburg, Stadt",9362,"1,08",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-30
-149,34,Region Hannover,3241,"1,11",Niedersachsen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-79,76,Regionalverband Saarbrücken,10041,"1,17",Saarland,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-141,35,Rems-Murr-Kreis,8119,"1,55",Baden-Württemberg,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-208,43,"Remscheid, Stadt",5120,"1,26",Nordrhein-Westfalen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-46,93,Rendsburg-Eckernförde,1058,"0,98",Schleswig-Holstein,✓,28.05.2021,27.02.2022,✓,02.04.2021,19.04.2021,2021-03-30
-126,35,Reutlingen,8415,"1,08",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-137,39,Rhein-Erft-Kreis,5362,"1,07",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-100,49,Rhein-Hunsrück-Kreis,7140,"1,13",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-104,43,Rhein-Kreis Neuss,5162,"0,95",Nordrhein-Westfalen,10.06.2021,15.07.2021,16.11.2021,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-93,49,Rhein-Lahn-Kreis,7141,"1,23",Rheinland-Pfalz,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-135,54,Rhein-Neckar-Kreis,8226,"1,29",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-127,50,Rhein-Pfalz-Kreis,7338,"1,19",Rheinland-Pfalz,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-107,53,Rhein-Sieg-Kreis,5382,"1,25",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-70,44,Rheingau-Taunus-Kreis,6439,"1,00",Hessen,nie,nie,nie,03.04.2021,08.04.2021,25.04.2021,2021-03-30
-100,39,Rheinisch-Bergischer Kreis,5378,"1,03",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-180,62,Rhön-Grabfeld,9673,"1,43",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-103,41,Rosenheim,9187,"1,06",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-121,41,"Rosenheim, Stadt",9163,"0,76",Bayern,14.04.2021,20.04.2021,13.05.2021,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-57,72,"Rostock, Stadt",13003,"1,76",Mecklenburg-Vorpommern,nie,nie,nie,31.03.2021,05.04.2021,22.04.2021,2021-03-30
-96,37,Rotenburg (Wümme),3357,"1,28",Niedersachsen,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-189,45,Roth,9576,"1,34",Bayern,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-30
-89,37,Rottal-Inn,9277,"1,10",Bayern,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-30
-113,35,Rottweil,8325,"1,67",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-201,8,Saale-Holzland-Kreis,16074,"1,16",Thüringen,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-30
-408,8,Saale-Orla-Kreis,16075,"1,25",Thüringen,nie,nie,nie,27.04.2021,02.05.2021,20.05.2021,2021-03-30
-192,21,Saalekreis,15088,"1,16",Sachsen-Anhalt,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-30
-185,8,Saalfeld-Rudolstadt,16073,"1,16",Thüringen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-82,76,Saarlouis,10044,"1,23",Saarland,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-65,76,Saarpfalz-Kreis,10045,"1,17",Saarland,nie,nie,nie,02.04.2021,07.04.2021,24.04.2021,2021-03-30
-179,80,Sächsische Schweiz-Osterzgebirge,14628,"1,14",Sachsen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-255,38,"Salzgitter, Stadt",3102,"1,12",Niedersachsen,nie,nie,nie,21.04.2021,26.04.2021,13.05.2021,2021-03-30
-112,29,Salzlandkreis,15089,"1,08",Sachsen-Anhalt,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-124,34,Schaumburg,3257,"1,10",Niedersachsen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-41,73,Schleswig-Flensburg,1059,"1,06",Schleswig-Holstein,✓,nie,nie,✓,31.03.2021,18.04.2021,2021-03-30
-335,38,Schmalkalden-Meiningen,16066,"1,04",Thüringen,nie,nie,nie,25.04.2021,30.04.2021,17.05.2021,2021-03-30
-132,45,"Schwabach, Stadt",9565,"1,32",Bayern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-483,23,Schwäbisch Hall,8127,"1,36",Baden-Württemberg,nie,nie,nie,30.04.2021,05.05.2021,22.05.2021,2021-03-30
-85,71,Schwalm-Eder-Kreis,6634,"1,17",Hessen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-292,39,Schwandorf,9376,"1,02",Bayern,nie,nie,nie,23.04.2021,28.04.2021,15.05.2021,2021-03-30
-92,35,Schwarzwald-Baar-Kreis,8326,"1,29",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-87,62,Schweinfurt,9678,"1,31",Bayern,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-30
-170,62,"Schweinfurt, Stadt",9662,"1,00",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-70,51,"Schwerin, Stadt",13004,"0,93",Mecklenburg-Vorpommern,20.04.2021,14.05.2021,05.08.2021,03.04.2021,08.04.2021,25.04.2021,2021-03-30
-115,33,Segeberg,1060,"1,12",Schleswig-Holstein,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-30
-222,51,Siegen-Wittgenstein,5970,"1,26",Nordrhein-Westfalen,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-30
-226,49,Sigmaringen,8437,"1,30",Baden-Württemberg,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-30
-93,65,Soest,5974,"1,10",Nordrhein-Westfalen,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-170,43,"Solingen, Stadt",5122,"1,16",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-265,23,Sömmerda,16068,"1,16",Thüringen,nie,nie,nie,21.04.2021,26.04.2021,14.05.2021,2021-03-30
-140,38,Sonneberg,16072,"1,21",Thüringen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-200,50,"Speyer, Stadt",7318,"1,75",Rheinland-Pfalz,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-171,30,Spree-Neiße,12071,"1,33",Brandenburg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-30
-57,76,St. Wendel,10046,"0,77",Saarland,31.03.2021,07.04.2021,01.05.2021,31.03.2021,05.04.2021,22.04.2021,2021-03-30
-80,37,Stade,3359,"1,08",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-30
-104,45,Städteregion Aachen,5334,"1,02",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-127,42,Starnberg,9188,"1,46",Bayern,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-30
-79,49,Steinburg,1061,"1,62",Schleswig-Holstein,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-125,45,Steinfurt,5566,"1,34",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-186,21,Stendal,15090,"1,33",Sachsen-Anhalt,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-94,33,Stormarn,1062,"1,22",Schleswig-Holstein,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-30
-144,36,Straubing-Bogen,9278,"0,91",Bayern,26.05.2021,14.06.2021,22.08.2021,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-146,36,"Straubing, Stadt",9263,"1,07",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-101,35,"Stuttgart, Stadt",8111,"1,16",Baden-Württemberg,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-69,50,Südliche Weinstraße,7337,"1,04",Rheinland-Pfalz,nie,nie,nie,03.04.2021,08.04.2021,25.04.2021,2021-03-30
-100,78,Südwestpfalz,7340,"1,01",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-182,38,"Suhl, Stadt",16054,"1,01",Thüringen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-143,46,Teltow-Fläming,12072,"1,17",Brandenburg,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-30
-137,39,Tirschenreuth,9377,"0,89",Bayern,13.05.2021,29.05.2021,24.07.2021,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-179,41,Traunstein,9189,"1,15",Bayern,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-30
-55,77,Trier-Saarburg,7235,"1,01",Rheinland-Pfalz,nie,nie,nie,30.03.2021,04.04.2021,22.04.2021,2021-03-30
-46,77,"Trier, Stadt",7211,"0,86",Rheinland-Pfalz,✓,07.04.2021,18.05.2021,✓,02.04.2021,19.04.2021,2021-03-30
-104,35,Tübingen,8416,"1,21",Baden-Württemberg,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-118,35,Tuttlingen,8327,"0,95",Baden-Württemberg,15.06.2021,18.07.2021,09.11.2021,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-75,41,Uckermark,12073,"1,38",Brandenburg,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-30
-83,83,Uelzen,3360,"1,73",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-134,51,"Ulm, Stadt",8421,"1,70",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-105,61,Unna,5978,"1,31",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-30
-96,34,Unstrut-Hainich-Kreis,16064,"0,78",Thüringen,11.04.2021,18.04.2021,13.05.2021,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-204,14,Unterallgäu,9778,"1,28",Bayern,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-30
-146,51,Vechta,3460,"0,98",Niedersachsen,16.03.2022,11.07.2022,26.08.2023,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-83,30,Verden,3361,"1,30",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-108,43,Viersen,5166,"1,34",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-158,43,Vogelsbergkreis,6535,"1,91",Hessen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-434,15,Vogtlandkreis,14523,"1,05",Sachsen,nie,nie,nie,28.04.2021,03.05.2021,21.05.2021,2021-03-30
-132,55,Vorpommern-Greifswald,13075,"1,16",Mecklenburg-Vorpommern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-84,55,Vorpommern-Rügen,13073,"1,51",Mecklenburg-Vorpommern,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-140,77,Vulkaneifel,7233,"1,31",Rheinland-Pfalz,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-107,71,Waldeck-Frankenberg,6635,"1,27",Hessen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-30
-110,32,Waldshut,8337,"1,19",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-30
-77,45,Warendorf,5570,"1,02",Nordrhein-Westfalen,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-30
-423,38,Wartburgkreis,16063,"1,23",Thüringen,nie,nie,nie,28.04.2021,03.05.2021,20.05.2021,2021-03-30
-138,39,"Weiden i.d.OPf., Stadt",9363,"0,92",Bayern,26.05.2021,15.06.2021,25.08.2021,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-137,56,Weilheim-Schongau,9190,"1,41",Bayern,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-30
-98,23,"Weimar, Stadt",16055,"1,35",Thüringen,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-195,23,Weimarer Land,16071,"1,13",Thüringen,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-30
-149,39,Weißenburg-Gunzenhausen,9577,"1,48",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-30
-121,71,Werra-Meißner-Kreis,6636,"0,99",Hessen,26.02.2022,11.07.2022,28.10.2023,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-119,50,Wesel,5170,"1,25",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-203,33,Wesermarsch,3461,"1,34",Niedersachsen,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-30
-118,49,Westerwaldkreis,7143,"1,09",Rheinland-Pfalz,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-30
-125,44,Wetteraukreis,6440,"1,04",Hessen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-30
-99,44,"Wiesbaden, Stadt",6414,"1,26",Hessen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-30
-62,48,"Wilhelmshaven, Stadt",3405,"0,74",Niedersachsen,02.04.2021,08.04.2021,29.04.2021,01.04.2021,06.04.2021,24.04.2021,2021-03-30
-217,46,Wittenberg,15091,"1,37",Sachsen-Anhalt,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-30
-98,48,Wittmund,3462,"1,48",Niedersachsen,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-30
-85,38,Wolfenbüttel,3158,"1,65",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-30
-131,38,"Wolfsburg, Stadt",3103,"1,25",Niedersachsen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-30
-214,45,"Worms, Stadt",7319,"1,61",Rheinland-Pfalz,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-30
-219,37,Wunsiedel i.Fichtelgebirge,9479,"0,95",Bayern,13.08.2021,15.09.2021,09.01.2022,19.04.2021,24.04.2021,11.05.2021,2021-03-30
-186,43,"Wuppertal, Stadt",5124,"1,16",Nordrhein-Westfalen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-30
-65,68,Würzburg,9679,"0,96",Bayern,02.05.2021,18.06.2021,29.11.2021,02.04.2021,07.04.2021,24.04.2021,2021-03-30
-73,68,"Würzburg, Stadt",9663,"1,08",Bayern,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-30
-158,35,Zollernalbkreis,8417,"1,50",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-30
-56,78,"Zweibrücken, Stadt",7320,"1,15",Rheinland-Pfalz,nie,nie,nie,31.03.2021,05.04.2021,22.04.2021,2021-03-30
-277,15,Zwickau,14524,"1,32",Sachsen,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-30
+77,49,Ahrweiler,7131,"0,99",Rheinland-Pfalz,20.04.2022,05.03.2023,28.03.2026,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+93,39,Aichach-Friedberg,9771,"1,18",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+130,47,Alb-Donau-Kreis,8425,"1,22",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+256,6,Altenburger Land,16077,"1,22",Thüringen,nie,nie,nie,22.04.2021,27.04.2021,14.05.2021,2021-03-31
+207,49,Altenkirchen (Westerwald),7132,"1,15",Rheinland-Pfalz,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+48,15,Altmarkkreis Salzwedel,15081,"0,94",Sachsen-Anhalt,✓,23.04.2021,29.07.2021,✓,03.04.2021,21.04.2021,2021-03-31
+142,44,Altötting,9171,"1,25",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+170,44,Alzey-Worms,7331,"1,44",Rheinland-Pfalz,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+260,37,Amberg-Sulzbach,9371,"1,18",Bayern,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+190,37,"Amberg, Stadt",9361,"0,84",Bayern,07.05.2021,17.05.2021,22.06.2021,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+105,46,Ammerland,3451,"1,05",Niedersachsen,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+80,46,Anhalt-Bitterfeld,15082,"1,03",Sachsen-Anhalt,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+168,24,Ansbach,9571,"1,38",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+48,24,"Ansbach, Stadt",9561,"1,07",Bayern,✓,nie,nie,✓,03.04.2021,21.04.2021,2021-03-31
+100,35,Aschaffenburg,9671,"1,15",Bayern,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+70,35,"Aschaffenburg, Stadt",9661,"0,89",Bayern,14.04.2021,30.04.2021,24.06.2021,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+120,39,Augsburg,9772,"1,25",Bayern,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+170,39,"Augsburg, Stadt",9761,"1,40",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+76,47,Aurich,3452,"1,38",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-31
+98,52,Bad Dürkheim,7332,"1,38",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+88,54,Bad Kissingen,9672,"0,98",Bayern,15.08.2021,09.11.2021,10.09.2022,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+97,44,Bad Kreuznach,7133,"1,38",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+81,37,Bad Tölz-Wolfratshausen,9173,"1,29",Bayern,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+163,12,"Baden-Baden, Stadt",8211,"1,09",Baden-Württemberg,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+85,55,Bamberg,9471,"1,51",Bayern,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-31
+162,55,"Bamberg, Stadt",9461,"1,76",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+145,48,Barnim,12060,"1,20",Brandenburg,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+156,34,Bautzen,14625,"1,24",Sachsen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+172,38,Bayreuth,9472,"1,28",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+171,38,"Bayreuth, Stadt",9462,"1,23",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+81,44,Berchtesgadener Land,9172,"0,73",Bayern,07.04.2021,12.04.2021,02.05.2021,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+122,46,Bergstraße,6431,"0,97",Hessen,21.09.2021,01.12.2021,04.08.2022,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+127,54,Berlin,11000,"1,26",Berlin,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+26,69,Bernkastel-Wittlich,7231,"0,85",Rheinland-Pfalz,✓,✓,29.04.2021,✓,✓,12.04.2021,2021-03-31
+147,47,Biberach,8426,"1,33",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+119,32,"Bielefeld, Stadt",5711,"1,46",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+130,44,Birkenfeld,7134,"1,53",Rheinland-Pfalz,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+63,30,Böblingen,8115,"1,25",Baden-Württemberg,nie,nie,nie,02.04.2021,07.04.2021,25.04.2021,2021-03-31
+139,39,"Bochum, Stadt",5911,"1,27",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+109,56,Bodenseekreis,8435,"1,37",Baden-Württemberg,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+112,49,"Bonn, Stadt",5314,"1,26",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+121,26,Börde,15083,"1,04",Sachsen-Anhalt,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+169,40,Borken,5554,"1,18",Nordrhein-Westfalen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+131,47,"Bottrop, Stadt",5512,"1,26",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+107,46,"Brandenburg an der Havel, Stadt",12051,"1,48",Brandenburg,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+106,41,"Braunschweig, Stadt",3101,"1,15",Niedersachsen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+85,49,Breisgau-Hochschwarzwald,8315,"1,14",Baden-Württemberg,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-31
+115,45,"Bremen, Stadt",4011,"1,19",Bremen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+254,32,"Bremerhaven, Stadt",4012,"1,33",Bremen,nie,nie,nie,22.04.2021,27.04.2021,14.05.2021,2021-03-31
+299,20,Burgenlandkreis,15084,"1,23",Sachsen-Anhalt,nie,nie,nie,24.04.2021,29.04.2021,17.05.2021,2021-03-31
+80,45,Calw,8235,"1,05",Baden-Württemberg,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+144,19,Celle,3351,"1,05",Niedersachsen,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+302,33,Cham,9372,"1,15",Bayern,nie,nie,nie,24.04.2021,29.04.2021,17.05.2021,2021-03-31
+352,16,"Chemnitz, Stadt",14511,"1,45",Sachsen,nie,nie,nie,26.04.2021,01.05.2021,19.05.2021,2021-03-31
+216,46,Cloppenburg,3453,"0,89",Niedersachsen,29.05.2021,13.06.2021,03.08.2021,20.04.2021,25.04.2021,12.05.2021,2021-03-31
+88,55,Coburg,9473,"1,34",Bayern,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+85,55,"Coburg, Stadt",9463,"1,08",Bayern,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-31
+72,49,Cochem-Zell,7135,"2,15",Rheinland-Pfalz,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-31
+88,40,Coesfeld,5558,"1,32",Nordrhein-Westfalen,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+144,28,"Cottbus, Stadt",12052,"0,89",Brandenburg,17.05.2021,02.06.2021,28.07.2021,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+65,32,Cuxhaven,3352,"0,96",Niedersachsen,29.04.2021,08.06.2021,29.10.2021,03.04.2021,08.04.2021,25.04.2021,2021-03-31
+201,41,Dachau,9174,"1,26",Bayern,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+98,28,Dahme-Spreewald,12061,"1,13",Brandenburg,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+116,46,Darmstadt-Dieburg,6432,"1,10",Hessen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+99,46,"Darmstadt, Stadt",6411,"1,26",Hessen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+194,45,Deggendorf,9271,"1,43",Bayern,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+152,21,"Delmenhorst, Stadt",3401,"1,53",Niedersachsen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+131,46,"Dessau-Roßlau, Stadt",15001,"1,31",Sachsen-Anhalt,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+94,21,Diepholz,3251,"1,22",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+94,39,Dillingen a.d.Donau,9773,"1,65",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+171,42,Dingolfing-Landau,9279,"1,19",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+33,47,Dithmarschen,1051,"0,91",Schleswig-Holstein,✓,✓,03.06.2021,✓,✓,16.04.2021,2021-03-31
+161,39,Donau-Ries,9779,"0,99",Bayern,01.12.2023,24.09.2024,06.08.2027,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+92,73,Donnersbergkreis,7333,"0,96",Rheinland-Pfalz,21.06.2021,08.08.2021,25.01.2022,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+138,53,"Dortmund, Stadt",5913,"1,20",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+115,82,"Dresden, Stadt",14612,"1,17",Sachsen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+163,50,"Duisburg, Stadt",5112,"1,10",Nordrhein-Westfalen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+164,46,Düren,5358,"1,15",Nordrhein-Westfalen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+96,41,"Düsseldorf, Stadt",5111,"1,19",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+90,41,Ebersberg,9175,"1,11",Bayern,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-31
+202,27,Eichsfeld,16061,"0,99",Thüringen,12.02.2023,06.08.2023,10.04.2025,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+172,30,Eichstätt,9176,"1,47",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+101,69,Eifelkreis Bitburg-Prüm,7232,"1,26",Rheinland-Pfalz,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+263,34,"Eisenach, Stadt",16056,"1,14",Thüringen,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+260,28,Elbe-Elster,12062,"1,13",Brandenburg,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+126,47,"Emden, Stadt",3402,"1,80",Niedersachsen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+100,49,Emmendingen,8316,"1,01",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+183,45,Emsland,3454,"1,27",Niedersachsen,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+132,39,Ennepe-Ruhr-Kreis,5954,"1,20",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+89,45,Enzkreis,8236,"1,25",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-31
+92,41,Erding,9177,"1,02",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+135,15,"Erfurt, Stadt",16051,"1,17",Thüringen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+109,43,Erlangen-Höchstadt,9572,"1,06",Bayern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+77,43,"Erlangen, Stadt",9562,"1,22",Bayern,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+227,16,Erzgebirgskreis,14521,"1,20",Sachsen,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-31
+133,50,"Essen, Stadt",5113,"1,14",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+118,30,Esslingen,8116,"1,17",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+128,46,Euskirchen,5366,"1,36",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+99,60,"Flensburg, Stadt",1001,"1,12",Schleswig-Holstein,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+96,55,Forchheim,9474,"1,12",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+94,52,"Frankenthal (Pfalz), Stadt",7311,"0,80",Rheinland-Pfalz,13.04.2021,21.04.2021,19.05.2021,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+187,33,"Frankfurt (Oder), Stadt",12053,"1,98",Brandenburg,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+146,40,"Frankfurt am Main, Stadt",6412,"1,13",Hessen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+73,49,"Freiburg im Breisgau, Stadt",8311,"1,24",Baden-Württemberg,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-31
+128,41,Freising,9178,"1,08",Bayern,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+118,45,Freudenstadt,8237,"1,18",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+142,45,Freyung-Grafenau,9272,"1,12",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+61,47,Friesland,3455,"1,18",Niedersachsen,nie,nie,nie,02.04.2021,07.04.2021,24.04.2021,2021-03-31
+165,38,Fulda,6631,"1,14",Hessen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+117,41,Fürstenfeldbruck,9179,"1,21",Bayern,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+101,43,Fürth,9573,"1,08",Bayern,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+166,43,"Fürth, Stadt",9563,"1,02",Bayern,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+101,37,Garmisch-Partenkirchen,9180,"0,99",Bayern,09.06.2022,16.01.2023,03.03.2025,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+195,47,"Gelsenkirchen, Stadt",5513,"1,14",Nordrhein-Westfalen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+376,6,"Gera, Stadt",16052,"1,08",Thüringen,nie,nie,nie,27.04.2021,02.05.2021,20.05.2021,2021-03-31
+149,52,Germersheim,7334,"1,22",Rheinland-Pfalz,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+125,46,Gießen,6531,"0,88",Hessen,05.05.2021,19.05.2021,08.07.2021,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+178,41,Gifhorn,3151,"1,51",Niedersachsen,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+127,30,Göppingen,8117,"0,89",Baden-Württemberg,10.05.2021,26.05.2021,20.07.2021,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+171,34,Görlitz,14626,"1,20",Sachsen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+56,41,Goslar,3153,"1,37",Niedersachsen,nie,nie,nie,01.04.2021,06.04.2021,23.04.2021,2021-03-31
+312,15,Gotha,16067,"1,06",Thüringen,nie,nie,nie,25.04.2021,30.04.2021,17.05.2021,2021-03-31
+71,62,Göttingen,3159,"1,40",Niedersachsen,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+79,45,Grafschaft Bentheim,3456,"0,98",Niedersachsen,05.07.2021,19.09.2021,12.06.2022,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+595,6,Greiz,16076,"1,00",Thüringen,nie,nie,nie,04.05.2021,09.05.2021,26.05.2021,2021-03-31
+173,46,Groß-Gerau,6433,"1,19",Hessen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+89,13,Günzburg,9774,"1,30",Bayern,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-31
+118,32,Gütersloh,5754,"1,40",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+206,39,"Hagen, Stadt",5914,"1,32",Nordrhein-Westfalen,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+236,20,"Halle (Saale), Stadt",15002,"1,35",Sachsen-Anhalt,nie,nie,nie,21.04.2021,26.04.2021,13.05.2021,2021-03-31
+134,57,"Hamburg, Stadt",2000,"1,22",Hamburg,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+96,64,Hameln-Pyrmont,3252,"1,11",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+91,53,"Hamm, Stadt",5915,"0,88",Nordrhein-Westfalen,22.04.2021,06.05.2021,22.06.2021,07.04.2021,12.04.2021,30.04.2021,2021-03-31
+110,24,Harburg,3353,"1,17",Niedersachsen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+190,26,Harz,15085,"1,19",Sachsen-Anhalt,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+129,54,Haßberge,9674,"1,13",Bayern,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+161,46,Havelland,12063,"1,53",Brandenburg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+68,19,Heidekreis,3358,"1,48",Niedersachsen,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-31
+84,49,"Heidelberg, Stadt",8221,"1,16",Baden-Württemberg,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-31
+128,30,Heidenheim,8135,"1,65",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+123,24,Heilbronn,8125,"1,06",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+147,24,"Heilbronn, Stadt",8121,"1,35",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+92,46,Heinsberg,5370,"1,19",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+80,41,Helmstedt,3154,"0,88",Niedersachsen,17.04.2021,30.04.2021,16.06.2021,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+125,32,Herford,5758,"1,07",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+158,39,"Herne, Stadt",5916,"1,13",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+258,38,Hersfeld-Rotenburg,6632,"1,25",Hessen,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+98,33,Herzogtum Lauenburg,1053,"1,13",Schleswig-Holstein,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+150,34,Hildburghausen,16069,"1,05",Thüringen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+97,64,Hildesheim,3254,"1,18",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+123,59,Hochsauerlandkreis,5958,"1,23",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+142,40,Hochtaunuskreis,6434,"1,35",Hessen,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+223,38,Hof,9475,"1,08",Bayern,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-31
+347,38,"Hof, Stadt",9464,"1,02",Bayern,nie,nie,nie,26.04.2021,01.05.2021,19.05.2021,2021-03-31
+250,24,Hohenlohekreis,8126,"1,29",Baden-Württemberg,nie,nie,nie,22.04.2021,27.04.2021,14.05.2021,2021-03-31
+79,62,Holzminden,3255,"1,44",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+61,63,Höxter,5762,"1,38",Nordrhein-Westfalen,nie,nie,nie,02.04.2021,07.04.2021,24.04.2021,2021-03-31
+276,15,Ilm-Kreis,16070,"1,29",Thüringen,nie,nie,nie,23.04.2021,28.04.2021,16.05.2021,2021-03-31
+108,30,"Ingolstadt, Stadt",9161,"1,06",Bayern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+115,6,"Jena, Stadt",16053,"1,36",Thüringen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+169,26,Jerichower Land,15086,"1,16",Sachsen-Anhalt,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+74,73,Kaiserslautern,7335,"1,52",Rheinland-Pfalz,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-31
+46,73,"Kaiserslautern, Stadt",7312,"1,23",Rheinland-Pfalz,✓,nie,nie,✓,03.04.2021,20.04.2021,2021-03-31
+122,12,Karlsruhe,8215,"1,06",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+88,12,"Karlsruhe, Stadt",8212,"0,93",Baden-Württemberg,10.05.2021,05.06.2021,04.09.2021,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+112,64,Kassel,6633,"1,27",Hessen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+131,64,"Kassel, Stadt",6611,"1,14",Hessen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+155,26,"Kaufbeuren, Stadt",9762,"1,23",Bayern,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+284,33,Kelheim,9273,"1,55",Bayern,nie,nie,nie,23.04.2021,28.04.2021,16.05.2021,2021-03-31
+198,26,"Kempten (Allgäu), Stadt",9763,"1,41",Bayern,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+58,94,"Kiel, Stadt",1002,"1,20",Schleswig-Holstein,nie,nie,nie,01.04.2021,06.04.2021,24.04.2021,2021-03-31
+99,64,Kitzingen,9675,"1,81",Bayern,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+112,50,Kleve,5154,"1,00",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+134,49,"Koblenz, Stadt",7111,"1,30",Rheinland-Pfalz,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+126,38,"Köln, Stadt",5315,"1,17",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+119,33,Konstanz,8335,"1,06",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+146,41,"Krefeld, Stadt",5114,"1,13",Nordrhein-Westfalen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+253,55,Kronach,9476,"1,05",Bayern,nie,nie,nie,22.04.2021,27.04.2021,14.05.2021,2021-03-31
+310,38,Kulmbach,9477,"1,16",Bayern,nie,nie,nie,25.04.2021,30.04.2021,17.05.2021,2021-03-31
+56,73,Kusel,7336,"0,94",Rheinland-Pfalz,08.04.2021,05.05.2021,08.08.2021,01.04.2021,06.04.2021,23.04.2021,2021-03-31
+175,27,Kyffhäuserkreis,16065,"1,24",Thüringen,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+210,46,Lahn-Dill-Kreis,6532,"1,09",Hessen,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-31
+68,52,"Landau in der Pfalz, Stadt",7313,"1,48",Rheinland-Pfalz,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-31
+93,72,Landkreis Rostock,13072,"1,08",Mecklenburg-Vorpommern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+92,41,Landsberg am Lech,9181,"1,59",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+143,42,Landshut,9274,"1,17",Bayern,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+105,42,"Landshut, Stadt",9261,"0,99",Bayern,25.02.2022,04.08.2022,16.02.2024,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+177,47,Leer,3457,"1,30",Niedersachsen,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+148,55,Leipzig,14729,"1,13",Sachsen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+103,55,"Leipzig, Stadt",14713,"1,05",Sachsen,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+125,38,"Leverkusen, Stadt",5316,"1,00",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+178,55,Lichtenfels,9478,"1,14",Bayern,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+188,46,Limburg-Weilburg,6533,"1,38",Hessen,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+120,26,Lindau (Bodensee),9776,"1,16",Bayern,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+208,32,Lippe,5766,"1,19",Nordrhein-Westfalen,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-31
+92,33,Lörrach,8336,"0,99",Baden-Württemberg,03.07.2022,29.03.2023,29.10.2025,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+69,92,"Lübeck, Stadt",1003,"1,21",Schleswig-Holstein,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+52,74,Lüchow-Dannenberg,3354,"1,26",Niedersachsen,nie,nie,nie,31.03.2021,05.04.2021,22.04.2021,2021-03-31
+109,30,Ludwigsburg,8118,"1,15",Baden-Württemberg,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+180,52,"Ludwigshafen am Rhein, Stadt",7314,"1,12",Rheinland-Pfalz,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+171,45,Ludwigslust-Parchim,13076,"1,28",Mecklenburg-Vorpommern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+79,74,Lüneburg,3355,"1,18",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+120,26,"Magdeburg, Stadt",15003,"1,23",Sachsen-Anhalt,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+163,40,Main-Kinzig-Kreis,6435,"1,12",Hessen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+76,64,Main-Spessart,9677,"0,84",Bayern,11.04.2021,21.04.2021,26.05.2021,05.04.2021,10.04.2021,27.04.2021,2021-03-31
+183,24,Main-Tauber-Kreis,8128,"1,00",Baden-Württemberg,31.10.2025,03.02.2027,10.07.2031,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+109,40,Main-Taunus-Kreis,6436,"1,08",Hessen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+94,44,Mainz-Bingen,7339,"1,67",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+114,44,"Mainz, Stadt",7315,"1,47",Rheinland-Pfalz,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+183,49,"Mannheim, Stadt",8222,"1,03",Baden-Württemberg,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+147,20,Mansfeld-Südharz,15087,"1,37",Sachsen-Anhalt,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+138,46,Marburg-Biedenkopf,6534,"0,85",Hessen,01.05.2021,12.05.2021,21.06.2021,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+123,33,Märkisch-Oderland,12064,"1,17",Brandenburg,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+228,39,Märkischer Kreis,5962,"1,11",Nordrhein-Westfalen,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-31
+132,49,Mayen-Koblenz,7137,"1,38",Rheinland-Pfalz,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+98,41,Mecklenburgische Seenplatte,13071,"1,33",Mecklenburg-Vorpommern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+158,82,Meißen,14627,"1,12",Sachsen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+172,13,"Memmingen, Stadt",9764,"1,89",Bayern,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+51,77,Merzig-Wadern,10042,"0,97",Saarland,03.04.2021,06.06.2021,19.01.2022,30.03.2021,04.04.2021,22.04.2021,2021-03-31
+126,41,Mettmann,5158,"1,18",Nordrhein-Westfalen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+92,37,Miesbach,9182,"1,35",Bayern,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+82,35,Miltenberg,9676,"0,96",Bayern,05.06.2021,23.07.2021,08.01.2022,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+176,32,Minden-Lübbecke,5770,"1,23",Nordrhein-Westfalen,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+194,16,Mittelsachsen,14522,"1,17",Sachsen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+106,41,"Mönchengladbach, Stadt",5116,"1,10",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+157,44,Mühldorf a.Inn,9183,"1,38",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+159,50,"Mülheim an der Ruhr, Stadt",5117,"1,35",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+87,41,München,9184,"1,19",Bayern,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+100,41,"München, Stadt",9162,"1,17",Bayern,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+69,40,"Münster, Stadt",5515,"0,87",Nordrhein-Westfalen,11.04.2021,23.04.2021,07.06.2021,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+104,49,Neckar-Odenwald-Kreis,8225,"1,37",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+102,13,Neu-Ulm,9775,"1,57",Bayern,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+137,30,Neuburg-Schrobenhausen,9185,"1,36",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+162,33,Neumarkt i.d.OPf.,9373,"1,64",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+74,94,"Neumünster, Stadt",1004,"0,89",Schleswig-Holstein,16.04.2021,02.05.2021,26.06.2021,04.04.2021,09.04.2021,27.04.2021,2021-03-31
+113,77,Neunkirchen,10043,"1,31",Saarland,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+96,24,Neustadt a.d.Aisch-Bad Windsheim,9575,"1,17",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+103,37,Neustadt a.d.Waldnaab,9374,"1,00",Bayern,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+68,52,"Neustadt an der Weinstraße, Stadt",7316,"1,51",Rheinland-Pfalz,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-31
+213,49,Neuwied,7138,"1,53",Rheinland-Pfalz,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-31
+48,31,Nienburg (Weser),3256,"0,94",Niedersachsen,✓,23.04.2021,25.07.2021,✓,03.04.2021,21.04.2021,2021-03-31
+25,60,Nordfriesland,1054,"0,79",Schleswig-Holstein,✓,✓,19.04.2021,✓,✓,12.04.2021,2021-03-31
+74,27,Nordhausen,16062,"1,03",Thüringen,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-31
+229,55,Nordsachsen,14730,"1,09",Sachsen,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-31
+128,45,Nordwestmecklenburg,13074,"1,32",Mecklenburg-Vorpommern,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+37,62,Northeim,3155,"0,95",Niedersachsen,✓,04.04.2021,30.07.2021,✓,31.03.2021,17.04.2021,2021-03-31
+182,43,"Nürnberg, Stadt",9564,"1,26",Bayern,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+139,43,Nürnberger Land,9574,"1,21",Bayern,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+160,26,Oberallgäu,9780,"1,28",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+161,38,Oberbergischer Kreis,5374,"1,04",Nordrhein-Westfalen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+148,50,"Oberhausen, Stadt",5119,"1,10",Nordrhein-Westfalen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+166,29,Oberhavel,12065,"1,07",Brandenburg,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+194,28,Oberspreewald-Lausitz,12066,"0,95",Brandenburg,15.08.2021,20.09.2021,25.01.2022,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+113,46,Odenwaldkreis,6437,"1,08",Hessen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+167,33,Oder-Spree,12067,"1,13",Brandenburg,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+146,40,Offenbach,6438,"1,09",Hessen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+259,40,"Offenbach am Main, Stadt",6413,"1,20",Hessen,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+154,46,Oldenburg,3458,"1,49",Niedersachsen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+86,46,"Oldenburg (Oldenburg), Stadt",3403,"0,94",Niedersachsen,16.05.2021,17.06.2021,04.10.2021,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+116,48,Olpe,5966,"1,46",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+137,49,Ortenaukreis,8317,"1,21",Baden-Württemberg,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+148,57,Osnabrück,3459,"1,25",Niedersachsen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+195,57,"Osnabrück, Stadt",3404,"1,07",Niedersachsen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+157,30,Ostalbkreis,8136,"1,27",Baden-Württemberg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+320,26,Ostallgäu,9777,"1,56",Bayern,nie,nie,nie,25.04.2021,30.04.2021,18.05.2021,2021-03-31
+75,21,Osterholz,3356,"1,08",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-31
+35,92,Ostholstein,1055,"1,10",Schleswig-Holstein,✓,✓,nie,✓,✓,17.04.2021,2021-03-31
+166,29,Ostprignitz-Ruppin,12068,"1,54",Brandenburg,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+76,63,Paderborn,5774,"1,13",Nordrhein-Westfalen,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-31
+116,45,Passau,9275,"1,06",Bayern,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+131,45,"Passau, Stadt",9262,"0,91",Bayern,19.05.2021,06.06.2021,10.08.2021,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+159,41,Peine,3157,"1,02",Niedersachsen,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+162,30,Pfaffenhofen a.d.Ilm,9186,"1,23",Bayern,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+67,45,"Pforzheim, Stadt",8231,"1,04",Baden-Württemberg,nie,nie,nie,03.04.2021,08.04.2021,26.04.2021,2021-03-31
+119,33,Pinneberg,1056,"1,21",Schleswig-Holstein,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+127,73,"Pirmasens, Stadt",7317,"1,31",Rheinland-Pfalz,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+26,94,Plön,1057,"1,30",Schleswig-Holstein,✓,✓,nie,✓,✓,12.04.2021,2021-03-31
+113,46,Potsdam-Mittelmark,12069,"1,15",Brandenburg,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+98,46,"Potsdam, Stadt",12054,"1,12",Brandenburg,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+127,29,Prignitz,12070,"1,33",Brandenburg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+170,12,Rastatt,8216,"0,76",Baden-Württemberg,22.04.2021,28.04.2021,22.05.2021,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+103,56,Ravensburg,8436,"1,19",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+146,47,Recklinghausen,5562,"1,27",Nordrhein-Westfalen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+178,45,Regen,9276,"1,57",Bayern,nie,nie,nie,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+197,33,Regensburg,9375,"1,56",Bayern,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+146,33,"Regensburg, Stadt",9362,"0,97",Bayern,19.09.2021,15.11.2021,05.06.2022,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+144,31,Region Hannover,3241,"1,18",Niedersachsen,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+82,77,Regionalverband Saarbrücken,10041,"1,19",Saarland,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+145,30,Rems-Murr-Kreis,8119,"1,52",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+207,41,"Remscheid, Stadt",5120,"1,21",Nordrhein-Westfalen,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+46,94,Rendsburg-Eckernförde,1058,"0,97",Schleswig-Holstein,✓,21.05.2021,17.01.2022,✓,03.04.2021,20.04.2021,2021-03-31
+120,35,Reutlingen,8415,"1,05",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+135,38,Rhein-Erft-Kreis,5362,"1,15",Nordrhein-Westfalen,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+100,49,Rhein-Hunsrück-Kreis,7140,"1,16",Rheinland-Pfalz,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+107,41,Rhein-Kreis Neuss,5162,"1,01",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+96,49,Rhein-Lahn-Kreis,7141,"1,10",Rheinland-Pfalz,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+140,49,Rhein-Neckar-Kreis,8226,"1,20",Baden-Württemberg,nie,nie,nie,13.04.2021,18.04.2021,06.05.2021,2021-03-31
+134,52,Rhein-Pfalz-Kreis,7338,"1,17",Rheinland-Pfalz,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+105,49,Rhein-Sieg-Kreis,5382,"1,19",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+77,40,Rheingau-Taunus-Kreis,6439,"1,01",Hessen,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+103,38,Rheinisch-Bergischer Kreis,5378,"0,89",Nordrhein-Westfalen,01.05.2021,17.05.2021,11.07.2021,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+190,54,Rhön-Grabfeld,9673,"1,27",Bayern,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+99,44,Rosenheim,9187,"0,98",Bayern,01.11.2021,22.02.2022,25.03.2023,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+107,44,"Rosenheim, Stadt",9163,"0,82",Bayern,18.04.2021,26.04.2021,27.05.2021,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+64,72,"Rostock, Stadt",13003,"1,56",Mecklenburg-Vorpommern,nie,nie,nie,02.04.2021,07.04.2021,25.04.2021,2021-03-31
+89,24,Rotenburg (Wümme),3357,"1,25",Niedersachsen,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-31
+189,43,Roth,9576,"1,30",Bayern,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+81,42,Rottal-Inn,9277,"1,17",Bayern,nie,nie,nie,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+99,30,Rottweil,8325,"1,49",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+204,6,Saale-Holzland-Kreis,16074,"1,24",Thüringen,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+406,6,Saale-Orla-Kreis,16075,"0,90",Thüringen,03.07.2021,19.07.2021,14.09.2021,28.04.2021,03.05.2021,21.05.2021,2021-03-31
+189,20,Saalekreis,15088,"1,36",Sachsen-Anhalt,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+188,6,Saalfeld-Rudolstadt,16073,"1,12",Thüringen,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+97,77,Saarlouis,10044,"1,26",Saarland,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+65,77,Saarpfalz-Kreis,10045,"1,24",Saarland,nie,nie,nie,03.04.2021,08.04.2021,25.04.2021,2021-03-31
+122,82,Sächsische Schweiz-Osterzgebirge,14628,"1,09",Sachsen,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+241,41,"Salzgitter, Stadt",3102,"1,08",Niedersachsen,nie,nie,nie,21.04.2021,26.04.2021,14.05.2021,2021-03-31
+99,26,Salzlandkreis,15089,"1,32",Sachsen-Anhalt,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+117,31,Schaumburg,3257,"1,12",Niedersachsen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+37,60,Schleswig-Flensburg,1059,"0,96",Schleswig-Holstein,✓,06.04.2021,11.09.2021,✓,31.03.2021,17.04.2021,2021-03-31
+359,34,Schmalkalden-Meiningen,16066,"1,10",Thüringen,nie,nie,nie,27.04.2021,02.05.2021,19.05.2021,2021-03-31
+124,43,"Schwabach, Stadt",9565,"1,23",Bayern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+470,24,Schwäbisch Hall,8127,"1,38",Baden-Württemberg,nie,nie,nie,30.04.2021,05.05.2021,23.05.2021,2021-03-31
+70,64,Schwalm-Eder-Kreis,6634,"1,22",Hessen,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+263,37,Schwandorf,9376,"1,01",Bayern,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+83,30,Schwarzwald-Baar-Kreis,8326,"1,29",Baden-Württemberg,nie,nie,nie,06.04.2021,11.04.2021,29.04.2021,2021-03-31
+77,54,Schweinfurt,9678,"1,19",Bayern,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+155,54,"Schweinfurt, Stadt",9662,"0,92",Bayern,08.06.2021,30.06.2021,15.09.2021,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+82,45,"Schwerin, Stadt",13004,"0,96",Mecklenburg-Vorpommern,27.05.2021,08.07.2021,01.12.2021,06.04.2021,11.04.2021,28.04.2021,2021-03-31
+122,33,Segeberg,1060,"1,13",Schleswig-Holstein,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+203,48,Siegen-Wittgenstein,5970,"1,21",Nordrhein-Westfalen,nie,nie,nie,19.04.2021,24.04.2021,11.05.2021,2021-03-31
+213,56,Sigmaringen,8437,"1,19",Baden-Württemberg,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-31
+92,59,Soest,5974,"1,09",Nordrhein-Westfalen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+172,41,"Solingen, Stadt",5122,"1,15",Nordrhein-Westfalen,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+264,15,Sömmerda,16068,"1,22",Thüringen,nie,nie,nie,22.04.2021,27.04.2021,15.05.2021,2021-03-31
+154,34,Sonneberg,16072,"1,24",Thüringen,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+210,52,"Speyer, Stadt",7318,"1,39",Rheinland-Pfalz,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-31
+160,28,Spree-Neiße,12071,"1,24",Brandenburg,nie,nie,nie,15.04.2021,20.04.2021,08.05.2021,2021-03-31
+59,77,St. Wendel,10046,"0,80",Saarland,03.04.2021,11.04.2021,08.05.2021,01.04.2021,06.04.2021,24.04.2021,2021-03-31
+63,24,Stade,3359,"1,02",Niedersachsen,nie,nie,nie,02.04.2021,07.04.2021,25.04.2021,2021-03-31
+99,46,Städteregion Aachen,5334,"1,05",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+114,41,Starnberg,9188,"1,41",Bayern,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+87,47,Steinburg,1061,"1,48",Schleswig-Holstein,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+116,40,Steinfurt,5566,"1,30",Nordrhein-Westfalen,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+174,15,Stendal,15090,"1,23",Sachsen-Anhalt,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+93,33,Stormarn,1062,"1,10",Schleswig-Holstein,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+105,45,Straubing-Bogen,9278,"0,97",Bayern,31.07.2021,28.09.2021,24.04.2022,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+98,45,"Straubing, Stadt",9263,"1,11",Bayern,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+104,30,"Stuttgart, Stadt",8111,"1,10",Baden-Württemberg,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+74,52,Südliche Weinstraße,7337,"1,27",Rheinland-Pfalz,nie,nie,nie,04.04.2021,09.04.2021,27.04.2021,2021-03-31
+79,73,Südwestpfalz,7340,"1,02",Rheinland-Pfalz,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+179,34,"Suhl, Stadt",16054,"1,00",Thüringen,13.05.2027,27.01.2029,01.02.2035,17.04.2021,22.04.2021,09.05.2021,2021-03-31
+151,46,Teltow-Fläming,12072,"1,08",Brandenburg,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+155,37,Tirschenreuth,9377,"0,89",Bayern,19.05.2021,04.06.2021,30.07.2021,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+180,44,Traunstein,9189,"1,12",Bayern,nie,nie,nie,17.04.2021,22.04.2021,10.05.2021,2021-03-31
+55,69,Trier-Saarburg,7235,"1,06",Rheinland-Pfalz,nie,nie,nie,31.03.2021,05.04.2021,23.04.2021,2021-03-31
+48,69,"Trier, Stadt",7211,"1,02",Rheinland-Pfalz,✓,nie,nie,✓,03.04.2021,21.04.2021,2021-03-31
+110,35,Tübingen,8416,"1,36",Baden-Württemberg,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+114,30,Tuttlingen,8327,"1,05",Baden-Württemberg,nie,nie,nie,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+59,48,Uckermark,12073,"1,36",Brandenburg,nie,nie,nie,01.04.2021,06.04.2021,24.04.2021,2021-03-31
+98,74,Uelzen,3360,"1,81",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+144,47,"Ulm, Stadt",8421,"1,50",Baden-Württemberg,nie,nie,nie,14.04.2021,19.04.2021,06.05.2021,2021-03-31
+111,53,Unna,5978,"1,24",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+98,27,Unstrut-Hainich-Kreis,16064,"0,81",Thüringen,15.04.2021,23.04.2021,23.05.2021,08.04.2021,13.04.2021,01.05.2021,2021-03-31
+191,13,Unterallgäu,9778,"1,27",Bayern,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+148,57,Vechta,3460,"1,01",Niedersachsen,nie,nie,nie,14.04.2021,19.04.2021,07.05.2021,2021-03-31
+75,21,Verden,3361,"1,35",Niedersachsen,nie,nie,nie,05.04.2021,10.04.2021,27.04.2021,2021-03-31
+110,41,Viersen,5166,"1,36",Nordrhein-Westfalen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+167,46,Vogelsbergkreis,6535,"1,55",Hessen,nie,nie,nie,16.04.2021,21.04.2021,08.05.2021,2021-03-31
+417,16,Vogtlandkreis,14523,"1,08",Sachsen,nie,nie,nie,29.04.2021,04.05.2021,21.05.2021,2021-03-31
+109,52,Vorpommern-Greifswald,13075,"1,01",Mecklenburg-Vorpommern,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+77,52,Vorpommern-Rügen,13073,"1,40",Mecklenburg-Vorpommern,nie,nie,nie,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+134,69,Vulkaneifel,7233,"1,49",Rheinland-Pfalz,nie,nie,nie,13.04.2021,18.04.2021,05.05.2021,2021-03-31
+112,64,Waldeck-Frankenberg,6635,"1,27",Hessen,nie,nie,nie,10.04.2021,15.04.2021,03.05.2021,2021-03-31
+90,33,Waldshut,8337,"1,05",Baden-Württemberg,nie,nie,nie,07.04.2021,12.04.2021,30.04.2021,2021-03-31
+77,40,Warendorf,5570,"0,99",Nordrhein-Westfalen,28.08.2021,01.01.2022,16.03.2023,05.04.2021,10.04.2021,28.04.2021,2021-03-31
+403,34,Wartburgkreis,16063,"1,25",Thüringen,nie,nie,nie,28.04.2021,03.05.2021,21.05.2021,2021-03-31
+117,37,"Weiden i.d.OPf., Stadt",9363,"0,90",Bayern,11.05.2021,28.05.2021,29.07.2021,11.04.2021,16.04.2021,03.05.2021,2021-03-31
+123,37,Weilheim-Schongau,9190,"1,43",Bayern,nie,nie,nie,12.04.2021,17.04.2021,04.05.2021,2021-03-31
+86,15,"Weimar, Stadt",16055,"1,25",Thüringen,nie,nie,nie,07.04.2021,12.04.2021,29.04.2021,2021-03-31
+200,15,Weimarer Land,16071,"1,37",Thüringen,nie,nie,nie,18.04.2021,23.04.2021,11.05.2021,2021-03-31
+154,24,Weißenburg-Gunzenhausen,9577,"1,35",Bayern,nie,nie,nie,15.04.2021,20.04.2021,07.05.2021,2021-03-31
+128,64,Werra-Meißner-Kreis,6636,"1,23",Hessen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+101,50,Wesel,5170,"1,14",Nordrhein-Westfalen,nie,nie,nie,09.04.2021,14.04.2021,01.05.2021,2021-03-31
+208,32,Wesermarsch,3461,"1,52",Niedersachsen,nie,nie,nie,19.04.2021,24.04.2021,12.05.2021,2021-03-31
+119,49,Westerwaldkreis,7143,"1,12",Rheinland-Pfalz,nie,nie,nie,11.04.2021,16.04.2021,04.05.2021,2021-03-31
+127,40,Wetteraukreis,6440,"1,07",Hessen,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+107,40,"Wiesbaden, Stadt",6414,"1,24",Hessen,nie,nie,nie,10.04.2021,15.04.2021,02.05.2021,2021-03-31
+51,47,"Wilhelmshaven, Stadt",3405,"0,73",Niedersachsen,30.03.2021,05.04.2021,25.04.2021,30.03.2021,04.04.2021,22.04.2021,2021-03-31
+174,46,Wittenberg,15091,"1,31",Sachsen-Anhalt,nie,nie,nie,16.04.2021,21.04.2021,09.05.2021,2021-03-31
+93,47,Wittmund,3462,"1,72",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+92,41,Wolfenbüttel,3158,"1,49",Niedersachsen,nie,nie,nie,08.04.2021,13.04.2021,30.04.2021,2021-03-31
+105,41,"Wolfsburg, Stadt",3103,"1,37",Niedersachsen,nie,nie,nie,09.04.2021,14.04.2021,02.05.2021,2021-03-31
+224,44,"Worms, Stadt",7319,"1,68",Rheinland-Pfalz,nie,nie,nie,20.04.2021,25.04.2021,13.05.2021,2021-03-31
+244,38,Wunsiedel i.Fichtelgebirge,9479,"0,98",Bayern,23.02.2022,08.05.2022,24.01.2023,21.04.2021,26.04.2021,14.05.2021,2021-03-31
+190,41,"Wuppertal, Stadt",5124,"1,13",Nordrhein-Westfalen,nie,nie,nie,18.04.2021,23.04.2021,10.05.2021,2021-03-31
+71,64,Würzburg,9679,"1,07",Bayern,nie,nie,nie,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+69,64,"Würzburg, Stadt",9663,"0,97",Bayern,21.05.2021,17.07.2021,03.02.2022,04.04.2021,09.04.2021,26.04.2021,2021-03-31
+130,35,Zollernalbkreis,8417,"1,42",Baden-Württemberg,nie,nie,nie,12.04.2021,17.04.2021,05.05.2021,2021-03-31
+44,73,"Zweibrücken, Stadt",7320,"1,21",Rheinland-Pfalz,✓,nie,nie,✓,02.04.2021,20.04.2021,2021-03-31
+273,16,Zwickau,14524,"1,21",Sachsen,nie,nie,nie,23.04.2021,28.04.2021,15.05.2021,2021-03-31
