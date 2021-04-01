@@ -43,6 +43,9 @@ altersgruppen_bund <- tibble("unter 20"=18.4,
                              "60 bis 80"=21.7,
                              "80+"=6.8)/100
 
+# impflieferungen
+
+
 # mapping eurpean countries german
 eumapping <- tibble(english=c(
   "France",
@@ -819,6 +822,30 @@ hersteller_table <- tibble(
   mutate(dieseWoche=ifelse(Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca"), paste0(dieseWoche, anteil), dieseWoche)) %>%
   select(-anteil)
   
+fortschritt_table <- tibble(
+  "Impffortschritt"=c(
+    "Impffortschritt der letzten Woche",
+    "Gesamt",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "Unverimpfte Dosen",
+    "Gesamt",
+    "Biontech/Pfizer",
+    "Moderna",
+    "AstraZeneca"
+  ),
+  "dieseWoche"=c(
+    NA,
+    hersteller_brd %>% filter(key=="sum") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_initial") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster") %>% pull(value),
+    NA,
+    (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
+    hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
+    (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value))
+  )
+)
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
