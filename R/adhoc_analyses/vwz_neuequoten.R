@@ -22,8 +22,9 @@ library(zoo)
 ##### Source files
 source("R/aux_functions.R")
 
-infektperiode <- 14
-icu_days <- 10.1
+infektperiode <- 6
+icu_days <- 9
+infekt2icudays <- 5
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -160,6 +161,7 @@ rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
   ungroup() %>%
   mutate(blid=floor(id/1000000)) %>%
   as_tibble()
+
 rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
                                   mutate(`Todesfälle_60+`=`Todesfälle_60-79`+`Todesfälle_80+`), # kreise
                                 rki_alter_destatis_kreise %>% # bundeslaender

@@ -40,6 +40,7 @@ divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister on dividay
 icu_altersgruppen <- divi_behandlungen_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
 ## infectious period
 infektperiode <- 14
+infekt2icudays <- 14
 
 ##### Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
