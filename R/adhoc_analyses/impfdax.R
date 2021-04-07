@@ -47,6 +47,8 @@ write_csv(overview_data ,"data/tabledata/impfdax_overview.csv")
 
 
 # Last 14 Impfungen
+# > colnames(last14days)
+# [1] "date"        "Impfzentren" "Arztpraxen" 
 last14days <- plotdata.full %>% arrange(date) %>% tail(14) %>% select(date,Impfzentren=dosen_verimpft) %>%
   left_join(impfungen_praxen %>% select(date,"Arztpraxen"=dosen_Impfungen_Arztpraxen))
 
