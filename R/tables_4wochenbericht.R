@@ -822,30 +822,30 @@ hersteller_table <- tibble(
   mutate(dieseWoche=ifelse(Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca"), paste0(dieseWoche, anteil), dieseWoche)) %>%
   select(-anteil)
   
-fortschritt_table <- tibble(
-  "Impffortschritt"=c(
-    "Impffortschritt der letzten Woche",
-    "Gesamt",
-    "Erstimpfungen",
-    "Zweitimpfungen",
-    "Unverimpfte Dosen",
-    "Gesamt",
-    "Biontech/Pfizer",
-    "Moderna",
-    "AstraZeneca"
-  ),
-  "dieseWoche"=c(
-    NA,
-    hersteller_brd %>% filter(key=="sum") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_initial") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_booster") %>% pull(value),
-    NA,
-    (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
-    hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
-    (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value))
-  )
-)
+# fortschritt_table <- tibble(
+#   "Impffortschritt"=c(
+#     "Impffortschritt der letzten Woche",
+#     "Gesamt",
+#     "Erstimpfungen",
+#     "Zweitimpfungen",
+#     "Unverimpfte Dosen",
+#     "Gesamt",
+#     "Biontech/Pfizer",
+#     "Moderna",
+#     "AstraZeneca"
+#   ),
+#   "dieseWoche"=c(
+#     NA,
+#     hersteller_brd %>% filter(key=="sum") %>% pull(value),
+#     hersteller_brd %>% filter(key=="sum_initial") %>% pull(value),
+#     hersteller_brd %>% filter(key=="sum_booster") %>% pull(value),
+#     NA,
+#     (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
+#     hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
+#     hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
+#     (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value))
+#   )
+# )
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
@@ -857,6 +857,6 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Regionale Daten"=bltabelle,
                          "Internationaler Vergleich"=EUmal4tabelle,
                          "Geimpfte Personen"=geimpfte_gesamt,
-                         "Regional Geimpfte"=bl_impfungen,
-                         "Impfstoffdosen"=hersteller_table)
+                         "Regional Geimpfte"=bl_impfungen)#,
+                         # "Impfstoffdosen"=hersteller_table)
 write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))
