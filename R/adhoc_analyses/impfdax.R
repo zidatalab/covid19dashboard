@@ -17,12 +17,13 @@ plotdata <- lieferungen %>%
             dosen_verimpft=sum(dosen_verimpft,na.rm=TRUE),
             dosen_Impfungen_Arztpraxen=0,
             dosen_Impfungen_Impfzentren=dosen_verimpft-dosen_Impfungen_Arztpraxen,
+            dosen_Dosen_unverimpft = dosen_geliefert-dosen_verimpft,
             "dosen_Dosen_geliefert"=dosen_geliefert,
             date=max(date)) %>% arrange(date) %>% 
   pivot_longer(contains("dosen"),
                names_to = "Dosen",names_prefix = "dosen_",values_to = "Anzahl") %>%
   #filter(Jahr<2020 | kw < isoweek(now())) %>%
-  filter(Dosen %in% c("Dosen_geliefert","Impfungen_Arztpraxen","Impfungen_Impfzentren")) %>%
+  filter(Dosen %in% c("Dosen_unverimpft","Dosen_geliefert","Impfungen_Arztpraxen","Impfungen_Impfzentren")) %>%
   mutate(Dosen=str_replace(Dosen,"_"," ")) %>% 
   arrange(Dosen,date) %>% group_by(Dosen) %>% mutate(Anzahl_kum=cumsum(Anzahl))
 
