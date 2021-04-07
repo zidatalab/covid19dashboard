@@ -29,8 +29,17 @@ plotdata <- lieferungen %>%
 
 
 plotdata_wide <- plotdata %>% pivot_wider(names_from=Dosen,values_from = contains('Anzahl'))
-
+# > colnames(plotdata_wide)
+# [1] "Jahr"                             "kw"                              
+# [3] "date"                             "Anzahl_Dosen geliefert"          
+# [5] "Anzahl_Dosen unverimpft"          "Anzahl_Impfungen Arztpraxen"     
+# [7] "Anzahl_Impfungen Impfzentren"     "Anzahl_kum_Dosen geliefert"      
+# [9] "Anzahl_kum_Dosen unverimpft"      "Anzahl_kum_Impfungen Arztpraxen" 
+# [11] "Anzahl_kum_Impfungen Impfzentren"
 write_csv(plotdata_wide ,"data/tabledata/impfdax.csv")
 
 overview_data <- plotdata %>% group_by(Dosen) %>% summarise(Anzahl=sum(Anzahl,na.rm=T)) %>% ungroup() %>% mutate(Thema=str_split_fixed(Dosen," ",2)[,1],Was=str_split_fixed(Dosen," ",2)[,2])
-write_csv(overview_data ,"data/tabledata/impfdax.csv")
+
+# > colnames(overview_data)
+# [1] "Dosen"  "Anzahl" "Thema"  "Was"   
+write_csv(overview_data ,"data/tabledata/impfdax_overview.csv")
