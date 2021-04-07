@@ -31,3 +31,6 @@ plotdata <- lieferungen %>%
 plotdata_wide <- plotdata %>% pivot_wider(names_from=Dosen,values_from = contains('Anzahl'))
 
 write_csv(plotdata_wide ,"data/tabledata/impfdax.csv")
+
+overview_data <- plotdata %>% group_by(Dosen) %>% summarise(Anzahl=sum(Anzahl,na.rm=T)) %>% ungroup() %>% mutate(Thema=str_split_fixed(Dosen," ",2)[,1],Was=str_split_fixed(Dosen," ",2)[,2])
+write_csv(overview_data ,"data/tabledata/impfdax.csv")
