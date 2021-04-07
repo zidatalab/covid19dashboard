@@ -31,7 +31,8 @@ sirmodel<- function(ngesamt,  S,   I,   R,  R0,  gamma,  horizont=365) {
   times      <- seq(0, horizont, by = 1)
   
   # Solve using ode (General Solver for Ordinary Differential Equations)
-  out <- ode(y = init, times = times, func = SIR, parms = params, ngesamt=ngesamt, gamma=gamma)
+  out <- ode(y = init, times = times, func = SIR, parms = params, 
+             ngesamt=ngesamt, gamma=gamma)
   
   # change to data frame and reformat
   out <- as.data.frame(out) %>% select(-time) %>% rename(S=1,I=2,R=3) %>%

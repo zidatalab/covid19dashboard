@@ -19,7 +19,7 @@ infected <- akutinfiziert-icubelegt
 recovered <- cases-infected-icubelegt
 
 for (i in 1:3) {
-  ngesamt = ngesamt[i]
+  ngesamti = ngesamt[i]
   S = ngesamt[i] - infected[i] - icubelegt[i] - recovered[i]
   I = infected[i]
   H=icubelegt[i]
@@ -34,7 +34,7 @@ for (i in 1:3) {
   
   out <- ode(y = init, times = times, 
              func = SIHR, parms = params, 
-             ngesamt=ngesamt, 
+             ngesamt=ngesamti, 
              gamma=gamma, qa=qa, delta=delta, nu=nu)
   
 }

@@ -158,7 +158,7 @@ kreise_regstat_alter <- bind_rows(tibble(id=0,
 
 ## new
 
-infektperiode <- 10
+infektperiode <- 7
 icu_days <- 9
 infekt2icudays <- 5
 
