@@ -6,8 +6,10 @@ impfungen <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations
   arrange(date) %>% mutate(dosen_verimpft=ifelse(row_number()==1,dosen_kumulativ,dosen_kumulativ-lag(dosen_kumulativ))) %>%
   select(-dosen_kumulativ)
 
+
+
 impfungen_praxen <- read_csv("data/tabledata/zeitreihe_impfungen_aerzte.csv") %>%
-  select(date,dosen_Impfungen_Arztpraxen)
+  select(date,dosen_Impfungen_Arztpraxen,Anzahl_Praxen)
 
 alldates <- seq(min(lieferungen$date),max(impfungen$date,impfungen_praxen$date),1)
 
@@ -15,7 +17,7 @@ plotdata.full <- left_join(tibble(date=alldates), lieferungen %>% group_by(date)
   bind_rows(.,impfungen ) %>% group_by(date) %>%
   summarise(dosen_verimpft=sum(dosen_verimpft,na.rm=TRUE),dosen_geliefert=sum(dosen_geliefert,na.rm=TRUE)) %>%
   mutate(Jahr=year(date),kw=isoweek(date)) %>% 
-  left_join(.,impfungen_praxen,by="date") %>%
+  left_join(.,impfungen_praxen %>% select(-Anzahl_Praxen),by="date") %>%
   mutate(dosen_Impfungen_Arztpraxen=
            ifelse(is.na(dosen_Impfungen_Arztpraxen),0,
                   dosen_Impfungen_Arztpraxen),
@@ -70,3 +72,8 @@ last14days <- plotdata.full %>% arrange(date) %>% tail(14) %>%
   select(date,contains("dosen_Impfungen")) %>% rename(Arztpraxen=dosen_Impfungen_Arztpraxen,Impfzentren= dosen_Impfungen_Impfzentren)
 
 write_csv(last14days ,"data/tabledata/impfdax_last14days.csv")
+
+#
+
+# Datenstand
+jsonlite::write_json(tibble("Impfdaschboard"=max(impfungen$date),"KBV Impfdokumentation"=max(impfungen_praxen$date)),"data/tabledata/impfdax_stand.json")
