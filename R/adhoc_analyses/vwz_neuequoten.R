@@ -156,9 +156,9 @@ kreise_regstat_alter <- bind_rows(tibble(id=0,
                                     select(-blid),
                                   kreise_regstat_alter)
 
-## new
+## newnew
 
-infektperiode <- 7
+infektperiode <- 10
 icu_days <- 9
 infekt2icudays <- 5
 
@@ -354,6 +354,27 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
     (date>=as_date("2020-03-13") & id==0)) %>%
   mutate(ITS = myH$H)
 
+error_vwz <- vorwarnzeitergebnis %>% 
+  select(date, faelle_covid_aktuell, ITS) %>%
+  unnest_wider(ITS) %>% 
+  rename_with(.cols=contains("..."), .fn = ~ gsub("...", "", .x)) %>% 
+  select(-`1`)
+for (i in 1:30) {
+  error_vwz <- error_vwz %>% 
+    mutate(!!as.character(i) := lead(get(as.character(i+1)), i))
+}
+error_vwz_abw <- error_vwz %>% 
+  select(-`31`) %>% 
+  rename(`0`=faelle_covid_aktuell) %>% 
+  mutate(across(!contains("date"), 
+                ~ 100*(`0`-.x)/`0`)) %>% 
+  pivot_longer(`0`:`1`, names_to = "day", values_to="Abweichung") %>% 
+  mutate(day=as.integer(day)) %>% 
+  filter(date>="2020-10-01")
+
+ggplot(error_vwz_abw, aes(x=day, y=Abweichung)) +
+  geom_point()
+
 # zi_vwz_plot <- ggplot(vorwarnzeitergebnis,
 #                       aes(x=date, y=Vorwarnzeit)) +
 #   geom_line(size=2, col=zi_cols("zigreen")) +
@@ -364,6 +385,225 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
 #   theme(legend.position='none') +
 #   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 # zi_vwz_plot
+
+## newold
+
+infektperiode <- 14
+icu_days <- 10.1
+infekt2icudays <- 14
+
+rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
+  group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately... but much faster with dtplyr!
+  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+  collect() %>%
+  filter(Altersgruppe!="unbekannt") %>%
+  mutate(id=as.integer(IdLandkreis)*1000) %>%
+  filter(!is.na(id)) %>%
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+         Altersgruppe=ifelse(Altersgruppe %in% c("00-04", "05-14"),
+                             "0-15", Altersgruppe)) %>%
+  group_by(Meldedatum,Altersgruppe, id) %>% 
+  summarise("Fälle"=sum(AnzahlFall , na.rm = T),
+            "Todesfälle"=sum(AnzahlTodesfall, na.rm=T), .groups="drop") %>% 
+  pivot_wider(id_cols = c(Meldedatum, id),
+              names_from = Altersgruppe,
+              values_from = c("Fälle","Todesfälle"),
+              values_fill = list("Fälle"=0, "Todesfälle"=0)) %>% ungroup() %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum), blid=floor(id/1000000),
+         `Fälle_60+`=`Fälle_60-79`+`Fälle_80+`) %>%
+  right_join(.,
+             expand_grid(Meldedatum=seq(min(.$Meldedatum), max(.$Meldedatum), by="days"),
+                         id=unique(.$id)),
+             by=c("Meldedatum", "id")) %>%
+  replace(is.na(.), 0) %>%
+  group_by(id) %>%
+  arrange(Meldedatum) %>%
+  mutate(cases059=cumsum(`Fälle_0-15`+`Fälle_15-34`+`Fälle_35-59`),
+         cases6079=cumsum(`Fälle_60-79`),
+         cases80=cumsum(`Fälle_80+`)) %>%
+  mutate(Infected059=cases059-lag(cases059, infektperiode),
+         Infected6079=cases6079-lag(cases6079, infektperiode),
+         Infected80=cases80-lag(cases80, infektperiode)) %>% 
+  fill(Infected059, Infected6079, Infected80, .direction = "up") %>%
+  ungroup() %>%
+  mutate(blid=floor(id/1000000)) %>%
+  as_tibble()
+
+rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
+                                  mutate(`Todesfälle_60+`=`Todesfälle_60-79`+`Todesfälle_80+`), # kreise
+                                rki_alter_destatis_kreise %>% # bundeslaender
+                                  group_by(Meldedatum, blid) %>%
+                                  summarise(cases059=sum(cases059),
+                                            cases6079=sum(cases6079),
+                                            cases80=sum(cases80),
+                                            Infected059=sum(Infected059),
+                                            Infected6079=sum(Infected6079),
+                                            Infected80=sum(Infected80),
+                                            `Fälle_15-34`=sum(`Fälle_15-34`),
+                                            `Fälle_35-59`=sum(`Fälle_35-59`),
+                                            `Fälle_0-15`=sum(`Fälle_0-15`),
+                                            `Fälle_60+`=sum(`Fälle_60+`),
+                                            `Fälle_60-79`=sum(`Fälle_60-79`),
+                                            `Fälle_80+`=sum(`Fälle_80+`),
+                                            `Todesfälle_15-34`=sum(`Todesfälle_15-34`),
+                                            `Todesfälle_35-59`=sum(`Todesfälle_35-59`),
+                                            `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
+                                            `Todesfälle_60-79`=sum(`Todesfälle_60-79`),
+                                            `Todesfälle_80+`=sum(`Todesfälle_80+`),
+                                            `Todesfälle_60+`=sum(`Todesfälle_60-79`+`Todesfälle_80+`, na.rm = TRUE), .groups="drop") %>%
+                                  mutate(id=blid),
+                                rki_alter_destatis_kreise %>% # bund gesamt
+                                  group_by(Meldedatum) %>%
+                                  summarise(cases059=sum(cases059),
+                                            cases6079=sum(cases6079),
+                                            cases80=sum(cases80),
+                                            Infected059=sum(Infected059),
+                                            Infected6079=sum(Infected6079),
+                                            Infected80=sum(Infected80),
+                                            `Fälle_15-34`=sum(`Fälle_15-34`),
+                                            `Fälle_35-59`=sum(`Fälle_35-59`),
+                                            `Fälle_0-15`=sum(`Fälle_0-15`),
+                                            `Fälle_60+`=sum(`Fälle_60+`),
+                                            `Fälle_60-79`=sum(`Fälle_60-79`),
+                                            `Fälle_80+`=sum(`Fälle_80+`),
+                                            `Todesfälle_15-34`=sum(`Todesfälle_15-34`),
+                                            `Todesfälle_35-59`=sum(`Todesfälle_35-59`),
+                                            `Todesfälle_0-15`=sum(`Todesfälle_0-15`),
+                                            `Todesfälle_60-79`=sum(`Todesfälle_60-79`),
+                                            `Todesfälle_80+`=sum(`Todesfälle_80+`),
+                                            `Todesfälle_60+`=sum(`Todesfälle_60-79`+`Todesfälle_80+`, na.rm = TRUE), .groups="drop") %>%
+                                  mutate(id=0, blid=0))
+
+letzte_7_tage <-  brd_timeseries %>% 
+  group_by(id) %>% arrange(id,-as.numeric(date)) %>%
+  summarise(Faelle_letzte_7_Tage=lag(cases, 7)-cases, 
+            date=date+7,
+            .groups="keep") %>%
+  mutate(Faelle_letzte_7_Tage_pro_Tag=round(Faelle_letzte_7_Tage/7)) %>%
+  ungroup() %>%
+  drop_na()
+
+letzte_7_tage_altersgruppen_regstat <- rki_alter_destatis %>%
+  mutate(date=date(Meldedatum)) %>%
+  group_by(id) %>% arrange(id, -as.numeric(date)) %>%
+  summarise(`Faelle_letzte_7_Tage_0-14`=zoo::rollsum(`Fälle_0-15`, 7),
+            `Faelle_letzte_7_Tage_15-34`=zoo::rollsum(`Fälle_15-34`, 7),
+            `Faelle_letzte_7_Tage_35-59`=zoo::rollsum(`Fälle_35-59`, 7),
+            `Faelle_letzte_7_Tage_0-59`=`Faelle_letzte_7_Tage_0-14`+`Faelle_letzte_7_Tage_15-34`+`Faelle_letzte_7_Tage_35-59`,
+            `Faelle_letzte_7_Tage_60-79`=zoo::rollsum(`Fälle_60-79`, 7),
+            `Faelle_letzte_7_Tage_80+`=zoo::rollsum(`Fälle_80+`, 7),
+            `Faelle_letzte_7_Tage_60+`=zoo::rollsum(`Fälle_60+`, 7),
+            date=zoo::rollmax(date, 7),
+            .groups="drop") %>%
+  left_join(., kreise_regstat_alter, by=c("id")) %>%
+  mutate(Faelle_letzte_7_Tage_pro_Tag_059=round(`Faelle_letzte_7_Tage_0-59`/7),
+         Faelle_letzte_7_Tage_pro_Tag_6079=round(`Faelle_letzte_7_Tage_60-79`/7),
+         Faelle_letzte_7_Tage_pro_Tag_80=round(`Faelle_letzte_7_Tage_80+`/7),
+         `Faelle_letzte_7_Tage_je100TsdEinw_0-14`=round(`Faelle_letzte_7_Tage_0-14`/((ag_1+ag_2)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_15-34`=round(`Faelle_letzte_7_Tage_15-34`/((ag_3)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_35-59`=round(`Faelle_letzte_7_Tage_35-59`/((ag_4)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((ag_5+ag_6)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/((ag_5)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/((ag_6)/100000))) %>%
+  left_join(., rki_alter_destatis %>% select(cases059, cases6079, cases80, Infected059, Infected6079, Infected80, id, Meldedatum), by=c("id"="id", "date"="Meldedatum")) %>%
+  mutate(EW059=ag_1+ag_2+ag_3+ag_4,
+         EW6079=ag_5,
+         EW80=ag_6,
+         EW_insgesamt=EW059+EW6079+EW80)
+
+ausgangsdaten <- letzte_7_tage %>%
+  left_join(., divi_all %>%
+              select(id, ICU_Betten, betten_frei, faelle_covid_aktuell, daten_stand) %>%
+              mutate(id=ifelse(id>16, id*1000, id)),
+            by=c("id"="id", "date"="daten_stand")) %>%
+  left_join(., letzte_7_tage_altersgruppen_regstat %>% select(
+    id,
+    date,
+    cases059, cases6079, cases80,
+    Infected059, Infected6079, Infected80,
+    EW059, EW6079, EW80,
+    EW_insgesamt,
+    `Faelle_letzte_7_Tage_pro_Tag_059`,
+    `Faelle_letzte_7_Tage_pro_Tag_6079`,
+    `Faelle_letzte_7_Tage_pro_Tag_80`,
+    `Faelle_letzte_7_Tage_0-59`,
+    `Faelle_letzte_7_Tage_60-79`,
+    `Faelle_letzte_7_Tage_60+`,
+    `Faelle_letzte_7_Tage_80+`,
+    `Faelle_letzte_7_Tage_je100TsdEinw_0-14`,
+    `Faelle_letzte_7_Tage_je100TsdEinw_15-34`,
+    `Faelle_letzte_7_Tage_je100TsdEinw_35-59`,
+    `Faelle_letzte_7_Tage_je100TsdEinw_60-79`,
+    `Faelle_letzte_7_Tage_je100TsdEinw_60+`,
+    `Faelle_letzte_7_Tage_je100TsdEinw_80+`), by=c("id", "date")) %>%
+  left_join(., brd_timeseries %>% select(date, cases, id), by=c("id", "date")) %>%
+  mutate(Faelle_letzte_7_Tage_je100TsdEinw=round(Faelle_letzte_7_Tage/((EW059+EW6079+EW80)/100000)),
+         Faelle_letzte_7_Tage_je100TsdEinw=ifelse(Faelle_letzte_7_Tage_je100TsdEinw<0,NA,Faelle_letzte_7_Tage_je100TsdEinw),
+         Kapazitaet_Betten=(faelle_covid_aktuell+betten_frei)) # /icu_days
+
+## berechne vorwarnzeit
+myH <-
+  ausgangsdaten %>% 
+  filter((date>=as_date("2020-03-13") & id==0)) %>%
+  mutate(periode=case_when(
+    date>="2020-01-01" & date<="2020-03-31" ~ 1,
+    date>="2020-04-01" & date<="2020-04-30" ~ 2,
+    date>="2020-05-01" & date<="2020-05-31"  ~ 3,
+    date>="2020-06-01" & date<="2020-09-30"  ~ 4,
+    date>="2020-10-01" & date<="2020-11-30"  ~ 5,
+    date>="2020-12-01" & date<="2021-12-31"  ~ 6
+  )) %>%
+  left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
+            by="periode") %>% 
+  rowwise() %>%
+  do(H = 
+       vorwarnzeit_berechnen_AG(
+         ngesamt = c(.$EW059, .$EW6079, .$EW80),
+         cases = c(.$cases059, .$cases6079, .$cases80),
+         akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
+         icubelegt = round(
+           (.$faelle_covid_aktuell*
+              altersgruppen_beatmet/
+              sum(altersgruppen_beatmet)) %>%
+             as.numeric()),
+         Kapazitaet_Betten = .$Kapazitaet_Betten,
+         Rt = 1.3,
+         # icurate_altersgruppen = c(0.0079, 0.0769,0.0497)
+         icurate_altersgruppen = c(.$`bis 60`, .$`60-80`, .$`ueber 80`)
+         # icurate_altersgruppen = itsquoten %>%
+         #   filter(periode==.$periode) %>%
+         #   select(`bis 60`, `60-80`, `ueber 80`) %>%
+         #   slice(1) %>%
+         #   as.numeric()
+       )
+  ) # %>% 
+# unnest(cols = c(H), keep_empty=TRUE)
+vorwarnzeitergebnis <- ausgangsdaten %>%
+  filter(
+    (date>=as_date("2020-03-13") & id==0)) %>%
+  mutate(ITS = myH$H)
+
+error_vwz <- vorwarnzeitergebnis %>% 
+  select(date, faelle_covid_aktuell, ITS) %>%
+  unnest_wider(ITS) %>% 
+  rename_with(.cols=contains("..."), .fn = ~ gsub("...", "", .x)) %>% 
+  select(-`1`)
+for (i in 1:30) {
+  error_vwz <- error_vwz %>% 
+    mutate(!!as.character(i) := lead(get(as.character(i+1)), i))
+}
+error_vwz_abw <- error_vwz %>% 
+  select(-`31`) %>% 
+  rename(`0`=faelle_covid_aktuell) %>% 
+  mutate(across(!contains("date"), 
+                ~ 100*(`0`-.x)/`0`)) %>% 
+  pivot_longer(`0`:`1`, names_to = "day", values_to="Abweichung") %>% 
+  mutate(day=as.integer(day)) %>% 
+  filter(date>="2020-10-01")
+
+ggplot(error_vwz_abw, aes(x=day, y=Abweichung)) +
+  geom_point()
 
 ## old
 
@@ -562,3 +802,24 @@ vorwarnzeitergebnis <- ausgangsdaten %>%
   filter(
     (date>=as_date("2020-03-13") & id==0)) %>%
   mutate(ITS = myH$H)
+
+error_vwz <- vorwarnzeitergebnis %>% 
+  select(date, faelle_covid_aktuell, ITS) %>%
+  unnest_wider(ITS) %>% 
+  rename_with(.cols=contains("..."), .fn = ~ gsub("...", "", .x)) %>% 
+  select(-`1`)
+for (i in 1:30) {
+  error_vwz <- error_vwz %>% 
+    mutate(!!as.character(i) := lead(get(as.character(i+1)), i))
+}
+error_vwz_abw <- error_vwz %>% 
+  select(-`31`) %>% 
+  rename(`0`=faelle_covid_aktuell) %>% 
+  mutate(across(!contains("date"), 
+                ~ 100*(`0`-.x)/`0`)) %>% 
+  pivot_longer(`0`:`1`, names_to = "day", values_to="Abweichung") %>% 
+  mutate(day=as.integer(day)) %>% 
+  filter(date>="2020-10-01")
+
+ggplot(error_vwz_abw, aes(x=day, y=Abweichung)) +
+  geom_point()
