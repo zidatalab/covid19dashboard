@@ -76,4 +76,8 @@ write_csv(last14days ,"data/tabledata/impfdax_last14days.csv")
 #
 
 # Datenstand
-jsonlite::write_json(tibble("Impfdaschboard"=max(impfungen$date),"KBV Impfdokumentation"=max(impfungen_praxen$date)),"data/tabledata/impfdax_stand.json")
+jsonlite::write_json(
+  tibble("Impfdaschboard"=max(impfungen$date),
+         "KBV Impfdokumentation"=max(impfungen_praxen$date),
+         "Letzte Aktualisierung"=now(),
+         ),"data/tabledata/impfdax_stand.json")
