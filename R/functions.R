@@ -116,16 +116,14 @@ vaccinations <- tbl(conn, "vaccinations") %>% collect() %>% mutate(datum=as_date
 ## read/update RKI-R-estimates
 RKI_R <- tryCatch(
   {
-    mytemp <- tempfile()
+    mytemp <- "data/rki_rwert_excel.xlsx"# tempfile()
     rki_r_data <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting_Zahlen.xlsx?__blob=publicationFile"
     download.file(rki_r_data, mytemp, method = "curl")
     Nowcasting_Zahlen <- read_excel(mytemp,
-                                    sheet = "Nowcast_R", col_types = c("date",
-                                                                       "numeric", "numeric", "numeric",
-                                                                       "numeric", "numeric", "numeric",
-                                                                       "numeric", "numeric", "numeric",
-                                                                       "numeric", "numeric", "numeric"))
-    if (dim(Nowcasting_Zahlen)[2] != 13){
+                                    sheet = "Nowcast_R") %>% 
+      mutate(datum=as_date(`Datum des Erkrankungsbeginns`, format="%d.%m.%Y"),
+             r7tage=as.numeric(sub(",", ".", `Punktschätzer des 7-Tage-R Wertes`)))
+    if (dim(Nowcasting_Zahlen)[2] != 15){
       stop("RKI changed their R table")
     } else {
       write_csv(Nowcasting_Zahlen, "./data/nowcasting_r_rki.csv")
@@ -622,7 +620,7 @@ rki_7ti_alle <- bind_rows(rki_7ti_bund %>%
   filter(datesunday<=lastsunday)
 ## rki-r-wert und vorwarnzeit
 rki_reformat_r_ts <- RKI_R %>%
-  dplyr::select(contains("Datum"), contains("7-Tage-R Wertes")) %>% dplyr::select(contains("Datum"), contains("Punkt"))
+  dplyr::select(datum, r7tage)
 colnames(rki_reformat_r_ts) <-c("date","RKI-R-Wert")
 rki_reformat_r_ts <- rki_reformat_r_ts %>% mutate(date=base::as.Date(date)+5)
 rki_r_und_zi_vwz_data <- full_join(vorwarnzeitergebnis %>%
@@ -716,54 +714,86 @@ vacc_gesamt <- rki_vacc_complete %>%
   filter(key=="sum_initial" | key=="sum_booster") %>%
   filter(date==max(date)) %>%
   select(geo, key, value, population, date)
-vacc_prof <- rki_vacc_complete %>%
-  filter(key=="ind_prof_initial" | key=="ind_prof_booster") %>%
+# vacc_prof <- rki_vacc_complete %>%
+#   filter(key=="ind_prof_initial" | key=="ind_prof_booster") %>%
+#   filter(date==max(date)) %>%
+#   mutate(population=round(3600000/83166711*population)) %>%
+#   select(geo, key, value, population, date)
+# vacc_age <- rki_vacc_complete %>%
+#   filter(key=="ind_alter_initial" | key=="ind_alter_booster") %>%
+#   filter(date==max(date)) %>%
+#   left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID),
+#             by=c("geo"="Bundesland")) %>%
+#   left_join(kreise_regstat_alter %>% select(id, ag_6),
+#             by=c("Bundesland_ID"="id")) %>%
+#   mutate(population=ag_6) %>%
+#   select(geo, key, value, population, date)
+vacc_age_60p <- rki_vacc_complete %>%
+  filter(key=="sum_initial_age_60+_centers" | key=="sum_booster_age_60+_centers" |
+           key=="sum_initial_age_60+_doctors" | key=="sum_booster_age_60+_doctors") %>%
   filter(date==max(date)) %>%
-  mutate(population=round(3600000/83166711*population)) %>%
-  select(geo, key, value, population, date)
-vacc_age <- rki_vacc_complete %>%
-  filter(key=="ind_alter_initial" | key=="ind_alter_booster") %>%
-  filter(date==max(date)) %>%
-  left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID),
+  left_join(pflegeheimbewohnende_2019_bundeslaender %>% 
+              select(Bundesland, Bundesland_ID),
             by=c("geo"="Bundesland")) %>%
-  left_join(kreise_regstat_alter %>% select(id, ag_6),
+  left_join(kreise_regstat_alter %>% select(id, ag_5, ag_6),
             by=c("Bundesland_ID"="id")) %>%
-  mutate(population=ag_6) %>%
+  mutate(population=ag_6+ag_5) %>%
   select(geo, key, value, population, date)
-vacc_pflege <- rki_vacc_complete %>%
-  filter(key=="ind_pflege_initial" | key=="ind_pflege_booster") %>%
+vacc_age_60m <- rki_vacc_complete %>%
+  filter(key=="sum_initial_age_<60_centers" | key=="sum_booster_age_<60_centers" |
+           key=="sum_initial_age_<60_doctors" | key=="sum_booster_age_<60_doctors") %>%
   filter(date==max(date)) %>%
-  left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID, vollstationaere_dauerpflege),
+  left_join(pflegeheimbewohnende_2019_bundeslaender %>% 
+              select(Bundesland, Bundesland_ID),
             by=c("geo"="Bundesland")) %>%
-  mutate(population=vollstationaere_dauerpflege) %>%
+  left_join(kreise_regstat_alter %>% select(id, ag_1, ag_2, ag_3, ag_4),
+            by=c("Bundesland_ID"="id")) %>%
+  mutate(population=ag_1+ag_2+ag_3+ag_4) %>%
   select(geo, key, value, population, date)
+# vacc_pflege <- rki_vacc_complete %>%
+#   filter(key=="ind_pflege_initial" | key=="ind_pflege_booster") %>%
+#   filter(date==max(date)) %>%
+#   left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID, vollstationaere_dauerpflege),
+#             by=c("geo"="Bundesland")) %>%
+#   mutate(population=vollstationaere_dauerpflege) %>%
+#   select(geo, key, value, population, date)
 vacc_alle <- vacc_gesamt %>%
-  bind_rows(vacc_age, vacc_pflege, vacc_prof) %>%
+  # bind_rows(vacc_age, vacc_pflege, vacc_prof) %>%
+  bind_rows(vacc_age_60m, vacc_age_60p) %>%
   mutate(population=ifelse(population<value, value, population))
 vacc_alle_faktenblatt <- vacc_alle %>%
-  pivot_wider(id_cols=c("geo"), names_from="key", values_from=c("value", "population")) %>%
-  mutate(quote_initial_gesamt=(value_sum_initial-value_sum_booster)/population_sum_initial,
+  pivot_wider(id_cols=c("geo"), 
+              names_from="key", 
+              values_from=c("value", "population")) %>%
+  mutate(quote_initial_gesamt=(value_sum_initial)/population_sum_initial,
          quote_booster_gesamt=(value_sum_booster)/population_sum_initial,
-         quote_initial_pflege=(value_ind_pflege_initial-value_ind_pflege_booster)/population_ind_pflege_initial,
-         quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
-         quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
-         quote_booster_alter=value_ind_alter_booster/population_ind_alter_initial,
-         quote_initial_prof=(value_ind_prof_initial-value_ind_prof_booster)/population_ind_prof_initial,
-         quote_booster_prof=value_ind_prof_booster/population_ind_prof_initial,         
+         quote_initial_alter_60m=(`value_sum_initial_age_<60_centers`+`value_sum_initial_age_<60_doctors`)/`population_sum_initial_age_<60_centers`,
+         quote_booster_alter_60m=(`value_sum_booster_age_<60_centers`+`value_sum_booster_age_<60_doctors`)/`population_sum_initial_age_<60_centers`,
+         quote_initial_alter_60p=(`value_sum_initial_age_60+_centers`+`value_sum_initial_age_60+_doctors`)/`population_sum_initial_age_60+_centers`,
+         quote_booster_alter_60p=(`value_sum_booster_age_60+_centers`+`value_sum_booster_age_60+_doctors`)/`population_sum_initial_age_60+_centers`,
+         # quote_initial_pflege=(value_ind_pflege_initial-value_ind_pflege_booster)/population_ind_pflege_initial,
+         # quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
+         # quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
+         # quote_booster_alter=value_ind_alter_booster/population_ind_alter_initial,
+         # quote_initial_prof=(value_ind_prof_initial-value_ind_prof_booster)/population_ind_prof_initial,
+         # quote_booster_prof=value_ind_prof_booster/population_ind_prof_initial,         
          impfungen_gesamt=value_sum_initial+(value_sum_booster))
 vacc_table <- vacc_alle_faktenblatt %>%
   mutate(Bundesland=ifelse(geo=="Deutschland", "Gesamt", geo),
-         "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
-         "PHB 2x"=format(round(100*quote_booster_pflege, 1), decimal.mark=","),
-         "Alter nur 1x"=format(round(100*quote_initial_alter, 1), decimal.mark=","),
-         "Alter 2x"=format(round(100*quote_booster_alter, 1), decimal.mark=","),
-         "Gesamt nur 1x"=format(round(100*quote_initial_gesamt, 1), decimal.mark=","),
-         "Gesamt 2x"=format(round(100*quote_booster_gesamt, 1), decimal.mark=","),
-         "Impfquote"=format(round(100*(quote_booster_gesamt+quote_initial_gesamt), 1), decimal.mark=","),
+         # "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
+         # "PHB 2x"=format(round(100*quote_booster_pflege, 1), decimal.mark=","),
+         "Alter 60+ min. 1x"=ifelse(is.na(quote_initial_alter_60p), "k.A.", format(round(100*quote_initial_alter_60p, 1), decimal.mark=",")),
+         "Alter 60+ 2x"=ifelse(is.na(quote_booster_alter_60p), "k.A.", format(round(100*quote_booster_alter_60p, 1), decimal.mark=",")),
+         "Alter <60 min. 1x"=ifelse(is.na(quote_initial_alter_60m), "k.A.", format(round(100*quote_initial_alter_60m, 1), decimal.mark=",")),
+         "Alter <60 2x"=ifelse(is.na(quote_booster_alter_60m), "k.A.", format(round(100*quote_booster_alter_60m, 1), decimal.mark=",")),
+         "Gesamt min. 1x"=ifelse(is.na(quote_initial_gesamt), "k.A.", format(round(100*quote_initial_gesamt, 1), decimal.mark=",")),
+         "Gesamt 2x"=ifelse(is.na(quote_booster_gesamt), "k.A.", format(round(100*quote_booster_gesamt, 1), decimal.mark=",")),
+         # "Impfquote"=format(round(100*(quote_initial_gesamt), 1), decimal.mark=","),
          "Impfungen pro 100k EW"=format(round(impfungen_gesamt/population_sum_initial*100000), decimal.mark=",")
   ) %>%
-  select(Bundesland, "Impfungen pro 100k EW", "PHB nur 1x", "PHB 2x", "Alter nur 1x", "Alter 2x",
-         "Gesamt nur 1x", "Gesamt 2x", "Impfquote")
+  select(Bundesland, "Impfungen pro 100k EW", "Alter 60+ min. 1x", "Alter 60+ 2x",
+         "Alter <60 min. 1x", "Alter <60 2x",
+         "Gesamt min. 1x", "Gesamt 2x")
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%

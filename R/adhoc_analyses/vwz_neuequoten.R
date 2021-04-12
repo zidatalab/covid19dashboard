@@ -56,6 +56,30 @@ vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt,
   return(myresult)
 }
 
+## read/update RKI-R-estimates
+RKI_R <- tryCatch(
+  {
+    mytemp <- "data/rki_rwert_excel.xlsx"# tempfile()
+    rki_r_data <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Projekte_RKI/Nowcasting_Zahlen.xlsx?__blob=publicationFile"
+    download.file(rki_r_data, mytemp, method = "curl")
+    Nowcasting_Zahlen <- read_excel(mytemp,
+                                    sheet = "Nowcast_R") %>% 
+      mutate(datum=as_date(`Datum des Erkrankungsbeginns`, format="%d.%m.%Y"),
+             r7tage=as.numeric(sub(",", ".", `Punktschätzer des 7-Tage-R Wertes`)))
+    if (dim(Nowcasting_Zahlen)[2] != 15){
+      stop("RKI changed their R table")
+    } else {
+      write_csv(Nowcasting_Zahlen, "./data/nowcasting_r_rki.csv")
+      Nowcasting_Zahlen
+    }
+  },
+  error=function(e) {
+    # read old data
+    Nowcasting_Zahlen <- read_csv("./data/nowcasting_r_rki.csv")
+    return(Nowcasting_Zahlen)
+  }
+)
+
 results <- vector("list", 2)
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
