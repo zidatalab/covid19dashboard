@@ -99,47 +99,49 @@ divi_all <- tbl(conn, "divi_all") %>% collect() %>%
   mutate(daten_stand=as_date(daten_stand))
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 
-## mitigation data generate
-mitigation_data <- function(myid=0) {
-  df <- brd_timeseries %>% filter(id==myid) %>% collect()
-  df <- df %>% mutate(date=date(date)) %>%
-    mutate(I_cases=cases-lag(cases),I_dead=deaths-lag(deaths)) %>%
-    filter(!is.na(I_cases) & (date<max(date)-days(3))) %>%
-    filter(I_cases>=0 & I_dead>=0)
-  mindate <- min(df$date)
-  myconfig <- make_config(list(mean_si = 5,std_si = 4))
-  res_parametric_si <- estimate_R(df$I_cases, 
-                                  method="parametric_si", 
-                                  config = myconfig)
-  res_parametric_si_deaths <- estimate_R(df$I_dead, 
-                                         method="parametric_si", 
-                                         config = myconfig)
-  result <- bind_rows(res_parametric_si$R %>% 
-                        mutate(Merkmal="Fälle"),
-                      res_parametric_si_deaths$R %>% 
-                        mutate(Merkmal="Todesfälle"))
-  as_tibble(result) %>% 
-    mutate(date=mindate+days(round(t_start+t_end)/2)+1) %>%
-    select(date,Merkmal,R_Mean=`Mean(R)`,R_std= `Std(R)`) %>% 
-    left_join(.,df,by="date")
-}
-blmitidata <- tibble()
-theid <- 0
-thename<-strukturdaten %>% filter(id==theid) %>% collect() %>% 
-  head(1) %>% pull(name)
-
-blmitidata <- mitigation_data(theid) %>% 
-  mutate(name=thename, id=theid, date=date+5) %>%
-  filter(Merkmal=="Fälle" & R_Mean<10 & date>=date("2020-03-13"))
-## r-wert bund verlauf
-rwert_bund_data <- blmitidata %>%
-  rename(R=R_Mean) %>%
-  # mutate(R=round(R,digits = 2)) %>%
-  select(date, R, name, I_cases)
+# ## mitigation data generate
+# mitigation_data <- function(myid=0) {
+#   df <- brd_timeseries %>% filter(id==myid) %>% collect()
+#   df <- df %>% mutate(date=date(date)) %>%
+#     mutate(I_cases=cases-lag(cases),I_dead=deaths-lag(deaths)) %>%
+#     filter(!is.na(I_cases) & (date<max(date)-days(3))) %>%
+#     filter(I_cases>=0 & I_dead>=0)
+#   mindate <- min(df$date)
+#   myconfig <- make_config(list(mean_si = 5,std_si = 4))
+#   res_parametric_si <- estimate_R(df$I_cases, 
+#                                   method="parametric_si", 
+#                                   config = myconfig)
+#   res_parametric_si_deaths <- estimate_R(df$I_dead, 
+#                                          method="parametric_si", 
+#                                          config = myconfig)
+#   result <- bind_rows(res_parametric_si$R %>% 
+#                         mutate(Merkmal="Fälle"),
+#                       res_parametric_si_deaths$R %>% 
+#                         mutate(Merkmal="Todesfälle"))
+#   as_tibble(result) %>% 
+#     mutate(date=mindate+days(round(t_start+t_end)/2)+1) %>%
+#     select(date,Merkmal,R_Mean=`Mean(R)`,R_std= `Std(R)`) %>% 
+#     left_join(.,df,by="date")
+# }
+# blmitidata <- tibble()
+# theid <- 0
+# thename<-strukturdaten %>% filter(id==theid) %>% collect() %>% 
+#   head(1) %>% pull(name)
+# 
+# blmitidata <- mitigation_data(theid) %>% 
+#   mutate(name=thename, id=theid, date=date+5) %>%
+#   filter(Merkmal=="Fälle" & R_Mean<10 & date>=date("2020-03-13"))
+# ## r-wert bund verlauf
+# rwert_bund_data <- blmitidata %>%
+#   rename(R=R_Mean) %>%
+#   # mutate(R=round(R,digits = 2)) %>%
+#   select(date, R, name, I_cases)
 
 brd_timeseries <- brd_timeseries %>% 
-  left_join(rwert_bund_data %>% select(date, R),
-            by="date")
+  # left_join(rwert_bund_data %>% select(date, R),
+  #           by="date")
+  left_join(RKI_R %>% select(datum, R=r7tage),
+            by=c("date"="datum"))
 
 ## if last divi report missing
 maxdatum <- max(as_date(rki$Meldedatum))

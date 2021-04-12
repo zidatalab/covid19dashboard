@@ -882,7 +882,7 @@ vacc_table_vaccsim <- bind_rows(
   rki_vacc %>%
     filter(date==max(date) & (key=="sum" | key=="delta_vortag" | key=="sum_booster")),
   rki_vacc %>%
-    filter(date==max(date)-7 & (key=="sum" | key=="delta_vortag" | key=="sum_booster"))
+    filter(date==max(date)-7 & (key=="sum" | key=="delta_vortag" | key=="sum_booster")) # -6?
 ) %>%
   pivot_wider(id_cols=c("geo", "date"),
               names_from=key,
