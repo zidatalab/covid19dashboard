@@ -8,7 +8,7 @@ impfungen <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations
 
 
 
-impfungen_praxen <- read_csv("data/tabledata/zeitreihe_impfungen_aerzte.csv") %>%
+impfungen_praxen <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte.csv") %>%
   select(date,dosen_Impfungen_Arztpraxen,Anzahl_Praxen)
 
 alldates <- seq(min(lieferungen$date),max(impfungen$date,impfungen_praxen$date),1)
