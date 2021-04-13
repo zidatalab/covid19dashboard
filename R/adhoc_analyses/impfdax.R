@@ -139,7 +139,8 @@ praxen_wirkstoffe_aktuell <- bind_rows(praxen_wirkstoffe_aktuell,praxen_wirkstof
 write_csv(praxen_wirkstoffe_aktuell ,"data/tabledata/impfdax_praxen_wirkstoffe_aktuell.csv")
 
 praxen_wirkstoffe_laufende_woche <- impfungen_praxen_bl.raw %>% 
-  filter(kw==max(kw)) %>% select(Bundesland,Hersteller,anzahl) %>% spread(Hersteller,anzahl)
+  filter(kw==max(kw)) %>% select(Bundesland,Hersteller,anzahl) %>% 
+  spread(Hersteller,anzahl)
 
 write_csv(praxen_wirkstoffe_laufende_woche ,"data/tabledata/impfdax_praxen_wirkstoffe_laufende_kw.csv")
 
