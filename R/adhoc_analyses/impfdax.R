@@ -129,32 +129,19 @@ zeitreihe_verimpfung_praxen <- lieferungen_praxen %>%
   select(kw=KW,jahr=Jahr,Hersteller,Bundesland=geo,Lieferung_Praxen) %>% 
   left_join(impfungen_praxen_bl.raw%>% select(kw,jahr,Bundesland,Hersteller,Impfungen=anzahl),by=c("kw","jahr","Bundesland","Hersteller")) %>% filter(Bundesland!="Gesamt")
 praxen_wirkstoffe_aktuell <- zeitreihe_verimpfung_praxen %>%
-  filter(kw==(isoweek(now())-1)) %>% rename(Geliefert=Lieferung_Praxen) %>%  
+  filter(kw==(isoweek(now())-1)) %>% rename(Geliefert=Lieferung_Praxen) 
+praxen_wirkstoffe_aktuell <- bind_rows(praxen_wirkstoffe_aktuell,praxen_wirkstoffe_aktuell %>% group_by(Hersteller) %>% summarise(Bundesland="Gesamt",Geliefert=sum(Geliefert),Impfungen=sum(Impfungen))) %>%  
   mutate("Anteil verimpft"=Impfungen/Geliefert ) %>%
   pivot_wider(id_cols =c( kw,jahr,Bundesland),values_from = 
                 c("Geliefert", "Impfungen","Anteil verimpft"),
               names_from = Hersteller,names_sep = ": ")
 
-# praxen_wirkstoffe_aktuell <- zeitreihe_verimpfung_praxen %>% 
-#   left_join(., zeitreihe_verimpfung_praxen %>% 
-#               group_by(Hersteller,Bundesland) %>% 
-#               filter(Lieferung_Praxen>=0 & kw<isoweek(now())) %>% 
-#               arrange(Hersteller ,Bundesland,jahr,kw) %>% 
-#               filter(row_number()==1) %>% 
-#               select( Hersteller ,Bundesland,jahr,liefer_kw=kw) ) %>% 
-#   filter(kw>=liefer_kw) %>% group_by(Bundesland,Hersteller) %>% 
-#   mutate(Lieferung_Praxen=ifelse(kw>liefer_kw,0,Lieferung_Praxen)) %>% 
-#   summarise(Geliefert=sum(Lieferung_Praxen,na.rm=T ),
-#             Impfungen=sum(Impfungen,na.rm=T)) %>% 
-#   mutate("Anteil verimpft"=Impfungen/Geliefert )  %>% 
-#   pivot_wider(id_cols = Bundesland,values_from = 
-#                 c("Geliefert", "Impfungen" ,"Anteil verimpft"),
-#               names_from = Hersteller,names_sep = ": ")
-
 write_csv(praxen_wirkstoffe_aktuell ,"data/tabledata/impfdax_praxen_wirkstoffe_aktuell.csv")
 
+praxen_wirkstoffe_laufende_woche <- impfungen_praxen_bl.raw %>% 
+  filter(kw==max(kw)) %>% select(Bundesland,Hersteller,anzahl) %>% spread(Hersteller,anzahl)
 
-
+write_csv(praxen_wirkstoffe_aktuell ,"data/tabledata/impfdax_praxen_wirkstoffe_laufende_kw.csv")
 
 # Datenstand
 jsonlite::write_json(
