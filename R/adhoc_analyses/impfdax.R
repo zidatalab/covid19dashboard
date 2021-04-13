@@ -102,7 +102,7 @@ export_bl_impfungen <- impfungen.raw.bl %>%
 write_csv(export_bl_impfungen ,"data/tabledata/impfdax_bl_stand.csv")
 
 praxen_wirkstoffe_aktuell <- impfungen_praxen_bl.raw %>% filter(kw>=(isoweek(now())-1)) %>% group_by(Bundesland,vacc_product) %>% summarise(Impfungen=sum(anzahl,na.rm = TRUE)) %>%  spread(vacc_product,Impfungen,fill = 0)
-write_csv(export_bl_impfungen ,"data/tabledata/impfdax_praxen_wirkstoffe_aktuell.csv")
+write_csv(praxen_wirkstoffe_aktuell ,"data/tabledata/impfdax_praxen_wirkstoffe_aktuell.csv")
 
 
 # Datenstand
