@@ -1,15 +1,30 @@
 library(tidyverse)
 library(lubridate)
+library(ISOcodes)
 lieferungen <- read_tsv("https://impfdashboard.de/static/data/germany_deliveries_timeseries_v2.tsv")
-impfungen <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations_timeseries_v2.tsv') %>% 
+impfungen.raw  <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations_timeseries_v2.tsv')
+impfungen.raw.bl <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations_by_state.tsv') %>%
+  left_join(ISOcodes::ISO_3166_2 %>% select(code=Code,Bundesland=Name),by="code")
+
+pop.bl <- jsonlite::read_json("https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/tabledata/impfsim_start.json",simplifyVector = TRUE) %>% 
+  as_tibble() %>% select(Bundesland=geo,population,dosen_geliefert) %>% 
+  group_by(Bundesland) %>% summarise(Bevölkerung=mean(population,na.rm=T),dosen_geliefert=sum(dosen_geliefert,na.rm=T)) %>%
+  ungroup()
+
+
+impfungen <- impfungen.raw %>% 
   select(date, dosen_kumulativ) %>% 
   arrange(date) %>% mutate(dosen_verimpft=ifelse(row_number()==1,dosen_kumulativ,dosen_kumulativ-lag(dosen_kumulativ))) %>%
   select(-dosen_kumulativ)
 
-
-
 impfungen_praxen <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte.csv") %>%
   select(date,dosen_Impfungen_Arztpraxen,Anzahl_Praxen)
+
+impfungen_praxen_bl.raw <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_kw_wirkstoff.csv") 
+impfungen_praxen_bl <-impfungen_praxen_bl.raw %>%
+  group_by(Bundesland) %>% summarise("Impfungen Praxen"=sum(anzahl,na.rm=T))
+  
+  
 
 alldates <- seq(min(lieferungen$date),max(impfungen$date,impfungen_praxen$date),1)
 
@@ -73,7 +88,18 @@ last14days <- plotdata.full %>% arrange(date) %>% tail(14) %>%
 
 write_csv(last14days ,"data/tabledata/impfdax_last14days.csv")
 
-#
+# Export Impfungen nach Bundesland
+export_bl_impfungen <- impfungen.raw.bl %>%  
+  left_join(impfungen_praxen_bl,by="Bundesland") %>% ungroup() %>% 
+  mutate(`Impfungen Praxen`=ifelse(Bundesland=="Gesamt",sum(`Impfungen Praxen`,na.rm=T),`Impfungen Praxen`)) %>%
+  left_join(pop.bl,by="Bundesland") %>%
+  mutate(
+    "Verimpft" = vaccinationsTotal/dosen_geliefert,
+    "Bevölkerung Erstimpfung"=peopleFirstTotal/`Bevölkerung`,
+    "Bevölkerung Zweitimpfung"=peopleFullTotal/`Bevölkerung`)  %>% 
+  select(Bundesland,"Gelieferte Dosen"=dosen_geliefert,Impfungen=vaccinationsTotal,Verimpft,contains("Praxen"),contains("Bevölkerung")) 
+
+write_csv(export_bl_impfungen ,"data/tabledata/impfdax_bl_stand.csv")
 
 # Datenstand
 jsonlite::write_json(
