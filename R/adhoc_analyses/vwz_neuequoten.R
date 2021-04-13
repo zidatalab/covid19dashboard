@@ -50,8 +50,42 @@ vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt,
                          horizont = 20) %>% mutate(Neue_ICU_Faelle=H-lag(H))
       mysir_AG[[i]] <- mysir
     }
-    myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% pull(H) # %>% filter(H>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
-    # myresult <- ifelse(is_empty(myresult), NA, myresult)
+    myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% pull(H) # 
+    # myresult2 <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(H>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
+    # myresult2 <- ifelse(is_empty(myresult2), NA, myresult2)
+  }
+  return(myresult)
+}
+vorwarnzeit_berechnen_AG_2 <- function(ngesamt, cases, akutinfiziert, icubelegt, 
+                                     Kapazitaet_Betten, Rt=1.3, 
+                                     icurate_altersgruppen){
+  # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 3 (AG 0-59, 60-79, 80+)
+  if (is.na(Kapazitaet_Betten)) { # no divi date for this date or kreis 
+    myresult <- NA
+  } else {
+    gamma <- 1/infektperiode # contagious period
+    delta <- 1/infekt2icudays # iculag # time till icu
+    nu <- 1/icu_days # time in icu
+    infected <- akutinfiziert-icubelegt
+    recovered <- cases-infected-icubelegt
+    mysir_AG <- vector("list", 3)
+    for (i in 1:3) {
+      mysir <- sihrmodel(ngesamt = ngesamt[i],
+                         S = ngesamt[i] - infected[i] - icubelegt[i] - recovered[i],
+                         I = infected[i],
+                         H=icubelegt[i],
+                         R = recovered[i],
+                         R0 = Rt,
+                         gamma = gamma,
+                         qa = icurate_altersgruppen[i],
+                         delta = delta,
+                         nu = nu,
+                         horizont = 180) %>% mutate(Neue_ICU_Faelle=H-lag(H))
+      mysir_AG[[i]] <- mysir
+    }
+    # myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% pull(H) # 
+    myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(H>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
+    myresult <- ifelse(is_empty(myresult), NA, myresult)
   }
   return(myresult)
 }
@@ -230,9 +264,9 @@ kreise_regstat_alter <- bind_rows(tibble(id=0,
 
 ## newnew
 
-infektperiode <- 11
-icu_days <- 11
-infekt2icudays <- 11
+infektperiode <- 8
+icu_days <- 21
+infekt2icudays <- 14
 
 rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
   group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately... but much faster with dtplyr!
@@ -422,10 +456,49 @@ myH <-
          )
      ) # %>% 
   # unnest(cols = c(H), keep_empty=TRUE)
+
+myTage <-
+  ausgangsdaten %>% 
+  filter((date>=as_date("2020-03-13") & id==0)) %>%
+  mutate(periode=case_when(
+    date>="2020-01-01" & date<="2020-03-31" ~ 1,
+    date>="2020-04-01" & date<="2020-04-30" ~ 2,
+    date>="2020-05-01" & date<="2020-05-31"  ~ 3,
+    date>="2020-06-01" & date<="2020-09-30"  ~ 4,
+    date>="2020-10-01" & date<="2020-11-30"  ~ 5,
+    date>="2020-12-01" & date<="2021-12-31"  ~ 6
+  )) %>%
+  left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
+            by="periode") %>% 
+  rowwise() %>%
+  do(Tage = 
+       vorwarnzeit_berechnen_AG_2(
+         ngesamt = c(.$EW059, .$EW6079, .$EW80),
+         cases = c(.$cases059, .$cases6079, .$cases80),
+         akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
+         icubelegt = round(
+           (.$faelle_covid_aktuell*
+              altersgruppen_beatmet/
+              sum(altersgruppen_beatmet)) %>%
+             as.numeric()),
+         Kapazitaet_Betten = .$Kapazitaet_Betten,
+         Rt = 1.3,# .$R,
+         # icurate_altersgruppen = c(0.0079, 0.0769,0.0497)
+         icurate_altersgruppen = c(.$`bis 60`, .$`60-80`, .$`ueber 80`)
+         # icurate_altersgruppen = itsquoten %>%
+         #   filter(periode==.$periode) %>%
+         #   select(`bis 60`, `60-80`, `ueber 80`) %>%
+         #   slice(1) %>%
+         #   as.numeric()
+       )
+  ) %>% 
+  unnest(cols = c(Tage), keep_empty=TRUE)
+
 vorwarnzeitergebnis <- ausgangsdaten %>%
   filter(
     (date>=as_date("2020-03-13") & id==0)) %>%
-  mutate(ITS = myH$H)
+  mutate(ITS = myH$H,
+         VWZ=myTage$Tage)
 
 error_vwz <- vorwarnzeitergebnis %>% 
   select(date, faelle_covid_aktuell, ITS) %>%
@@ -919,9 +992,9 @@ summary(mylm)
 
 ### loop
 
-infektperioden <- 3*0:4+2
-icu_daysn <- 3*2:6+2
-infekt2icudaysn <- 3*0:6+2
+infektperioden <- 5:14 # c(4,6,10,12) # 3*0:4+2
+icu_daysn <- 9:21 # c(10,12,21) # 3*2:6+2
+infekt2icudaysn <- 14 # c(7, 14, 21) # 3*0:6+2
 
 myr2s <- array(0, c(length(infektperioden), length(icu_daysn), length(infekt2icudaysn)))
 mycoeffs <- array(0, c(length(infektperioden), length(icu_daysn), length(infekt2icudaysn)))
@@ -1159,12 +1232,57 @@ for (ip in seq(length(infektperioden))) {
   }
 }
 
-save.image("resvwzgridsearch_4.RData")
+save.image("resvwzgridsearch_6.RData")
 
-mycoeffs_df <- melt(mycoeffs) %>% 
-  rename(ip=Var1, id=Var2, ii=Var3, coeff=value) %>% 
-  mutate(coeff=abs(1-coeff))
+mycoeffs_df3 <- melt(mycoeffs) %>% 
+  mutate(ip=infektperioden[Var1], id=icu_daysn[Var2],
+         ii=infekt2icudaysn[Var3], coeff=value) %>% 
+  mutate(abscoeff=abs(1-coeff)) %>% 
+  left_join(melt(myr2s) %>% 
+              mutate(ip=infektperioden[Var1], id=icu_daysn[Var2],
+                     ii=infekt2icudaysn[Var3], r2=value),
+            by=c("ip", "id", "ii")) %>% 
+  select(ip, id, ii, coeff, abscoeff, r2)
+
+load("resvwzgridsearch_5.RData")
+
+mycoeffs_df1 <- melt(mycoeffs) %>% 
+  mutate(ip=infektperioden[Var1], id=icu_daysn[Var2],
+         ii=infekt2icudaysn[Var3], coeff=value) %>% 
+  mutate(abscoeff=abs(1-coeff)) %>% 
+  left_join(melt(myr2s) %>% 
+              mutate(ip=infektperioden[Var1], id=icu_daysn[Var2],
+                     ii=infekt2icudaysn[Var3], r2=value),
+            by=c("ip", "id", "ii")) %>% 
+  select(ip, id, ii, coeff, abscoeff, r2)
+
+load("resvwzgridsearch_4.RData")
+
+mycoeffs_df2 <- melt(mycoeffs) %>% 
+  mutate(ip=infektperioden[Var1], id=icu_daysn[Var2],
+         ii=infekt2icudaysn[Var3], coeff=value) %>% 
+  mutate(abscoeff=abs(1-coeff)) %>% 
+  left_join(melt(myr2s) %>% 
+              mutate(ip=infektperioden[Var1], id=icu_daysn[Var2],
+                     ii=infekt2icudaysn[Var3], r2=value),
+            by=c("ip", "id", "ii")) %>% 
+  select(ip, id, ii, coeff, abscoeff, r2)
+
+mycoeffs_df <- bind_rows(mycoeffs_df1, mycoeffs_df2, mycoeffs_df3) %>% 
+  distinct() %>% 
+  mutate(myrank=rank(abscoeff)+rank(-r2))
  
-ggplot(mycoeffs_df, aes(x=ii, y=coeff, group=id, col=factor(id))) +
+ggplot(mycoeffs_df, aes(x=id, y=r2, group=ii, col=ii)) +
   geom_line() +
+  ylim(0.75, 1) +
+  facet_wrap(~ip)
+
+ggplot(mycoeffs_df, aes(x=id, y=abscoeff, group=ii, col=ii)) +
+  geom_line() +
+  # ylim(0.75, 1) +
+  facet_wrap(~ip)
+
+ggplot(mycoeffs_df, aes(x=id, y=myrank, group=ii, col=ii)) +
+  geom_line() +
+  # ylim(0.75, 1) +
   facet_wrap(~ip)
