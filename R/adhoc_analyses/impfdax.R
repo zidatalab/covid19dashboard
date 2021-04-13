@@ -1,6 +1,23 @@
 library(tidyverse)
 library(lubridate)
 library(ISOcodes)
+
+
+# Lieferungen
+lieferstand <- jsonlite::read_json("https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/tabledata/impfsim_start.json",simplifyVector = TRUE) %>%
+  tibble()%>% filter(geo=="Gesamt") %>% select(hersteller,dosen_geliefert) %>% spread(hersteller,dosen_geliefert) %>% mutate(Quartal="bisher")
+lieferprognose <- jsonlite::read_json("https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/tabledata/impfsim_lieferungen.json",simplifyVector = TRUE) %>% tibble()
+lieferungen_praxen <- jsonlite::read_json("https://raw.githubusercontent.com/zidatalab/covid19dashboard/master/data/tabledata/impfsim_lieferungenpraxen.json",simplifyVector = TRUE) %>% 
+  tibble()
+lieferungen_quartal <- tibble(Datum=seq(as.Date("2021-01-01"),as.Date("2021-12-31"),1)) %>% 
+  mutate(kw=isoweek(Datum)) %>% group_by(kw) %>% arrange(Datum) %>% 
+  filter(row_number()==1) %>% left_join(lieferprognose %>% filter(Bundesland=="Gesamt" & Verteilungsszenario!="Gleichverteilung"),by="kw") %>% filter(!is.na(dosen_kw)) %>% select(Datum,kw,hersteller,dosen_kw) %>% mutate(Quartal=quarter(Datum)) %>% group_by(Quartal,hersteller) %>% 
+  summarise(dosen_kw=sum(dosen_kw,na.rm=FALSE)) %>% spread(hersteller,dosen_kw) %>%
+  mutate(Quartal=paste0(Quartal, ". Quartal"))
+
+lieferungen_gesamt <- bind_rows(lieferstand,lieferungen_quartal ) %>%  relocate(Quartal)
+
+
 lieferungen <- read_tsv("https://impfdashboard.de/static/data/germany_deliveries_timeseries_v2.tsv")
 impfungen.raw  <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations_timeseries_v2.tsv')
 impfungen.raw.bl <- read_tsv('https://impfdashboard.de/static/data/germany_vaccinations_by_state.tsv') %>%
@@ -24,7 +41,7 @@ impfungen_praxen_bl.raw <- read_csv("https://ziwebstorage.blob.core.windows.net/
 impfungen_praxen_bl <-impfungen_praxen_bl.raw %>%
   group_by(Bundesland) %>% summarise("Impfungen Praxen"=sum(anzahl,na.rm=T))
   
-  
+
 
 alldates <- seq(min(lieferungen$date),max(impfungen$date,impfungen_praxen$date),1)
 
@@ -101,8 +118,34 @@ export_bl_impfungen <- impfungen.raw.bl %>%
 
 write_csv(export_bl_impfungen ,"data/tabledata/impfdax_bl_stand.csv")
 
-praxen_wirkstoffe_aktuell <- impfungen_praxen_bl.raw %>% filter(kw>=(isoweek(now())-1)) %>% group_by(Bundesland,vacc_product) %>% summarise(Impfungen=sum(anzahl,na.rm = TRUE)) %>%  spread(vacc_product,Impfungen,fill = 0)
+# Praxen
+impfungen_praxen_bl.raw <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_kw_wirkstoff.csv")  %>%  
+  mutate(Hersteller=case_when(vacc_product=="AZD1222"~"AZ",
+                              vacc_product=="BNT162b2"~"BNT/Pfizer",
+                              vacc_product=="mRNA-1273"~"Moderna",
+                              TRUE ~ "Anderer")) 
+
+zeitreihe_verimpfung_praxen <- lieferungen_praxen %>% select(kw=KW,jahr=Jahr,Hersteller,Bundesland=geo,Lieferung_Praxen) %>% left_join(impfungen_praxen_bl.raw%>% select(kw,jahr,Bundesland,Hersteller,Impfungen=anzahl),by=c("kw","jahr","Bundesland","Hersteller")) %>% filter(Bundesland!="Gesamt")
+
+praxen_wirkstoffe_aktuell <- zeitreihe_verimpfung_praxen %>% 
+  left_join(., zeitreihe_verimpfung_praxen %>% 
+              group_by(Hersteller,Bundesland) %>% 
+              filter(Lieferung_Praxen>=0 & kw<isoweek(now())) %>% 
+              arrange(Hersteller ,Bundesland,jahr,kw) %>% 
+              filter(row_number()==1) %>% 
+              select( Hersteller ,Bundesland,jahr,liefer_kw=kw) ) %>% 
+  filter(kw>=liefer_kw) %>% group_by(Bundesland,Hersteller) %>% 
+  mutate(Lieferung_Praxen=ifelse(kw>liefer_kw,0,Lieferung_Praxen)) %>% 
+  summarise(Geliefert=sum(Lieferung_Praxen,na.rm=T ),
+            Impfungen=sum(Impfungen,na.rm=T)) %>% 
+  mutate("Anteil verimpft"=Impfungen/Geliefert )  %>% 
+  pivot_wider(id_cols = Bundesland,values_from = 
+                c("Geliefert", "Impfungen" ,"Anteil verimpft"),
+              names_from = Hersteller,names_sep = ": ")
+
 write_csv(praxen_wirkstoffe_aktuell ,"data/tabledata/impfdax_praxen_wirkstoffe_aktuell.csv")
+
+
 
 
 # Datenstand
