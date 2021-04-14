@@ -105,19 +105,6 @@ last14days <- plotdata.full %>% arrange(date) %>% tail(14) %>%
 
 write_csv(last14days ,"data/tabledata/impfdax_last14days.csv")
 
-# Export Impfungen nach Bundesland
-export_bl_impfungen <- impfungen.raw.bl %>%  
-  left_join(impfungen_praxen_bl,by="Bundesland") %>% ungroup() %>% 
-  mutate(`Impfungen Praxen`=ifelse(Bundesland=="Gesamt",sum(`Impfungen Praxen`,na.rm=T),`Impfungen Praxen`)) %>%
-  left_join(pop.bl,by="Bundesland") %>%
-  mutate(
-    "Verimpft" = vaccinationsTotal/dosen_geliefert,
-    "Bevölkerung Erstimpfung"=peopleFirstTotal/`Bevölkerung`,
-    "Bevölkerung Zweitimpfung"=peopleFullTotal/`Bevölkerung`)  %>% 
-  select(Bundesland,"Gelieferte Dosen"=dosen_geliefert,Impfungen=vaccinationsTotal,Verimpft,contains("Praxen"),contains("Bevölkerung")) 
-
-write_csv(export_bl_impfungen ,"data/tabledata/impfdax_bl_stand.csv")
-
 # Praxen
 impfungen_praxen_bl.raw <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_kw_wirkstoff.csv")  %>%  
   mutate(Hersteller=case_when(vacc_product=="AZD1222"~"AZ",
@@ -143,6 +130,30 @@ praxen_wirkstoffe_laufende_woche <- impfungen_praxen_bl.raw %>%
   spread(Hersteller,anzahl)
 
 write_csv(praxen_wirkstoffe_laufende_woche ,"data/tabledata/impfdax_praxen_wirkstoffe_laufende_kw.csv")
+
+
+# Export Impfungen nach Bundesland
+export_bl_impfungen <- impfungen.raw.bl %>%  
+  left_join(impfungen_praxen_bl,by="Bundesland") %>% ungroup() %>% 
+  mutate(`Impfungen Praxen`=ifelse(Bundesland=="Gesamt",sum(`Impfungen Praxen`,na.rm=T),`Impfungen Praxen`)) %>%
+  left_join(pop.bl,by="Bundesland") %>%
+  left_join(.,lieferungen_praxen %>% rename(Bundesland=geo) %>% group_by(Bundesland) %>% 
+              summarise("Praxen: Lieferungen"=sum(Lieferung_Praxen, na.rm=T)),by="Bundesland") %>%
+  rename("Praxen: Impfungen"="Impfungen Praxen") %>%
+  mutate(
+    "Verimpft" = vaccinationsTotal/(dosen_geliefert+ `Praxen: Lieferungen`),
+    "Bevölkerung Erstimpfung"=peopleFirstTotal/`Bevölkerung`,
+    "Bevölkerung Zweitimpfung"=peopleFullTotal/`Bevölkerung`,
+    "Bevölkerung Zweitimpfung"=peopleFullTotal/`Bevölkerung`,
+    "Impfzentren: Impfungen"   = vaccinationsTotal-`Praxen: Impfungen`,
+    "Impfzentren: Lieferungen" = dosen_geliefert ,
+    "Impfzentren: Anteil verimpft" = (`Impfzentren: Impfungen`/`Impfzentren: Lieferungen`),
+    "Praxen: Anteil verimpft" = (`Praxen: Impfungen`/`Praxen: Lieferungen`))  %>% 
+  select(Bundesland,"Gelieferte Dosen"=dosen_geliefert,Impfungen=vaccinationsTotal,Verimpft,contains("Impfzentren"),contains("Praxen"),contains("Bevölkerung"))  
+
+write_csv(export_bl_impfungen ,"data/tabledata/impfdax_bl_stand.csv")
+
+
 
 # Datenstand
 jsonlite::write_json(
