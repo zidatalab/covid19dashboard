@@ -288,11 +288,13 @@ rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
   arrange(Meldedatum) %>%
   mutate(cases059=cumsum(`Fälle_0-15`+`Fälle_15-34`+`Fälle_35-59`),
          cases6079=cumsum(`Fälle_60-79`),
-         cases80=cumsum(`Fälle_80+`)) %>%
+         cases80=cumsum(`Fälle_80+`),
+         cases60=cumsum(`Fälle_60+`)) %>%
   mutate(Infected059=cases059-lag(cases059, infektperiode),
          Infected6079=cases6079-lag(cases6079, infektperiode),
-         Infected80=cases80-lag(cases80, infektperiode)) %>% 
-  fill(Infected059, Infected6079, Infected80, .direction = "up") %>%
+         Infected80=cases80-lag(cases80, infektperiode),
+         Infected60=cases60-lag(cases60, infektperiode)) %>% 
+  fill(Infected059, Infected6079, Infected80, Infected60, .direction = "up") %>%
   ungroup() %>%
   mutate(blid=floor(id/1000000)) %>%
   as_tibble()
@@ -303,9 +305,11 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
                                    summarise(cases059=sum(cases059),
                                              cases6079=sum(cases6079),
                                              cases80=sum(cases80),
+                                             cases60=sum(cases60),
                                              Infected059=sum(Infected059),
                                              Infected6079=sum(Infected6079),
                                              Infected80=sum(Infected80),
+                                             Infected60=sum(Infected60),
                                              `Fälle_15-34`=sum(`Fälle_15-34`),
                                              `Fälle_35-59`=sum(`Fälle_35-59`),
                                              `Fälle_0-15`=sum(`Fälle_0-15`),
@@ -324,9 +328,11 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
                                   summarise(cases059=sum(cases059),
                                             cases6079=sum(cases6079),
                                             cases80=sum(cases80),
+                                            cases60=sum(cases60),
                                             Infected059=sum(Infected059),
                                             Infected6079=sum(Infected6079),
                                             Infected80=sum(Infected80),
+                                            Infected60=sum(Infected60),
                                             `Fälle_15-34`=sum(`Fälle_15-34`),
                                             `Fälle_35-59`=sum(`Fälle_35-59`),
                                             `Fälle_0-15`=sum(`Fälle_0-15`),
@@ -366,11 +372,13 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
   filter(date>=maxdatum-6) %>%
   summarise(`Faelle_letzte_7_Tage_0-59`=sum(`Fälle_0-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
-            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
+            `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`),
+            `Faelle_letzte_7_Tage_60+`=sum(`Fälle_80+`+`Fälle_60-79`), .groups="drop") %>%
   bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
   mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-59`=round(`Faelle_letzte_7_Tage_0-59`/(sum(select(., `unter 20`:`40 bis 60`))/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/(`60 bis 80`/100000)),
-         `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)))
+         `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/(`80+`/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round((`Faelle_letzte_7_Tage_80+`+`Faelle_letzte_7_Tage_60-79`)/((`80+`+`60 bis 80`)/100000)))
 
 ##### icurates nach altersgruppen
 ## delay für fälle-->icu:
