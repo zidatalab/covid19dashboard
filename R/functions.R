@@ -884,8 +884,24 @@ vacc_table_faktenblatt <- vacc_table %>%
             by=c("Bundesland"="geo")) %>%
   left_join(bundeslaender_table %>%
               select(Bundesland, `7-Tage-Inzidenz`, `7-Tage-Inzidenz 80+`),
-            by="Bundesland") # %>%
-  # select(-`Zahl der Impfungen gesamt`)
+            by="Bundesland")
+vacc_table_faktenblatt_new <- vacc_table %>%
+  select(-`Impfungen pro 100k EW`) %>%
+  left_join(vacc_gesamt %>%
+              group_by(geo) %>%
+              summarise("Zahl der Impfungen gesamt"=sum(value), .groups="drop") %>%
+              mutate(geo=ifelse(geo=="Deutschland", "Gesamt", geo)),
+            by=c("Bundesland"="geo")) %>%
+  left_join(bundeslaender_table %>%
+              select(Bundesland, `7-Tage-Inzidenz`),
+            by="Bundesland") %>% 
+  left_join(., aktuell %>% select(id, name), by=c("Bundesland"="name")) %>% 
+  left_join(vorwarnzeitergebnis %>% 
+              filter(id<17 & date==maxdatum) %>% 
+              select(id, `7-Tage-Inzidenz 60+`=`Faelle_letzte_7_Tage_je100TsdEinw_60+`),
+            by="id") %>% 
+  select(Bundesland, `Gesamt min. 1x`, "Gesamt 2x", `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`)
+  
 vacc_table_vaccsim <- bind_rows(
   rki_vacc %>%
     filter(date==max(date) & (key=="sum" | key=="delta_vortag" | key=="sum_booster")),
@@ -1151,7 +1167,7 @@ write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
 write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_table_faktenblatt.json")
 write_json(kreise_table, "./data/tabledata/kreise_table.json")
 write_json(kreise_table_faktenblatt, "./data/tabledata/kreise_table_faktenblatt.json")
-write_json(vacc_table_faktenblatt, "./data/tabledata/vacc_table_faktenblatt.json")
+write_json(vacc_table_faktenblatt_new, "./data/tabledata/vacc_table_faktenblatt.json")
 write_json(vacc_table_vaccsim, "./data/tabledata/vacc_table_vaccsim.json")
 write_json(vacc_alle_faktenblatt, "./data/tabledata/vacc_alle_faktenblatt.json")
 write_json(rwert_bund_data, "./data/plotdata/rwert_bund.json")

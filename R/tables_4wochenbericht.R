@@ -26,6 +26,15 @@ library(zoo)
 library(curl)
 source("aux_functions.R")
 
+# daten impfdax
+impfdax_data <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/impfdax.csv")
+impfdax_data <- impfdax_data %>% 
+  mutate(JahrKW=Jahr*100+kw)
+impfen_praxen_letztekw <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/impfdax_praxen_wirkstoffe_letzte_kw.csv")
+gelieferte_dosen <- read_json("../data/tabledata/impfsim_start.json",
+                              simplifyVector = TRUE) %>% 
+  filter(geo=="Gesamt")
+
 # daten übersterblichkeit
 url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
 destfile_sterblk <- "../data/sonderauswertung_sterbefaelle.xlsx"
@@ -706,146 +715,143 @@ c19erkranktetabelle <- tibble(
 ) %>%
   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 
-# vaccmaxdate <- max(vacc_zahlen$date)
-# vacc_brd <- vacc_alle_faktenblatt %>% filter(geo=="Deutschland")
-# geimpfte_gesamt <- tibble(
-#   "Geimpfte Personen"=c(
-#     "Gesamt-Bevölkerung",
-#     "Gesamt",
-#     "Mit nur 1 Impfung",
-#     "Mit 2 Impfungen",
-#     "Pflegeheimbewohnende",
-#     "Gesamt",
-#     "Mit nur 1 Impfung",
-#     "Mit 2 Impfungen",
-#     "Über-80-Jährige",
-#     "Gesamt",
-#     "Mit nur 1 Impfung",
-#     "Mit 2 Impfungen",
-#     "Personal in ...",
-#     "Gesamt",
-#     "Mit nur 1 Impfung",
-#     "Mit 2 Impfungen"
-#   ),
-#   dieseWoche=c(
-#     NA,
-#     vacc_brd$value_sum_initial,
-#     vacc_brd$value_sum_initial - vacc_brd$value_sum_booster,
-#     vacc_brd$value_sum_booster,
-#     NA,
-#     vacc_brd$value_ind_pflege_initial,
-#     vacc_brd$value_ind_pflege_initial-vacc_brd$value_ind_pflege_booster,
-#     vacc_brd$value_ind_pflege_booster,
-#     NA,
-#     vacc_brd$value_ind_alter_initial,
-#     vacc_brd$value_ind_alter_initial - vacc_brd$value_ind_alter_booster,
-#     vacc_brd$value_ind_alter_booster,
-#     NA,
-#     vacc_brd$value_ind_prof_initial,
-#     vacc_brd$value_ind_prof_initial - vacc_brd$value_ind_prof_booster,
-#     vacc_brd$value_ind_prof_booster
-#   ),
-#   dieseWocheAnteil=c(
-#     NA,
-#     vacc_brd$value_sum_initial/vacc_brd$population_sum_initial*100,
-#     (vacc_brd$value_sum_initial - vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100,
-#     (vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100,
-#     NA,
-#     vacc_brd$value_ind_pflege_initial/vacc_brd$population_ind_pflege_initial*100,
-#     (vacc_brd$value_ind_pflege_initial-vacc_brd$value_ind_pflege_booster)/vacc_brd$population_ind_pflege_initial*100,
-#     (vacc_brd$value_ind_pflege_booster)/vacc_brd$population_ind_pflege_initial*100,
-#     NA,
-#     vacc_brd$value_ind_alter_initial/vacc_brd$population_ind_alter_initial*100,
-#     (vacc_brd$value_ind_alter_initial - vacc_brd$value_ind_alter_booster)/vacc_brd$population_ind_alter_initial*100,
-#     (vacc_brd$value_ind_alter_booster)/vacc_brd$population_ind_alter_initial*100,
-#     NA,
-#     vacc_brd$value_ind_prof_initial/vacc_brd$population_ind_prof_initial*100,
-#     (vacc_brd$value_ind_prof_initial - vacc_brd$value_ind_prof_booster)/vacc_brd$population_ind_prof_initial*100,
-#     (vacc_brd$value_ind_prof_booster)/vacc_brd$population_ind_prof_initial*100
-#   )
-# ) %>%
-#   mutate(dieseWoche=ifelse(is.na(dieseWoche), NA, paste0(dieseWoche, 
-#                            " (",
-#                            format(round(dieseWocheAnteil, 1), decimal.mark=","), 
-#                            " %)"))) %>%
-#   select("Geimpfte Personen",
-#          !!paste0("Stand ", day(vaccmaxdate)+1, ".", month(vaccmaxdate), "."):=dieseWoche)
-# 
-# bl_impfungen <- vacc_table_faktenblatt %>%
-#   select(Bundesland, `Gesamt nur 1x`,
-#          `Gesamt 2x`,
-#          `PHB nur 1x`,
-#          `PHB 2x`,
-#          `Alter nur 1x`,
-#          `Alter 2x`,
-#          `Impfquote`,
-#          `7-Tage-Inzidenz`,
-#          `7-Tage-Inzidenz 80+`)
-# 
-# hersteller_brd <- vacc_zahlen %>%
-#   filter(date==vaccmaxdate & geo=="Germany")
-# hersteller_table <- tibble(
-#   "Impfstoffdosen"=c(
-#     "Verabreichte Impfstoffdosen",
-#     "Gesamt",
-#     "Erstimpfungen",
-#     "Zweitimpfungen",
-#     "Nach Herstellern",
-#     "Biontech/Pfizer",
-#     "Erstimpfungen",
-#     "Zweitimpfungen",
-#     "Moderna",
-#     "Erstimpfungen",
-#     "Zweitimpfungen",
-#     "AstraZeneca",
-#     "Erstimpfungen",
-#     "Zweitimpfungen"
-#   ),
-#   "dieseWoche"=c(
-#     NA,
-#     hersteller_brd %>% filter(key=="sum") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_initial") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_booster") %>% pull(value),
-#     NA,
-#     (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
-#     hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
-#     (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value)),
-#     hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value),
-#     (hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value))++(hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value)),
-#     hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value)
-#   )
-# ) %>%
-#   mutate(anteil=paste0(" (", format(round(100*dieseWoche/max(dieseWoche, na.rm=TRUE), 1), decimal.mark=","), " %)")) %>%
-#   mutate(dieseWoche=ifelse(Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca"), paste0(dieseWoche, anteil), dieseWoche)) %>%
-#   select(-anteil)
-  
-# fortschritt_table <- tibble(
-#   "Impffortschritt"=c(
-#     "Impffortschritt der letzten Woche",
-#     "Gesamt",
-#     "Erstimpfungen",
-#     "Zweitimpfungen",
-#     "Unverimpfte Dosen",
-#     "Gesamt",
-#     "Biontech/Pfizer",
-#     "Moderna",
-#     "AstraZeneca"
-#   ),
-#   "dieseWoche"=c(
-#     NA,
-#     hersteller_brd %>% filter(key=="sum") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_initial") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_booster") %>% pull(value),
-#     NA,
-#     (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
-#     hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
-#     hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
-#     (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value))
-#   )
-# )
+vaccmaxdate <- max(vacc_zahlen$date)
+vacc_brd <- vacc_alle_faktenblatt %>% filter(geo=="Deutschland")
+geimpfte_gesamt <- tibble(
+  "Geimpfte Personen"=c(
+    "Gesamtbevölkerung",
+    "Gesamt",
+    "Mit nur 1 Impfung",
+    "Mit 2 Impfungen"
+  ),
+  dieseWoche=c(
+    NA,
+    vacc_brd$value_sum_initial,
+    vacc_brd$value_sum_initial - vacc_brd$value_sum_booster,
+    vacc_brd$value_sum_booster
+  ),
+  dieseWocheAnteil=c(
+    NA,
+    vacc_brd$value_sum_initial/vacc_brd$population_sum_initial*100,
+    (vacc_brd$value_sum_initial - vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100,
+    (vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100
+  )
+) %>%
+  mutate(dieseWoche=ifelse(is.na(dieseWoche), NA, paste0(dieseWoche,
+                           " (",
+                           format(round(dieseWocheAnteil, 1), decimal.mark=","),
+                           " %)"))) %>%
+  select("Geimpfte Personen",
+         !!paste0("Stand ", day(vaccmaxdate)+1, ".", month(vaccmaxdate), "."):=dieseWoche)
+
+impfkw <- thisKW-1
+vorimpfkw <- impfkw-1
+fortschritt_table <- tibble(
+  "Impffortschritt"=c(
+    "Impfungen pro Woche",
+    "Gesamt",
+    "davon in Impfzentren",
+    "davon in ärztl. Praxen"
+  ),
+  "Vorwoche"=c(
+    NA,
+    impfdax_data %>% filter(JahrKW==vorimpfkw) %>% 
+      pull(`Anzahl_Impfungen Arztpraxen`) +
+      impfdax_data %>% filter(JahrKW==vorimpfkw) %>%
+      pull(`Anzahl_Impfungen Impfzentren`),
+    impfdax_data %>% filter(JahrKW==vorimpfkw) %>% 
+      pull(`Anzahl_Impfungen Impfzentren`),
+    impfdax_data %>% filter(JahrKW==vorimpfkw) %>% 
+      pull(`Anzahl_Impfungen Arztpraxen`)
+  ),
+  "dieseWoche"=c(
+    NA,
+    impfdax_data %>% filter(JahrKW==impfkw) %>% 
+      pull(`Anzahl_Impfungen Arztpraxen`) +
+      impfdax_data %>% filter(JahrKW==impfkw) %>%
+      pull(`Anzahl_Impfungen Impfzentren`),
+    impfdax_data %>% filter(JahrKW==impfkw) %>% 
+      pull(`Anzahl_Impfungen Impfzentren`),
+    impfdax_data %>% filter(JahrKW==impfkw) %>% 
+      pull(`Anzahl_Impfungen Arztpraxen`)
+  )
+) %>%
+  mutate(Vorwoche=case_when(
+    is.na(Vorwoche) ~ " ",
+    Impffortschritt=="Gesamt" ~ as.character(Vorwoche),
+    TRUE ~ paste0(Vorwoche,
+                  " (",
+                  format(round(100*Vorwoche/Vorwoche[Impffortschritt=="Gesamt"], 1), 
+                         decimal.mark=","),
+                  " %)")),
+         dieseWoche=case_when(
+    is.na(dieseWoche) ~ " ",
+    Impffortschritt=="Gesamt" ~ as.character(dieseWoche),
+    TRUE ~ paste0(dieseWoche,
+                  " (",
+                  format(round(100*dieseWoche/dieseWoche[Impffortschritt=="Gesamt"], 1), 
+                         decimal.mark=","),
+                  " %)"))) %>% 
+  rename("letzteKW"=dieseWoche)
+
+bl_impfungen <- vacc_table_faktenblatt %>%
+  select(Bundesland, 
+         `Gesamt min. 1x`,
+         `Gesamt 2x`,
+         `7-Tage-Inzidenz`,
+         `7-Tage-Inzidenz 60+`) %>% 
+  left_join(impfen_praxen_letztekw %>% 
+              select(Bundesland, Impfungen), by="Bundesland") %>% 
+  select("Bundesland", "Impfungen Praxen"=Impfungen,
+         `Gesamt min. 1x`,
+         `Gesamt 2x`,
+         `7-Tage-Inzidenz`,
+         `7-Tage-Inzidenz 60+`)
+
+hersteller_brd <- vacc_zahlen %>%
+  filter(date==vaccmaxdate & geo=="Germany")
+hersteller_table <- tibble(
+  "Impfstoffdosen"=c(
+    "Biontech/Pfizer",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "geliefert",
+    "Moderna",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "geliefert",
+    "AstraZeneca",
+    "Erstimpfungen",
+    "Zweitimpfungen",
+    "geliefert"
+  ),
+  "dieseWoche"=c(
+    (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
+    hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
+    gelieferte_dosen %>% filter(hersteller=="BNT/Pfizer") %>% pull(dosen_geliefert),
+    (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value)),
+    hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value),
+    gelieferte_dosen %>% filter(hersteller=="Moderna") %>% pull(dosen_geliefert),
+    (hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value)),
+    hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
+    hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value),
+    gelieferte_dosen %>% filter(hersteller=="AZ") %>% pull(dosen_geliefert)
+  )
+) %>%
+  mutate(anteil=paste0(" (", 
+                       format(round(100*dieseWoche/max(dieseWoche, na.rm=TRUE), 
+                                    1), 
+                              decimal.mark=","), 
+                       " %)")) %>%
+  mutate(dieseWoche=ifelse(
+    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca"), 
+    paste0(dieseWoche, anteil),
+    dieseWoche)) %>%
+  select(-anteil)
+
+
 
 library(openxlsx)
 list_of_datasets <- list("Testungen"=testtabelle,
@@ -855,8 +861,9 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Todesfälle und Fallsterblichkeit"=sterbetabelle,
                          "Vorwarnzeit"=vwztabelle,
                          "Regionale Daten"=bltabelle,
-                         "Internationaler Vergleich"=EUmal4tabelle)#,
-                         # "Geimpfte Personen"=geimpfte_gesamt,
-                         # "Regional Geimpfte"=bl_impfungen)#,
-                         # "Impfstoffdosen"=hersteller_table)
+                         "Internationaler Vergleich"=EUmal4tabelle,
+                         "Geimpfte Personen"=geimpfte_gesamt,
+                         "Impffortschritt"=fortschritt_table,
+                         "Regional Geimpfte"=bl_impfungen,
+                         "Impfstoffdosen"=hersteller_table)
 write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))
