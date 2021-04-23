@@ -24,10 +24,10 @@ source("R/aux_functions.R")
 
 ##### parameters from literature
 ## AOK/DIVI/Busse Paper Lancet (Case characteristics...)
-icu_days <-  10.1 # 17 # 
-busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896,
-                                             "Hosp6079"=1621+2158,
-                                             "Hosp80"=3346)
+# icu_days <-  10.1 # 
+# busselancet_altersgruppen_hospital <- tibble("Hosp059"=2896,
+#                                              "Hosp6079"=1621+2158,
+#                                              "Hosp80"=3346)
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4,
                              "20 bis 40"=24.6,
@@ -35,12 +35,13 @@ altersgruppen_bund <- tibble("unter 20"=18.4,
                              "60 bis 80"=21.7,
                              "80+"=6.8)/100
 ## icu-quoten nach altersgruppe
-dividay <- as_date("2020-11-16")
-divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister on dividay
-icu_altersgruppen <- divi_behandlungen_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
-## infectious period
-infektperiode <- 14 #14 # 5 # 
-infekt2icudays <- 14 #20 # 8 # 
+# dividay <- as_date("2020-11-16")
+# divi_behandlungen_aktuell <- 26372/1.27+3436 # divi intensivregister on dividay
+# icu_altersgruppen <- divi_behandlungen_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital)
+## barmer
+infektperiode <- 8
+icu_days <- 21
+infekt2icudays <- 14
 
 ##### Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
@@ -54,6 +55,17 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 
 ##### get data
 ## get data from file
+# its quoten
+altersgruppen_beatmet <- as.vector(read_csv(file = "data/its_altersverteilung.csv") %>% 
+                                     pivot_wider(names_from = Altersgruppe,
+                                                 values_from = anzahl_beatmet))[c(2,1,3)]
+
+itsquoten <- read_csv("data/itsquoten_final.csv") %>% 
+  mutate(quote_its=quote_its/100) %>% 
+  pivot_wider(id_cols = c(periode, beginn, ende),
+              names_from = Altersgruppe,
+              values_from = quote_its)
+# einwohnende
 kreise_regstat_alter <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt", 
                                    ";",
                                    escape_double = FALSE,
@@ -382,39 +394,39 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
 
 ##### icurates nach altersgruppen
 ## delay für fälle-->icu:
-rkidivi <- rki_alter_destatis %>%
-  filter(id==0) %>%
-  left_join(., divi_all %>% filter(id==0), by=c("Meldedatum"="daten_stand")) %>% drop_na()
-lengthrkidivi <- dim(rkidivi)[1]
-autocorhorizont <- 30
-autocors <- rep(0, lengthrkidivi-autocorhorizont+1)
-for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(lengthrkidivi-autocorhorizont)], rkidivi$faelle_covid_aktuell[(1+lag):(lengthrkidivi-autocorhorizont+lag)]) }
-iculag <- which.max(autocors)-1
+# rkidivi <- rki_alter_destatis %>%
+#   filter(id==0) %>%
+#   left_join(., divi_all %>% filter(id==0), by=c("Meldedatum"="daten_stand")) %>% drop_na()
+# lengthrkidivi <- dim(rkidivi)[1]
+# autocorhorizont <- 30
+# autocors <- rep(0, lengthrkidivi-autocorhorizont+1)
+# for (lag in 0:autocorhorizont) { autocors[lag+1] <- cor(rkidivi$Infected80[1:(lengthrkidivi-autocorhorizont)], rkidivi$faelle_covid_aktuell[(1+lag):(lengthrkidivi-autocorhorizont+lag)]) }
+# iculag <- which.max(autocors)-1
 # iculag <- 0
 # iculag <- 14
-cases_altersgruppen <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
-  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
-            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
-  arrange(Meldedatum, Altersgruppe) %>% collect() %>%
-  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
-         Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
-                             Altersgruppe,"0-59")) %>%
-  group_by(Meldedatum, Altersgruppe) %>% 
-  summarise("Fälle"=sum(AnzahlFall , na.rm = T),
-            "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
-  arrange(Meldedatum, Altersgruppe) %>% 
-  pivot_wider(id_cols = Meldedatum,
-              names_from = Altersgruppe,
-              values_from = c("Fälle","Todesfälle"),
-              values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
-  mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
-  arrange(Meldedatum) %>%
-  mutate(cases059=cumsum(`Fälle_0-59`),
-         cases6079=cumsum(`Fälle_60-79`),
-         cases80=cumsum(`Fälle_80+`)) %>% 
-  filter(Meldedatum==dividay-iculag) %>% 
-  select(cases059, cases6079, cases80) 
-icurate_altersgruppen_busse <- icu_altersgruppen/cases_altersgruppen
+# cases_altersgruppen <- rki %>% group_by(Meldedatum,Altersgruppe) %>% 
+#   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
+#             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+#   arrange(Meldedatum, Altersgruppe) %>% collect() %>%
+#   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+#          Altersgruppe=ifelse(Altersgruppe %in% c("60-79","80+"),
+#                              Altersgruppe,"0-59")) %>%
+#   group_by(Meldedatum, Altersgruppe) %>% 
+#   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
+#             "Todesfälle"=sum(AnzahlTodesfall , na.rm=T), .groups="drop") %>% 
+#   arrange(Meldedatum, Altersgruppe) %>% 
+#   pivot_wider(id_cols = Meldedatum,
+#               names_from = Altersgruppe,
+#               values_from = c("Fälle","Todesfälle"),
+#               values_fill = list("Fälle"=0,"Todesfälle"=0)) %>% ungroup() %>%
+#   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
+#   arrange(Meldedatum) %>%
+#   mutate(cases059=cumsum(`Fälle_0-59`),
+#          cases6079=cumsum(`Fälle_60-79`),
+#          cases80=cumsum(`Fälle_80+`)) %>% 
+#   filter(Meldedatum==dividay-iculag) %>% 
+#   select(cases059, cases6079, cases80) 
+# icurate_altersgruppen_busse <- icu_altersgruppen/cases_altersgruppen
 
 ##### Vorwarnzeit: Daten aggregieren und VWZ berechnen
 ## aggregiere daten für vorwarnzeit
@@ -527,24 +539,60 @@ ausgangsdaten_ror <- ausgangsdaten %>%
 ## berechne vorwarnzeit
 myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
                                      (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
+  mutate(periode=case_when(
+    date>="2020-01-01" & date<="2020-03-31" ~ 1,
+    date>="2020-04-01" & date<="2020-04-30" ~ 2,
+    date>="2020-05-01" & date<="2020-05-31"  ~ 3,
+    date>="2020-06-01" & date<="2020-09-30"  ~ 4,
+    date>="2020-10-01" & date<="2020-11-30"  ~ 5,
+    date>="2020-12-01" & date<="2021-12-31"  ~ 6
+  )) %>%
+  left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
+            by="periode") %>% 
   rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
                                      cases = c(.$cases059, .$cases6079, .$cases80),
                                      akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
-                                     icubelegt = round((.$faelle_covid_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
+                                     icubelegt = round(
+                                       (.$faelle_covid_aktuell*
+                                          altersgruppen_beatmet/
+                                          sum(altersgruppen_beatmet)) %>%
+                                         as.numeric()),
                                      Kapazitaet_Betten = .$Kapazitaet_Betten,
                                      Rt = 1.3,
-                                     icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())) %>% 
+                                     icurate_altersgruppen = c(.$`bis 60`, 
+                                                               .$`60-80`, 
+                                                               .$`ueber 80`)
+                                     )
+     ) %>% 
   unnest(cols = c(Tage), keep_empty=TRUE)
 myTage_ror <- ausgangsdaten_ror %>% 
+  mutate(periode=case_when(
+    date>="2020-01-01" & date<="2020-03-31" ~ 1,
+    date>="2020-04-01" & date<="2020-04-30" ~ 2,
+    date>="2020-05-01" & date<="2020-05-31"  ~ 3,
+    date>="2020-06-01" & date<="2020-09-30"  ~ 4,
+    date>="2020-10-01" & date<="2020-11-30"  ~ 5,
+    date>="2020-12-01" & date<="2021-12-31"  ~ 6
+  )) %>%
+  left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
+            by="periode") %>% 
   rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_AG(ngesamt = c(.$EW059, .$EW6079, .$EW80),
                                      cases = c(.$cases059, .$cases6079, .$cases80),
-                                     akutinfiziert = c(.$Infected059, .$Infected6079, .$Infected80),
-                                     icubelegt = round((.$faelle_covid_aktuell*busselancet_altersgruppen_hospital/sum(busselancet_altersgruppen_hospital))%>%as.numeric()),
+                                     akutinfiziert = c(.$Infected059, 
+                                                       .$Infected6079, 
+                                                       .$Infected80),
+                                     icubelegt = round((.$faelle_covid_aktuell*
+                                                         altersgruppen_beatmet/
+                                                         sum(altersgruppen_beatmet)) %>%
+                                       as.numeric()),
                                      Kapazitaet_Betten = .$Kapazitaet_Betten,
                                      Rt = 1.3,
-                                     icurate_altersgruppen = icurate_altersgruppen_busse%>%slice(1)%>%as.numeric())) %>% 
+     icurate_altersgruppen = c(.$`bis 60`, 
+                               .$`60-80`, 
+                               .$`ueber 80`)
+  )) %>% 
   unnest(cols = c(Tage), keep_empty=TRUE)
 vorwarnzeitergebnis <- ausgangsdaten %>%
   filter((date>=as_date("2020-03-13") & id<=16) |

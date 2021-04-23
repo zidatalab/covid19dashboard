@@ -47,7 +47,7 @@ Row
 
 ### **Zi-Frühindikatoren:** 
 
-Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie im Methodenpapier [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2020-11-17_Methodenpapier_Vorwarnzeit_Fassung_4_SIHR.pdf).
+Das Zi hat Frühindikatoren entwickelt, die frühzeitig auf die Gefahr für die Überlastung des Gesundheitswesens durch COVID-19 hinweisen sollen. Nachfolgend wird unsere tägliche Lageeinschätzung im Hinblick auf diese Indikatoren dargestellt. Nähere Informationen finden Sie im Methodenpapier [hier](https://www.zidatasciencelab.de/covid19dashboard/static/2021-04-23_Methodenpapier_Vorwarnzeit_Fassung_4_SIHR_Update.pdf).
 
 Stand Zi-Dashboard: `r format(now(),format="%d.%m.%Y %H:%M Uhr")`
 
@@ -163,7 +163,7 @@ Row
 ***Inzidenzprojektion***: Wenn die Inzidenz sinkt (R-Wert < 1), kann berechnet werden, wann die Inzidenz ein gegebenes Niveau unterschreitet.\
 ***Reproduktionszahl R***: Anzahl der Personen, die eine infizierte Person durchschnittlich mit COVID-19 infiziert. Bei R<1 sinkt die Zahl der Neuinfektionen. Bei hoher Inzidenz sind auch Werte nahe 1 kritisch, da sich das Infektionsgeschehen nicht deutlich verlangsamt.\
 ***Neue Fälle je 100.000 Einwohnende in 7 Tagen***: Auch als "7-Tage-Inzidenz" oder "Handlungsgrenze" bezeichnet. Wegen Meldeverzügen fehlen für einige Kreise/Bundesländer die Fallzahlen des Vortages. Fehlende Werte imputieren wir mit dem Mittelwert der vorhergehenden 6 Tage, um die 7-Tage-Inzidenz vergleichbar zu machen. \
-***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten (Annahme: für zukünftige COVID-19-Fälle stehen die derzeit freien Betten sowie bereits mit COVID-19-Fällen belegte Betten zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Wir berücksichtigen die aktuelle Altersstruktur der Infizierten und unterschiedliche Raten der Intensivfälle: `r round(icurate_altersgruppen_busse$Hosp059*100, 2)`% für Unter-60-Jährige, `r round(icurate_altersgruppen_busse$Hosp6079*100, 2)`% für 60-bis-79-Jährige, sowie `r round(icurate_altersgruppen_busse$Hosp80*100, 2)`% für Über-80-Jährige. Diese Quoten wurden auf Basis der im Intensivregister gemeldeten Fälle mit Korrektur für Doppelzählungen auf Grund von Verlegungen (27%) sowie COVID-19-Charakteristiken aus der Literatur bestimmt. Die "effektive Vorwarnzeit" ist die Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken. Vgl. Methodenpapier.
+***Vorwarnzeit bei R=1,3***: Anzahl von Tagen bis zur Überschreitung der stationären Behandlungskapazitäten (Annahme: für zukünftige COVID-19-Fälle stehen die derzeit freien Betten sowie bereits mit COVID-19-Fällen belegte Betten zur Verfügung) ab heute, falls R=1,3 ab dem `r format(now(),format="%d.%m.%Y")`. Wir berücksichtigen die aktuelle Altersstruktur der Infizierten und unterschiedliche Raten der Intensivfälle: `r round((itsquoten %>% filter(periode==6) %>% pull("bis 60"))*100, 2)`% für Unter-60-Jährige, `r round((itsquoten %>% filter(periode==6) %>% pull("60-80"))*100, 2)`% für 60-bis-79-Jährige, sowie `r round((itsquoten %>% filter(periode==6) %>% pull("ueber 80"))*100, 2)`% für Über-80-Jährige. Diese Quoten wurden auf Basis der im Intensivregister gemeldeten Fälle mit Korrektur für Doppelzählungen auf Grund von Verlegungen (27%) sowie Versorgungsdaten des BARMER Instituts für Gesundheitssystemforschung bestimmt. Die "effektive Vorwarnzeit" ist die Vorwarnzeit abzüglich der angenommenen Reaktionszeit von 21 Tagen, bis ergriffene neue Maßnahmen wirken. Vgl. Methodenpapier.
 
 Row
 ------------------------------------------------------------------------
@@ -193,7 +193,7 @@ Row
 ------------------------------------------------------------------------
 ### Erläuterung
 
-Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. 14 Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind.
+Dargestellt ist die Entwicklung der Anzahl von akut infizierten Personen in Deutschland. Angenommen wird, dass die Personen i.d.R. `r infektperiode` Tage nach der gemeldeten Erkrankung nicht mehr akut infiziert sind.
 
 Row
 ------------------------------------------------------------------------
@@ -227,7 +227,7 @@ Row
 ------------------------------------------------------------------------
 ### Erläuterung
 
-Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 80 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an der Zahl der akut Infizierten zwei Wochen davor (es dauert etwa 14 Tage, bis eine schwere COVID-19-Infektion intensivmedizinisch behandelt werden muss). Daten für ITS-Fälle liegen erst ab Ende April vor. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
+Dargestellt ist die Entwicklung des Anteils von neu gemeldeten akut infizierten Personen im Alter ab 80 Jahren an allen gemeldeten Fällen in Deutschland. Zudem wird das Verhältnis von Todesfällen an den gemeldeten Fällen dargestellt, sowie das Verhältnis der auf der Intensivstation behandelten Fälle (ITS) an der Zahl der akut Infizierten zwei Wochen davor (es dauert etwa `r infekt2icudays` Tage, bis eine schwere COVID-19-Infektion intensivmedizinisch behandelt werden muss). Daten für ITS-Fälle liegen erst ab Ende April vor. Die Zahl der Todesfälle ist für die letzten Wochen noch nicht aussagekräftig, da ein Todesfall meist nach schwerem und langem Krankheitsverlauf eintritt.
 
 
 Row

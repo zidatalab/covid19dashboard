@@ -90,7 +90,9 @@ vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt,
                          horizont = 180) %>% mutate(Neue_ICU_Faelle=H-lag(H))
       mysir_AG[[i]] <- mysir
     }
-    myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% mutate(Tage=row_number()-1) %>% filter(H>=Kapazitaet_Betten) %>% head(1) %>% pull(Tage)
+    myresult <- (mysir_AG[[1]]+mysir_AG[[2]]+mysir_AG[[3]]) %>% 
+      mutate(Tage=row_number()-1) %>% filter(H>=Kapazitaet_Betten) %>%
+      head(1) %>% pull(Tage)
     myresult <- ifelse(is_empty(myresult), NA, myresult)
   }
   return(myresult)
