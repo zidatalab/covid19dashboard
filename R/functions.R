@@ -1019,37 +1019,39 @@ bl_projektionen <- ausgangsdaten %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
   rowwise() %>%
-  mutate(RaktuellSTI50=projektion_datum(STI_aktuell = STI_aktuell,
-                                        STI_Ziel = 50,
+  mutate(RaktuellSTI165=projektion_datum(STI_aktuell = STI_aktuell,
+                                        STI_Ziel = 165,
                                         Rt = R0),
-         RaktuellSTI35=projektion_datum(STI_aktuell, 35, R0),
-         RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
-         R07STI50=projektion_datum(STI_aktuell, 50),
-         R07STI35=projektion_datum(STI_aktuell, 35),
-         R07STI10=projektion_datum(STI_aktuell, 10),
-         invisibleRaktuell50sort=as_date(RaktuellSTI50, format="%d.%m.%Y"),
-         invisibleR0750sort=as_date(R07STI50, format="%d.%m.%Y"),
-         invisibleRaktuell35sort=as_date(RaktuellSTI35, format="%d.%m.%Y"),
-         invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y"),
-         invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
-         invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
+         RaktuellSTI100=projektion_datum(STI_aktuell, 100, R0),
+         # RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
+         R07STI165=projektion_datum(STI_aktuell, 165),
+         R07STI100=projektion_datum(STI_aktuell, 100),
+         # R07STI10=projektion_datum(STI_aktuell, 10),
+         invisibleRaktuell165sort=as_date(RaktuellSTI165, format="%d.%m.%Y"),
+         invisibleR07165sort=as_date(R07STI165, format="%d.%m.%Y"),
+         invisibleRaktuell100sort=as_date(RaktuellSTI100, format="%d.%m.%Y"),
+         invisibleR07100sort=as_date(R07STI100, format="%d.%m.%Y") #,
+         # invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         # invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")
+         ) %>%
   arrange(id) %>%
   select(-id, -R0,
          "7-Tage-Inzidenz"=STI_aktuell,
          `R(t)`,
          Bundesland=name,
-         "Inzidenz<50 bei R(t) aktuell"=RaktuellSTI50,
-         "Inzidenz<35 bei R(t) aktuell"=RaktuellSTI35,
-         "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
-         "Inzidenz<50 bei R(t)=0,7"=R07STI50,
-         "Inzidenz<35 bei R(t)=0,7"=R07STI35,
-         "Inzidenz<10 bei R(t)=0,7"=R07STI10,
-         invisibleRaktuell50sort,
-         invisibleR0750sort,
-         invisibleRaktuell35sort,
-         invisibleR0735sort,
-         invisibleRaktuell10sort,
-         invisibleR0710sort)
+         "Inzidenz<100 bei R(t) aktuell"=RaktuellSTI100,
+         "Inzidenz<165 bei R(t) aktuell"=RaktuellSTI165,
+         # "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
+         "Inzidenz<100 bei R(t)=0,7"=R07STI100,
+         "Inzidenz<165 bei R(t)=0,7"=R07STI165,
+         # "Inzidenz<10 bei R(t)=0,7"=R07STI10,
+         invisibleRaktuell100sort,
+         invisibleR07100sort,
+         invisibleRaktuell165sort,
+         invisibleR07165sort #,
+         # invisibleRaktuell10sort,
+         # invisibleR0710sort
+         )
 
 kreise_projektionen <- ausgangsdaten %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
@@ -1063,38 +1065,39 @@ kreise_projektionen <- ausgangsdaten %>%
               filter(id>0 & id<17) %>%
               select(blid=id, Bundesland=name)) %>%
   rowwise() %>%
-  mutate(RaktuellSTI50=projektion_datum(STI_aktuell = STI_aktuell,
-                                        STI_Ziel = 50,
-                                        Rt = R0),
-         RaktuellSTI35=projektion_datum(STI_aktuell, 35, R0),
-         RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
-         R07STI50=projektion_datum(STI_aktuell, 50),
-         R07STI35=projektion_datum(STI_aktuell, 35),
-         R07STI10=projektion_datum(STI_aktuell, 10),
-         invisibleRaktuell50sort=as_date(RaktuellSTI50, format="%d.%m.%Y"),
-         invisibleR0750sort=as_date(R07STI50, format="%d.%m.%Y"),
-         invisibleRaktuell35sort=as_date(RaktuellSTI35, format="%d.%m.%Y"),
-         invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y"),
-         invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
-         invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
+  mutate(RaktuellSTI165=projektion_datum(STI_aktuell = STI_aktuell,
+                                         STI_Ziel = 165,
+                                         Rt = R0),
+         RaktuellSTI100=projektion_datum(STI_aktuell, 100, R0),
+         # RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
+         R07STI165=projektion_datum(STI_aktuell, 165),
+         R07STI100=projektion_datum(STI_aktuell, 100),
+         # R07STI10=projektion_datum(STI_aktuell, 10),
+         invisibleRaktuell165sort=as_date(RaktuellSTI165, format="%d.%m.%Y"),
+         invisibleR07165sort=as_date(R07STI165, format="%d.%m.%Y"),
+         invisibleRaktuell100sort=as_date(RaktuellSTI100, format="%d.%m.%Y"),
+         invisibleR07100sort=as_date(R07STI100, format="%d.%m.%Y") #,
+         # invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         # invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")
+  ) %>%
   arrange(name) %>%
   select(-id, -R0, -blid,
          "7-Tage-Inzidenz"=STI_aktuell,
          `R(t)`,
          Kreis=name,
          Bundesland=Bundesland,
-         "Inzidenz<50 bei R(t) aktuell"=RaktuellSTI50,
-         "Inzidenz<35 bei R(t) aktuell"=RaktuellSTI35,
-         "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
-         "Inzidenz<50 bei R(t)=0,7"=R07STI50,
-         "Inzidenz<35 bei R(t)=0,7"=R07STI35,
-         "Inzidenz<10 bei R(t)=0,7"=R07STI10,
-         invisibleRaktuell50sort,
-         invisibleR0750sort,
-         invisibleRaktuell35sort,
-         invisibleR0735sort,
-         invisibleRaktuell10sort,
-         invisibleR0710sort,
+         "Inzidenz<100 bei R(t) aktuell"=RaktuellSTI100,
+         "Inzidenz<165 bei R(t) aktuell"=RaktuellSTI165,
+         # "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
+         "Inzidenz<100 bei R(t)=0,7"=R07STI100,
+         "Inzidenz<165 bei R(t)=0,7"=R07STI165,
+         # "Inzidenz<10 bei R(t)=0,7"=R07STI10,
+         invisibleRaktuell100sort,
+         invisibleR07100sort,
+         invisibleRaktuell165sort,
+         invisibleR07165sort,
+         # invisibleRaktuell10sort,
+         # invisibleR0710sort
          "AGS (num)",
          Vorwarnzeit_ROR)
 
@@ -1226,7 +1229,53 @@ write_json(itsbetten_data, "./data/plotdata/itsbetten.json")
 write_json(bundeslaender_r_und_vwz_data, "./data/plotdata/bundeslaender_r_und_vwz.json")
 
 #### write csv for aerzteblatt
-write_csv(kreise_projektionen %>% mutate(datenstand=today()) %>%
+kreise_projektionen_aeb <- ausgangsdaten %>%
+  filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
+  left_join(vorwarnzeitergebnis %>% filter(date==maxdatum) %>% select(id, Vorwarnzeit_ROR), by="id") %>% 
+  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw, Vorwarnzeit_ROR) %>%
+  left_join(., aktuell %>% select(id, name, R0), by="id") %>%
+  mutate("AGS (num)"=ifelse(id==11, 11000, id/1000)) %>%
+  mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
+  mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
+  left_join(., aktuell %>%
+              filter(id>0 & id<17) %>%
+              select(blid=id, Bundesland=name)) %>%
+  rowwise() %>%
+  mutate(RaktuellSTI50=projektion_datum(STI_aktuell = STI_aktuell,
+                                        STI_Ziel = 50,
+                                        Rt = R0),
+         RaktuellSTI35=projektion_datum(STI_aktuell, 35, R0),
+         RaktuellSTI10=projektion_datum(STI_aktuell, 10, R0),
+         R07STI50=projektion_datum(STI_aktuell, 50),
+         R07STI35=projektion_datum(STI_aktuell, 35),
+         R07STI10=projektion_datum(STI_aktuell, 10),
+         invisibleRaktuell50sort=as_date(RaktuellSTI50, format="%d.%m.%Y"),
+         invisibleR0750sort=as_date(R07STI50, format="%d.%m.%Y"),
+         invisibleRaktuell35sort=as_date(RaktuellSTI35, format="%d.%m.%Y"),
+         invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y"),
+         invisibleRaktuell10sort=as_date(RaktuellSTI10, format="%d.%m.%Y"),
+         invisibleR0710sort=as_date(R07STI10, format="%d.%m.%Y")) %>%
+  arrange(name) %>%
+  select(-id, -R0, -blid,
+         "7-Tage-Inzidenz"=STI_aktuell,
+         `R(t)`,
+         Kreis=name,
+         Bundesland=Bundesland,
+         "Inzidenz<50 bei R(t) aktuell"=RaktuellSTI50,
+         "Inzidenz<35 bei R(t) aktuell"=RaktuellSTI35,
+         "Inzidenz<10 bei R(t) aktuell"=RaktuellSTI10,
+         "Inzidenz<50 bei R(t)=0,7"=R07STI50,
+         "Inzidenz<35 bei R(t)=0,7"=R07STI35,
+         "Inzidenz<10 bei R(t)=0,7"=R07STI10,
+         invisibleRaktuell50sort,
+         invisibleR0750sort,
+         invisibleRaktuell35sort,
+         invisibleR0735sort,
+         invisibleRaktuell10sort,
+         invisibleR0710sort,
+         "AGS (num)",
+         Vorwarnzeit_ROR)
+write_csv(kreise_projektionen_aeb %>% mutate(datenstand=today()) %>%
             select(-contains("invisible")), "./data/tabledata/kreise_projektionen.csv")
 ####write csv for impfmodellierung
 # write_csv(dosen_verabreicht, "./R/adhoc_analyses/impfdosen_bisher.csv")
