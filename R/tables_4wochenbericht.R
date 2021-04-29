@@ -258,7 +258,7 @@ bltabelle <- bind_rows(
 ) %>%
   rowwise() %>%
   mutate(`Inzidenzprojektion`=projektion_datum(STI_aktuell = `7-Tage-Inzidenz`,
-                                               STI_Ziel = 35,
+                                               STI_Ziel = 100,
                                                Rt = `R(t)`,
                                                tage_infektioes = 5)) %>%
   ungroup() %>%
