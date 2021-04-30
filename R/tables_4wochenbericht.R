@@ -131,7 +131,7 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 1) %>%
   mutate(YearKW=Meldejahr*100+MW)
 
-vacc_zahlen <- read_csv("../data/vacc_zahlen.csv")
+vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
 
 bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
                                 simplifyVector = TRUE) %>%
@@ -721,20 +721,29 @@ geimpfte_gesamt <- tibble(
   "Geimpfte Personen"=c(
     "Gesamtbevölkerung",
     "Gesamt",
-    "Mit nur 1 Impfung",
-    "Mit 2 Impfungen"
+    "Nicht vollst. geimpft",
+    "Vollst. geimpft"
   ),
   dieseWoche=c(
     NA,
-    vacc_brd$value_sum_initial,
-    vacc_brd$value_sum_initial - vacc_brd$value_sum_booster,
-    vacc_brd$value_sum_booster
+    vacc_brd$value_personen_erst_kumulativ + vacc_zahlen %>% 
+      filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
+      pull(value),
+    vacc_brd$value_personen_erst_kumulativ - vacc_brd$value_personen_voll_kumulativ + vacc_zahlen %>% 
+      filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
+      pull(value)
+    ,
+    vacc_brd$value_personen_voll_kumulativ
   ),
   dieseWocheAnteil=c(
     NA,
-    vacc_brd$value_sum_initial/vacc_brd$population_sum_initial*100,
-    (vacc_brd$value_sum_initial - vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100,
-    (vacc_brd$value_sum_booster)/vacc_brd$population_sum_initial*100
+    (vacc_brd$value_personen_erst_kumulativ + vacc_zahlen %>% 
+       filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
+       pull(value))/vacc_brd$population_personen_erst_kumulativ*100,
+    (vacc_brd$value_personen_erst_kumulativ - vacc_brd$value_personen_voll_kumulativ + vacc_zahlen %>% 
+       filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
+       pull(value))/vacc_brd$population_personen_erst_kumulativ*100,
+    (vacc_brd$value_personen_voll_kumulativ)/vacc_brd$population_personen_erst_kumulativ*100
   )
 ) %>%
   mutate(dieseWoche=ifelse(is.na(dieseWoche), NA, paste0(dieseWoche,
@@ -797,19 +806,19 @@ fortschritt_table <- tibble(
 bl_impfungen <- vacc_table_faktenblatt %>%
   select(Bundesland, 
          `Gesamt min. 1x`,
-         `Gesamt 2x`,
+         `Gesamt vollst.`,
          `7-Tage-Inzidenz`,
          `7-Tage-Inzidenz 60+`) %>% 
   left_join(impfen_praxen_letztekw %>% 
               select(Bundesland, Impfungen), by="Bundesland") %>% 
   select("Bundesland", "Impfungen Praxen"=Impfungen,
          `Gesamt min. 1x`,
-         `Gesamt 2x`,
+         `Gesamt vollst.`,
          `7-Tage-Inzidenz`,
          `7-Tage-Inzidenz 60+`)
 
 hersteller_brd <- vacc_zahlen %>%
-  filter(date==vaccmaxdate & geo=="Germany")
+  filter(date==vaccmaxdate & region=="DE")
 hersteller_table <- tibble(
   "Impfstoffdosen"=c(
     "Biontech/Pfizer",
@@ -823,30 +832,34 @@ hersteller_table <- tibble(
     "AstraZeneca",
     "Erstimpfungen",
     "Zweitimpfungen",
+    "geliefert",
+    "Johnson&Johnson",
     "geliefert"
   ),
   "dieseWoche"=c(
-    (hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value)),
-    hersteller_brd %>% filter(key=="sum_initial_biontech") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_booster_biontech") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_erst_biontech_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_voll_biontech_kumulativ") %>% pull(value),
     gelieferte_dosen %>% filter(hersteller=="BNT/Pfizer") %>% pull(dosen_geliefert),
-    (hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value)),
-    hersteller_brd %>% filter(key=="sum_initial_moderna") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_booster_moderna") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_erst_moderna_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_voll_moderna_kumulativ") %>% pull(value),
     gelieferte_dosen %>% filter(hersteller=="Moderna") %>% pull(dosen_geliefert),
-    (hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value))+(hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value)),
-    hersteller_brd %>% filter(key=="sum_initial_astrazeneca") %>% pull(value),
-    hersteller_brd %>% filter(key=="sum_booster_astrazeneca") %>% pull(value),
-    gelieferte_dosen %>% filter(hersteller=="AZ") %>% pull(dosen_geliefert)
+    hersteller_brd %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_erst_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_voll_astrazeneca_kumulativ") %>% pull(value),
+    gelieferte_dosen %>% filter(hersteller=="AZ") %>% pull(dosen_geliefert),
+    hersteller_brd %>% filter(metric=="dosen_voll_janssen_kumulativ") %>% pull(value),
+    gelieferte_dosen %>% filter(hersteller=="J&J") %>% pull(dosen_geliefert)
   )
 ) %>%
   mutate(anteil=paste0(" (", 
-                       format(round(100*dieseWoche/max(dieseWoche, na.rm=TRUE), 
+                       format(round(100*dieseWoche/(dieseWoche[1]+dieseWoche[5]+dieseWoche[9]+dieseWoche[13]), 
                                     1), 
                               decimal.mark=","), 
                        " %)")) %>%
   mutate(dieseWoche=ifelse(
-    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca"), 
+    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson"), 
     paste0(dieseWoche, anteil),
     dieseWoche)) %>%
   select(-anteil)

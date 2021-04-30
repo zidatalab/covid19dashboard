@@ -762,8 +762,10 @@ bundeslaender_r_und_vwz_data <- myblmitidata %>%
 #   mutate(impfungen_kumulativ=value)
 vacc_bl <- rki_vacc %>%
   filter(date==max(rki_vacc$date) &
-           metric=="personen_erst_kumulativ") %>%# key=="sum_initial") %>% # mit mindestens erster impfung
-  mutate(impfungen_initial=value)
+           metric%in%c("personen_erst_kumulativ", "dosen_janssen_kumulativ")) %>%# key=="sum_initial") %>% # mit mindestens erster impfung
+  group_by(geo) %>% 
+  pivot_wider(names_from = metric, values_from = value) %>% 
+  mutate(impfungen_initial=personen_erst_kumulativ+dosen_janssen_kumulativ)
 ## vaccination effects plot data
 brd_sti <- rki %>%
   filter(Meldedatum>=as_date("2020-12-01")-7) %>%
@@ -790,33 +792,17 @@ vaccination_sti_its_death_data <- rki_vacc %>%
 ## data table for subpage Impfungen
 rki_vacc_complete <- rki_vacc %>%
   arrange(geotype) %>%
-  bind_rows(rki_vacc %>% 
-              filter(date<="2021-01-15" & metric=="dosen_kumulativ") %>%
-              mutate(metric="personen_erst_kumulativ")) %>%
   mutate(geo=ifelse(geo=="Germany", "Deutschland", geo))
 vacc_gesamt <- rki_vacc_complete %>%
   filter(metric=="personen_erst_kumulativ" | metric=="personen_voll_kumulativ" |
-           metric=="dosen_kumulativ") %>%
+           metric=="dosen_kumulativ" | metric=="dosen_janssen_kumulativ") %>%
   filter(date==max(date)) %>%
   left_join(aktuell %>% 
               select(geo=name, population=EW_insgesamt) %>% 
               mutate(geo=ifelse(geo=="Gesamt", "Deutschland", geo)),
             by="geo") %>% 
   select(geo, metric, value, population, date)
-# vacc_prof <- rki_vacc_complete %>%
-#   filter(key=="ind_prof_initial" | key=="ind_prof_booster") %>%
-#   filter(date==max(date)) %>%
-#   mutate(population=round(3600000/83166711*population)) %>%
-#   select(geo, key, value, population, date)
-# vacc_age <- rki_vacc_complete %>%
-#   filter(key=="ind_alter_initial" | key=="ind_alter_booster") %>%
-#   filter(date==max(date)) %>%
-#   left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID),
-#             by=c("geo"="Bundesland")) %>%
-#   left_join(kreise_regstat_alter %>% select(id, ag_6),
-#             by=c("Bundesland_ID"="id")) %>%
-#   mutate(population=ag_6) %>%
-#   select(geo, key, value, population, date)
+
 vacc_age_60p <- rki_vacc_complete %>%
   filter(metric=="personen_erst_kumulativ_impfstelle_zentral_alter_60plus" | metric=="personen_voll_kumulativ_impfstelle_zentral_alter_60plus" |
            metric=="personen_erst_kumulativ_impfstelle_aerzte_alter_60plus" | metric=="personen_voll_kumulativ_impfstelle_aerzte_alter_60plus") %>%
@@ -839,27 +825,21 @@ vacc_age_60m <- rki_vacc_complete %>%
             by=c("Bundesland_ID"="id")) %>%
   mutate(population=ag_1+ag_2+ag_3+ag_4) %>%
   select(geo, metric, value, population, date)
-# vacc_pflege <- rki_vacc_complete %>%
-#   filter(key=="ind_pflege_initial" | key=="ind_pflege_booster") %>%
-#   filter(date==max(date)) %>%
-#   left_join(pflegeheimbewohnende_2019_bundeslaender %>% select(Bundesland, Bundesland_ID, vollstationaere_dauerpflege),
-#             by=c("geo"="Bundesland")) %>%
-#   mutate(population=vollstationaere_dauerpflege) %>%
-#   select(geo, key, value, population, date)
+
 vacc_alle <- vacc_gesamt %>%
-  # bind_rows(vacc_age, vacc_pflege, vacc_prof) %>%
   bind_rows(vacc_age_60m, vacc_age_60p) %>%
   mutate(population=ifelse(population<value, value, population))
 vacc_alle_faktenblatt <- vacc_alle %>%
   pivot_wider(id_cols=c("geo"), 
               names_from="metric", 
               values_from=c("value", "population")) %>%
-  mutate(quote_initial_gesamt=(value_personen_erst_kumulativ)/population_personen_erst_kumulativ,
-         quote_booster_gesamt=(value_personen_voll_kumulativ)/population_personen_voll_kumulativ,
+  mutate(quote_gesamt=(value_personen_erst_kumulativ+value_dosen_janssen_kumulativ)/population_personen_erst_kumulativ,
+         quote_unvollst_gesamt=(value_personen_erst_kumulativ-value_personen_voll_kumulativ+value_dosen_janssen_kumulativ)/population_personen_erst_kumulativ,
+         quote_vollst_gesamt=(value_personen_voll_kumulativ)/population_personen_voll_kumulativ,
          quote_initial_alter_60m=(`value_personen_erst_kumulativ_impfstelle_zentral_alter_unter60`+`value_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`)/`population_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`,
-         quote_booster_alter_60m=(`value_personen_voll_kumulativ_impfstelle_zentral_alter_unter60`+`value_personen_voll_kumulativ_impfstelle_aerzte_alter_unter60`)/`population_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`,
+         quote_vollst_alter_60m=(`value_personen_voll_kumulativ_impfstelle_zentral_alter_unter60`+`value_personen_voll_kumulativ_impfstelle_aerzte_alter_unter60`)/`population_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`,
          quote_initial_alter_60p=(`value_personen_erst_kumulativ_impfstelle_zentral_alter_60plus`+`value_personen_erst_kumulativ_impfstelle_aerzte_alter_60plus`)/`population_personen_erst_kumulativ_impfstelle_zentral_alter_60plus`,
-         quote_booster_alter_60p=(`value_personen_voll_kumulativ_impfstelle_zentral_alter_60plus`+`value_personen_voll_kumulativ_impfstelle_aerzte_alter_60plus`)/`population_personen_erst_kumulativ_impfstelle_zentral_alter_60plus`,
+         quote_vollst_alter_60p=(`value_personen_voll_kumulativ_impfstelle_zentral_alter_60plus`+`value_personen_voll_kumulativ_impfstelle_aerzte_alter_60plus`)/`population_personen_erst_kumulativ_impfstelle_zentral_alter_60plus`,
          # quote_initial_pflege=(value_ind_pflege_initial-value_ind_pflege_booster)/population_ind_pflege_initial,
          # quote_booster_pflege=value_ind_pflege_booster/population_ind_pflege_initial,
          # quote_initial_alter=(value_ind_alter_initial-value_ind_alter_booster)/population_ind_alter_initial,
@@ -872,11 +852,11 @@ vacc_table <- vacc_alle_faktenblatt %>%
          # "PHB nur 1x"=format(round(100*quote_initial_pflege, 1), decimal.mark=","),
          # "PHB 2x"=format(round(100*quote_booster_pflege, 1), decimal.mark=","),
          "Alter 60+ min. 1x"=ifelse(is.na(quote_initial_alter_60p), "k.A.", format(round(100*quote_initial_alter_60p, 1), decimal.mark=",")),
-         "Alter 60+ vollst."=ifelse(is.na(quote_booster_alter_60p), "k.A.", format(round(100*quote_booster_alter_60p, 1), decimal.mark=",")),
+         "Alter 60+ vollst."=ifelse(is.na(quote_vollst_alter_60p), "k.A.", format(round(100*quote_vollst_alter_60p, 1), decimal.mark=",")),
          "Alter <60 min. 1x"=ifelse(is.na(quote_initial_alter_60m), "k.A.", format(round(100*quote_initial_alter_60m, 1), decimal.mark=",")),
-         "Alter <60 vollst."=ifelse(is.na(quote_booster_alter_60m), "k.A.", format(round(100*quote_booster_alter_60m, 1), decimal.mark=",")),
-         "Gesamt min. 1x"=ifelse(is.na(quote_initial_gesamt), "k.A.", format(round(100*quote_initial_gesamt, 1), decimal.mark=",")),
-         "Gesamt vollst."=ifelse(is.na(quote_booster_gesamt), "k.A.", format(round(100*quote_booster_gesamt, 1), decimal.mark=",")),
+         "Alter <60 vollst."=ifelse(is.na(quote_vollst_alter_60m), "k.A.", format(round(100*quote_vollst_alter_60m, 1), decimal.mark=",")),
+         "Gesamt min. 1x"=ifelse(is.na(quote_gesamt), "k.A.", format(round(100*quote_gesamt, 1), decimal.mark=",")),
+         "Gesamt vollst."=ifelse(is.na(quote_vollst_gesamt), "k.A.", format(round(100*quote_vollst_gesamt, 1), decimal.mark=",")),
          # "Impfquote"=format(round(100*(quote_initial_gesamt), 1), decimal.mark=","),
          "Impfungen pro 100k EW"=format(round(impfungen_gesamt/population_personen_erst_kumulativ*100000), decimal.mark=",")
   ) %>%
