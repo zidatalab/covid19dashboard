@@ -1004,7 +1004,8 @@ vacc_table_vaccsim <- bind_rows(
   mutate(geo=ifelse(geo=="Germany", "Gesamt", geo))
 vacc_table_vaccsim <- vacc_table_faktenblatt %>%
   left_join(vacc_table_vaccsim, by=c("Bundesland"="geo")) %>%
-  mutate(Stand_letzteImpfung=max(rki_vacc$date))
+  mutate(Stand_letzteImpfung=max(rki_vacc$date)) %>% 
+  rename(`Gesamt 2x`=`Gesamt vollst.`)
 ## data for Bundeslaender faktenblatt
 bundeslaender_table_faktenblatt <- vorwarnzeitergebnis %>%
   filter(id<17 & date%in%c(lastsunday, sundaybeforelastsunday)) %>%
