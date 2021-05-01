@@ -18,7 +18,7 @@ library(stringr)
 library(ggplot2)
 library(dtplyr)
 library(zoo)
-library(ISOcodes)
+require(ISOcodes)
 
 ##### Source files
 source("R/aux_functions.R")
