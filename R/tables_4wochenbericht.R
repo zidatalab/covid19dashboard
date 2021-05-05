@@ -24,6 +24,7 @@ library(readr)
 library(openxlsx)
 library(zoo)
 library(curl)
+library(ISOcodes)
 source("aux_functions.R")
 
 # daten impfdax
@@ -34,6 +35,14 @@ impfen_praxen_letztekw <- read_csv("https://ziwebstorage.blob.core.windows.net/p
 gelieferte_dosen <- read_json("../data/tabledata/impfsim_start.json",
                               simplifyVector = TRUE) %>% 
   filter(geo=="Gesamt")
+
+# impfdashboard.de/daten für lieferungen
+impfdashboardde <- read_tsv(
+  "https://impfdashboard.de/static/data/germany_deliveries_timeseries_v2.tsv"
+) %>% 
+  left_join(ISOcodes::ISO_3166_2 %>% 
+              select(region=Code,
+                     geo=Name), by="region")
 
 # daten übersterblichkeit
 url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
@@ -388,9 +397,14 @@ sterbeKW <- thisKW-5
 sterbeJahr <- floor(sterbeKW/100)
 vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
 vorsterbeJahr <- floor(vorsterbeKW/100)
-sterbestichtag <- as_date(max(rki%>%filter(YearKW==sterbeKW)%>%pull(Meldedatum)))
-vorsterbestichtag <- as_date(max(rki%>%filter(YearKW==vorsterbeKW)%>%pull(Meldedatum)))
-sterberki <- rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
+sterbestichtag <- as_date(max(rki %>%
+                                filter(YearKW==sterbeKW) %>%
+                                pull(Meldedatum)))
+vorsterbestichtag <- as_date(max(rki %>%
+                                   filter(YearKW==vorsterbeKW) %>%
+                                   pull(Meldedatum)))
+sterberki <- rki %>% 
+  filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
   mutate(Altersgruppe3=case_when(
     Altersgruppe=="A80+" ~ "80+",
     Altersgruppe=="A60-A79" ~ "60-79",
@@ -398,11 +412,19 @@ sterberki <- rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestich
     TRUE ~ "0-59"
   )) %>%
   group_by(Altersgruppe3) %>%
-  summarise(Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop") %>%
+  summarise(Todesfaelle=sum(AnzahlTodesfall), 
+            Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall),
+            .groups="drop") %>%
   filter(Altersgruppe3!="unbekannt") %>%
-  bind_rows(., rki %>% filter(Meldedatum<=sterbestichtag & Meldedatum>=sterbestichtag-6) %>%
-              summarise(Altersgruppe3="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
-vorsterberki <- rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorsterbestichtag-6) %>%
+  bind_rows(., rki %>%
+              filter(Meldedatum<=sterbestichtag & 
+                       Meldedatum>=sterbestichtag-6) %>%
+              summarise(Altersgruppe3="Gesamt", 
+                        Todesfaelle=sum(AnzahlTodesfall), 
+                        Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall),
+                        .groups="drop"))
+vorsterberki <- rki %>% 
+  filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorsterbestichtag-6) %>%
   mutate(Altersgruppe3=case_when(
     Altersgruppe=="A80+" ~ "80+",
     Altersgruppe=="A60-A79" ~ "60-79",
@@ -410,10 +432,17 @@ vorsterberki <- rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorst
     TRUE ~ "0-59"
   )) %>%
   group_by(Altersgruppe3) %>%
-  summarise(Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop") %>%
+  summarise(Todesfaelle=sum(AnzahlTodesfall), 
+            Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), 
+            .groups="drop") %>%
   filter(Altersgruppe3!="unbekannt") %>%
-  bind_rows(., rki %>% filter(Meldedatum<=vorsterbestichtag & Meldedatum>=vorsterbestichtag-6) %>%
-              summarise(Altersgruppe3="Gesamt", Todesfaelle=sum(AnzahlTodesfall), Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), .groups="drop"))
+  bind_rows(., rki %>% 
+              filter(Meldedatum<=vorsterbestichtag &
+                       Meldedatum>=vorsterbestichtag-6) %>%
+              summarise(Altersgruppe3="Gesamt", 
+                        Todesfaelle=sum(AnzahlTodesfall), 
+                        Sterblichkeit=sum(AnzahlTodesfall)/sum(AnzahlFall), 
+                        .groups="drop"))
 sterbetabelle <- tibble(
   `Todesfälle & Sterblichkeit`=c(
     "0 bis 59 Jahre",
@@ -439,18 +468,35 @@ sterbetabelle <- tibble(
   KWX=c(
     sterberki %>% pull(Todesfaelle),
     NA,
-    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Tote_diff) # c(NA,NA,NA,NA)# 
+    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Tote_diff) 
   ),
   KWX_sterblichkeit=c(
     sterberki %>% pull(Sterblichkeit),
     NA,
-    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Vergleich) # c(NA,NA,NA,NA)#
+    sterbefaelle_kw.rec %>% filter(YearKW==sterbeKW) %>% pull(Vergleich) 
   ),
-  Veraenderung=ifelse(is.na(KWX), NA, paste0(format(round(100*(KWX-Vorwoche)/Vorwoche, 1), decimal.mark = ","), "%"))
+  Veraenderung=ifelse(is.na(KWX), 
+                      NA, 
+                      paste0(format(round(100*(KWX-Vorwoche)/abs(Vorwoche), 1),
+                                    decimal.mark = ","), "%"))
 ) %>%
-  mutate(Vorwoche=ifelse(Vorwoche==0, 0, paste0(Vorwoche, " (", format(round(100*Vorwoche_sterblichkeit, 1), decimal.mark=","), "%)")),
-         !!paste0("KW ", sterbeKW-sterbeJahr*100):=ifelse(KWX==0, 0, paste0(KWX, " (", format(round(100*KWX_sterblichkeit, 1), decimal.mark=","), "%)"))) %>%
-  select(`Todesfälle & Sterblichkeit`, Vorwoche, !!paste0("KW ", sterbeKW-sterbeJahr*100), Veraenderung)
+  mutate(Vorwoche=ifelse(Vorwoche==0, 
+                         0, 
+                         paste0(Vorwoche, 
+                                " (", 
+                                format(round(100*Vorwoche_sterblichkeit, 1), 
+                                       decimal.mark=","),
+                                "%)")),
+         !!paste0("KW ", sterbeKW-sterbeJahr*100) := 
+           ifelse(KWX==0,
+                  0, 
+                  paste0(KWX, 
+                         " (", 
+                         format(round(100*KWX_sterblichkeit, 1), 
+                                decimal.mark=","), 
+                         "%)"))) %>%
+  select(`Todesfälle & Sterblichkeit`, Vorwoche, 
+         !!paste0("KW ", sterbeKW-sterbeJahr*100), Veraenderung)
 
 maxdividate <- maxdate # max(divi_all$daten_stand)
 divi0 <- divi_all %>%
@@ -716,7 +762,13 @@ c19erkranktetabelle <- tibble(
   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 
 vaccmaxdate <- max(vacc_zahlen$date)
-vacc_brd <- vacc_alle_faktenblatt %>% filter(geo=="Deutschland")
+vorvaccmaxdate <- vaccmaxdate-7
+# vacc_brd <- vacc_alle_faktenblatt %>% filter(geo=="Deutschland")
+vacc_brd <- vacc_zahlen %>% filter(region=="DE" & date==vaccmaxdate) %>% 
+  pivot_wider(names_from = metric, values_from = value)
+vacc_brd_vorwoche <- vacc_zahlen %>% 
+  filter(region=="DE" & date==vorvaccmaxdate) %>% 
+  pivot_wider(names_from = metric, values_from = value)
 geimpfte_gesamt <- tibble(
   "Geimpfte Personen"=c(
     "Gesamtbevölkerung",
@@ -724,34 +776,70 @@ geimpfte_gesamt <- tibble(
     "Nicht vollst. geimpft",
     "Vollst. geimpft"
   ),
+  Vorwoche=c(
+    NA,
+    vacc_brd_vorwoche$personen_erst_kumulativ + 
+      vacc_brd_vorwoche$dosen_janssen_kumulativ,
+    vacc_brd_vorwoche$personen_erst_kumulativ - 
+      vacc_brd_vorwoche$personen_voll_kumulativ + 
+      vacc_brd_vorwoche$dosen_janssen_kumulativ,
+    vacc_brd_vorwoche$personen_voll_kumulativ
+  ),
+  VorwocheAnteil=c(
+    NA,
+    (vacc_brd_vorwoche$personen_erst_kumulativ + 
+       vacc_brd_vorwoche$dosen_janssen_kumulativ)/83166711*100,
+    (vacc_brd_vorwoche$personen_erst_kumulativ - 
+       vacc_brd_vorwoche$personen_voll_kumulativ + 
+       vacc_brd_vorwoche$dosen_janssen_kumulativ)/83166711*100,
+    (vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100
+  ),
   dieseWoche=c(
     NA,
-    vacc_brd$value_personen_erst_kumulativ + vacc_zahlen %>% 
-      filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
-      pull(value),
-    vacc_brd$value_personen_erst_kumulativ - vacc_brd$value_personen_voll_kumulativ + vacc_zahlen %>% 
-      filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
-      pull(value)
-    ,
-    vacc_brd$value_personen_voll_kumulativ
+    vacc_brd$personen_erst_kumulativ + vacc_brd$dosen_janssen_kumulativ,
+    vacc_brd$personen_erst_kumulativ - 
+      vacc_brd$personen_voll_kumulativ + vacc_brd$dosen_janssen_kumulativ,
+    vacc_brd$personen_voll_kumulativ
   ),
   dieseWocheAnteil=c(
     NA,
-    (vacc_brd$value_personen_erst_kumulativ + vacc_zahlen %>% 
-       filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
-       pull(value))/vacc_brd$population_personen_erst_kumulativ*100,
-    (vacc_brd$value_personen_erst_kumulativ - vacc_brd$value_personen_voll_kumulativ + vacc_zahlen %>% 
-       filter(metric=="dosen_janssen_kumulativ" & region=="DE" & date==max(date)) %>% 
-       pull(value))/vacc_brd$population_personen_erst_kumulativ*100,
-    (vacc_brd$value_personen_voll_kumulativ)/vacc_brd$population_personen_erst_kumulativ*100
+    (vacc_brd$personen_erst_kumulativ + 
+       vacc_brd$dosen_janssen_kumulativ)/83166711*100,
+    (vacc_brd$personen_erst_kumulativ - 
+       vacc_brd$personen_voll_kumulativ + 
+       vacc_brd$dosen_janssen_kumulativ)/83166711*100,
+    (vacc_brd$personen_voll_kumulativ)/83166711*100
   )
 ) %>%
-  mutate(dieseWoche=ifelse(is.na(dieseWoche), NA, paste0(dieseWoche,
-                           " (",
-                           format(round(dieseWocheAnteil, 1), decimal.mark=","),
-                           " %)"))) %>%
+  mutate(Vorwoche=ifelse(is.na(Vorwoche), 
+                         NA,
+                         paste0(Vorwoche,
+                                " (",
+                                format(round(VorwocheAnteil, 1), 
+                                       decimal.mark=","),
+                                " %)")),
+         dieseWoche=ifelse(is.na(dieseWoche), 
+                           NA,
+                           paste0(dieseWoche,
+                                  " (",
+                                  format(round(dieseWocheAnteil, 1), 
+                                         decimal.mark=","),
+                                  " %)")),
+         Anteil_Veraenderung=if_else(is.na(dieseWoche),
+                                     "",
+                                     paste0(format(round(dieseWocheAnteil-
+                                                   VorwocheAnteil, 1),
+                                           decimal.mark=","),
+                                           " PP"))
+         ) %>%
   select("Geimpfte Personen",
-         !!paste0("Stand ", day(vaccmaxdate)+1, ".", month(vaccmaxdate), "."):=dieseWoche)
+         Vorwoche,
+         !!paste0("Stand ", 
+                  day(vaccmaxdate)+1, 
+                  ".", month(vaccmaxdate), 
+                  ".") := 
+           dieseWoche,
+         Anteil_Veraenderung)
 
 impfkw <- thisKW-1
 vorimpfkw <- impfkw-1
@@ -785,7 +873,10 @@ fortschritt_table <- tibble(
       pull(`Anzahl_Impfungen Arztpraxen`)
   )
 ) %>%
-  mutate(Vorwoche=case_when(
+  mutate(Veraenderung=paste0(format(round((dieseWoche-Vorwoche)/Vorwoche*100, 1),
+                             decimal.mark=","),
+                             " %"),
+         Vorwoche=case_when(
     is.na(Vorwoche) ~ " ",
     Impffortschritt=="Gesamt" ~ as.character(Vorwoche),
     TRUE ~ paste0(Vorwoche,
@@ -801,7 +892,11 @@ fortschritt_table <- tibble(
                   format(round(100*dieseWoche/dieseWoche[Impffortschritt=="Gesamt"], 1), 
                          decimal.mark=","),
                   " %)"))) %>% 
-  rename("letzteKW"=dieseWoche)
+  rename("letzteKW"=dieseWoche) %>% 
+  select(Impffortschritt,
+         Vorwoche,
+         letzteKW,
+         Veraenderung)
 
 bl_impfungen <- vacc_table_faktenblatt %>%
   select(Bundesland, 
@@ -819,6 +914,15 @@ bl_impfungen <- vacc_table_faktenblatt %>%
 
 hersteller_brd <- vacc_zahlen %>%
   filter(date==vaccmaxdate & region=="DE")
+hersteller_brd_vorwoche <- vacc_zahlen %>%
+  filter(date==vaccmaxdate-7 & region=="DE")
+geliefert <- impfdashboardde %>% 
+  group_by(impfstoff) %>% 
+  summarise(dosen_geliefert=sum(dosen))
+geliefert_vorwoche <- impfdashboardde %>% 
+  filter(date<=today()-7) %>% 
+  group_by(impfstoff) %>% 
+  summarise(dosen_geliefert=sum(dosen))
 hersteller_table <- tibble(
   "Impfstoffdosen"=c(
     "Biontech/Pfizer",
@@ -836,33 +940,58 @@ hersteller_table <- tibble(
     "Johnson&Johnson",
     "geliefert"
   ),
+  "Vorwoche"=c(
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_erst_biontech_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_biontech_kumulativ") %>% pull(value),
+    geliefert_vorwoche %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_erst_moderna_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_moderna_kumulativ") %>% pull(value),
+    geliefert_vorwoche %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_erst_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_astrazeneca_kumulativ") %>% pull(value),
+    geliefert_vorwoche %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_janssen_kumulativ") %>% pull(value),
+    geliefert_vorwoche %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
+  ),
   "dieseWoche"=c(
     hersteller_brd %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="dosen_erst_biontech_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="dosen_voll_biontech_kumulativ") %>% pull(value),
-    gelieferte_dosen %>% filter(hersteller=="BNT/Pfizer") %>% pull(dosen_geliefert),
+    geliefert %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="dosen_erst_moderna_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="dosen_voll_moderna_kumulativ") %>% pull(value),
-    gelieferte_dosen %>% filter(hersteller=="Moderna") %>% pull(dosen_geliefert),
+    geliefert %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="dosen_erst_astrazeneca_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="dosen_voll_astrazeneca_kumulativ") %>% pull(value),
-    gelieferte_dosen %>% filter(hersteller=="AZ") %>% pull(dosen_geliefert),
+    geliefert %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_voll_janssen_kumulativ") %>% pull(value),
-    gelieferte_dosen %>% filter(hersteller=="J&J") %>% pull(dosen_geliefert)
+    geliefert %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   )
 ) %>%
-  mutate(anteil=paste0(" (", 
+  mutate(anteil_vorwoche=paste0(" (", 
+                       format(round(100*Vorwoche/(Vorwoche[1]+Vorwoche[5]+Vorwoche[9]+Vorwoche[13]), 
+                                    1), 
+                              decimal.mark=","), 
+                       " %)"),
+         anteil=paste0(" (", 
                        format(round(100*dieseWoche/(dieseWoche[1]+dieseWoche[5]+dieseWoche[9]+dieseWoche[13]), 
                                     1), 
                               decimal.mark=","), 
                        " %)")) %>%
-  mutate(dieseWoche=ifelse(
+  mutate(Vorwoche=ifelse(
+    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson"), 
+    paste0(Vorwoche, anteil_vorwoche),
+    Vorwoche),
+         dieseWoche=ifelse(
     Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson"), 
     paste0(dieseWoche, anteil),
     dieseWoche)) %>%
-  select(-anteil)
+  select(-anteil, -anteil_vorwoche)
 
 
 
