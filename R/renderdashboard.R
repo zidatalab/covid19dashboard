@@ -28,16 +28,16 @@ if (DashboardStand<RepoStand) {
       test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v2/metric_dosen_astrazeneca_kumulativ.csv"
       download.file(test_vacc_link, mytemp, method = "curl")
       test_vacc_data <- read_csv(mytemp)
-      write_csv(test_vacc_data, "./data/test_vacc_ard_new.csv")
+      write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
       test_vacc_data
     },
     error=function(e) {
       # read old data
-      test_vacc_data <- read_csv("./data/test_vacc_ard_new.csv")
+      test_vacc_data <- read_csv("../data/test_vacc_ard_new.csv")
       return(test_vacc_data)
     }
   )
-  write_csv(test_new_vacc, "./data/test_vacc_ard_old.csv")
+  write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
 }
 
 
@@ -47,16 +47,16 @@ test_new_vacc <- tryCatch(
     test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v2/metric_dosen_astrazeneca_kumulativ.csv"
     download.file(test_vacc_link, mytemp, method = "curl")
     test_vacc_data <- read_csv(mytemp)
-    write_csv(test_vacc_data, "./data/test_vacc_ard_new.csv")
+    write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
     test_vacc_data
   },
   error=function(e) {
     # read old data
-    test_vacc_data <- read_csv("./data/test_vacc_ard_new.csv")
+    test_vacc_data <- read_csv("../data/test_vacc_ard_new.csv")
     return(test_vacc_data)
   }
 )
-test_old_vacc <- read_csv("./data/test_vacc_ard_old.csv")
+test_old_vacc <- read_csv("../data/test_vacc_ard_old.csv")
 
 if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
   rmarkdown::render('../Start.Rmd')
@@ -67,7 +67,7 @@ if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
                   str_pad(format(minute(now())),2, pad = "0"),
                   " Uhr"))
   DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
-  write_csv(test_new_vacc, "./data/test_vacc_ard_old.csv")
+  write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
 }
 
 DBI::dbDisconnect(conn)
