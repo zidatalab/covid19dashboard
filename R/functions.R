@@ -978,8 +978,8 @@ vacc_table_vaccsim <- bind_rows(
               values_from=value) %>%
   group_by(geo) %>%
   arrange(date) %>%
-  summarise(impfungen_letzter_tag=dosen_kumulativ[3]-dosen_kumulativ[2],
-         impfungen_letzte_woche=dosen_kumulativ[3]-dosen_kumulativ[1],
+  summarise(impfungen_letzter_tag=round((dosen_kumulativ[3]-dosen_kumulativ[2])/as.integer(max(rki_vacc$date)-rki_vacc_vortag)),
+         impfungen_letzte_woche=round((dosen_kumulativ[3]-dosen_kumulativ[1])/as.integer(max(rki_vacc$date)-rki_vacc_vor7tag)*7),
          zweitimpfungen=personen_voll_kumulativ[3],
          .groups="drop") %>%
   mutate(geo=ifelse(geo=="Germany", "Gesamt", geo))
