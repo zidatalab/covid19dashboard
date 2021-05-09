@@ -964,13 +964,14 @@ vacc_table_faktenblatt_new <- vacc_table %>%
   select(Bundesland, `Gesamt min. 1x`, "Gesamt vollst.", `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`)
 
 rki_vacc_vortag <- max(rki_vacc %>% filter(date<max(date)) %>% pull(date)) 
+rki_vacc_vor7tag <- max(rki_vacc %>% filter(date<=max(date)-7) %>% pull(date)) 
 vacc_table_vaccsim <- bind_rows(
   rki_vacc %>%
     filter(date==max(date) & (metric=="dosen_kumulativ" | metric=="personen_voll_kumulativ")),
   rki_vacc %>%
     filter(date==rki_vacc_vortag & (metric=="dosen_kumulativ" | metric=="personen_voll_kumulativ")),
   rki_vacc %>%
-    filter(date==max(date)-7 & (metric=="dosen_kumulativ" | metric=="personen_voll_kumulativ")) # -6?
+    filter(date==rki_vacc_vor7tag & (metric=="dosen_kumulativ" | metric=="personen_voll_kumulativ")) # -6?
 ) %>%
   pivot_wider(id_cols=c("geo", "date"),
               names_from=metric,
