@@ -135,6 +135,7 @@ eumapping <- tibble(english=c(
 almev <- read_csv("../data/almev.csv")
 
 rki_ifsg <- read_csv("../data/rki_ifsg.csv")
+
 rki_hosp <- read_excel(destfile_rkihosp, 
                        # sheet = "Daten", 
                        skip = 1) %>%
@@ -212,6 +213,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        password        = Sys.getenv("DBPASSWORD"),
                        port     = 5432,
                        sslmode = 'require')
+
 divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 rki <- tbl(conn,"rki") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
