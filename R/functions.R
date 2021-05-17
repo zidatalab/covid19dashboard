@@ -1323,7 +1323,7 @@ akutinfiziert_plot <- ggplot(akutinfiziert_data,
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
   theme_minimal() +
-  scale_x_date(breaks = "2 months",date_labels = "%d.%m.") +
+  scale_x_date(breaks = "3 months",date_labels = "%d.%m.%y") +
   labs(y="Anzahl akut infiziert",x = "Datum") +
   theme(panel.grid.major.x =element_blank(), panel.grid.minor.x=element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
@@ -1334,7 +1334,7 @@ agefatality_plot <- ggplot(agefatality_data,
   theme_minimal() + 
   scale_color_zi() +
   labs(y="Verhältnis in %", x="Datum", color="") + 
-  scale_x_date(breaks="2 months", date_labels = "%d.%m.") + 
+  scale_x_date(breaks="3 months", date_labels = "%d.%m.%y") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 rwert_bund_plot <- ggplot(rwert_bund_data,
@@ -1343,7 +1343,7 @@ rwert_bund_plot <- ggplot(rwert_bund_data,
   geom_hline(yintercept = 1) +
   geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
   scale_color_zi()  +
-  theme_minimal() + scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+  theme_minimal() + scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
   labs(x="Datum",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
@@ -1361,7 +1361,7 @@ sti_ag_bund_plot <- ggplot(rki_7ti_alle %>%
                              filter(id==0),
                            aes(x=datesunday, y=STI, col=Altersgruppe)) +
   geom_line(size=1.5) +
-  scale_x_date(breaks = "2 months",date_labels = "%d.%m.") +
+  scale_x_date(breaks = "3 months",date_labels = "%d.%m.%y") +
   ylim(0, NA) +
   labs(subtitle="Sieben-Tage-Inzidenz nach Altersgruppen im Zeitverlauf",x="Datum",y="Sieben-Tage-Inzidenz") +
   scale_color_zi() +
@@ -1374,7 +1374,7 @@ zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data %>% filter(Variable=="Vorwarnzeit"),
   ylim(0, NA) +
   labs(subtitle="Zi-Vorwarnzeit im Zeitverlauf",x="Datum",y="Vorwarnzeit") +
   theme_minimal() +
-  scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+  scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
   theme(legend.position='none') +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
@@ -1384,7 +1384,7 @@ itsbetten_plot <- ggplot(itsbetten_data %>%
   geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
   geom_line(size=2, show.legend = FALSE, color=zi_cols("ziblue")) +
   theme_minimal() +
-  scale_x_date(breaks = "2 months",date_labels = "%d.%m.") +
+  scale_x_date(breaks = "3 months",date_labels = "%d.%m.%y") +
   labs(y="COVID-19-Fälle ITS", x = "Datum") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
@@ -1399,7 +1399,7 @@ age_its_death_plot <- ggplot(age_its_death_data %>%
   scale_color_zi() +
   theme_minimal() +
   labs(y="Anzahl", x="Datum", color="") + 
-  scale_x_date(breaks="2 months", date_labels = "%d.%m.") + 
+  scale_x_date(breaks="3 months", date_labels = "%d.%m.%y") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 vaccination_plot <- ggplot(rki_vacc %>%
@@ -1409,7 +1409,7 @@ vaccination_plot <- ggplot(rki_vacc %>%
   ylim(0, NA) +
   labs(subtitle="Verabreichte Impfdosen im Zeitverlauf",x="Datum",y="Impfungen") +
   theme_minimal() +
-  scale_x_date(date_labels = "%d.%m.") + # , breaks="3 days"
+  scale_x_date(date_labels = "%d.%m.%y") + # , breaks="3 days"
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE)) +
   theme(legend.position='none') +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
@@ -1435,7 +1435,7 @@ vaccination_sti_its_death_plot <- ggplot(vaccination_sti_its_death_data %>%
   ylim(0, NA) +
   labs(subtitle="bla",x="Datum",y="blay") +
   theme_minimal() +
-  scale_x_date(date_labels = "%d.%m.") + # , breaks="3 days"
+  scale_x_date(date_labels = "%d.%m.%y") + # , breaks="3 days"
   # scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE)) +
   theme(legend.position='none') +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
@@ -1449,7 +1449,7 @@ bundeslaender_r_und_vwz_plot <- function(myid) {
                        text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=2, show.legend = F) +
-    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
     facet_grid(Variable~., scales = "free") +
     # facet_wrap(~Variable, scales = "free") +
     geom_blank(aes(y = y_min)) +
@@ -1473,7 +1473,7 @@ bundeslaender_vwz_plot <- function(myid) {
                        text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
     geom_hline(aes(yintercept=0)) +
     geom_line(size=2, show.legend = F, col=zi_cols("zigreen")) +
-    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
     # facet_grid(Variable~., scales = "free") +
     # facet_wrap(~Variable, scales = "free") +
     geom_blank(aes(y = y_min)) +
@@ -1498,7 +1498,7 @@ bundeslaender_stiag_plot <- function(myid) {
     geom_hline(aes(yintercept=0)) +
     geom_hline(aes(yintercept=50), linetype="dashed") +
     geom_line(size=1.5) +
-    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
     scale_color_zi()  +
     theme_minimal() +
     labs(x="Datum", y="Sieben-Tage-Inzidenz") +
@@ -1524,7 +1524,7 @@ bundeslaender_stiag_und_vwz_plot <- function(myid) {
                    aes(x=Datum, y=Wert, color=Altersgruppe)) +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=1.5) +
-    scale_x_date(date_labels = "%d.%m.", breaks="2 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
     facet_grid(Variable~., scales = "free") +
     # facet_wrap(~Variable, scales = "free") +
     scale_color_zi() +
