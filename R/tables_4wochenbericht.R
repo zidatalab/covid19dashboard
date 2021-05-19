@@ -25,6 +25,9 @@ library(openxlsx)
 library(zoo)
 library(curl)
 library(ISOcodes)
+#library(dotenv)
+#load_dot_env()
+
 source("aux_functions.R")
 
 # daten impfdax
@@ -36,7 +39,7 @@ gelieferte_dosen <- read_json("../data/tabledata/impfsim_start.json",
                               simplifyVector = TRUE) %>% 
   filter(geo=="Gesamt")
 
-# impfdashboard.de/daten für lieferungen
+# impfdashboard.de/daten für lieferungen -> bund
 impfdashboardde <- read_tsv(
   "https://impfdashboard.de/static/data/germany_deliveries_timeseries_v2.tsv"
 ) %>% 
@@ -141,6 +144,7 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 1) %>%
   mutate(YearKW=Meldejahr*100+MW)
 
+# ard impfdaten
 vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
 
 bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
@@ -215,6 +219,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        sslmode = 'require')
 
 divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
+# takes a while ...
 rki <- tbl(conn,"rki") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
@@ -259,7 +264,9 @@ international <- tbl(conn,"trends") %>%
   mutate(date=as_date(date)) %>%
   left_join(., params, by=c("Country"="name"))
 
+# tables for excel
 maxdate <- max(bundeslaender_table_faktenblatt$Datum)
+# Regionale Daten
 bltabelle <- bind_rows(
   bundeslaender_table_faktenblatt %>%
     filter(Bundesland=="Gesamt" & Datum==maxdate),
@@ -299,6 +306,7 @@ eutabelle <- international %>%
   distinct() %>%
   left_join(., eumapping, by=c("Country"="english"))
 top10eu <- eutabelle %>% arrange(-`COVID-19-Fälle`) %>% filter(row_number()<=10) %>% pull(german)
+# Internationaler Vergleich
 EUmal4tabelle <- tibble(
   `Fälle gesamt`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-AnteilBev) %>% pull(german),
   `Anteil Bevölk.`=eutabelle %>% filter(german%in%top10eu) %>% arrange(-AnteilBev) %>% filter(row_number()<=10) %>% pull(`COVID-19-Fälle Anteil Bev.`),
@@ -313,6 +321,7 @@ EUmal4tabelle <- tibble(
 ) %>%
   mutate(`Todesfälle je 100.000 EW in 14 Tagen`=format(`Todesfälle je 100.000 EW in 14 Tagen`, decimal.mark = ","))
 
+# Vorwarnzeit
 vwztabelle <- tibble(
   Vorwarnzeit=c(
     "Bundesdurchschnitt",
@@ -505,6 +514,7 @@ divi0 <- divi_all %>%
   filter(id==0) %>%
   mutate(auslastungcovid=faelle_covid_aktuell/ICU_Betten,
          quotefrei=betten_frei/ICU_Betten)
+# Intensivbaetten
 itstabelle <- tibble(
   Intensivbetten=c(
     "Intensivbetten gesamt",
@@ -667,6 +677,7 @@ vortestmaxjahr <- floor(vortestmaxkw/100)
 almev <- almev %>%
   mutate(positivrate=positivtests/pcrtests,
          auslastung=pcrtests/testkapazitaet)
+# Testungen
 testtabelle <- tibble(
   Testungen=c(
     "Zahl der PCR-Tests",
@@ -771,6 +782,7 @@ vacc_brd <- vacc_zahlen %>% filter(region=="DE" & date==vaccmaxdate) %>%
 vacc_brd_vorwoche <- vacc_zahlen %>% 
   filter(region=="DE" & date==vorvaccmaxdate) %>% 
   pivot_wider(names_from = metric, values_from = value)
+# Geimpfte Personen
 geimpfte_gesamt <- tibble(
   "Geimpfte Personen"=c(
     "Gesamtbevölkerung",
@@ -845,6 +857,7 @@ geimpfte_gesamt <- tibble(
 
 impfkw <- thisKW-1
 vorimpfkw <- impfkw-1
+# Impffortschritt
 fortschritt_table <- tibble(
   "Impffortschritt"=c(
     "Impfungen pro Woche",
@@ -900,6 +913,7 @@ fortschritt_table <- tibble(
          letzteKW,
          Veraenderung)
 
+# Regionale Daten
 bl_impfungen <- vacc_table_faktenblatt %>%
   select(Bundesland, 
          `Gesamt min. 1x`,
@@ -925,6 +939,8 @@ geliefert_vorwoche <- impfdashboardde %>%
   filter(date<=today()-7) %>% 
   group_by(impfstoff) %>% 
   summarise(dosen_geliefert=sum(dosen))
+
+# Impfstoffdosen
 hersteller_table <- tibble(
   "Impfstoffdosen"=c(
     "Biontech/Pfizer",
