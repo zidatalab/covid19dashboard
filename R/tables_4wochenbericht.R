@@ -28,6 +28,7 @@ library(ISOcodes)
 #library(dotenv)
 #load_dot_env()
 
+
 source("aux_functions.R")
 
 # daten impfdax
@@ -1027,3 +1028,4 @@ list_of_datasets <- list("Testungen"=testtabelle,
                          "Regional Geimpfte"=bl_impfungen,
                          "Impfstoffdosen"=hersteller_table)
 write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))
+
