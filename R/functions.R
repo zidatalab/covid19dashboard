@@ -1536,3 +1536,5 @@ bundeslaender_stiag_und_vwz_plot <- function(myid) {
     ggtitle(myname)
   myplot %>% ggplotly(tooltip = c("x", "y", "text"))
 }
+
+save.image("data20210518.RData")

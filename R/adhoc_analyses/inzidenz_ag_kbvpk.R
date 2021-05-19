@@ -1,4 +1,4 @@
-maxdatum<-as_date("2021-01-10")
+maxdatum<-max(rki$Meldedatum)#as_date("2021-01-10")
 letzte_7_tage_altersgruppen_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
   mutate(id=as.integer(IdLandkreis)*1000) %>%
