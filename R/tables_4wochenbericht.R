@@ -28,7 +28,6 @@ library(ISOcodes)
 #library(dotenv)
 #load_dot_env()
 
-
 source("aux_functions.R")
 
 # daten impfdax
