@@ -34,10 +34,20 @@ source("aux_functions.R")
 impfdax_data <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/impfdax.csv")
 impfdax_data <- impfdax_data %>% 
   mutate(JahrKW=Jahr*100+kw)
-impfen_praxen_letztekw <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/impfdax_praxen_wirkstoffe_letzte_kw.csv")
+# impfen_praxen_letztekw <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/impfdax_praxen_wirkstoffe_allerletzte_kw.csv")
 gelieferte_dosen <- read_json("../data/tabledata/impfsim_start.json",
                               simplifyVector = TRUE) %>% 
   filter(geo=="Gesamt")
+impfen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv") %>% 
+  select(-X1) %>%
+  mutate(KW=isoweek(date)) %>% 
+  group_by(KW, Bundesland) %>% 
+  summarise(Impfungen=sum(`Ad26.COV2.S`+`AZD1222`+`BNT162b2`+`mRNA-1273`))
+impfen_praxen_bl <- bind_rows(impfen_praxen_bl,
+                              impfen_praxen_bl %>% 
+                                group_by(KW) %>% 
+                                summarise(Bundesland="Gesamt",
+                                          Impfungen=sum(Impfungen)))
 
 # impfdashboard.de/daten für lieferungen -> bund
 impfdashboardde <- read_tsv(
@@ -918,7 +928,8 @@ bl_impfungen <- vacc_table_faktenblatt %>%
          `Gesamt vollst.`,
          `7-Tage-Inzidenz`,
          `7-Tage-Inzidenz 60+`) %>% 
-  left_join(impfen_praxen_letztekw %>% 
+  left_join(impfen_praxen_bl %>%
+              filter(KW==impfkw-202100) %>% 
               select(Bundesland, Impfungen), by="Bundesland") %>% 
   select("Bundesland", "Impfungen Praxen"=Impfungen,
          `Gesamt min. 1x`,
