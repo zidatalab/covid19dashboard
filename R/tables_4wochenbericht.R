@@ -796,36 +796,30 @@ geimpfte_gesamt <- tibble(
   ),
   Vorwoche=c(
     NA,
-    vacc_brd_vorwoche$personen_erst_kumulativ + 
-      vacc_brd_vorwoche$dosen_janssen_kumulativ,
-    vacc_brd_vorwoche$personen_erst_kumulativ - 
-      vacc_brd_vorwoche$personen_voll_kumulativ + 
-      vacc_brd_vorwoche$dosen_janssen_kumulativ,
+    vacc_brd_vorwoche$personen_min1_kumulativ,
+    vacc_brd_vorwoche$personen_min1_kumulativ - 
+      vacc_brd_vorwoche$personen_voll_kumulativ,
     vacc_brd_vorwoche$personen_voll_kumulativ
   ),
   VorwocheAnteil=c(
     NA,
-    (vacc_brd_vorwoche$personen_erst_kumulativ + 
-       vacc_brd_vorwoche$dosen_janssen_kumulativ)/83166711*100,
-    (vacc_brd_vorwoche$personen_erst_kumulativ - 
-       vacc_brd_vorwoche$personen_voll_kumulativ + 
-       vacc_brd_vorwoche$dosen_janssen_kumulativ)/83166711*100,
+    (vacc_brd_vorwoche$personen_min1_kumulativ)/83166711*100,
+    (vacc_brd_vorwoche$personen_min1_kumulativ - 
+       vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100,
     (vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100
   ),
   dieseWoche=c(
     NA,
-    vacc_brd$personen_erst_kumulativ + vacc_brd$dosen_janssen_kumulativ,
-    vacc_brd$personen_erst_kumulativ - 
-      vacc_brd$personen_voll_kumulativ + vacc_brd$dosen_janssen_kumulativ,
+    vacc_brd$personen_min1_kumulativ,
+    vacc_brd$personen_min1_kumulativ - 
+      vacc_brd$personen_voll_kumulativ,
     vacc_brd$personen_voll_kumulativ
   ),
   dieseWocheAnteil=c(
     NA,
-    (vacc_brd$personen_erst_kumulativ + 
-       vacc_brd$dosen_janssen_kumulativ)/83166711*100,
-    (vacc_brd$personen_erst_kumulativ - 
-       vacc_brd$personen_voll_kumulativ + 
-       vacc_brd$dosen_janssen_kumulativ)/83166711*100,
+    (vacc_brd$personen_min1_kumulativ)/83166711*100,
+    (vacc_brd$personen_min1_kumulativ - 
+       vacc_brd$personen_voll_kumulativ)/83166711*100,
     (vacc_brd$personen_voll_kumulativ)/83166711*100
   )
 ) %>%
@@ -964,34 +958,34 @@ hersteller_table <- tibble(
   ),
   "Vorwoche"=c(
     hersteller_brd_vorwoche %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_erst_biontech_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_biontech_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_biontech_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_biontech_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     hersteller_brd_vorwoche %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_erst_moderna_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_moderna_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_moderna_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_moderna_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
     hersteller_brd_vorwoche %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_erst_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_astrazeneca_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_voll_janssen_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   ),
   "dieseWoche"=c(
     hersteller_brd %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="dosen_erst_biontech_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="dosen_voll_biontech_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_erst_biontech_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_voll_biontech_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="dosen_erst_moderna_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="dosen_voll_moderna_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_erst_moderna_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_voll_moderna_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="dosen_erst_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="dosen_voll_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_erst_astrazeneca_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_voll_astrazeneca_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
-    hersteller_brd %>% filter(metric=="dosen_voll_janssen_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   )
 ) %>%
