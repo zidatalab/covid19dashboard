@@ -44,7 +44,7 @@ if (DashboardStand<RepoStand) {
 test_new_vacc <- tryCatch(
   {
     mytemp <- tempfile()
-    test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v2/metric_dosen_astrazeneca_kumulativ.csv"
+    test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/metric_dosen_astrazeneca_kumulativ.csv"
     download.file(test_vacc_link, mytemp, method = "curl")
     test_vacc_data <- read_csv(mytemp)
     write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
