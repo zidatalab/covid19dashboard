@@ -151,13 +151,11 @@ rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 
 rki_hosp <- read_excel(destfile_rkihosp, 
                        # sheet = "Daten", 
-                       skip = 1) %>%
-  mutate(YearKW=Meldejahr*100+MW)
+                       skip = 1)
 # Attention: BUG RKI
-rki_hosp <- rki_hosp %>%
-  mutate(Meldejahr = case_when(YearKW == 202223 ~ 2021, TRUE ~ Meldejahr)) %>%
-  mutate(YearKW = case_when(YearKW == 202223 ~ 202123, TRUE ~ YearKW))
+rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
 
+rki_hosp <- rki_hosp %>% mutate(YearKW=Meldejahr*100+MW)
 
 # ard impfdaten
 vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
