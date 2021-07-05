@@ -233,3 +233,38 @@ ggsave("R/adhoc_analyses/hospitalisierungen_altersgruppen.png",
        patchwork_plot,
        width = 24, height = 24*10/16,
        units="cm")
+
+##### owid uk
+owid_covid_data <- read_csv("data/owid-covid-data.csv")
+weekly_hospital_admissions_covid <- read_csv("data/weekly-hospital-admissions-covid.csv")
+
+owid_ukde <- owid_covid_data %>% 
+  filter(location %in% c("United Kingdom", "Germany") &
+           year(date)==2021) %>% 
+  select(location, new_cases, date) %>% 
+  mutate(KW=isoweek(date)) %>% 
+  group_by(location, KW) %>% 
+  summarise(Faelle=sum(new_cases),
+            .groups="drop") %>% 
+  filter(KW>=2 & KW<25)
+hosp_ukde <- weekly_hospital_admissions_covid %>% 
+  filter(Entity %in% c("United Kingdom", "Germany")) %>% 
+  mutate(KW=isoweek(Day)) %>% 
+  filter(year(Day)==2021) %>% 
+  group_by(Entity, KW) %>% 
+  summarise(Hosp_Faelle=round(sum(`Weekly new hospital admissions`)),
+            .groups="drop") %>% 
+  filter(KW>=2 & KW<25)
+anteil_hospfaelle_ukde <- owid_ukde %>% 
+  left_join(hosp_ukde,
+            by=c("KW", "location"="Entity")) %>% 
+  mutate(anteil_hosp=Hosp_Faelle/Faelle)
+
+ggplot(anteil_hospfaelle_ukde %>% 
+         pivot_longer(
+           cols=c("Faelle", "Hosp_Faelle", "anteil_hosp"),
+           names_to="Merkmal",
+           values_to="Wert"
+         ), aes(x=KW, y=Wert)) +
+  geom_line() +
+  facet_wrap(location ~ Merkmal, scales="free_y")
