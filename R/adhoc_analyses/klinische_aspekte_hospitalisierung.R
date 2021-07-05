@@ -20,6 +20,7 @@ library(dtplyr)
 library(zoo)
 require(ISOcodes)
 library(openxlsx)
+library(patchwork)
 
 ## load rki data
 conn <- DBI::dbConnect(RPostgres::Postgres(),
@@ -33,27 +34,31 @@ rki <- tbl(conn,"rki") %>% collect()
 
 ## read all xlsx
 
-datumsliste <- as_date("2021-04-14")+7*0:11
+datumsliste <- as_date("2021-03-24")+7*0:14
 
 filenames <- list.files("data/klinische_aspekte_old", pattern="*.xlsx", full.names=TRUE)
-hospitalisierung_faelle <- c(lapply(filenames[1:5], 
+hospitalisierung_faelle <- c(lapply(filenames[1:3], 
+                                    read.xlsx,
+                                    sheet=2, 
+                                    startRow=1),
+                             lapply(filenames[4:8], 
                                     read.xlsx,
                                     sheet=2, 
                                     startRow=2),
-                             lapply(filenames[6:8], 
-                                    read.xlsx,
-                                    sheet=2, 
-                                    startRow=5),
                              lapply(filenames[9:11], 
                                     read.xlsx,
                                     sheet=2, 
+                                    startRow=5),
+                             lapply(filenames[12:14], 
+                                    read.xlsx,
+                                    sheet=2, 
                                     startRow=7),
-                             lapply(filenames[12], 
+                             lapply(filenames[15], 
                                     read.xlsx,
                                     sheet=2, 
                                     startRow=8))
 
-hospitalisierung_angabe <- lapply(filenames[1:12], 
+hospitalisierung_angabe <- lapply(filenames[1:15], 
                                     read.xlsx,
                                     sheet=1, 
                                     startRow=2)
@@ -63,8 +68,18 @@ hospitalisierung_angabe <- lapply(filenames[1:12],
 nl <- length(hospitalisierung_faelle)
 agg_hospfaelle <- tibble()
 for (i in seq(nl)) {
+  hfaelle_i <- hospitalisierung_faelle[[i]]
+  if (i<=3) {
+    hfaelle_i <- hfaelle_i %>% 
+      rename(`A00..04`=`0.-.4.Jährige`,
+             `A05..14`=`5.-.14.Jährige`,
+             `A15..34`=`15.-.34.Jährige`,
+             `A35..59`=`35.-.59.Jährige`,
+             `A60..79`=`60.-.79.Jährige`,
+             `A80+`=`80+.Jährige`)
+  }
   agg_hospfaelle <- bind_rows(agg_hospfaelle,
-                              hospitalisierung_faelle[[i]] %>% 
+                              hfaelle_i %>% 
                                 mutate(Meldejahr=as.double(Meldejahr),
                                        Meldewoche=as.double(Meldewoche)) %>% 
                                 mutate(alle_ag_sum=rowSums(across(`A00..04`:`A80+`), na.rm = TRUE)) %>% 
@@ -121,8 +136,18 @@ ggplot(agg_hospangabe, aes(x=Meldewoche, y=AnteilmitAngabe)) +
 nl <- length(hospitalisierung_faelle)
 agg_hospag <- tibble()
 for (i in seq(nl)) {
+  hfaelle_i <- hospitalisierung_faelle[[i]]
+  if (i<=3) {
+    hfaelle_i <- hfaelle_i %>% 
+      rename(`A00..04`=`0.-.4.Jährige`,
+             `A05..14`=`5.-.14.Jährige`,
+             `A15..34`=`15.-.34.Jährige`,
+             `A35..59`=`35.-.59.Jährige`,
+             `A60..79`=`60.-.79.Jährige`,
+             `A80+`=`80+.Jährige`)
+  }
   agg_hospag <- bind_rows(agg_hospag,
-                          hospitalisierung_faelle[[i]] %>% 
+                          hfaelle_i %>% 
                             mutate(Meldejahr=as.double(Meldejahr),
                                    Meldewoche=as.double(Meldewoche)) %>% 
                             # mutate(alle_ag_sum=rowSums(across(`A00..04`:`A80+`), na.rm = TRUE)) %>% 
@@ -155,12 +180,56 @@ agg_anteil_ag <- agg_hospag_hospangabe %>%
   left_join(rki_agg_kw_ag,
             by=c("JahrKW", "Altersgruppe")) %>% 
   mutate(Anteil_an_FaelleGesamt=AnzahlHosp/`Fälle.gesamt`,
-         Anteil_an_FaelleAG=AnzahlHosp/AnzahlFaelle)
+         Anteil_an_FaelleAG=AnzahlHosp/AnzahlFaelle) %>% 
+  mutate(Altersgruppe=str_replace_all(Altersgruppe, fixed("A"), ""))
 
 ggplot(agg_anteil_ag, aes(x=JahrKW, y=Anteil_an_FaelleGesamt)) +
   geom_line() +
-  facet_wrap(~ Altersgruppe, ncol = 3, scales = "free_y") # 
+  facet_wrap(~ Altersgruppe, ncol = 1, scales = "free_y") #
 
-ggplot(agg_anteil_ag, aes(x=JahrKW, y=Anteil_an_FaelleAG)) +
+anteile_hosp_ag_plot <- ggplot(agg_anteil_ag, aes(x=Meldewoche, y=Anteil_an_FaelleAG)) +
   geom_line() +
-  facet_wrap(~ Altersgruppe, ncol = 3,  scales = "free_y") #
+  theme(axis.title.x = element_blank()) +
+  theme_zi() +
+  scale_y_continuous(labels=scales::percent_format(1)) +
+  scale_x_continuous(breaks=c(10,15,20)) +
+  labs(subtitle = "Anteil Hospitalisierungen an gemeldeten Fällen") +
+  facet_wrap(~ Altersgruppe, ncol = 6,  scales = "free_y") #,  scales = "free_y"
+
+# fallzahlen_ag_plot <- ggplot(agg_anteil_ag %>% 
+#                                pivot_longer(cols = c(`AnzahlFaelle`, "AnzahlHosp"),
+#                                             names_to="Fälle",
+#                                             values_to = "Anzahl"),
+#                              aes(x=JahrKW, y=Anzahl, fill=Fälle)) +
+#   geom_bar(stat="identity") +
+#   facet_wrap(~ Altersgruppe, ncol = 1) # 
+hospzahlen_ag_plot <- ggplot(agg_anteil_ag,
+                             aes(x=Meldewoche, y=AnzahlHosp)) +
+  geom_bar(stat="identity") +
+  theme(axis.title.x = element_blank()) +
+  theme_zi() +
+  ylab("hosp. Fälle") +
+  scale_y_continuous(labels=comma_format(big.mark = ".",
+                                         decimal.mark = ","),
+                     breaks=c(0, 1000, 2000)) +
+  scale_x_continuous(breaks=c(10,15,20)) +
+  labs(subtitle = "hospitalisierte Fälle") +
+  facet_wrap(~ Altersgruppe, ncol = 6)
+
+fallzahlen_ag_plot <- ggplot(agg_anteil_ag,
+                             aes(x=Meldewoche, y=AnzahlFaelle)) +
+  geom_bar(stat="identity") +
+  theme_zi() +
+  ylab("Infektionsfälle") +
+  scale_y_continuous(labels=comma_format(big.mark = ".",
+                                         decimal.mark = ",")) +
+  scale_x_continuous(breaks=c(10,15,20)) +
+  labs(subtitle = "gemeldete Fälle insgesamt") +
+  facet_wrap(~ Altersgruppe, ncol = 6)
+
+patchwork_plot <- anteile_hosp_ag_plot / hospzahlen_ag_plot / fallzahlen_ag_plot
+
+ggsave("R/adhoc_analyses/hospitalisierungen_altersgruppen.png",
+       patchwork_plot,
+       width = 24, height = 24*10/16,
+       units="cm")
