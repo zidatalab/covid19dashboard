@@ -239,7 +239,8 @@ owid_covid_data <- read_csv("data/owid-covid-data.csv")
 weekly_hospital_admissions_covid <- read_csv("data/weekly-hospital-admissions-covid.csv")
 
 owid_ukde <- owid_covid_data %>% 
-  filter(location %in% c("United Kingdom", "Germany") &
+  filter(location %in% c("United Kingdom", "Germany", "Israel", "Belgium",
+                         "Netherlands", "Portugal", "Denmark", "Italy", "Spain") &
            year(date)==2021) %>% 
   select(location, new_cases, date) %>% 
   mutate(KW=isoweek(date)) %>% 
@@ -248,7 +249,8 @@ owid_ukde <- owid_covid_data %>%
             .groups="drop") %>% 
   filter(KW>=2 & KW<25)
 hosp_ukde <- weekly_hospital_admissions_covid %>% 
-  filter(Entity %in% c("United Kingdom", "Germany")) %>% 
+  filter(Entity %in% c("United Kingdom", "Germany", "Israel", "Belgium",
+                       "Netherlands", "Portugal", "Denmark", "Italy", "Spain")) %>% 
   mutate(KW=isoweek(Day)) %>% 
   filter(year(Day)==2021) %>% 
   group_by(Entity, KW) %>% 
@@ -267,4 +269,9 @@ ggplot(anteil_hospfaelle_ukde %>%
            values_to="Wert"
          ), aes(x=KW, y=Wert)) +
   geom_line() +
-  facet_wrap(location ~ Merkmal, scales="free_y")
+  ylim(0, NA) +
+  facet_wrap(location ~ Merkmal, scales="free_y", ncol=3)
+
+ggsave("R/adhoc_analyses/hospitalisierungen_vergleich_international.png",
+       width = 18, height = 36,
+       units="cm")
