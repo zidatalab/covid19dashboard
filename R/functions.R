@@ -898,7 +898,7 @@ kreise_table <- vorwarnzeitergebnis %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
-         R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
+         R0=ifelse(Faelle_letzte_7_Tage<=1, "-", format(round(R0,digits = 2), decimal.mark = ","))) %>%
   mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
   left_join(., aktuell %>%
               filter(id>0 & id<17) %>%
