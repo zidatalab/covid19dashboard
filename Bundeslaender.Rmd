@@ -28,7 +28,9 @@ Row
 ```{r tableBL}
 DT::datatable(bundeslaender_table,
               extensions = 'Responsive',
-              options = list(paging = FALSE,        
+              options = list(paging = FALSE,
+                             scrollY=1000,
+                             scrollCollapse=TRUE,
                              pageLength=20,
                              columnDefs = list(list(className = 'dt-center', targets = 2:3)),
                              searching = FALSE,

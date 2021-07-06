@@ -875,7 +875,7 @@ bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate(cases_je_100Tsd=round(cases/(EW_insgesamt/100000)),
-         R0=format(round(R0,digits = 2), decimal.mark = ",")) %>%
+         R0=ifelse(Faelle_letzte_7_Tage<=1, "-", format(round(R0,digits = 2), decimal.mark = ","))) %>%
   left_join(., vacc_bl %>% select(geo, impfungen_initial) %>%
               mutate(geo=ifelse(geo=="Germany", "Gesamt", geo)),
             by=c("name"="geo")) %>%
@@ -1044,9 +1044,9 @@ kreise_table_faktenblatt <- vorwarnzeitergebnis %>%
 #projektions tables
 bl_projektionen <- ausgangsdaten %>%
   filter(id<17 & date==maxdatum) %>%
-  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw) %>%
+  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw, Faelle_letzte_7_Tage) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
-  mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
+  mutate("R(t)"=ifelse(Faelle_letzte_7_Tage<=1, "-", format(round(R0,digits = 2), decimal.mark = ","))) %>%
   rowwise() %>%
   mutate(RaktuellSTI165=projektion_datum(STI_aktuell = STI_aktuell,
                                         STI_Ziel = 165,
@@ -1093,10 +1093,10 @@ bl_projektionen <- ausgangsdaten %>%
 kreise_projektionen <- ausgangsdaten %>%
   filter(((id>17 | id==11) & !(id>=11000000&id<12000000)) & date==maxdatum) %>%
   left_join(vorwarnzeitergebnis %>% filter(date==maxdatum) %>% select(id, Vorwarnzeit_ROR), by="id") %>% 
-  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw, Vorwarnzeit_ROR) %>%
+  select(id, STI_aktuell=Faelle_letzte_7_Tage_je100TsdEinw, Vorwarnzeit_ROR, Faelle_letzte_7_Tage) %>%
   left_join(., aktuell %>% select(id, name, R0), by="id") %>%
   mutate("AGS (num)"=ifelse(id==11, 11000, id/1000)) %>%
-  mutate("R(t)"=format(round(R0, digits = 2), decimal.mark = ",")) %>%
+  mutate("R(t)"=ifelse(Faelle_letzte_7_Tage<=1, "-", format(round(R0,digits = 2), decimal.mark = ","))) %>%
   mutate(blid=ifelse(id>17,floor(id/1000000),id)) %>%
   left_join(., aktuell %>%
               filter(id>0 & id<17) %>%
@@ -1334,7 +1334,7 @@ akutinfiziert_plot <- ggplot(akutinfiziert_data,
   geom_line(size=2, show.legend = F, color=zi_cols("ziblue")) +
   scale_color_manual(values = c("#B1C800","#E49900" ,"darkred")) +
   theme_minimal() +
-  scale_x_date(breaks = "3 months",date_labels = "%d.%m.%y") +
+  scale_x_date(breaks = "6 months",date_labels = "%d.%m.%y") +
   labs(y="Anzahl akut infiziert",x = "Datum") +
   theme(panel.grid.major.x =element_blank(), panel.grid.minor.x=element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
@@ -1345,7 +1345,7 @@ agefatality_plot <- ggplot(agefatality_data,
   theme_minimal() + 
   scale_color_zi() +
   labs(y="Verhältnis in %", x="Datum", color="") + 
-  scale_x_date(breaks="3 months", date_labels = "%d.%m.%y") + 
+  scale_x_date(breaks="6 months", date_labels = "%d.%m.%y") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 rwert_bund_plot <- ggplot(rwert_bund_data,
@@ -1354,7 +1354,7 @@ rwert_bund_plot <- ggplot(rwert_bund_data,
   geom_hline(yintercept = 1) +
   geom_line(data = . %>% filter(name=="Gesamt"),size=2,show.legend = F, color=zi_cols("ziblue"))+
   scale_color_zi()  +
-  theme_minimal() + scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
+  theme_minimal() + scale_x_date(date_labels = "%d.%m.%y", breaks="6 months") +
   labs(x="Datum",y="Reproduktionszahl R(t)",caption="Zeitlicher Verlauf des R-Wertes in Deutschland") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
@@ -1372,7 +1372,7 @@ sti_ag_bund_plot <- ggplot(rki_7ti_alle %>%
                              filter(id==0),
                            aes(x=datesunday, y=STI, col=Altersgruppe)) +
   geom_line(size=1.5) +
-  scale_x_date(breaks = "3 months",date_labels = "%d.%m.%y") +
+  scale_x_date(breaks = "6 months",date_labels = "%d.%m.%y") +
   ylim(0, NA) +
   labs(subtitle="Sieben-Tage-Inzidenz nach Altersgruppen im Zeitverlauf",x="Datum",y="Sieben-Tage-Inzidenz") +
   scale_color_zi() +
@@ -1385,7 +1385,7 @@ zi_vwz_plot <- ggplot(rki_r_und_zi_vwz_data %>% filter(Variable=="Vorwarnzeit"),
   ylim(0, NA) +
   labs(subtitle="Zi-Vorwarnzeit im Zeitverlauf",x="Datum",y="Vorwarnzeit") +
   theme_minimal() +
-  scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
+  scale_x_date(date_labels = "%d.%m.%y", breaks="6 months") +
   theme(legend.position='none') +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
@@ -1395,7 +1395,7 @@ itsbetten_plot <- ggplot(itsbetten_data %>%
   geom_hline(aes(yintercept=0),color="black",linetype ="solid") +
   geom_line(size=2, show.legend = FALSE, color=zi_cols("ziblue")) +
   theme_minimal() +
-  scale_x_date(breaks = "3 months",date_labels = "%d.%m.%y") +
+  scale_x_date(breaks = "6 months",date_labels = "%d.%m.%y") +
   labs(y="COVID-19-Fälle ITS", x = "Datum") +
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank()) +
   scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark=",", scientific = FALSE))
@@ -1410,7 +1410,7 @@ age_its_death_plot <- ggplot(age_its_death_data %>%
   scale_color_zi() +
   theme_minimal() +
   labs(y="Anzahl", x="Datum", color="") + 
-  scale_x_date(breaks="3 months", date_labels = "%d.%m.%y") + 
+  scale_x_date(breaks="6 months", date_labels = "%d.%m.%y") + 
   theme(panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank())
 
 vaccination_plot <- ggplot(rki_vacc %>%
@@ -1460,7 +1460,7 @@ bundeslaender_r_und_vwz_plot <- function(myid) {
                        text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=2, show.legend = F) +
-    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="6 months") +
     facet_grid(Variable~., scales = "free") +
     # facet_wrap(~Variable, scales = "free") +
     geom_blank(aes(y = y_min)) +
@@ -1484,7 +1484,7 @@ bundeslaender_vwz_plot <- function(myid) {
                        text=paste("Region: ", name, "<br>Neue Fälle:", I_cases))) +
     geom_hline(aes(yintercept=0)) +
     geom_line(size=2, show.legend = F, col=zi_cols("zigreen")) +
-    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="6 months") +
     # facet_grid(Variable~., scales = "free") +
     # facet_wrap(~Variable, scales = "free") +
     geom_blank(aes(y = y_min)) +
@@ -1509,7 +1509,7 @@ bundeslaender_stiag_plot <- function(myid) {
     geom_hline(aes(yintercept=0)) +
     geom_hline(aes(yintercept=50), linetype="dashed") +
     geom_line(size=1.5) +
-    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="6 months") +
     scale_color_zi()  +
     theme_minimal() +
     labs(x="Datum", y="Sieben-Tage-Inzidenz") +
@@ -1535,7 +1535,7 @@ bundeslaender_stiag_und_vwz_plot <- function(myid) {
                    aes(x=Datum, y=Wert, color=Altersgruppe)) +
     geom_hline(aes(yintercept=ifelse(Variable=="R",1, 0))) +
     geom_line(size=1.5) +
-    scale_x_date(date_labels = "%d.%m.%y", breaks="3 months") +
+    scale_x_date(date_labels = "%d.%m.%y", breaks="6 months") +
     facet_grid(Variable~., scales = "free") +
     # facet_wrap(~Variable, scales = "free") +
     scale_color_zi() +

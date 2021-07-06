@@ -43,6 +43,8 @@ DT::datatable(vacc_table,
               extensions = 'Responsive',
               options = list(paging = FALSE,          
                              pageLength=20,
+                             scrollY=1000,
+                             scrollCollapse=TRUE,
                              columnDefs = list(list(className = 'dt-center', targets = 2:4)), # 8
                              searching = FALSE,
                              language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
