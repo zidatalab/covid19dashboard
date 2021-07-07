@@ -66,6 +66,10 @@ curl::curl_download(url_sterblk, destfile_sterblk)
 url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
 destfile_rkihosp <- "../data/klinische_aspekte.xlsx"
 curl::curl_download(url_rkihosp, destfile_rkihosp)
+curl::curl_download(url_rkihosp, 
+                    paste0("../data/klinische_aspekte_old/klinische_aspekte_", 
+                           str_remove_all(today(), "-"), 
+                           ".xlsx"))
 
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4,
