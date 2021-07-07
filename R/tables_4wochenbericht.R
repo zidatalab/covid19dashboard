@@ -1244,5 +1244,9 @@ list_of_datasets <- list(
   # "Vorwarnzeit"=vwztabelle,
   "Regionale Daten"=bltabelle,
   "Internationaler Vergleich"=EUmal4tabelle)
-write.xlsx(list_of_datasets, file = paste0("../data/kbvreport_export/faktenblatttabellen_", maxdate, ".xlsx"))
+write.xlsx(list_of_datasets, 
+           file = paste0("../data/kbvreport_export/faktenblatttabellen_", 
+                         maxdate, 
+                         ".xlsx"),
+           overwrite=TRUE)
 
