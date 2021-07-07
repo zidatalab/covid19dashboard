@@ -41,7 +41,46 @@ rki_7ti_gesamt <- bind_rows(rki_7ti_bund %>%
   ) %>%
   filter(datesunday<=lastsunday & id==0)
 
-rki_7ti_60 <- bind_rows(rki_7ti_bund %>%
+##
+rki_7ti_kreise <- rki %>% 
+  filter(Altersgruppe!="unbekannt") %>%
+  filter(AnzahlFall>=0) %>%
+  mutate(KW=isoweek(Meldedatum),
+         Jahr=ifelse(KW==53, 2020, year(Meldedatum)),
+         JahrKW=paste0(Jahr, "-", str_pad(KW, 2, pad="0")),
+         # Altersgruppe=case_when(
+         #   Altersgruppe=="A00-A04" ~ "ag_1",
+         #   Altersgruppe=="A05-A14" ~ "ag_2",
+         #   Altersgruppe=="A15-A34" ~ "ag_3",
+         #   Altersgruppe=="A35-A59" ~ "ag_4",
+         #   Altersgruppe=="A60-A79" ~ "ag_5",
+         #   Altersgruppe=="A80+" ~ "ag_6"
+         Altersgruppe=case_when(
+           Altersgruppe=="A80+" ~ "80+",
+           Altersgruppe=="A60-A79" ~ "60-79",
+           Altersgruppe=="A35-A59" ~ "35-59",
+           Altersgruppe=="A15-A34" ~ "15-34",
+           Altersgruppe=="A05-A14" ~ "0-14",
+           Altersgruppe=="A00-A04" ~ "0-14",
+           TRUE ~ "error"
+         )) %>%
+  group_by(IdLandkreis, JahrKW, Altersgruppe) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = TRUE), 
+            .groups="drop")
+rki_7ti_kreise_full <- rki_7ti_kreise %>%
+  expand(IdLandkreis, JahrKW, Altersgruppe) %>%
+  left_join(., rki_7ti_kreise, by=c("IdLandkreis", "Altersgruppe", "JahrKW")) %>%
+  mutate(AnzahlFall=ifelse(is.na(AnzahlFall), 0, AnzahlFall))
+rki_7ti_laender <- rki_7ti_kreise_full %>%
+  mutate(BLID=floor(as.integer(IdLandkreis)/1000)) %>%
+  group_by(BLID, JahrKW, Altersgruppe) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = TRUE),
+            .groups="drop")
+rki_7ti_bund <- rki_7ti_laender %>%
+  group_by(JahrKW, Altersgruppe) %>%
+  summarise(AnzahlFall=sum(AnzahlFall, na.rm = TRUE),
+            .groups="drop")
+rki_7ti_alle <- bind_rows(rki_7ti_bund %>%
                             mutate(id=0),
                           rki_7ti_laender %>%
                             mutate(id=BLID) %>%
@@ -50,11 +89,44 @@ rki_7ti_60 <- bind_rows(rki_7ti_bund %>%
                             mutate(id=as.integer(IdLandkreis)*1000) %>%
                             filter(id>=12000000 | id<11000000) %>%
                             select(-IdLandkreis)) %>%
-  mutate(Altersgruppe=case_when(
-    Altersgruppe=="80+" ~ "60+",
-    Altersgruppe=="60-79" ~ "60+",
-    TRUE ~ "0-59"
-  )) %>%
+  left_join(., kreise_regstat_alter %>%
+              pivot_longer(cols=contains("ag_"),
+                           names_to="Altersgruppe",
+                           values_to="Einwohnende") %>%
+              mutate(Altersgruppe=case_when(
+                Altersgruppe=="ag_6" ~ "80+",
+                Altersgruppe=="ag_5" ~ "60-79",
+                Altersgruppe=="ag_4" ~ "35-59",
+                Altersgruppe=="ag_3" ~ "15-34",
+                Altersgruppe=="ag_2" ~ "0-14",
+                Altersgruppe=="ag_1" ~ "0-14",
+                TRUE ~ "error"
+              )) %>%
+              group_by(id, Altersgruppe) %>%
+              summarise(Einwohnende=sum(Einwohnende, na.rm=TRUE),
+                        .groups="drop"), by=c("id", "Altersgruppe")) %>%
+  mutate(STI=round(AnzahlFall/Einwohnende*100000),
+         datesunday=case_when(JahrKW=="2020-53" ~ base::as.Date("2021-01-03"),
+                              JahrKW<"2020-53" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w"),
+                              JahrKW>="2021-01" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7)
+  ) %>%
+  filter(datesunday<=lastsunday)
+##
+
+rki_7ti_ag <- bind_rows(rki_7ti_bund %>%
+                            mutate(id=0),
+                          rki_7ti_laender %>%
+                            mutate(id=BLID) %>%
+                            select(-BLID),
+                          rki_7ti_kreise_full %>%
+                            mutate(id=as.integer(IdLandkreis)*1000) %>%
+                            filter(id>=12000000 | id<11000000) %>%
+                            select(-IdLandkreis)) %>%
+  # mutate(Altersgruppe=case_when(
+  #   Altersgruppe=="80+" ~ "60+",
+  #   Altersgruppe=="60-79" ~ "60+",
+  #   TRUE ~ "0-59"
+  # )) %>%
   group_by(id, Altersgruppe, JahrKW) %>%
   summarise(AnzahlFall=sum(AnzahlFall, na.rm=TRUE),
             .groups="keep") %>%
@@ -63,9 +135,13 @@ rki_7ti_60 <- bind_rows(rki_7ti_bund %>%
                            names_to="Altersgruppe",
                            values_to="Einwohnende") %>%
               mutate(Altersgruppe=case_when(
-                Altersgruppe=="ag_6" ~ "60+",
-                Altersgruppe=="ag_5" ~ "60+",
-                TRUE ~ "0-59"
+                Altersgruppe=="ag_6" ~ "80+",
+                Altersgruppe=="ag_5" ~ "60-79",
+                Altersgruppe=="ag_4" ~ "35-59",
+                Altersgruppe=="ag_3" ~ "15-34",
+                Altersgruppe=="ag_2" ~ "0-14",
+                Altersgruppe=="ag_1" ~ "0-14",
+                TRUE ~ "error"
               )) %>%
               group_by(id, Altersgruppe) %>%
               summarise(Einwohnende=sum(Einwohnende, na.rm=TRUE),
@@ -75,7 +151,7 @@ rki_7ti_60 <- bind_rows(rki_7ti_bund %>%
                               JahrKW<"2020-53" ~ as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w"),
                               JahrKW>="2021-01" ~ as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7)
   ) %>%
-  filter(datesunday<=lastsunday & id==0 & Altersgruppe=="60+")
+  filter(datesunday<=lastsunday & id==0)
 
 regionen_hist3550 <- bind_rows(rki_7ti_bund %>%
                                  mutate(id=0),
