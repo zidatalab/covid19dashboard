@@ -1,402 +1,402 @@
 7-Tage-Inzidenz,Vorwarnzeit_ROR,Kreis,AGS (num),R(t),Bundesland,Inzidenz<50 bei R(t) aktuell,Inzidenz<35 bei R(t) aktuell,Inzidenz<10 bei R(t) aktuell,"Inzidenz<50 bei R(t)=0,7","Inzidenz<35 bei R(t)=0,7","Inzidenz<10 bei R(t)=0,7",datenstand
-3,116,Ahrweiler,7131,"0,98",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-4,100,Aichach-Friedberg,9771,"1,86",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-10,111,Alb-Donau-Kreis,8425,"1,35",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-16,139,Altenburger Land,16077,"1,31",Thüringen,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-5,116,Altenkirchen (Westerwald),7132,"0,54",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-2,NA,Altmarkkreis Salzwedel,15081,"1,12",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-6,100,Altötting,9171,"1,50",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-10,98,Alzey-Worms,7331,"1,33",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-5,125,Amberg-Sulzbach,9371,"2,03",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-17,125,"Amberg, Stadt",9361,"1,61",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-4,120,Ammerland,3451,"2,43",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,NA,Anhalt-Bitterfeld,15082,"5,00",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-4,118,Ansbach,9571,"0,89",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,118,"Ansbach, Stadt",9561,"0,86",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,111,Aschaffenburg,9671,"0,85",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-10,111,"Aschaffenburg, Stadt",9661,"0,70",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-16,100,Augsburg,9772,"1,64",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-20,100,"Augsburg, Stadt",9761,"1,38",Bayern,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-3,149,Aurich,3452,"0,65",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,111,Bad Dürkheim,7332,"1,06",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-1,115,Bad Kissingen,9672,"1,03",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-9,98,Bad Kreuznach,7133,"0,80",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-30,114,Bad Tölz-Wolfratshausen,9173,"3,13",Bayern,✓,✓,nie,✓,✓,29.07.2021,2021-07-15
-13,96,"Baden-Baden, Stadt",8211,"0,80",Baden-Württemberg,✓,✓,20.07.2021,✓,✓,18.07.2021,2021-07-15
-25,120,Bamberg,9471,"1,83",Bayern,✓,✓,nie,✓,✓,27.07.2021,2021-07-15
-26,120,"Bamberg, Stadt",9461,"1,32",Bayern,✓,✓,nie,✓,✓,27.07.2021,2021-07-15
-4,153,Barnim,12060,"2,24",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-3,150,Bautzen,14625,"0,90",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,159,Bayreuth,9472,"0,89",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-8,159,"Bayreuth, Stadt",9462,"1,30",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-9,100,Berchtesgadener Land,9172,"1,26",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-10,94,Bergstraße,6431,"1,08",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-12,103,Berlin,11000,"1,16",Berlin,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-14,86,Bernkastel-Wittlich,7231,"1,68",Rheinland-Pfalz,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-4,111,Biberach,8426,"1,32",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-5,95,"Bielefeld, Stadt",5711,"1,24",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-42,98,Birkenfeld,7134,"1,98",Rheinland-Pfalz,✓,nie,nie,✓,17.07.2021,03.08.2021,2021-07-15
-8,91,Böblingen,8115,"0,93",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,124,"Bochum, Stadt",5911,"1,55",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,109,Bodenseekreis,8435,"1,12",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-9,102,"Bonn, Stadt",5314,"1,09",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,121,Börde,15083,"1,53",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-16,103,Borken,5554,"1,65",Nordrhein-Westfalen,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-6,126,"Bottrop, Stadt",5512,"1,04",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,120,"Brandenburg an der Havel, Stadt",12051,"1,70",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-7,100,"Braunschweig, Stadt",3101,"0,97",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,105,Breisgau-Hochschwarzwald,8315,"1,29",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-12,71,"Bremen, Stadt",4011,"1,29",Bremen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-2,146,"Bremerhaven, Stadt",4012,"0,47",Bremen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,145,Burgenlandkreis,15084,"0,48",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-6,111,Calw,8235,"0,74",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,87,Celle,3351,"0,60",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,99,Cham,9372,"1,50",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,131,"Chemnitz, Stadt",14511,"0,77",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-9,120,Cloppenburg,3453,"1,19",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,120,Coburg,9473,"1,61",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-0,120,"Coburg, Stadt",9463,"0,86",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-8,116,Cochem-Zell,7135,"1,42",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-4,103,Coesfeld,5558,"0,95",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-9,116,"Cottbus, Stadt",12052,"1,61",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-2,146,Cuxhaven,3352,"0,90",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,84,Dachau,9174,"0,63",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,116,Dahme-Spreewald,12061,"1,46",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,94,Darmstadt-Dieburg,6432,"0,86",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-23,94,"Darmstadt, Stadt",6411,"1,72",Hessen,✓,✓,nie,✓,✓,26.07.2021,2021-07-15
-9,156,Deggendorf,9271,"1,29",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-12,83,"Delmenhorst, Stadt",3401,"1,10",Niedersachsen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-1,NA,"Dessau-Roßlau, Stadt",15001,"5,00",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-6,83,Diepholz,3251,"1,80",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-18,100,Dillingen a.d.Donau,9773,"1,58",Bayern,✓,✓,nie,✓,✓,22.07.2021,2021-07-15
-12,121,Dingolfing-Landau,9279,"1,29",Bayern,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-2,122,Dithmarschen,1051,"2,67",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-5,100,Donau-Ries,9779,"1,29",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-7,131,Donnersbergkreis,7333,"1,10",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-7,116,"Dortmund, Stadt",5913,"0,86",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,131,"Dresden, Stadt",14612,"1,18",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,122,"Duisburg, Stadt",5112,"1,39",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-14,104,Düren,5358,"1,27",Nordrhein-Westfalen,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-27,101,"Düsseldorf, Stadt",5111,"1,58",Nordrhein-Westfalen,✓,✓,nie,✓,✓,28.07.2021,2021-07-15
-13,84,Ebersberg,9175,"2,00",Bayern,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-0,140,Eichsfeld,16061,"0,30",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,109,Eichstätt,9176,"0,76",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-6,86,Eifelkreis Bitburg-Prüm,7232,"1,15",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-0,145,"Eisenach, Stadt",16056,"0,96",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,116,Elbe-Elster,12062,"1,01",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-2,149,"Emden, Stadt",3402,"2,24",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,105,Emmendingen,8316,"0,77",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,137,Emsland,3454,"1,81",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-8,124,Ennepe-Ruhr-Kreis,5954,"1,32",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,111,Enzkreis,8236,"0,98",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,84,Erding,9177,"1,20",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,110,"Erfurt, Stadt",16051,"1,46",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-11,107,Erlangen-Höchstadt,9572,"1,77",Bayern,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-5,107,"Erlangen, Stadt",9562,"0,76",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,131,Erzgebirgskreis,14521,"0,89",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,122,"Essen, Stadt",5113,"1,06",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,91,Esslingen,8116,"0,99",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-4,104,Euskirchen,5366,"1,78",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,112,"Flensburg, Stadt",1001,"1,36",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-8,120,Forchheim,9474,"0,92",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,111,"Frankenthal (Pfalz), Stadt",7311,"1,53",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-10,131,"Frankfurt (Oder), Stadt",12053,"1,88",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-21,92,"Frankfurt am Main, Stadt",6412,"1,09",Hessen,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-10,105,"Freiburg im Breisgau, Stadt",8311,"1,46",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-17,84,Freising,9178,"1,68",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-5,111,Freudenstadt,8237,"1,17",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-0,156,Freyung-Grafenau,9272,"1,55",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-0,149,Friesland,3455,"1,45",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-8,NA,Fulda,6631,"1,27",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-13,84,Fürstenfeldbruck,9179,"2,20",Bayern,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-7,107,Fürth,9573,"0,91",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-8,107,"Fürth, Stadt",9563,"0,92",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,114,Garmisch-Partenkirchen,9180,"1,20",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-8,126,"Gelsenkirchen, Stadt",5513,"0,90",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,139,"Gera, Stadt",16052,"0,63",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-9,111,Germersheim,7334,"1,15",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-7,118,Gießen,6531,"1,08",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-8,100,Gifhorn,3151,"3,04",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,91,Göppingen,8117,"0,92",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-0,150,Görlitz,14626,"0,72",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,100,Goslar,3153,"1,91",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,110,Gotha,16067,"1,48",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,106,Göttingen,3159,"1,62",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-14,137,Grafschaft Bentheim,3456,"1,91",Niedersachsen,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-16,139,Greiz,16076,"5,62",Thüringen,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-9,94,Groß-Gerau,6433,"0,80",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,101,Günzburg,9774,"1,02",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-10,95,Gütersloh,5754,"1,62",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,124,"Hagen, Stadt",5914,"1,13",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,145,"Halle (Saale), Stadt",15002,"1,15",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-12,116,"Hamburg, Stadt",2000,"1,15",Hamburg,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-3,106,Hameln-Pyrmont,3252,"1,20",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-12,116,"Hamm, Stadt",5915,"1,46",Nordrhein-Westfalen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-6,91,Harburg,3353,"0,90",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,121,Harz,15085,"1,67",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-9,115,Haßberge,9674,"2,24",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-7,120,Havelland,12063,"1,71",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-3,87,Heidekreis,3358,"1,41",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-14,105,"Heidelberg, Stadt",8221,"1,37",Baden-Württemberg,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-20,122,Heidenheim,8135,"1,16",Baden-Württemberg,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-12,99,Heilbronn,8125,"1,28",Baden-Württemberg,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-7,99,"Heilbronn, Stadt",8121,"0,47",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-6,104,Heinsberg,5370,"0,78",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,100,Helmstedt,3154,"1,38",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,95,Herford,5758,"0,87",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,124,"Herne, Stadt",5916,"1,36",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,NA,Hersfeld-Rotenburg,6632,"1,11",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,103,Herzogtum Lauenburg,1053,"0,99",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-24,145,Hildburghausen,16069,"0,85",Thüringen,✓,✓,10.08.2021,✓,✓,26.07.2021,2021-07-15
-6,106,Hildesheim,3254,"1,38",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,116,Hochsauerlandkreis,5958,"0,73",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,92,Hochtaunuskreis,6434,"1,01",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,159,Hof,9475,"1,49",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-13,159,"Hof, Stadt",9464,"1,92",Bayern,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-10,99,Hohenlohekreis,8126,"1,30",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-7,106,Holzminden,3255,"0,76",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,96,Höxter,5762,"1,25",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,110,Ilm-Kreis,16070,"4,12",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-16,109,"Ingolstadt, Stadt",9161,"1,96",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-4,139,"Jena, Stadt",16053,"1,58",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,121,Jerichower Land,15086,"3,72",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-6,131,Kaiserslautern,7335,"0,94",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-6,131,"Kaiserslautern, Stadt",7312,"0,62",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-10,96,Karlsruhe,8215,"1,29",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-21,96,"Karlsruhe, Stadt",8212,"1,46",Baden-Württemberg,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-5,121,Kassel,6633,"1,39",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,121,"Kassel, Stadt",6611,"1,26",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,121,"Kaufbeuren, Stadt",9762,"0,56",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-3,99,Kelheim,9273,"1,09",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-3,121,"Kempten (Allgäu), Stadt",9763,"1,87",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-7,114,"Kiel, Stadt",1002,"1,34",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-8,82,Kitzingen,9675,"1,42",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,122,Kleve,5154,"0,72",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,116,"Koblenz, Stadt",7111,"1,04",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-19,108,"Köln, Stadt",5315,"1,28",Nordrhein-Westfalen,✓,✓,nie,✓,✓,23.07.2021,2021-07-15
-5,109,Konstanz,8335,"1,18",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-13,101,"Krefeld, Stadt",5114,"1,21",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-1,120,Kronach,9476,"0,99",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-0,159,Kulmbach,9477,"1,28",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-0,131,Kusel,7336,"2,17",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-1,140,Kyffhäuserkreis,16065,"1,09",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,118,Lahn-Dill-Kreis,6532,"0,87",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-11,111,"Landau in der Pfalz, Stadt",7313,"1,80",Rheinland-Pfalz,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-3,144,Landkreis Rostock,13072,"2,38",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-7,84,Landsberg am Lech,9181,"1,73",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,121,Landshut,9274,"1,75",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-12,121,"Landshut, Stadt",9261,"0,51",Bayern,✓,✓,15.07.2021,✓,✓,17.07.2021,2021-07-15
-1,149,Leer,3457,"3,90",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,145,Leipzig,14729,"2,03",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,145,"Leipzig, Stadt",14713,"1,14",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-12,108,"Leverkusen, Stadt",5316,"1,38",Nordrhein-Westfalen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-4,120,Lichtenfels,9478,"0,71",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-13,118,Limburg-Weilburg,6533,"1,63",Hessen,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-2,121,Lindau (Bodensee),9776,"0,38",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,95,Lippe,5766,"0,79",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,109,Lörrach,8336,"1,15",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-9,116,"Lübeck, Stadt",1003,"1,07",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-4,94,Lüchow-Dannenberg,3354,"2,83",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,91,Ludwigsburg,8118,"1,14",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-9,111,"Ludwigshafen am Rhein, Stadt",7314,"0,93",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-0,155,Ludwigslust-Parchim,13076,"0,61",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,94,Lüneburg,3355,"1,04",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,121,"Magdeburg, Stadt",15003,"2,24",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-9,92,Main-Kinzig-Kreis,6435,"0,99",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,82,Main-Spessart,9677,"1,01",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,99,Main-Tauber-Kreis,8128,"0,27",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-16,92,Main-Taunus-Kreis,6436,"1,28",Hessen,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-3,98,Mainz-Bingen,7339,"0,82",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-13,98,"Mainz, Stadt",7315,"1,19",Rheinland-Pfalz,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-10,105,"Mannheim, Stadt",8222,"1,74",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-1,145,Mansfeld-Südharz,15087,"4,75",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-3,118,Marburg-Biedenkopf,6534,"1,01",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,131,Märkisch-Oderland,12064,"1,82",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-6,124,Märkischer Kreis,5962,"0,96",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-8,116,Mayen-Koblenz,7137,"1,05",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-2,NA,Mecklenburgische Seenplatte,13071,"3,51",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-1,131,Meißen,14627,"1,17",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,101,"Memmingen, Stadt",9764,"2,27",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-15,108,Merzig-Wadern,10042,"1,21",Saarland,✓,✓,nie,✓,✓,20.07.2021,2021-07-15
-7,101,Mettmann,5158,"1,22",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-9,114,Miesbach,9182,"1,47",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,111,Miltenberg,9676,"1,42",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-12,95,Minden-Lübbecke,5770,"1,56",Nordrhein-Westfalen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-0,131,Mittelsachsen,14522,"0,59",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,101,"Mönchengladbach, Stadt",5116,"1,59",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,100,Mühldorf a.Inn,9183,"1,93",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,122,"Mülheim an der Ruhr, Stadt",5117,"1,78",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-12,84,München,9184,"1,43",Bayern,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-15,84,"München, Stadt",9162,"1,10",Bayern,✓,✓,nie,✓,✓,20.07.2021,2021-07-15
-13,103,"Münster, Stadt",5515,"1,74",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-2,105,Neckar-Odenwald-Kreis,8225,"1,12",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-5,101,Neu-Ulm,9775,"0,66",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-11,109,Neuburg-Schrobenhausen,9185,"0,46",Bayern,✓,✓,15.07.2021,✓,✓,15.07.2021,2021-07-15
-2,99,Neumarkt i.d.OPf.,9373,"0,94",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-21,114,"Neumünster, Stadt",1004,"1,78",Schleswig-Holstein,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-5,108,Neunkirchen,10043,"1,25",Saarland,✓,✓,✓,✓,✓,✓,2021-07-15
-2,118,Neustadt a.d.Aisch-Bad Windsheim,9575,"1,67",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-1,125,Neustadt a.d.Waldnaab,9374,"0,97",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,111,"Neustadt an der Weinstraße, Stadt",7316,"1,60",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-9,116,Neuwied,7138,"0,90",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-4,103,Nienburg (Weser),3256,"2,19",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,112,Nordfriesland,1054,"1,01",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-2,140,Nordhausen,16062,"3,20",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,145,Nordsachsen,14730,"0,97",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,155,Nordwestmecklenburg,13074,"1,25",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-1,106,Northeim,3155,"1,90",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-9,107,"Nürnberg, Stadt",9564,"0,89",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-6,107,Nürnberger Land,9574,"1,66",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-6,121,Oberallgäu,9780,"0,91",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-11,108,Oberbergischer Kreis,5374,"1,26",Nordrhein-Westfalen,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-13,122,"Oberhausen, Stadt",5119,"1,60",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-11,139,Oberhavel,12065,"1,79",Brandenburg,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-0,116,Oberspreewald-Lausitz,12066,"1,43",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-16,94,Odenwaldkreis,6437,"2,02",Hessen,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-4,131,Oder-Spree,12067,"0,50",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-12,92,Offenbach,6438,"1,38",Hessen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-8,92,"Offenbach am Main, Stadt",6413,"0,68",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,120,Oldenburg,3458,"1,35",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,120,"Oldenburg (Oldenburg), Stadt",3403,"0,81",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-9,152,Olpe,5966,"1,56",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-8,105,Ortenaukreis,8317,"1,51",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-10,123,Osnabrück,3459,"1,15",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-10,123,"Osnabrück, Stadt",3404,"1,45",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,122,Ostalbkreis,8136,"0,61",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-2,121,Ostallgäu,9777,"0,83",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,83,Osterholz,3356,"1,30",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,116,Ostholstein,1055,"0,53",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-2,139,Ostprignitz-Ruppin,12068,"2,90",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-7,96,Paderborn,5774,"1,07",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,156,Passau,9275,"0,93",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,156,"Passau, Stadt",9262,"3,80",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,100,Peine,3157,"1,34",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-8,109,Pfaffenhofen a.d.Ilm,9186,"1,36",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,111,"Pforzheim, Stadt",8231,"1,02",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-10,103,Pinneberg,1056,"1,09",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-7,131,"Pirmasens, Stadt",7317,"1,76",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-5,114,Plön,1057,"1,42",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-3,120,Potsdam-Mittelmark,12069,"1,37",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-6,120,"Potsdam, Stadt",12054,"1,54",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-3,139,Prignitz,12070,"1,45",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-11,96,Rastatt,8216,"0,83",Baden-Württemberg,✓,✓,17.07.2021,✓,✓,15.07.2021,2021-07-15
-4,109,Ravensburg,8436,"1,34",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-7,126,Recklinghausen,5562,"1,17",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,156,Regen,9276,"5,00",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-14,99,Regensburg,9375,"1,25",Bayern,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-11,99,"Regensburg, Stadt",9362,"0,94",Bayern,✓,✓,22.07.2021,✓,✓,15.07.2021,2021-07-15
-12,103,Region Hannover,3241,"1,54",Niedersachsen,✓,✓,nie,✓,✓,17.07.2021,2021-07-15
-7,108,Regionalverband Saarbrücken,10041,"1,12",Saarland,✓,✓,✓,✓,✓,✓,2021-07-15
-8,91,Rems-Murr-Kreis,8119,"0,94",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-10,101,"Remscheid, Stadt",5120,"2,77",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,114,Rendsburg-Eckernförde,1058,"1,28",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-10,92,Reutlingen,8415,"1,29",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-6,108,Rhein-Erft-Kreis,5362,"1,03",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-11,116,Rhein-Hunsrück-Kreis,7140,"2,18",Rheinland-Pfalz,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-13,101,Rhein-Kreis Neuss,5162,"1,22",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-9,116,Rhein-Lahn-Kreis,7141,"1,64",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-7,105,Rhein-Neckar-Kreis,8226,"1,35",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-21,111,Rhein-Pfalz-Kreis,7338,"1,83",Rheinland-Pfalz,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-6,102,Rhein-Sieg-Kreis,5382,"1,25",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,92,Rheingau-Taunus-Kreis,6439,"1,72",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-11,108,Rheinisch-Bergischer Kreis,5378,"1,31",Nordrhein-Westfalen,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-8,115,Rhön-Grabfeld,9673,"2,04",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,100,Rosenheim,9187,"1,15",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-3,100,"Rosenheim, Stadt",9163,"1,36",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,144,"Rostock, Stadt",13003,"1,23",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-7,91,Rotenburg (Wümme),3357,"1,05",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,107,Roth,9576,"1,07",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-6,121,Rottal-Inn,9277,"1,93",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-6,113,Rottweil,8325,"1,24",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-0,139,Saale-Holzland-Kreis,16074,"3,55",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,139,Saale-Orla-Kreis,16075,"0,24",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,145,Saalekreis,15088,"0,94",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-0,139,Saalfeld-Rudolstadt,16073,"3,14",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,108,Saarlouis,10044,"1,01",Saarland,✓,✓,✓,✓,✓,✓,2021-07-15
-6,108,Saarpfalz-Kreis,10045,"0,68",Saarland,✓,✓,✓,✓,✓,✓,2021-07-15
-4,131,Sächsische Schweiz-Osterzgebirge,14628,"1,36",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-22,100,"Salzgitter, Stadt",3102,"2,38",Niedersachsen,✓,✓,nie,✓,✓,25.07.2021,2021-07-15
-3,121,Salzlandkreis,15089,"1,79",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-3,103,Schaumburg,3257,"0,90",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,112,Schleswig-Flensburg,1059,"2,68",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-3,145,Schmalkalden-Meiningen,16066,"1,60",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-5,107,"Schwabach, Stadt",9565,"2,14",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-1,99,Schwäbisch Hall,8127,"0,75",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-5,121,Schwalm-Eder-Kreis,6634,"1,35",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,125,Schwandorf,9376,"1,13",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-6,113,Schwarzwald-Baar-Kreis,8326,"0,90",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,115,Schweinfurt,9678,"1,07",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-13,115,"Schweinfurt, Stadt",9662,"1,27",Bayern,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-8,155,"Schwerin, Stadt",13004,"0,90",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-5,103,Segeberg,1060,"0,88",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-8,152,Siegen-Wittgenstein,5970,"1,27",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,109,Sigmaringen,8437,"1,11",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-9,116,Soest,5974,"0,75",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-11,101,"Solingen, Stadt",5122,"1,23",Nordrhein-Westfalen,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-0,110,Sömmerda,16068,"1,69",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,145,Sonneberg,16072,"1,78",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-18,111,"Speyer, Stadt",7318,"2,00",Rheinland-Pfalz,✓,✓,nie,✓,✓,22.07.2021,2021-07-15
-8,116,Spree-Neiße,12071,"1,97",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-10,108,St. Wendel,10046,"2,38",Saarland,✓,✓,✓,✓,✓,✓,2021-07-15
-10,91,Stade,3359,"0,93",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-11,104,Städteregion Aachen,5334,"1,03",Nordrhein-Westfalen,✓,✓,nie,✓,✓,15.07.2021,2021-07-15
-20,84,Starnberg,9188,"2,24",Bayern,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-0,122,Steinburg,1061,"0,89",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-7,103,Steinfurt,5566,"1,49",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,NA,Stendal,15090,"3,52",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-5,103,Stormarn,1062,"0,86",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-15
-3,156,Straubing-Bogen,9278,"0,82",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,156,"Straubing, Stadt",9263,"5,00",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-15,91,"Stuttgart, Stadt",8111,"1,09",Baden-Württemberg,✓,✓,nie,✓,✓,20.07.2021,2021-07-15
-3,111,Südliche Weinstraße,7337,"2,62",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-1,131,Südwestpfalz,7340,"2,41",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-0,145,"Suhl, Stadt",16054,"5,00",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-4,120,Teltow-Fläming,12072,"1,26",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-1,125,Tirschenreuth,9377,"1,66",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-14,100,Traunstein,9189,"1,26",Bayern,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-14,86,Trier-Saarburg,7235,"1,57",Rheinland-Pfalz,✓,✓,nie,✓,✓,19.07.2021,2021-07-15
-38,86,"Trier, Stadt",7211,"2,04",Rheinland-Pfalz,✓,nie,nie,✓,15.07.2021,02.08.2021,2021-07-15
-10,92,Tübingen,8416,"1,32",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-3,113,Tuttlingen,8327,"0,66",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-2,153,Uckermark,12073,"2,10",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-15
-13,94,Uelzen,3360,"3,03",Niedersachsen,✓,✓,nie,✓,✓,18.07.2021,2021-07-15
-26,111,"Ulm, Stadt",8421,"1,52",Baden-Württemberg,✓,✓,nie,✓,✓,27.07.2021,2021-07-15
-4,116,Unna,5978,"1,09",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,140,Unstrut-Hainich-Kreis,16064,"0,51",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,101,Unterallgäu,9778,"0,54",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-7,123,Vechta,3460,"1,81",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,83,Verden,3361,"1,23",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,101,Viersen,5166,"1,19",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,118,Vogelsbergkreis,6535,"2,54",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,131,Vogtlandkreis,14523,"1,25",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,176,Vorpommern-Greifswald,13075,"0,94",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-4,176,Vorpommern-Rügen,13073,"2,21",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-15
-3,86,Vulkaneifel,7233,"1,75",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-1,121,Waldeck-Frankenberg,6635,"0,95",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,109,Waldshut,8337,"1,79",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-8,103,Warendorf,5570,"0,92",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,145,Wartburgkreis,16063,"0,70",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,125,"Weiden i.d.OPf., Stadt",9363,"2,36",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-8,114,Weilheim-Schongau,9190,"0,98",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-0,110,"Weimar, Stadt",16055,"1,37",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,110,Weimarer Land,16071,"1,21",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-15
-3,118,Weißenburg-Gunzenhausen,9577,"0,70",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-2,121,Werra-Meißner-Kreis,6636,"1,36",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,122,Wesel,5170,"1,20",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-1,146,Wesermarsch,3461,"1,25",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-2,116,Westerwaldkreis,7143,"0,41",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-7,92,Wetteraukreis,6440,"0,72",Hessen,✓,✓,✓,✓,✓,✓,2021-07-15
-22,92,"Wiesbaden, Stadt",6414,"1,78",Hessen,✓,✓,nie,✓,✓,25.07.2021,2021-07-15
-3,149,"Wilhelmshaven, Stadt",3405,"1,00",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-0,NA,Wittenberg,15091,"1,96",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-15
-2,149,Wittmund,3462,"0,95",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-7,100,Wolfenbüttel,3158,"1,52",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-15
-21,100,"Wolfsburg, Stadt",3103,"1,79",Niedersachsen,✓,✓,nie,✓,✓,24.07.2021,2021-07-15
-10,98,"Worms, Stadt",7319,"0,63",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-7,159,Wunsiedel i.Fichtelgebirge,9479,"2,41",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-9,101,"Wuppertal, Stadt",5124,"1,10",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-15
-6,82,Würzburg,9679,"0,96",Bayern,✓,✓,✓,✓,✓,✓,2021-07-15
-17,82,"Würzburg, Stadt",9663,"1,39",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-15
-3,92,Zollernalbkreis,8417,"0,46",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-15
-9,131,"Zweibrücken, Stadt",7320,"2,17",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-15
-4,131,Zwickau,14524,"1,54",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-15
+2,121,Ahrweiler,7131," 1,03",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+4,106,Aichach-Friedberg,9771," 1,92",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+11,117,Alb-Donau-Kreis,8425," 1,40",Baden-Württemberg,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+8,140,Altenburger Land,16077," 1,32",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,121,Altenkirchen (Westerwald),7132," 1,38",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+2,NA,Altmarkkreis Salzwedel,15081," 1,44",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+5,96,Altötting,9171," 1,00",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+13,97,Alzey-Worms,7331," 1,42",Rheinland-Pfalz,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+9,112,Amberg-Sulzbach,9371," 2,23",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+19,112,"Amberg, Stadt",9361," 1,90",Bayern,✓,✓,nie,✓,✓,24.07.2021,2021-07-16
+4,107,Ammerland,3451," 1,65",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+0,NA,Anhalt-Bitterfeld,15082," 5,00",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+5,126,Ansbach,9571," 1,06",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+0,126,"Ansbach, Stadt",9561," 0,94",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+5,100,Aschaffenburg,9671," 0,98",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,100,"Aschaffenburg, Stadt",9661," 0,74",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+14,106,Augsburg,9772," 1,52",Bayern,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+16,106,"Augsburg, Stadt",9761," 1,33",Bayern,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+2,149,Aurich,3452," 1,14",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,108,Bad Dürkheim,7332," 0,94",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+1,120,Bad Kissingen,9672," 1,12",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+12,97,Bad Kreuznach,7133," 1,18",Rheinland-Pfalz,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+29,114,Bad Tölz-Wolfratshausen,9173," 2,26",Bayern,✓,✓,nie,✓,✓,30.07.2021,2021-07-16
+13,84,"Baden-Baden, Stadt",8211," 0,75",Baden-Württemberg,✓,✓,19.07.2021,✓,✓,19.07.2021,2021-07-16
+26,119,Bamberg,9471," 1,72",Bayern,✓,✓,nie,✓,✓,28.07.2021,2021-07-16
+27,119,"Bamberg, Stadt",9461," 1,24",Bayern,✓,✓,nie,✓,✓,29.07.2021,2021-07-16
+4,157,Barnim,12060," 2,63",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+3,157,Bautzen,14625," 1,06",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,NA,Bayreuth,9472," 0,64",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+9,NA,"Bayreuth, Stadt",9462," 1,75",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+10,96,Berchtesgadener Land,9172," 1,22",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+13,88,Bergstraße,6431," 1,03",Hessen,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+14,104,Berlin,11000," 1,26",Berlin,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+12,78,Bernkastel-Wittlich,7231," 1,49",Rheinland-Pfalz,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+4,117,Biberach,8426," 1,52",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+6,95,"Bielefeld, Stadt",5711," 1,12",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+43,97,Birkenfeld,7134," 8,62",Rheinland-Pfalz,✓,nie,nie,✓,18.07.2021,04.08.2021,2021-07-16
+9,89,Böblingen,8115," 1,06",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+9,123,"Bochum, Stadt",5911," 1,51",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,109,Bodenseekreis,8435," 0,90",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+10,100,"Bonn, Stadt",5314," 1,03",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,115,Börde,15083," 1,45",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+15,98,Borken,5554," 1,63",Nordrhein-Westfalen,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+6,121,"Bottrop, Stadt",5512," 1,21",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,129,"Brandenburg an der Havel, Stadt",12051," 1,61",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+10,99,"Braunschweig, Stadt",3101," 0,87",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,107,Breisgau-Hochschwarzwald,8315," 1,16",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+14,73,"Bremen, Stadt",4011," 1,15",Bremen,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+1,145,"Bremerhaven, Stadt",4012," 0,54",Bremen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,142,Burgenlandkreis,15084," 0,61",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,Calw,8235," 1,66",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+9,85,Celle,3351," 0,68",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,95,Cham,9372," 1,48",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+1,134,"Chemnitz, Stadt",14511," 0,68",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,107,Cloppenburg,3453," 1,06",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+0,119,Coburg,9473," 1,89",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,119,"Coburg, Stadt",9463," 1,06",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+11,121,Cochem-Zell,7135," 1,13",Rheinland-Pfalz,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+6,98,Coesfeld,5558," 0,99",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,118,"Cottbus, Stadt",12052," 1,47",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+4,145,Cuxhaven,3352," 1,10",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,81,Dachau,9174," 0,71",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,118,Dahme-Spreewald,12061," 1,57",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+8,88,Darmstadt-Dieburg,6432," 0,96",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+26,88,"Darmstadt, Stadt",6411," 1,47",Hessen,✓,✓,nie,✓,✓,28.07.2021,2021-07-16
+13,137,Deggendorf,9271," 1,20",Bayern,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+14,75,"Delmenhorst, Stadt",3401," 1,58",Niedersachsen,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+2,NA,"Dessau-Roßlau, Stadt",15001," 5,00",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+8,75,Diepholz,3251," 1,46",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+23,106,Dillingen a.d.Donau,9773," 1,41",Bayern,✓,✓,nie,✓,✓,27.07.2021,2021-07-16
+16,113,Dingolfing-Landau,9279," 1,96",Bayern,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+2,127,Dithmarschen,1051," 2,36",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+6,106,Donau-Ries,9779," 1,23",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,128,Donnersbergkreis,7333," 0,33",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+6,122,"Dortmund, Stadt",5913," 1,00",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,130,"Dresden, Stadt",14612," 1,29",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,116,"Duisburg, Stadt",5112," 1,16",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+15,112,Düren,5358," 1,26",Nordrhein-Westfalen,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+28,99,"Düsseldorf, Stadt",5111," 1,51",Nordrhein-Westfalen,✓,✓,nie,✓,✓,29.07.2021,2021-07-16
+15,81,Ebersberg,9175," 1,59",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+0,139,Eichsfeld,16061," 0,27",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,104,Eichstätt,9176," 0,83",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,78,Eifelkreis Bitburg-Prüm,7232," 1,03",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+0,146,"Eisenach, Stadt",16056," 1,06",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+10,118,Elbe-Elster,12062," 1,11",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+4,149,"Emden, Stadt",3402," 2,34",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,107,Emmendingen,8316," 1,18",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+8,121,Emsland,3454," 1,93",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,123,Ennepe-Ruhr-Kreis,5954," 1,18",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,Enzkreis,8236," 1,33",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+9,81,Erding,9177," 1,82",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,116,"Erfurt, Stadt",16051," 1,41",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,112,Erlangen-Höchstadt,9572," 1,59",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,112,"Erlangen, Stadt",9562," 0,80",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,134,Erzgebirgskreis,14521," 2,29",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,116,"Essen, Stadt",5113," 1,14",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,89,Esslingen,8116," 1,23",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+4,112,Euskirchen,5366," 1,74",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,113,"Flensburg, Stadt",1001," 1,29",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+9,119,Forchheim,9474," 0,98",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,108,"Frankenthal (Pfalz), Stadt",7311," 1,47",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+23,126,"Frankfurt (Oder), Stadt",12053," 1,27",Brandenburg,✓,✓,nie,✓,✓,27.07.2021,2021-07-16
+23,90,"Frankfurt am Main, Stadt",6412," 1,04",Hessen,✓,✓,nie,✓,✓,27.07.2021,2021-07-16
+14,107,"Freiburg im Breisgau, Stadt",8311," 1,50",Baden-Württemberg,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+19,81,Freising,9178," 1,58",Bayern,✓,✓,nie,✓,✓,24.07.2021,2021-07-16
+2,99,Freudenstadt,8237," 1,14",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+1,137,Freyung-Grafenau,9272," 1,83",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+0,149,Friesland,3455," 1,72",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,157,Fulda,6631," 1,55",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+16,81,Fürstenfeldbruck,9179," 1,68",Bayern,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+8,112,Fürth,9573," 0,93",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,112,"Fürth, Stadt",9563," 0,69",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+5,114,Garmisch-Partenkirchen,9180," 1,22",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+8,121,"Gelsenkirchen, Stadt",5513," 0,93",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,140,"Gera, Stadt",16052," 1,57",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,108,Germersheim,7334," 1,59",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+7,111,Gießen,6531," 1,07",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+11,99,Gifhorn,3151," 2,55",Niedersachsen,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+6,89,Göppingen,8117," 0,90",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+0,157,Görlitz,14626," 0,89",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,99,Goslar,3153," 1,64",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,116,Gotha,16067," 1,39",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,113,Göttingen,3159," 1,35",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+17,121,Grafschaft Bentheim,3456," 1,77",Niedersachsen,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+16,140,Greiz,16076," 3,64",Thüringen,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+11,88,Groß-Gerau,6433," 0,89",Hessen,✓,✓,19.07.2021,✓,✓,16.07.2021,2021-07-16
+9,112,Günzburg,9774," 0,95",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+10,95,Gütersloh,5754," 1,76",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+10,123,"Hagen, Stadt",5914," 1,16",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,142,"Halle (Saale), Stadt",15002," 1,51",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+14,114,"Hamburg, Stadt",2000," 1,09",Hamburg,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+5,109,Hameln-Pyrmont,3252," 1,44",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+10,122,"Hamm, Stadt",5915," 1,17",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,86,Harburg,3353," 1,02",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,115,Harz,15085," 1,68",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+11,120,Haßberge,9674," 1,88",Bayern,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+11,129,Havelland,12063," 2,06",Brandenburg,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+6,85,Heidekreis,3358," 0,69",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+11,108,"Heidelberg, Stadt",8221," 1,21",Baden-Württemberg,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+23,117,Heidenheim,8135," 1,37",Baden-Württemberg,✓,✓,nie,✓,✓,27.07.2021,2021-07-16
+9,104,Heilbronn,8125," 1,24",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+8,104,"Heilbronn, Stadt",8121," 0,39",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+8,112,Heinsberg,5370," 1,02",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,Helmstedt,3154," 1,17",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,95,Herford,5758," 1,82",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,123,"Herne, Stadt",5916," 1,32",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+0,157,Hersfeld-Rotenburg,6632," 1,14",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,103,Herzogtum Lauenburg,1053," 1,02",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+24,146,Hildburghausen,16069," 1,06",Thüringen,✓,✓,nie,✓,✓,27.07.2021,2021-07-16
+6,109,Hildesheim,3254," 1,18",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,118,Hochsauerlandkreis,5958," 0,71",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,90,Hochtaunuskreis,6434," 1,28",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,NA,Hof,9475," 1,43",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,NA,"Hof, Stadt",9464," 1,64",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+12,104,Hohenlohekreis,8126," 1,41",Baden-Württemberg,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+10,113,Holzminden,3255," 0,95",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,96,Höxter,5762," 0,91",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+0,116,Ilm-Kreis,16070," 4,60",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+20,104,"Ingolstadt, Stadt",9161," 1,96",Bayern,✓,✓,nie,✓,✓,25.07.2021,2021-07-16
+2,140,"Jena, Stadt",16053," 1,22",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+0,115,Jerichower Land,15086," 3,94",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+11,128,Kaiserslautern,7335," 1,56",Rheinland-Pfalz,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+10,128,"Kaiserslautern, Stadt",7312," 1,22",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+10,84,Karlsruhe,8215," 1,31",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+21,84,"Karlsruhe, Stadt",8212," 1,52",Baden-Württemberg,✓,✓,nie,✓,✓,25.07.2021,2021-07-16
+6,127,Kassel,6633," 1,12",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,127,"Kassel, Stadt",6611," 1,13",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,121,"Kaufbeuren, Stadt",9762," 1,31",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,95,Kelheim,9273," 1,15",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,121,"Kempten (Allgäu), Stadt",9763," 2,17",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+8,121,"Kiel, Stadt",1002," 1,05",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+7,93,Kitzingen,9675," 1,24",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+10,116,Kleve,5154," 0,64",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+11,121,"Koblenz, Stadt",7111," 1,16",Rheinland-Pfalz,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+19,103,"Köln, Stadt",5315," 1,33",Nordrhein-Westfalen,✓,✓,nie,✓,✓,24.07.2021,2021-07-16
+6,107,Konstanz,8335," 1,69",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+13,99,"Krefeld, Stadt",5114," 1,17",Nordrhein-Westfalen,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+4,119,Kronach,9476," 1,06",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+0,NA,Kulmbach,9477," 1,53",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+1,128,Kusel,7336," 2,03",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+1,139,Kyffhäuserkreis,16065," 1,37",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,111,Lahn-Dill-Kreis,6532," 0,79",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+15,108,"Landau in der Pfalz, Stadt",7313," 1,23",Rheinland-Pfalz,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+3,130,Landkreis Rostock,13072," 1,93",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,81,Landsberg am Lech,9181," 1,53",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+5,113,Landshut,9274," 1,37",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+15,113,"Landshut, Stadt",9261," 0,61",Bayern,✓,✓,19.07.2021,✓,✓,21.07.2021,2021-07-16
+1,149,Leer,3457," 4,39",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,145,Leipzig,14729," 2,02",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,145,"Leipzig, Stadt",14713," 1,03",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+15,103,"Leverkusen, Stadt",5316," 0,95",Nordrhein-Westfalen,✓,✓,22.08.2021,✓,✓,21.07.2021,2021-07-16
+4,119,Lichtenfels,9478," 0,98",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+16,111,Limburg-Weilburg,6533," 1,70",Hessen,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+2,121,Lindau (Bodensee),9776," 1,38",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,95,Lippe,5766," 0,83",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+12,107,Lörrach,8336," 1,92",Baden-Württemberg,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+9,111,"Lübeck, Stadt",1003," 1,07",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+8,84,Lüchow-Dannenberg,3354," 1,52",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,89,Ludwigsburg,8118," 1,07",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+10,108,"Ludwigshafen am Rhein, Stadt",7314," 0,86",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+1,141,Ludwigslust-Parchim,13076," 0,71",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+3,84,Lüneburg,3355," 1,15",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,115,"Magdeburg, Stadt",15003," 1,81",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+9,90,Main-Kinzig-Kreis,6435," 0,88",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,93,Main-Spessart,9677," 1,02",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,104,Main-Tauber-Kreis,8128," 0,34",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+17,90,Main-Taunus-Kreis,6436," 1,26",Hessen,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+4,97,Mainz-Bingen,7339," 0,76",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+13,97,"Mainz, Stadt",7315," 1,15",Rheinland-Pfalz,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+9,108,"Mannheim, Stadt",8222," 1,67",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+1,142,Mansfeld-Südharz,15087," 5,00",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+3,111,Marburg-Biedenkopf,6534," 0,86",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,126,Märkisch-Oderland,12064," 1,66",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+7,123,Märkischer Kreis,5962," 0,98",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,121,Mayen-Koblenz,7137," 1,11",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+2,173,Mecklenburgische Seenplatte,13071," 2,89",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,130,Meißen,14627," 1,27",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,112,"Memmingen, Stadt",9764," 1,97",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+15,106,Merzig-Wadern,10042," 1,18",Saarland,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+10,99,Mettmann,5158," 1,21",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+11,114,Miesbach,9182," 1,25",Bayern,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+2,100,Miltenberg,9676," 1,23",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+13,95,Minden-Lübbecke,5770," 1,32",Nordrhein-Westfalen,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+0,134,Mittelsachsen,14522," 0,74",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,"Mönchengladbach, Stadt",5116," 1,44",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,96,Mühldorf a.Inn,9183," 1,81",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,116,"Mülheim an der Ruhr, Stadt",5117," 2,86",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+11,81,München,9184," 1,55",Bayern,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+15,81,"München, Stadt",9162," 1,13",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+15,98,"Münster, Stadt",5515," 1,51",Nordrhein-Westfalen,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+2,108,Neckar-Odenwald-Kreis,8225," 1,45",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+6,112,Neu-Ulm,9775," 0,45",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+13,104,Neuburg-Schrobenhausen,9185," 0,58",Bayern,✓,✓,17.07.2021,✓,✓,19.07.2021,2021-07-16
+1,95,Neumarkt i.d.OPf.,9373," 1,00",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+17,121,"Neumünster, Stadt",1004," 1,56",Schleswig-Holstein,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+5,106,Neunkirchen,10043," 1,23",Saarland,✓,✓,✓,✓,✓,✓,2021-07-16
+3,126,Neustadt a.d.Aisch-Bad Windsheim,9575," 1,27",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+0,112,Neustadt a.d.Waldnaab,9374," 1,10",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,108,"Neustadt an der Weinstraße, Stadt",7316," 1,51",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+8,121,Neuwied,7138," 1,09",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+6,94,Nienburg (Weser),3256," 2,34",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,113,Nordfriesland,1054," 1,26",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+4,139,Nordhausen,16062,"10,44",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,145,Nordsachsen,14730," 1,09",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,141,Nordwestmecklenburg,13074," 1,22",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,113,Northeim,3155," 1,17",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+10,112,"Nürnberg, Stadt",9564," 0,91",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,112,Nürnberger Land,9574," 1,33",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,121,Oberallgäu,9780," 0,81",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+15,103,Oberbergischer Kreis,5374," 1,75",Nordrhein-Westfalen,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+14,116,"Oberhausen, Stadt",5119," 1,40",Nordrhein-Westfalen,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+11,134,Oberhavel,12065," 1,84",Brandenburg,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+0,118,Oberspreewald-Lausitz,12066," 0,47",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+9,88,Odenwaldkreis,6437," 1,80",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,126,Oder-Spree,12067," 0,59",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+13,90,Offenbach,6438," 1,26",Hessen,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+17,90,"Offenbach am Main, Stadt",6413," 0,76",Hessen,✓,✓,25.07.2021,✓,✓,22.07.2021,2021-07-16
+5,107,Oldenburg,3458," 1,29",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,107,"Oldenburg (Oldenburg), Stadt",3403," 1,19",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+10,150,Olpe,5966," 1,65",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,107,Ortenaukreis,8317," 1,38",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+11,113,Osnabrück,3459," 1,55",Niedersachsen,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+10,113,"Osnabrück, Stadt",3404," 1,38",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,117,Ostalbkreis,8136," 0,74",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+2,121,Ostallgäu,9777," 0,58",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,75,Osterholz,3356," 1,25",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,111,Ostholstein,1055," 0,62",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+1,134,Ostprignitz-Ruppin,12068," 2,25",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+7,96,Paderborn,5774," 0,84",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,137,Passau,9275," 0,49",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,137,"Passau, Stadt",9262," 2,72",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,99,Peine,3157," 1,29",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,104,Pfaffenhofen a.d.Ilm,9186," 1,28",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,99,"Pforzheim, Stadt",8231," 1,26",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+10,103,Pinneberg,1056," 1,29",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+10,128,"Pirmasens, Stadt",7317," 1,62",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+5,121,Plön,1057," 1,58",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+2,129,Potsdam-Mittelmark,12069," 1,43",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+5,129,"Potsdam, Stadt",12054," 2,13",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+3,134,Prignitz,12070," 1,47",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+11,84,Rastatt,8216," 0,88",Baden-Württemberg,✓,✓,19.07.2021,✓,✓,16.07.2021,2021-07-16
+5,109,Ravensburg,8436," 1,12",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+8,121,Recklinghausen,5562," 1,14",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+0,137,Regen,9276," 5,00",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+18,95,Regensburg,9375," 1,42",Bayern,✓,✓,nie,✓,✓,23.07.2021,2021-07-16
+12,95,"Regensburg, Stadt",9362," 0,80",Bayern,✓,✓,19.07.2021,✓,✓,18.07.2021,2021-07-16
+14,94,Region Hannover,3241," 1,37",Niedersachsen,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+7,106,Regionalverband Saarbrücken,10041," 1,10",Saarland,✓,✓,✓,✓,✓,✓,2021-07-16
+8,89,Rems-Murr-Kreis,8119," 0,93",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,"Remscheid, Stadt",5120," 2,26",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,121,Rendsburg-Eckernförde,1058," 1,23",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+8,96,Reutlingen,8415," 1,41",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+6,103,Rhein-Erft-Kreis,5362," 1,37",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+13,121,Rhein-Hunsrück-Kreis,7140," 1,88",Rheinland-Pfalz,✓,✓,nie,✓,✓,19.07.2021,2021-07-16
+12,99,Rhein-Kreis Neuss,5162," 1,07",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+11,121,Rhein-Lahn-Kreis,7141," 1,98",Rheinland-Pfalz,✓,✓,nie,✓,✓,16.07.2021,2021-07-16
+7,108,Rhein-Neckar-Kreis,8226," 1,35",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+21,108,Rhein-Pfalz-Kreis,7338," 1,77",Rheinland-Pfalz,✓,✓,nie,✓,✓,25.07.2021,2021-07-16
+6,100,Rhein-Sieg-Kreis,5382," 1,04",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,90,Rheingau-Taunus-Kreis,6439," 1,62",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+10,103,Rheinisch-Bergischer Kreis,5378," 1,56",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+9,120,Rhön-Grabfeld,9673," 2,69",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,96,Rosenheim,9187," 1,13",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+8,96,"Rosenheim, Stadt",9163," 1,59",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+5,130,"Rostock, Stadt",13003," 1,21",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+9,86,Rotenburg (Wümme),3357," 1,06",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+6,112,Roth,9576," 1,35",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+5,113,Rottal-Inn,9277," 1,65",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,97,Rottweil,8325," 1,22",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+2,140,Saale-Holzland-Kreis,16074," 3,79",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,140,Saale-Orla-Kreis,16075," 0,61",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,142,Saalekreis,15088," 1,30",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+0,140,Saalfeld-Rudolstadt,16073," 3,85",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+4,106,Saarlouis,10044," 1,03",Saarland,✓,✓,✓,✓,✓,✓,2021-07-16
+7,106,Saarpfalz-Kreis,10045," 0,86",Saarland,✓,✓,✓,✓,✓,✓,2021-07-16
+3,130,Sächsische Schweiz-Osterzgebirge,14628," 1,53",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+14,99,"Salzgitter, Stadt",3102," 1,86",Niedersachsen,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+3,115,Salzlandkreis,15089," 1,78",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+5,94,Schaumburg,3257," 0,95",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,113,Schleswig-Flensburg,1059," 2,21",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+4,146,Schmalkalden-Meiningen,16066," 1,54",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,112,"Schwabach, Stadt",9565," 1,44",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+1,104,Schwäbisch Hall,8127," 1,03",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+7,127,Schwalm-Eder-Kreis,6634," 1,49",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,112,Schwandorf,9376," 1,12",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,97,Schwarzwald-Baar-Kreis,8326," 0,96",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+7,120,Schweinfurt,9678," 1,08",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+15,120,"Schweinfurt, Stadt",9662," 1,27",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+10,141,"Schwerin, Stadt",13004," 1,30",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+5,103,Segeberg,1060," 1,11",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+7,150,Siegen-Wittgenstein,5970," 1,03",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,109,Sigmaringen,8437," 1,18",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+11,118,Soest,5974," 0,89",Nordrhein-Westfalen,✓,✓,19.07.2021,✓,✓,16.07.2021,2021-07-16
+12,99,"Solingen, Stadt",5122," 1,45",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+0,116,Sömmerda,16068," 2,01",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,146,Sonneberg,16072," 1,79",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+16,108,"Speyer, Stadt",7318," 1,60",Rheinland-Pfalz,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+6,118,Spree-Neiße,12071," 1,66",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+9,106,St. Wendel,10046," 1,89",Saarland,✓,✓,✓,✓,✓,✓,2021-07-16
+8,86,Stade,3359," 0,81",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+12,112,Städteregion Aachen,5334," 1,12",Nordrhein-Westfalen,✓,✓,nie,✓,✓,18.07.2021,2021-07-16
+31,81,Starnberg,9188," 1,62",Bayern,✓,✓,nie,✓,✓,31.07.2021,2021-07-16
+0,127,Steinburg,1061," 1,08",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+7,98,Steinfurt,5566," 1,78",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,NA,Stendal,15090," 2,86",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+7,103,Stormarn,1062," 0,91",Schleswig-Holstein,✓,✓,✓,✓,✓,✓,2021-07-16
+4,137,Straubing-Bogen,9278," 2,02",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+4,137,"Straubing, Stadt",9263," 5,00",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+15,89,"Stuttgart, Stadt",8111," 1,23",Baden-Württemberg,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+2,108,Südliche Weinstraße,7337," 2,44",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+2,128,Südwestpfalz,7340," 2,20",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+0,146,"Suhl, Stadt",16054," 5,00",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,129,Teltow-Fläming,12072," 1,24",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+0,112,Tirschenreuth,9377," 1,58",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+15,96,Traunstein,9189," 1,12",Bayern,✓,✓,nie,✓,✓,21.07.2021,2021-07-16
+14,78,Trier-Saarburg,7235," 1,09",Rheinland-Pfalz,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+43,78,"Trier, Stadt",7211," 1,74",Rheinland-Pfalz,✓,nie,nie,✓,18.07.2021,04.08.2021,2021-07-16
+7,96,Tübingen,8416," 1,32",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+4,97,Tuttlingen,8327," 0,76",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+2,157,Uckermark,12073," 2,97",Brandenburg,✓,✓,✓,✓,✓,✓,2021-07-16
+14,84,Uelzen,3360," 2,21",Niedersachsen,✓,✓,nie,✓,✓,20.07.2021,2021-07-16
+25,117,"Ulm, Stadt",8421," 1,43",Baden-Württemberg,✓,✓,nie,✓,✓,28.07.2021,2021-07-16
+5,122,Unna,5978," 1,17",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,139,Unstrut-Hainich-Kreis,16064," 0,67",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,112,Unterallgäu,9778," 1,04",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+6,113,Vechta,3460," 2,00",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,75,Verden,3361," 1,22",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,99,Viersen,5166," 1,15",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+7,111,Vogelsbergkreis,6535," 2,07",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,134,Vogtlandkreis,14523," 1,25",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,NA,Vorpommern-Greifswald,13075," 1,15",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+3,NA,Vorpommern-Rügen,13073," 1,81",Mecklenburg-Vorpommern,✓,✓,✓,✓,✓,✓,2021-07-16
+0,78,Vulkaneifel,7233," 1,65",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+1,127,Waldeck-Frankenberg,6635," 1,00",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,107,Waldshut,8337," 1,77",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+9,98,Warendorf,5570," 1,17",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,146,Wartburgkreis,16063," 0,82",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,112,"Weiden i.d.OPf., Stadt",9363," 2,68",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+7,114,Weilheim-Schongau,9190," 1,01",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+0,116,"Weimar, Stadt",16055," 1,01",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+2,116,Weimarer Land,16071," 1,47",Thüringen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,126,Weißenburg-Gunzenhausen,9577," 0,87",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+2,127,Werra-Meißner-Kreis,6636," 2,27",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,116,Wesel,5170," 1,41",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,145,Wesermarsch,3461," 1,32",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+3,121,Westerwaldkreis,7143," 0,80",Rheinland-Pfalz,✓,✓,✓,✓,✓,✓,2021-07-16
+7,90,Wetteraukreis,6440," 1,22",Hessen,✓,✓,✓,✓,✓,✓,2021-07-16
+24,90,"Wiesbaden, Stadt",6414," 1,50",Hessen,✓,✓,nie,✓,✓,27.07.2021,2021-07-16
+7,149,"Wilhelmshaven, Stadt",3405," 3,22",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+1,NA,Wittenberg,15091," 0,94",Sachsen-Anhalt,✓,✓,✓,✓,✓,✓,2021-07-16
+0,149,Wittmund,3462," 1,05",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,Wolfenbüttel,3158," 1,26",Niedersachsen,✓,✓,✓,✓,✓,✓,2021-07-16
+20,99,"Wolfsburg, Stadt",3103," 1,83",Niedersachsen,✓,✓,nie,✓,✓,25.07.2021,2021-07-16
+16,97,"Worms, Stadt",7319," 1,19",Rheinland-Pfalz,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+7,NA,Wunsiedel i.Fichtelgebirge,9479," 1,91",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+8,99,"Wuppertal, Stadt",5124," 1,09",Nordrhein-Westfalen,✓,✓,✓,✓,✓,✓,2021-07-16
+5,93,Würzburg,9679," 0,91",Bayern,✓,✓,✓,✓,✓,✓,2021-07-16
+16,93,"Würzburg, Stadt",9663," 1,44",Bayern,✓,✓,nie,✓,✓,22.07.2021,2021-07-16
+4,96,Zollernalbkreis,8417," 0,55",Baden-Württemberg,✓,✓,✓,✓,✓,✓,2021-07-16
+18,128,"Zweibrücken, Stadt",7320," 1,91",Rheinland-Pfalz,✓,✓,nie,✓,✓,23.07.2021,2021-07-16
+4,134,Zwickau,14524," 1,10",Sachsen,✓,✓,✓,✓,✓,✓,2021-07-16
