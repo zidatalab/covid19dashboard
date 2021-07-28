@@ -107,18 +107,32 @@ kreise_ror <- read_delim("data/kreise_2016_ror_kv_etc.csv",
 pflegeheimbewohnende_2019_bundeslaender <- read_delim("data/pflegeheimbewohnende_2019_bundeslaender.csv", 
                                                       ";", escape_double = FALSE, trim_ws = TRUE)
 ## get data from db
-brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect() %>% mutate(date=base::as.Date(date))
-rki <- tbl(conn,"rki") %>% collect()
+brd_timeseries <- tbl(conn,"brd_timeseries") %>% 
+  collect() %>% 
+  mutate(date=base::as.Date(date))
+rki <- tbl(conn,"rki") %>% 
+  collect()
 # for assessment of meldeverzug
 # write_csv(rki, paste0("data/rki_", max(as_date(rki$Meldedatum)), ".csv"))
 # continue
-divi <- tbl(conn,"divi") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
-divi_all <- tbl(conn, "divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
-strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
-aktuell <- tbl(conn,"params") %>% collect()
-jhu_germany <- tbl(conn, "trends") %>% filter(Country=="Germany") %>% select(date, cases, deaths, incident_cases) %>% collect()
-vaccinations <- tbl(conn, "vaccinations") %>% collect() %>% mutate(datum=as_date(date),
-                                                                   pubdatum=as_date(as_datetime(publication_date)))
+divi <- tbl(conn,"divi") %>% 
+  collect() %>% 
+  mutate(daten_stand=as_date(daten_stand))
+divi_all <- tbl(conn, "divi_all") %>% 
+  collect() %>% 
+  mutate(daten_stand=as_date(daten_stand))
+strukturdaten <- tbl(conn,"strukturdaten") %>% 
+  collect()
+aktuell <- tbl(conn,"params") %>% 
+  collect()
+jhu_germany <- tbl(conn, "trends") %>% 
+  filter(Country=="Germany") %>% 
+  select(date, cases, deaths, incident_cases) %>% 
+  collect()
+vaccinations <- tbl(conn, "vaccinations") %>% 
+  collect() %>% 
+  mutate(datum=as_date(date),
+         pubdatum=as_date(as_datetime(publication_date)))
 # tt <- system.time({rki_dailycases <- tbl(conn, "rki_archive") %>%
 #   filter(NeuerFall==1 | NeuerFall==-1) %>%
 #   select(AnzahlFall, Datenstand) %>% 
