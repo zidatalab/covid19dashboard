@@ -62,14 +62,14 @@ url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkeru
 destfile_sterblk <- "../data/sonderauswertung_sterbefaelle.xlsx"
 curl::curl_download(url_sterblk, destfile_sterblk)
 
-# # daten rki symptomanteil, hospitalisierungsrate und sterberate
-# url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
-# destfile_rkihosp <- "../data/klinische_aspekte.xlsx"
-# curl::curl_download(url_rkihosp, destfile_rkihosp)
-# curl::curl_download(url_rkihosp, 
-#                     paste0("../data/klinische_aspekte_old/klinische_aspekte_", 
-#                            str_remove_all(today(), "-"), 
-#                            ".xlsx"))
+# daten rki symptomanteil, hospitalisierungsrate und sterberate
+url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
+destfile_rkihosp <- "../data/klinische_aspekte.xlsx"
+curl::curl_download(url_rkihosp, destfile_rkihosp)
+curl::curl_download(url_rkihosp,
+                    paste0("../data/klinische_aspekte_old/klinische_aspekte_",
+                           str_remove_all(today(), "-"),
+                           ".xlsx"))
 
 ## Destatis 2019 https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/liste-altersgruppen.html
 altersgruppen_bund <- tibble("unter 20"=18.4,
@@ -188,18 +188,18 @@ almev <- read_csv("../data/almev.csv")
 
 # # rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 # 
-# rki_hosp <- read_excel(destfile_rkihosp, 
-#                        # sheet = "Daten", 
-#                        skip = 1)
-# rki_hosp_age <- read_excel(destfile_rkihosp, 
-#                                   sheet = 2, 
-#                                   skip = 6)
-# # Attention: BUG RKI
-# rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
-# 
-# rki_hosp <- rki_hosp %>% mutate(YearKW=Meldejahr*100+MW)
-# 
-# rki_hosp_age <- rki_hosp_age %>% mutate(YearKW=as.integer(Meldejahr)*100+as.integer(Meldewoche))
+rki_hosp <- read_excel(destfile_rkihosp,
+                       # sheet = "Daten",
+                       skip = 1)
+rki_hosp_age <- read_excel(destfile_rkihosp,
+                                  sheet = 3,
+                                  skip = 6)
+# Attention: BUG RKI
+rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
+
+rki_hosp <- rki_hosp %>% mutate(YearKW=Meldejahr*100+MW)
+
+rki_hosp_age <- rki_hosp_age %>% mutate(YearKW=as.integer(Meldejahr)*100+as.integer(Meldewoche))
 
 # ard impfdaten
 vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
@@ -278,6 +278,7 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 # takes a while ...
 rki <- tbl(conn,"rki") %>% collect()
+# rki <- tbl(conn,"rki_archive") %>% filter(Datenstand=="2021-07-29") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
 rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum)) %>%
@@ -858,141 +859,141 @@ testtabelle <- tibble(
 # ) %>%
 #   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 # 
-# ## hospitalisierungen nach altersgruppen
-# maxweek_rki_hosp_age <- max(rki_hosp_age$YearKW)
-# hosp_age_thisweek <- maxweek_rki_hosp_age-2
-# hosp_age_beforeweek <- hosp_age_thisweek-1
-# 
-# rki_agg_kw_ag <- rki %>% 
-#   mutate(Jahr=year(Meldedatum),
-#          KW=isoweek(Meldedatum),
-#          YearKW=ifelse(KW!=53, Jahr*100+KW, 202053)) %>% 
-#   group_by(YearKW, Altersgruppe) %>% 
-#   summarise(AnzahlFaelle=sum(AnzahlFall[NeuerFall>=0]),
-#             .groups="drop")
-# 
-# agg_anteil_ag <- rki_hosp_age %>% 
-#   pivot_longer(cols=`A00..04`:`A80+`, names_to = "Altersgruppe",
-#                values_to="AnzahlHosp") %>% 
-#   select(Meldejahr, Meldewoche, YearKW,
-#          Altersgruppe, AnzahlHosp) %>% 
-#   mutate(Altersgruppe=str_replace(Altersgruppe, fixed(".."), "-A")) %>% 
-#   left_join(rki_agg_kw_ag,
-#             by=c("YearKW", "Altersgruppe")) %>% 
-#   mutate(Anteil_an_FaelleAG=AnzahlHosp/AnzahlFaelle) %>% 
-#   mutate(Altersgruppe=str_replace_all(Altersgruppe, fixed("A"), ""))
-# 
-# hosp_ag_tabelle <- tibble(
-#   Hospitalisierungen = c(
-#     "Gesamt",
-#     "Davon unter 4-Jährige",
-#     "Davon 5- bis 14-Jährige",
-#     "Davon 15- bis 34-Jährige",
-#     "Davon 35- bis 59-Jährige",
-#     "Davon 60- bis 79-Jährige",
-#     "Davon über 80-Jährige"
-#   ),
-#   Vorwoche = c(
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-#       summarise(Faellegesamt=sum(across(`A00..04`:`A80+`))) %>% 
-#       pull(Faellegesamt),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       pull(`A00..04`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       pull(`A05..14`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       pull(`A15..34`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       pull(`A35..59`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       pull(`A60..79`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       pull(`A80+`)
-#   ),
-#   VorwocheAnteil = c(
-#     agg_anteil_ag %>% filter(YearKW==hosp_age_beforeweek) %>% 
-#       summarise(Anteil_an_FaelleAG=sum(AnzahlHosp)/sum(AnzahlFaelle)) %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_beforeweek & Altersgruppe=="00-04") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_beforeweek & Altersgruppe=="05-14") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_beforeweek & Altersgruppe=="15-34") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_beforeweek & Altersgruppe=="35-59") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_beforeweek & Altersgruppe=="60-79") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_beforeweek & Altersgruppe=="80+") %>% 
-#       pull(Anteil_an_FaelleAG)
-#   ),
-#   dieseWoche = c(
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-#       summarise(Faellegesamt=sum(across(`A00..04`:`A80+`))) %>% 
-#       pull(Faellegesamt),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       pull(`A00..04`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       pull(`A05..14`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       pull(`A15..34`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       pull(`A35..59`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       pull(`A60..79`),
-#     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       pull(`A80+`)
-#   ),
-#   dieseWocheAnteil = c(
-#     agg_anteil_ag %>% filter(YearKW==hosp_age_thisweek) %>% 
-#       summarise(Anteil_an_FaelleAG=sum(AnzahlHosp)/sum(AnzahlFaelle)) %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_thisweek & Altersgruppe=="00-04") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_thisweek & Altersgruppe=="05-14") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_thisweek & Altersgruppe=="15-34") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_thisweek & Altersgruppe=="35-59") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_thisweek & Altersgruppe=="60-79") %>% 
-#       pull(Anteil_an_FaelleAG),
-#     agg_anteil_ag %>% 
-#       filter(YearKW==hosp_age_thisweek & Altersgruppe=="80+") %>% 
-#       pull(Anteil_an_FaelleAG)
-#   ),
-#   Veraenderung=paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1),
-#                              decimal.mark = ","),
-#                       " %")
-# ) %>%
-#   mutate(Vorwoche=ifelse(Vorwoche==0, 
-#                          0, 
-#                          paste0(Vorwoche, 
-#                                 " (", 
-#                                 format(round(100*VorwocheAnteil, 1), 
-#                                        decimal.mark=","),
-#                                 "%)")),
-#          !!paste0("KW ", hosp_age_thisweek-202100) := 
-#            ifelse(dieseWoche==0,
-#                   0, 
-#                   paste0(dieseWoche, 
-#                          " (", 
-#                          format(round(100*dieseWocheAnteil, 1), 
-#                                 decimal.mark=","), 
-#                          "%)"))) %>%
-#   select(Hospitalisierungen, Vorwoche, 
-#          !!paste0("KW ", hosp_age_thisweek-202100), Veraenderung)
+## hospitalisierungen nach altersgruppen
+maxweek_rki_hosp_age <- max(rki_hosp_age$YearKW)
+hosp_age_thisweek <- maxweek_rki_hosp_age-2
+hosp_age_beforeweek <- hosp_age_thisweek-1
+
+rki_agg_kw_ag <- rki %>%
+  mutate(Jahr=year(Meldedatum),
+         KW=isoweek(Meldedatum),
+         YearKW=ifelse(KW!=53, Jahr*100+KW, 202053)) %>%
+  group_by(YearKW, Altersgruppe) %>%
+  summarise(AnzahlFaelle=sum(AnzahlFall[NeuerFall>=0]),
+            .groups="drop")
+
+agg_anteil_ag <- rki_hosp_age %>%
+  pivot_longer(cols=`A00..04`:`A80+`, names_to = "Altersgruppe",
+               values_to="AnzahlHosp") %>%
+  select(Meldejahr, Meldewoche, YearKW,
+         Altersgruppe, AnzahlHosp) %>%
+  mutate(Altersgruppe=str_replace(Altersgruppe, fixed(".."), "-A")) %>%
+  left_join(rki_agg_kw_ag,
+            by=c("YearKW", "Altersgruppe")) %>%
+  mutate(Anteil_an_FaelleAG=AnzahlHosp/AnzahlFaelle) %>%
+  mutate(Altersgruppe=str_replace_all(Altersgruppe, fixed("A"), ""))
+
+hosp_ag_tabelle <- tibble(
+  Hospitalisierungen = c(
+    "Gesamt",
+    "Davon unter 4-Jährige",
+    "Davon 5- bis 14-Jährige",
+    "Davon 15- bis 34-Jährige",
+    "Davon 35- bis 59-Jährige",
+    "Davon 60- bis 79-Jährige",
+    "Davon über 80-Jährige"
+  ),
+  Vorwoche = c(
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      summarise(Faellegesamt=sum(across(`A00..04`:`A80+`))) %>%
+      pull(Faellegesamt),
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      pull(`A00..04`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      pull(`A05..14`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      pull(`A15..34`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      pull(`A35..59`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      pull(`A60..79`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
+      pull(`A80+`)
+  ),
+  VorwocheAnteil = c(
+    agg_anteil_ag %>% filter(YearKW==hosp_age_beforeweek) %>%
+      summarise(Anteil_an_FaelleAG=sum(AnzahlHosp)/sum(AnzahlFaelle)) %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_beforeweek & Altersgruppe=="00-04") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_beforeweek & Altersgruppe=="05-14") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_beforeweek & Altersgruppe=="15-34") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_beforeweek & Altersgruppe=="35-59") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_beforeweek & Altersgruppe=="60-79") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_beforeweek & Altersgruppe=="80+") %>%
+      pull(Anteil_an_FaelleAG)
+  ),
+  dieseWoche = c(
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      summarise(Faellegesamt=sum(across(`A00..04`:`A80+`))) %>%
+      pull(Faellegesamt),
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      pull(`A00..04`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      pull(`A05..14`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      pull(`A15..34`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      pull(`A35..59`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      pull(`A60..79`),
+    rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
+      pull(`A80+`)
+  ),
+  dieseWocheAnteil = c(
+    agg_anteil_ag %>% filter(YearKW==hosp_age_thisweek) %>%
+      summarise(Anteil_an_FaelleAG=sum(AnzahlHosp)/sum(AnzahlFaelle)) %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_thisweek & Altersgruppe=="00-04") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_thisweek & Altersgruppe=="05-14") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_thisweek & Altersgruppe=="15-34") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_thisweek & Altersgruppe=="35-59") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_thisweek & Altersgruppe=="60-79") %>%
+      pull(Anteil_an_FaelleAG),
+    agg_anteil_ag %>%
+      filter(YearKW==hosp_age_thisweek & Altersgruppe=="80+") %>%
+      pull(Anteil_an_FaelleAG)
+  ),
+  Veraenderung=paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1),
+                             decimal.mark = ","),
+                      " %")
+) %>%
+  mutate(Vorwoche=ifelse(Vorwoche==0,
+                         0,
+                         paste0(Vorwoche,
+                                " (",
+                                format(round(100*VorwocheAnteil, 1),
+                                       decimal.mark=","),
+                                "%)")),
+         !!paste0("KW ", hosp_age_thisweek-202100) :=
+           ifelse(dieseWoche==0,
+                  0,
+                  paste0(dieseWoche,
+                         " (",
+                         format(round(100*dieseWocheAnteil, 1),
+                                decimal.mark=","),
+                         "%)"))) %>%
+  select(Hospitalisierungen, Vorwoche,
+         !!paste0("KW ", hosp_age_thisweek-202100), Veraenderung)
 
 
 vaccmaxdate <- max(vacc_zahlen$date)
@@ -1238,7 +1239,7 @@ list_of_datasets <- list(
   "Testungen"=testtabelle,
   "R-Wert und 7-Tage-Inzidenz" = rwert7ti,
   # "COVID-19-Erkrankte"=c19erkranktetabelle,
-  # "Hospitalisierungen"=hosp_ag_tabelle,
+  "Hospitalisierungen"=hosp_ag_tabelle,
   "Intensivbetten"=itstabelle,
   "Todesfälle"=sterbetabelle,
   # "Vorwarnzeit"=vwztabelle,
