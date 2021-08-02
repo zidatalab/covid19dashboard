@@ -1082,7 +1082,7 @@ bl_projektionen <- ausgangsdaten %>%
          invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y")
          ) %>%
   arrange(id) %>%
-  select(-id, -R0,
+  select(-id, -R0, -Faelle_letzte_7_Tage,
          "7-Tage-Inzidenz"=STI_aktuell,
          `R(t)`,
          Bundesland=name,
@@ -1136,7 +1136,7 @@ kreise_projektionen <- ausgangsdaten %>%
          invisibleR0735sort=as_date(R07STI35, format="%d.%m.%Y")
   ) %>%
   arrange(name) %>%
-  select(-id, -R0, -blid,
+  select(-id, -R0, -blid, -Faelle_letzte_7_Tage,
          "7-Tage-Inzidenz"=STI_aktuell,
          `R(t)`,
          Kreis=name,
