@@ -860,7 +860,7 @@ testtabelle <- tibble(
 #   select(Erkrankte, Vorwoche, !!paste0("KW ", ifsgmaxkw-ifsgmaxjahr*100):=dieseWoche, Veraenderung)
 # 
 ## hospitalisierungen nach altersgruppen
-maxweek_rki_hosp_age <- max(rki_hosp_age$YearKW)
+maxweek_rki_hosp_age <- max(rki_hosp_age$YearKW, na.rm=TRUE)
 hosp_age_thisweek <- maxweek_rki_hosp_age-2
 hosp_age_beforeweek <- hosp_age_thisweek-1
 
