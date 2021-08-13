@@ -193,7 +193,7 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 1)
 rki_hosp_age <- read_excel(destfile_rkihosp,
                                   sheet = 3,
-                                  skip = 6)
+                                  skip = 8)
 # Attention: BUG RKI
 rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
 
