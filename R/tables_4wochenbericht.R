@@ -190,7 +190,7 @@ almev <- read_csv("../data/almev.csv")
 # 
 rki_hosp <- read_excel(destfile_rkihosp,
                        # sheet = "Daten",
-                       skip = 1)
+                       skip = 2)
 rki_hosp_age <- read_excel(destfile_rkihosp,
                                   sheet = 3,
                                   skip = 8)
