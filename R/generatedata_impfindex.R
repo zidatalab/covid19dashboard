@@ -348,3 +348,31 @@ iz_vergangen_laender <- rki_vacc %>%
 #   mutate(Impfungen_IZ=Impfungen_IZ_kum-lag(Impfungen_IZ_kum, default=0))
 write_json(iz_vergangen_laender, "data/tabledata/impfsim_impfungenimpfzentren_historisch.json")
 
+# tabelle für SZ
+erstzweit_gesamt <- tibble(
+  Datum=floor_date(rki_vacc_lastday$date[1], unit="week", week_start = 0) + days(7*0:7),
+  Vollgeimpft=c(dosen_verabreicht %>% 
+                  filter(geo=="Gesamt") %>% 
+                  summarise(dosen_verabreicht_zweit=sum(dosen_verabreicht_zweit, 
+                                                        na.rm=TRUE)) %>% 
+                  pull(dosen_verabreicht_zweit),
+                rep(0, 7)),
+  Erstgeimpft=rep(dosen_verabreicht %>% 
+                    filter(geo=="Gesamt") %>% 
+                    summarise(dosen_verabreicht_erst=sum(dosen_verabreicht_erst, 
+                                                          na.rm=TRUE)) %>% 
+                    pull(dosen_verabreicht_erst), 8),
+  EW_gesamt=rep(83166711, 8),
+  EW_ueber18=rep(69488809, 8)
+)
+impfluecke <- erstzweit_gesamt$Erstgeimpft[1] - erstzweit_gesamt$Vollgeimpft[1]
+impfenaktuellewoche <- impfluecke/6 * as.integer(erstzweit_gesamt$Datum[2]-today()+1)/7
+erstzweit_gesamt$Vollgeimpft[2] <- round(erstzweit_gesamt$Vollgeimpft[1] +
+                                           impfenaktuellewoche)
+for (i in 3:7) {
+  erstzweit_gesamt$Vollgeimpft[i] <- round(erstzweit_gesamt$Vollgeimpft[i-1] +
+                                             impfluecke/6)
+}
+erstzweit_gesamt$Vollgeimpft[8] <- erstzweit_gesamt$Erstgeimpft[8]
+
+write_csv(erstzweit_gesamt, "data/tabledata/aktuelle_kapazitaet_erstzweit.csv") # [1:finalrow, ]
