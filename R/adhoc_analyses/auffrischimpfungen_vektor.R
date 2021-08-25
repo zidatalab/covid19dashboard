@@ -126,3 +126,6 @@ neuinfektionen_plus_vektor <- rki_neuinfekte %>%
             by=c("jahrmonat", "Bundesland"="region"))
 
 write_csv(neuinfektionen_plus_vektor, "data/auffrischen.csv")
+library(openxlsx)
+write.xlsx(neuinfektionen_plus_vektor, "data/auffrischen.xlsx",
+           overwrite=TRUE)
