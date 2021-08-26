@@ -77,7 +77,7 @@ pop_bev <- destatis_pop_by_state %>%
 ####
 rki_neuinfekte <- rki %>% 
   mutate(Meldedatum=as_date(Meldedatum),
-         Meldedatum=ifelse(Meldedatum<="2021-03-01",
+         Meldedatum=ifelse(Meldedatum<"2021-03-02",
                            as_date("2021-03-01"),
                            Meldedatum)) %>% 
   mutate(Meldedatum=as_date(Meldedatum)) %>% 
@@ -85,7 +85,13 @@ rki_neuinfekte <- rki %>%
   mutate(date_plus_6m=as_date(Meldedatum)+days(183),
          jahrmonat=year(date_plus_6m)*100+month(date_plus_6m)) %>% 
   group_by(Bundesland, jahrmonat) %>% 
-  summarise(AnzahlFall=sum(AnzahlFall))
+  summarise(auffrischen=sum(AnzahlFall))
+rki_neuinfekte <- bind_rows(rki_neuinfekte,
+                            rki_neuinfekte %>% 
+                              group_by(jahrmonat) %>% 
+                              summarise(auffrischen=sum(auffrischen)) %>% 
+                              mutate(Bundesland="Gesamt")) %>% 
+  select(region=Bundesland, jahrmonat, auffrischen)
 
 auffrischen_september <- rki_vacc %>% 
   filter(metric %in% c("personen_voll_kumulativ",
@@ -262,6 +268,9 @@ auffrischen_november <- rki_vacc %>%
 ausblick_auffrischen <- bind_rows(auffrischen_september,
                                   auffrischen_oktober,
                                   auffrischen_november) %>% 
+  left_join(rki_neuinfekte, by=c("region", "jahrmonat")) %>% 
+  mutate(auffrischen=auffrischen.x+auffrischen.y) %>% 
+  select(region, jahrmonat, auffrischen) %>% 
   pivot_wider(id_cols = region,
               names_from=jahrmonat,
               values_from=auffrischen)
