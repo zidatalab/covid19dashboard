@@ -12,15 +12,26 @@ wasistdavomrki <- rki_vacc %>%
   ungroup() %>%
   group_by(geo, metric) %>% 
   summarise(enddate=max(date),
-            begindate=min(date))
+            begindate=min(date)) %>% 
+  ungroup()
 
-mindate <- min(wasistdavomrki$begindate)
-maxdate <- max(wasistdavomrki$enddate)
+alle_bl_metric <- expand_grid(geo=unique(wasistdavomrki$geo),
+                              metric=unique(wasistdavomrki$metric))
+
+wasistdavomrki <- alle_bl_metric %>% 
+  left_join(wasistdavomrki, by=c("geo", "metric")) %>% 
+  group_by(metric) %>% 
+  mutate(metricfirstdate=min(begindate, na.rm=TRUE),
+         metriclastdate=max(enddate, na.rm=TRUE)) %>% 
+  ungroup()
+
+mindate <- min(wasistdavomrki$begindate, na.rm = TRUE)
+maxdate <- max(wasistdavomrki$enddate, na.rm=TRUE)
 
 for (mygeo in unique(wasistdavomrki$geo)) {
   ggplot(wasistdavomrki %>% 
            filter(geo==mygeo) %>% 
-           arrange(enddate, begindate) %>%
+           arrange(metriclastdate, metricfirstdate) %>%
            mutate(metric = factor(metric, metric))) +
     geom_segment(aes(x=begindate,
                      xend=enddate,

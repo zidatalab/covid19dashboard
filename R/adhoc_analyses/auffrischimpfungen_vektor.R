@@ -40,25 +40,26 @@ rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")
 
 
 ## read/update rki impf data from github
-rki_vacc <- tryCatch(
-  {
-    mytemp <- tempfile()
-    rki_vacc_data <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/all.csv"
-    download.file(rki_vacc_data, mytemp, method = "curl")
-    vacc_zahlen <- read_csv(mytemp)
-    if (dim(vacc_zahlen)[2] != 5){
-      stop("they changed the vacc table")
-    } else {
-      write_csv(vacc_zahlen, "./data/vacc_zahlen_ard.csv")
-      vacc_zahlen
-    }
-  },
-  error=function(e) {
-    # read old data
+# rki_vacc <- tryCatch(
+#   {
+#     mytemp <- tempfile()
+#     rki_vacc_data <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/all.csv"
+#     download.file(rki_vacc_data, mytemp, method = "curl")
+#     vacc_zahlen <- read_csv(mytemp)
+#     if (dim(vacc_zahlen)[2] != 5){
+#       stop("they changed the vacc table")
+#     } else {
+#       write_csv(vacc_zahlen, "./data/vacc_zahlen_ard.csv")
+#       vacc_zahlen
+#     }
+#   },
+#   error=function(e) {
+#     # read old data
     vacc_zahlen <- read_csv("./data/vacc_zahlen_ard.csv")
-    return(vacc_zahlen)
-  }
-)
+#     return(vacc_zahlen)
+#   }
+# )
+rki_vacc <- vacc_zahlen
 rki_vacc <- rki_vacc %>% 
   mutate(region=ifelse(region=="DE", "DE", paste0("DE-", region))) %>% 
   left_join(ISOcodes::ISO_3166_2 %>% 
@@ -83,7 +84,9 @@ rki_neuinfekte <- rki %>%
 
 auffrischen <- rki_vacc %>% 
   filter(metric %in% c("personen_voll_astrazeneca_kumulativ",
-                       "personen_voll_janssen_kumulativ") &
+                       "personen_voll_janssen_kumulativ",
+                       "personen_voll_biontech_kumulativ",
+                       "personen_voll_moderna_kumulativ") &
            date>="2021-03-01" &
            date<="2021-08-01") %>% 
   pivot_wider(id_cols=c("date", "region"),
@@ -95,35 +98,45 @@ auffrischen <- rki_vacc %>%
                   diff(personen_voll_janssen_kumulativ)),
          new_az_voll=c(personen_voll_astrazeneca_kumulativ[1], 
                   diff(personen_voll_astrazeneca_kumulativ)),
+         new_bnt_voll=c(personen_voll_biontech_kumulativ[1], 
+                       diff(personen_voll_biontech_kumulativ)),
+         new_mod_voll=c(personen_voll_moderna_kumulativ[1], 
+                       diff(personen_voll_moderna_kumulativ)),
          date_plus_6m=date + days(183), # +months(6) ... 2021-03-31 and 2021-05-31 machen probleme?
          jahrmonat=year(date_plus_6m)*100+month(date_plus_6m)) %>% 
   group_by(region, jahrmonat) %>% 
   summarise(jj_auffrischen=sum(new_jj),
-            az_auffrischen=sum(new_az_voll)) %>% 
+            az_auffrischen=sum(new_az_voll),
+            bnt_auffrischen=sum(new_bnt_voll),
+            mod_auffrischen=sum(new_mod_voll)) %>% 
   mutate(region=case_when(
     region=="DE" ~ "Gesamt",
-    region=="BE" ~ "Berlin",
-    region=="BB" ~ "Brandenburg",
-    region=="BY" ~ "Bayern",
-    region=="BW" ~ "Baden-Württemberg",
-    region=="HB" ~ "Bremen",
-    region=="HH" ~ "Hamburg",
-    region=="NI" ~ "Niedersachsen",
-    region=="HE" ~ "Hessen",
-    region=="MV" ~ "Mecklenburg-Vorpommern",
-    region=="SH" ~ "Schleswig-Holstein",
-    region=="SN" ~ "Sachsen",
-    region=="ST" ~ "Sachsen-Anhalt",
-    region=="RP" ~ "Rheinland-Pfalz",
-    region=="SL" ~ "Saarland",
-    region=="NW" ~ "Nordrhein-Westfalen",
-    region=="TH" ~ "Thüringen",
+    region=="DE-BE" ~ "Berlin",
+    region=="DE-BB" ~ "Brandenburg",
+    region=="DE-BY" ~ "Bayern",
+    region=="DE-BW" ~ "Baden-Württemberg",
+    region=="DE-HB" ~ "Bremen",
+    region=="DE-HH" ~ "Hamburg",
+    region=="DE-NI" ~ "Niedersachsen",
+    region=="DE-HE" ~ "Hessen",
+    region=="DE-MV" ~ "Mecklenburg-Vorpommern",
+    region=="DE-SH" ~ "Schleswig-Holstein",
+    region=="DE-SN" ~ "Sachsen",
+    region=="DE-ST" ~ "Sachsen-Anhalt",
+    region=="DE-RP" ~ "Rheinland-Pfalz",
+    region=="DE-SL" ~ "Saarland",
+    region=="DE-NW" ~ "Nordrhein-Westfalen",
+    region=="DE-TH" ~ "Thüringen",
     TRUE ~ region
   ))
 
 neuinfektionen_plus_vektor <- rki_neuinfekte %>% 
   left_join(auffrischen,
-            by=c("jahrmonat", "Bundesland"="region"))
+            by=c("jahrmonat", "Bundesland"="region")) %>% 
+  mutate(summe_jjazbntmod_auffrischen=jj_auffrischen +
+           az_auffrischen +
+           bnt_auffrischen +
+           mod_auffrischen)
 
 write_csv(neuinfektionen_plus_vektor, "data/auffrischen.csv")
 library(openxlsx)
