@@ -68,6 +68,12 @@ rki_vacc <- rki_vacc %>%
   mutate(geo=ifelse(region=="DE", "Germany", geo),
          geotype=ifelse(region=="DE", "nation", "state"))
 
+### bevölkerung
+destatis_pop_by_state <- read_csv("data/destatis_pop_by_state.csv")
+pop_bev <- destatis_pop_by_state %>% 
+  group_by(Bundesland) %>% 
+  summarise(pop=sum(pop))
+
 ####
 rki_neuinfekte <- rki %>% 
   mutate(Meldedatum=as_date(Meldedatum),
@@ -81,13 +87,133 @@ rki_neuinfekte <- rki %>%
   group_by(Bundesland, jahrmonat) %>% 
   summarise(AnzahlFall=sum(AnzahlFall))
 
+auffrischen_september <- rki_vacc %>% 
+  filter(metric %in% c("personen_voll_kumulativ",
+                       "indikation_beruf_voll",
+                       "indikation_pflegeheim_voll",
+                       "indikation_medizinisch_voll",
+                       "indikation_alter_voll") &
+           date>="2021-03-02" &
+           date<="2021-08-01") %>% 
+  pivot_wider(id_cols=c("date", "region"),
+              names_from="metric",
+              values_from="value") %>% 
+  group_by(region) %>%
+  arrange(date) %>% 
+  mutate(new_alle_voll=c(personen_voll_kumulativ[1], 
+                         diff(personen_voll_kumulativ)),
+         new_beruf_voll=c(indikation_beruf_voll[1], 
+                          diff(indikation_beruf_voll)),
+         new_pflegeheim_voll=c(indikation_pflegeheim_voll[1], 
+                               diff(indikation_pflegeheim_voll)),
+         new_medizinisch_voll=c(indikation_medizinisch_voll[1], 
+                                diff(indikation_medizinisch_voll)),
+         new_alter_voll=c(indikation_alter_voll[1], 
+                          diff(indikation_alter_voll)),
+         date_plus_6m=date + days(183), # +months(6) ... 2021-03-31 and 2021-05-31 machen probleme?
+         jahrmonat=year(date_plus_6m)*100+month(date_plus_6m)) %>% 
+  group_by(region, jahrmonat) %>% 
+  summarise(alle_auffrischen=sum(new_alle_voll),
+            beruf_auffrischen=sum(new_beruf_voll),
+            pflegeheim_auffrischen=sum(new_pflegeheim_voll),
+            medizinisch_auffrischen=sum(new_medizinisch_voll),
+            alter_auffrischen=sum(new_alter_voll),
+            alleminusberuf_auffrischen=alle_auffrischen-beruf_auffrischen,
+            summeohneberuf_auffrischen=pflegeheim_auffrischen +
+              medizinisch_auffrischen +
+              alter_auffrischen) %>% 
+  mutate(region=case_when(
+    region=="DE" ~ "Gesamt",
+    region=="DE-BE" ~ "Berlin",
+    region=="DE-BB" ~ "Brandenburg",
+    region=="DE-BY" ~ "Bayern",
+    region=="DE-BW" ~ "Baden-Württemberg",
+    region=="DE-HB" ~ "Bremen",
+    region=="DE-HH" ~ "Hamburg",
+    region=="DE-NI" ~ "Niedersachsen",
+    region=="DE-HE" ~ "Hessen",
+    region=="DE-MV" ~ "Mecklenburg-Vorpommern",
+    region=="DE-SH" ~ "Schleswig-Holstein",
+    region=="DE-SN" ~ "Sachsen",
+    region=="DE-ST" ~ "Sachsen-Anhalt",
+    region=="DE-RP" ~ "Rheinland-Pfalz",
+    region=="DE-SL" ~ "Saarland",
+    region=="DE-NW" ~ "Nordrhein-Westfalen",
+    region=="DE-TH" ~ "Thüringen",
+    TRUE ~ region
+  )) %>% 
+  select(region, jahrmonat, auffrischen=alleminusberuf_auffrischen) %>% 
+  filter(jahrmonat==202109)
 
-auffrischen <- rki_vacc %>% 
+auffrischen_oktober <- rki_vacc %>% 
+  filter(metric %in% c("personen_voll_kumulativ_alter_60plus") &
+           date>="2021-04-07" &
+           date<="2021-08-01") %>% 
+  pivot_wider(id_cols=c("date", "region"),
+              names_from="metric",
+              values_from="value") %>% 
+  group_by(region) %>%
+  arrange(date) %>% 
+  drop_na() %>% 
+  mutate(new_60plus_voll=c(personen_voll_kumulativ_alter_60plus[1], 
+                               diff(personen_voll_kumulativ_alter_60plus)),
+         date_plus_6m=date + days(183), # +months(6) ... 2021-03-31 and 2021-05-31 machen probleme?
+         jahrmonat=year(date_plus_6m)*100+month(date_plus_6m)) %>% 
+  group_by(region, jahrmonat) %>% 
+  summarise(sechzigplus_auffrischen=sum(new_60plus_voll)) %>% 
+  mutate(region=case_when(
+    region=="DE" ~ "Gesamt",
+    region=="DE-BE" ~ "Berlin",
+    region=="DE-BB" ~ "Brandenburg",
+    region=="DE-BY" ~ "Bayern",
+    region=="DE-BW" ~ "Baden-Württemberg",
+    region=="DE-HB" ~ "Bremen",
+    region=="DE-HH" ~ "Hamburg",
+    region=="DE-NI" ~ "Niedersachsen",
+    region=="DE-HE" ~ "Hessen",
+    region=="DE-MV" ~ "Mecklenburg-Vorpommern",
+    region=="DE-SH" ~ "Schleswig-Holstein",
+    region=="DE-SN" ~ "Sachsen",
+    region=="DE-ST" ~ "Sachsen-Anhalt",
+    region=="DE-RP" ~ "Rheinland-Pfalz",
+    region=="DE-SL" ~ "Saarland",
+    region=="DE-NW" ~ "Nordrhein-Westfalen",
+    region=="DE-TH" ~ "Thüringen",
+    TRUE ~ region
+  )) %>% 
+  select(region, jahrmonat, auffrischen=sechzigplus_auffrischen) %>% 
+  filter(jahrmonat==202110)
+# fehlende länder imputieren:
+mean_oktober <- mean(auffrischen_oktober %>% 
+  left_join(pop_bev, by=c("region"="Bundesland")) %>% 
+  mutate(rate_region=auffrischen/pop) %>%
+  pull(rate_region))
+auffrischen_oktober <- pop_bev %>% 
+  left_join(auffrischen_oktober, 
+            by=c("Bundesland"="region")) %>% 
+  mutate(auffrischen=case_when(
+    is.na(auffrischen) ~ round(mean_oktober*pop),
+    TRUE ~ auffrischen
+  )) %>% 
+  mutate(jahrmonat=202110) %>% 
+  select(region=Bundesland, jahrmonat, auffrischen)
+auffrischen_oktober <- bind_rows(auffrischen_oktober,
+                                 tibble(
+                                   region="Gesamt",
+                                   jahrmonat=202110,
+                                   auffrischen=sum(auffrischen_oktober$auffrischen)
+                                 )) %>% 
+  left_join(auffrischen_september %>% 
+              select(region, september=auffrischen), by="region") %>% 
+  mutate(auffrischen=auffrischen-september) %>% 
+  select(region, jahrmonat, auffrischen)
+
+auffrischen_november <- rki_vacc %>% 
   filter(metric %in% c("personen_voll_astrazeneca_kumulativ",
                        "personen_voll_janssen_kumulativ",
                        "personen_voll_biontech_kumulativ",
                        "personen_voll_moderna_kumulativ") &
-           date>="2021-03-01" &
+           date>="2021-03-02" &
            date<="2021-08-01") %>% 
   pivot_wider(id_cols=c("date", "region"),
               names_from="metric",
@@ -128,17 +254,19 @@ auffrischen <- rki_vacc %>%
     region=="DE-NW" ~ "Nordrhein-Westfalen",
     region=="DE-TH" ~ "Thüringen",
     TRUE ~ region
-  ))
+  )) %>% 
+  mutate(auffrischen=jj_auffrischen+az_auffrischen) %>% 
+  filter(jahrmonat>=202111) %>% 
+  select(region, jahrmonat, auffrischen)
 
-neuinfektionen_plus_vektor <- rki_neuinfekte %>% 
-  left_join(auffrischen,
-            by=c("jahrmonat", "Bundesland"="region")) %>% 
-  mutate(summe_jjazbntmod_auffrischen=jj_auffrischen +
-           az_auffrischen +
-           bnt_auffrischen +
-           mod_auffrischen)
+ausblick_auffrischen <- bind_rows(auffrischen_september,
+                                  auffrischen_oktober,
+                                  auffrischen_november) %>% 
+  pivot_wider(id_cols = region,
+              names_from=jahrmonat,
+              values_from=auffrischen)
 
-write_csv(neuinfektionen_plus_vektor, "data/auffrischen.csv")
+write_csv(ausblick_auffrischen, "data/auffrischen.csv")
 library(openxlsx)
-write.xlsx(neuinfektionen_plus_vektor, "data/auffrischen.xlsx",
+write.xlsx(ausblick_auffrischen, "data/auffrischen.xlsx",
            overwrite=TRUE)
