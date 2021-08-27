@@ -193,7 +193,7 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 2)
 rki_hosp_age <- read_excel(destfile_rkihosp,
                                   sheet = 3,
-                                  skip = 8)
+                                  skip = 5)
 # Attention: BUG RKI
 rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
 
@@ -873,11 +873,12 @@ rki_agg_kw_ag <- rki %>%
             .groups="drop")
 
 agg_anteil_ag <- rki_hosp_age %>%
-  pivot_longer(cols=`A00..04`:`A80+`, names_to = "Altersgruppe",
+  pivot_longer(cols=`Fälle A00..04`:`Fälle A80+`, names_to = "Altersgruppe",
                values_to="AnzahlHosp") %>%
   select(Meldejahr, Meldewoche, YearKW,
          Altersgruppe, AnzahlHosp) %>%
-  mutate(Altersgruppe=str_replace(Altersgruppe, fixed(".."), "-A")) %>%
+  mutate(Altersgruppe=str_replace(Altersgruppe, fixed(".."), "-A"),
+         Altersgruppe=str_replace(Altersgruppe, fixed("Fälle "), "")) %>%
   left_join(rki_agg_kw_ag,
             by=c("YearKW", "Altersgruppe")) %>%
   mutate(Anteil_an_FaelleAG=AnzahlHosp/AnzahlFaelle) %>%
@@ -895,20 +896,20 @@ hosp_ag_tabelle <- tibble(
   ),
   Vorwoche = c(
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      summarise(Faellegesamt=sum(across(`A00..04`:`A80+`))) %>%
+      summarise(Faellegesamt=sum(across(`Fälle A00..04`:`Fälle A80+`))) %>%
       pull(Faellegesamt),
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      pull(`A00..04`),
+      pull(`Fälle A00..04`),
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      pull(`A05..14`),
+      pull(`Fälle A05..14`),
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      pull(`A15..34`),
+      pull(`Fälle A15..34`),
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      pull(`A35..59`),
+      pull(`Fälle A35..59`),
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      pull(`A60..79`),
+      pull(`Fälle A60..79`),
     rki_hosp_age %>% filter(YearKW==hosp_age_beforeweek) %>%
-      pull(`A80+`)
+      pull(`Fälle A80+`)
   ),
   VorwocheAnteil = c(
     agg_anteil_ag %>% filter(YearKW==hosp_age_beforeweek) %>%
@@ -935,20 +936,20 @@ hosp_ag_tabelle <- tibble(
   ),
   dieseWoche = c(
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      summarise(Faellegesamt=sum(across(`A00..04`:`A80+`))) %>%
+      summarise(Faellegesamt=sum(across(`Fälle A00..04`:`Fälle A80+`))) %>%
       pull(Faellegesamt),
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      pull(`A00..04`),
+      pull(`Fälle A00..04`),
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      pull(`A05..14`),
+      pull(`Fälle A05..14`),
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      pull(`A15..34`),
+      pull(`Fälle A15..34`),
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      pull(`A35..59`),
+      pull(`Fälle A35..59`),
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      pull(`A60..79`),
+      pull(`Fälle A60..79`),
     rki_hosp_age %>% filter(YearKW==hosp_age_thisweek) %>%
-      pull(`A80+`)
+      pull(`Fälle A80+`)
   ),
   dieseWocheAnteil = c(
     agg_anteil_ag %>% filter(YearKW==hosp_age_thisweek) %>%
