@@ -71,25 +71,25 @@ bev_gesamt_laender <- bind_rows(
 )
 
 ## Impfungen laut RKI
-rki_vacc <- tryCatch(
-  {
-    mytemp <- tempfile()
-    rki_vacc_data <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/all.csv"
-    download.file(rki_vacc_data, mytemp, method = "curl")
-    vacc_zahlen <- read_csv(mytemp)
-    if (dim(vacc_zahlen)[2] != 5){
-      stop("they changed the vacc table")
-    } else {
-      write_csv(vacc_zahlen, "./data/vacc_zahlen_ard.csv")
-      vacc_zahlen
-    }
-  },
-  error=function(e) {
-    # read old data
+rki_vacc <- # tryCatch(
+#   {
+#     mytemp <- tempfile()
+#     rki_vacc_data <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/all.csv"
+#     download.file(rki_vacc_data, mytemp, method = "curl")
+#     vacc_zahlen <- read_csv(mytemp)
+#     if (dim(vacc_zahlen)[2] != 5){
+#       stop("they changed the vacc table")
+#     } else {
+#       write_csv(vacc_zahlen, "./data/vacc_zahlen_ard.csv")
+#       vacc_zahlen
+#     }
+#   },
+#   error=function(e) {
+#     # read old data
     vacc_zahlen <- read_csv("./data/vacc_zahlen_ard.csv")
-    return(vacc_zahlen)
-  }
-)
+#     return(vacc_zahlen)
+#   }
+# )
 rki_vacc <- rki_vacc %>% 
   mutate(region=ifelse(region=="DE", "DE", paste0("DE-", region))) %>% 
   left_join(ISOcodes::ISO_3166_2 %>% 

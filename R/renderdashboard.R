@@ -38,6 +38,7 @@ if (DashboardStand<RepoStand) {
     }
   )
   write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
+  source("generatedata_impfindex.R")
 }
 
 
@@ -68,6 +69,7 @@ if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
                   " Uhr"))
   DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
   write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
+  source("generatedata_impfindex.R")
 }
 
 DBI::dbDisconnect(conn)
