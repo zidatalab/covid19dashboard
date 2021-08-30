@@ -14,7 +14,7 @@ impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publ
 
 ## static Bevoelkerung
 bev_kreise <- read_delim(
-  "data/destatis_12411-0017_rein_2019.csv", 
+  "../data/destatis_12411-0017_rein_2019.csv", 
   ";", 
   escape_double = FALSE,
   col_types = cols(Schlüssel = col_integer(), 
@@ -86,7 +86,7 @@ rki_vacc <- # tryCatch(
 #   },
 #   error=function(e) {
 #     # read old data
-    vacc_zahlen <- read_csv("./data/vacc_zahlen_ard.csv")
+    vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
 #     return(vacc_zahlen)
 #   }
 # )
@@ -237,7 +237,7 @@ sum(dosen_verabreicht %>% filter(geo=="Gesamt") %>%
 dosen_verabreicht <- dosen_verabreicht %>% 
   select(-population, -lager)
 
-write_json(dosen_verabreicht, "data/tabledata/impfsim_start.json")
+write_json(dosen_verabreicht, "../data/tabledata/impfsim_start.json")
 
 # für impfindex
 fuerpraxen <- impfdashboardde %>% 
@@ -266,7 +266,7 @@ fuerpraxen <-
               summarise(Lieferung_Praxen=sum(Lieferung_Praxen),
                         .groups="drop") %>% 
               mutate(geo="Gesamt"))
-write_json(fuerpraxen, "data/tabledata/impfsim_lieferungenpraxen.json")
+write_json(fuerpraxen, "../data/tabledata/impfsim_lieferungenpraxen.json")
 
 fuerimpfzentren <- impfdashboardde %>% 
   filter(einrichtung=="impfzentren") %>%
@@ -294,7 +294,7 @@ fuerimpfzentren <-
               summarise(Lieferung_IZ=sum(Lieferung_IZ),
                         .groups="drop") %>% 
               mutate(geo="Gesamt"))
-write_json(fuerimpfzentren, "data/tabledata/impfsim_lieferungenimpfzentren.json")
+write_json(fuerimpfzentren, "../data/tabledata/impfsim_lieferungenimpfzentren.json")
 
 # impfungen in impfzentren nach ländern
 impfungen_praxen_bl_kw <- impfungen_praxen_bl %>% 
@@ -346,7 +346,7 @@ iz_vergangen_laender <- rki_vacc %>%
 #   arrange(JahrKW) %>% 
 #   group_by(geo) %>% 
 #   mutate(Impfungen_IZ=Impfungen_IZ_kum-lag(Impfungen_IZ_kum, default=0))
-write_json(iz_vergangen_laender, "data/tabledata/impfsim_impfungenimpfzentren_historisch.json")
+write_json(iz_vergangen_laender, "../data/tabledata/impfsim_impfungenimpfzentren_historisch.json")
 
 # tabelle für SZ
 erstzweit_gesamt <- tibble(
@@ -375,4 +375,4 @@ for (i in 3:7) {
 }
 erstzweit_gesamt$Vollgeimpft[8] <- erstzweit_gesamt$Erstgeimpft[8]
 
-write_csv(erstzweit_gesamt, "data/tabledata/aktuelle_kapazitaet_erstzweit.csv") # [1:finalrow, ]
+write_csv(erstzweit_gesamt, "../data/tabledata/aktuelle_kapazitaet_erstzweit.csv") # [1:finalrow, ]
