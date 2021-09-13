@@ -824,7 +824,8 @@ vacc_gesamt <- rki_vacc_complete %>%
   filter(metric=="personen_erst_kumulativ" | 
            metric=="personen_voll_kumulativ" |
            metric=="dosen_kumulativ" | 
-           metric=="dosen_janssen_kumulativ") %>%
+           metric=="dosen_janssen_kumulativ" |
+           metric=="personen_auffr_kumulativ") %>%
   filter(date==max(date)) %>%
   left_join(aktuell %>% 
               select(geo=name, population=EW_insgesamt) %>% 
@@ -865,6 +866,7 @@ vacc_alle_faktenblatt <- vacc_alle %>%
   mutate(quote_gesamt=(value_personen_erst_kumulativ+value_dosen_janssen_kumulativ)/population_personen_erst_kumulativ,
          quote_unvollst_gesamt=(value_personen_erst_kumulativ-value_personen_voll_kumulativ+value_dosen_janssen_kumulativ)/population_personen_erst_kumulativ,
          quote_vollst_gesamt=(value_personen_voll_kumulativ)/population_personen_voll_kumulativ,
+         quote_auffr_gesamt=(value_personen_auffr_kumulativ)/population_personen_voll_kumulativ,
          # quote_initial_alter_60m=(`value_personen_erst_kumulativ_impfstelle_zentral_alter_unter60`+`value_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`)/`population_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`,
          # quote_vollst_alter_60m=(`value_personen_voll_kumulativ_impfstelle_zentral_alter_unter60`+`value_personen_voll_kumulativ_impfstelle_aerzte_alter_unter60`)/`population_personen_erst_kumulativ_impfstelle_aerzte_alter_unter60`,
          # quote_initial_alter_60p=(`value_personen_erst_kumulativ_impfstelle_zentral_alter_60plus`+`value_personen_erst_kumulativ_impfstelle_aerzte_alter_60plus`)/`population_personen_erst_kumulativ_impfstelle_zentral_alter_60plus`,
@@ -878,12 +880,13 @@ vacc_table <- vacc_alle_faktenblatt %>%
          # "Alter <60 vollst."=ifelse(is.na(quote_vollst_alter_60m), "k.A.", format(round(100*quote_vollst_alter_60m, 1), decimal.mark=",")),
          "Gesamt min. 1x"=ifelse(is.na(quote_gesamt), "k.A.", format(round(100*quote_gesamt, 1), decimal.mark=",")),
          "Gesamt vollst."=ifelse(is.na(quote_vollst_gesamt), "k.A.", format(round(100*quote_vollst_gesamt, 1), decimal.mark=",")),
+         "Gesamt Auffr."=ifelse(is.na(quote_auffr_gesamt), "k.A.", format(round(100*quote_auffr_gesamt, 1), decimal.mark=",")),
          "Impfungen pro 100k EW"=format(round(impfungen_gesamt/population_personen_erst_kumulativ*100000), decimal.mark=",")
   ) %>%
   select(Bundesland, "Impfungen pro 100k EW", 
          # "Alter 60+ min. 1x", "Alter 60+ vollst.",
          # "Alter <60 min. 1x", "Alter <60 vollst.",
-         "Gesamt min. 1x", "Gesamt vollst.")
+         "Gesamt min. 1x", "Gesamt vollst.", "Gesamt Auffr.")
 ## data for table on subpage Bundeslaender
 bundeslaender_table <- vorwarnzeitergebnis %>%
   filter(id<17 & date==maxdatum) %>%
@@ -982,7 +985,7 @@ vacc_table_faktenblatt_new <- vacc_table %>%
               filter(id<17 & date==maxdatum) %>% 
               select(id, `7-Tage-Inzidenz 60+`=`Faelle_letzte_7_Tage_je100TsdEinw_60+`),
             by="id") %>% 
-  select(Bundesland, `Gesamt min. 1x`, "Gesamt vollst.", 
+  select(Bundesland, `Gesamt min. 1x`, "Gesamt vollst.", "Gesamt Auffr.", 
          `7-Tage-Inzidenz`, `7-Tage-Inzidenz 60+`)
 
 rki_vacc_vortag <- max(rki_vacc %>% filter(date<max(date)) %>% pull(date)) 

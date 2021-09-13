@@ -53,7 +53,7 @@ Stand Zi-Dashboard: `r format(now(),format="%d.%m.%Y %H:%M Uhr")`
 
 Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand DIVI-Intensivregister: `r format(as_date(max(divi$daten_stand, na.rm = TRUE)),format="%d.%m.%Y")`; Stand Impfdaten (RKI): `r format(as_date(max(rki_vacc$date, na.rm = TRUE))+1,format="%d.%m.%Y")`.
 
-Das Zi stellt auch ein Online-Tool zur Modellierung des Impffortschritts bereit, dieses Tool finden Sie [hier](https://www.zidatasciencelab.de/cov19vaccsim/).
+Das Zi stellt auch ein Online-Tool zur Abbildung des Impffortschritts nach Impfort bereit, dieses Tool finden Sie [hier](https://www.zidatasciencelab.de/covidimpfindex/).
 
 Row 
 ------------------------------------------------------------------------
