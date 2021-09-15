@@ -1186,6 +1186,7 @@ hersteller_table <- tibble(
     "Booster",
     "geliefert",
     "Johnson&Johnson",
+    "Einzeldosisimpfung",
     "Booster",
     "geliefert"
   ),
@@ -1206,6 +1207,7 @@ hersteller_table <- tibble(
     0,#hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_astrazeneca_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
     hersteller_brd_vorwoche %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value),
+    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_janssen_kumulativ") %>% pull(value),
     0,#hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_janssen_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   ),
@@ -1226,6 +1228,7 @@ hersteller_table <- tibble(
     hersteller_brd %>% filter(metric=="personen_auffr_astrazeneca_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value),
+    hersteller_brd %>% filter(metric=="personen_voll_janssen_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_auffr_janssen_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   )
