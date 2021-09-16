@@ -97,6 +97,40 @@ vorwarnzeit_berechnen_AG <- function(ngesamt, cases, akutinfiziert, icubelegt,
   }
   return(myresult)
 }
+vorwarnzeit_berechnen_AG2 <- function(ngesamt, cases, akutinfiziert, icubelegt, 
+                                     Kapazitaet_Betten, Rt=1.3, 
+                                     icurate_altersgruppen){
+  # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 2 (AG 0-59, 60+)
+  if (is.na(Kapazitaet_Betten)) { # no divi date for this date or kreis 
+    myresult <- NA
+  } else {
+    gamma <- 1/infektperiode # contagious period
+    delta <- 1/infekt2icudays # iculag # time till icu
+    nu <- 1/icu_days # time in icu
+    infected <- akutinfiziert-icubelegt
+    recovered <- cases-infected-icubelegt
+    mysir_AG <- vector("list", 2)
+    for (i in 1:2) {
+      mysir <- sihrmodel(ngesamt = ngesamt[i],
+                         S = ngesamt[i] - infected[i] - icubelegt[i] - recovered[i],
+                         I = infected[i],
+                         H=icubelegt[i],
+                         R = recovered[i],
+                         R0 = Rt,
+                         gamma = gamma,
+                         qa = icurate_altersgruppen[i],
+                         delta = delta,
+                         nu = nu,
+                         horizont = 180) %>% mutate(Neue_ICU_Faelle=H-lag(H))
+      mysir_AG[[i]] <- mysir
+    }
+    myresult <- (mysir_AG[[1]]+mysir_AG[[2]]) %>% 
+      mutate(Tage=row_number()-1) %>% filter(H>=Kapazitaet_Betten) %>%
+      head(1) %>% pull(Tage)
+    myresult <- ifelse(is_empty(myresult), NA, myresult)
+  }
+  return(myresult)
+}
 
 projektion_datum <- function(STI_aktuell, STI_Ziel=50, Rt=0.7, tage_infektioes=5) {
   if (STI_aktuell<=STI_Ziel) {
