@@ -296,6 +296,37 @@ fuerimpfzentren <-
               mutate(geo="Gesamt"))
 write_json(fuerimpfzentren, "../data/tabledata/impfsim_lieferungenimpfzentren.json")
 
+fuerandere <- impfdashboardde %>% 
+  filter(einrichtung=="bund" | einrichtung=="betriebe") %>%
+  mutate(
+    geo=ifelse(region=="DE-BUND", "Bund", geo),
+    geo=ifelse(region=="DE-Betriebe", "Betriebe", geo),
+    Hersteller=case_when(
+      impfstoff=="comirnaty" ~ "BNT/Pfizer",
+      impfstoff=="moderna" ~ "Moderna",
+      impfstoff=="astra" ~ "AZ",
+      impfstoff=="johnson" ~ "J&J",
+      TRUE ~ "error"),
+    KW=isoweek(date),
+    wochentag=wday(date, week_start = 1),
+    KW=ifelse(wochentag>=5, KW+1, KW),
+    Jahr=year(date)
+  ) %>% 
+  # filter(region!="Zentren_Bund") %>%
+  group_by(Hersteller, KW, Jahr, geo) %>% 
+  summarise(Lieferung_Bund_oder_Betriebe=sum(dosen),
+            .groups="drop")
+
+fuerandere <- 
+  bind_rows(fuerandere,
+            fuerandere %>%
+              group_by(Hersteller, KW, Jahr) %>% 
+              summarise(Lieferung_Bund_oder_Betriebe=sum(Lieferung_Bund_oder_Betriebe),
+                        .groups="drop") %>% 
+              mutate(geo="Gesamt"))
+write_json(fuerandere, "../data/tabledata/impfsim_lieferungenandere.json")
+
+
 # impfungen in impfzentren nach ländern
 impfungen_praxen_bl_kw <- impfungen_praxen_bl %>% 
   mutate(KW=isoweek(date), Jahr=ifelse(KW==53, 2020, year(date)), 
