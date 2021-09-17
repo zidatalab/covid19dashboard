@@ -1086,7 +1086,7 @@ fortschritt_table <- tibble(
   "Impffortschritt"=c(
     "Impfungen pro Woche",
     "Gesamt",
-    "davon in Impfzentren",
+    "davon in Impfzentren und Betrieben",
     "davon in ärztl. Praxen"
   ),
   "Vorwoche"=c(
@@ -1094,9 +1094,9 @@ fortschritt_table <- tibble(
     impfdax_data %>% filter(JahrKW==vorimpfkw) %>% 
       pull(`Anzahl_Impfungen Arztpraxen`) +
       impfdax_data %>% filter(JahrKW==vorimpfkw) %>%
-      pull(`Anzahl_Impfungen Impfzentren`),
+      pull(`Anzahl_Impfungen Impfzentren_und_Betriebe`),
     impfdax_data %>% filter(JahrKW==vorimpfkw) %>% 
-      pull(`Anzahl_Impfungen Impfzentren`),
+      pull(`Anzahl_Impfungen Impfzentren_und_Betriebe`),
     impfdax_data %>% filter(JahrKW==vorimpfkw) %>% 
       pull(`Anzahl_Impfungen Arztpraxen`)
   ),
@@ -1105,9 +1105,9 @@ fortschritt_table <- tibble(
     impfdax_data %>% filter(JahrKW==impfkw) %>% 
       pull(`Anzahl_Impfungen Arztpraxen`) +
       impfdax_data %>% filter(JahrKW==impfkw) %>%
-      pull(`Anzahl_Impfungen Impfzentren`),
+      pull(`Anzahl_Impfungen Impfzentren_und_Betriebe`),
     impfdax_data %>% filter(JahrKW==impfkw) %>% 
-      pull(`Anzahl_Impfungen Impfzentren`),
+      pull(`Anzahl_Impfungen Impfzentren_und_Betriebe`),
     impfdax_data %>% filter(JahrKW==impfkw) %>% 
       pull(`Anzahl_Impfungen Arztpraxen`)
   )
