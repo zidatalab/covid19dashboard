@@ -540,7 +540,18 @@ impfquoten_voll <- rki_vacc %>%
   pivot_wider(id_cols=c(date, geo), names_from = metric, values_from = value) %>% 
   left_join(aktuell %>% 
               select(name, id),
-            by=c("geo"="name"))
+            by=c("geo"="name")) %>% 
+  group_by(geo) %>% 
+  arrange(date) %>% 
+  mutate(impf_quote_voll=lag(impf_quote_voll, 14),
+         impf_quote_voll_alter_60plus=lag(impf_quote_voll_alter_60plus, 14)) %>% 
+  ungroup() %>% 
+  mutate(impf_quote_voll=ifelse(is.na(impf_quote_voll), 0, impf_quote_voll),
+         impf_quote_voll_alter_60plus=ifelse(
+           is.na(impf_quote_voll_alter_60plus),
+           0,
+           impf_quote_voll_alter_60plus
+         ))
 
 ausgangsdaten <- letzte_7_tage %>%
   left_join(., divi_all %>%
