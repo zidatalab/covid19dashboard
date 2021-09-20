@@ -533,25 +533,16 @@ blid_id <- rki %>% select(IdBundesland, IdLandkreis) %>%
 
 impfquoten_voll <- rki_vacc %>% 
   filter(metric %in% c("impf_quote_voll_alter_60plus", "impf_quote_voll")) %>% 
-  arrange(desc(date), region) %>% 
+  group_by(region) %>% 
+  arrange(desc(date), .by_group = TRUE) %>% 
   fill(value) %>% 
+  ungroup() %>% 
   select(date, metric, geo, value) %>% 
   mutate(geo=ifelse(geo=="Germany", "Gesamt", geo)) %>% 
   pivot_wider(id_cols=c(date, geo), names_from = metric, values_from = value) %>% 
   left_join(aktuell %>% 
               select(name, id),
-            by=c("geo"="name")) %>% 
-  group_by(geo) %>% 
-  arrange(date) %>% 
-  mutate(impf_quote_voll=lag(impf_quote_voll, 14),
-         impf_quote_voll_alter_60plus=lag(impf_quote_voll_alter_60plus, 14)) %>% 
-  ungroup() %>% 
-  mutate(impf_quote_voll=ifelse(is.na(impf_quote_voll), 0, impf_quote_voll),
-         impf_quote_voll_alter_60plus=ifelse(
-           is.na(impf_quote_voll_alter_60plus),
-           0,
-           impf_quote_voll_alter_60plus
-         ))
+            by=c("geo"="name"))
 
 ausgangsdaten <- letzte_7_tage %>%
   left_join(., divi_all %>%
@@ -587,8 +578,15 @@ ausgangsdaten <- letzte_7_tage %>%
          cases60p=cases6079+cases80) %>% 
   left_join(blid_id, by=c("id"="IdLandkreis")) %>% 
   left_join(impfquoten_voll, by=c("IdBundesland"="id", "date")) %>% 
-  arrange(id, desc(date)) %>% 
+  group_by(id) %>% 
+  arrange(desc(date), .by_group = TRUE) %>% 
   fill(geo, impf_quote_voll, impf_quote_voll_alter_60plus) %>% 
+  ungroup() %>% 
+  group_by(geo) %>% 
+  arrange(date) %>% 
+  mutate(impf_quote_voll=lag(impf_quote_voll, 14),
+         impf_quote_voll_alter_60plus=lag(impf_quote_voll_alter_60plus, 14)) %>% 
+  ungroup() %>% 
   mutate(periode=case_when(
     date>="2020-01-01" & date<="2020-03-31" ~ 1,
     date>="2020-04-01" & date<="2020-04-30" ~ 2,
@@ -602,14 +600,26 @@ ausgangsdaten <- letzte_7_tage %>%
   mutate(`ueber 60`=(`60-80`*EW6079+`ueber 80`*EW80)/(EW6079+EW80)) %>% 
   mutate(impf_quote_voll_alter_60minus=(impf_quote_voll*(EW059+EW60p)-impf_quote_voll_alter_60plus*EW60p)/EW059) %>% 
   mutate(icurate_mitgeimpften_60minus= `bis 60`*(1-0.9*impf_quote_voll_alter_60minus/100),
-         icurate_mitgeimpften_60plus=`ueber 60`*(1-0.9*impf_quote_voll_alter_60plus/100))
+         icurate_mitgeimpften_60plus=`ueber 60`*(1-0.9*impf_quote_voll_alter_60plus/100)) %>% 
+  group_by(id) %>% 
+  arrange(date, .by_group = TRUE) %>% 
+  fill(geo,
+       impf_quote_voll, 
+       impf_quote_voll_alter_60plus, impf_quote_voll_alter_60minus, 
+       icurate_mitgeimpften_60minus, icurate_mitgeimpften_60plus) %>% 
+  ungroup() %>% 
+  mutate(impf_quote_voll=ifelse(is.na(impf_quote_voll), 0, impf_quote_voll),
+         impf_quote_voll_alter_60plus=ifelse(
+           is.na(impf_quote_voll_alter_60plus),
+           0,
+           impf_quote_voll_alter_60plus
+         ))
 
 
 ausgangsdaten_ror <- ausgangsdaten %>%
   inner_join(., kreise_ror %>%
                mutate(krs17=ifelse(krs17==11000, 11, 1000*krs17)),
              by=c("id"="krs17")) %>%
-  filter(date%in%c(maxdatum, lastsunday, sundaybeforelastsunday)) %>%
   group_by(ROR11, date) %>%
   summarise(EW059=sum(EW059, na.rm = TRUE),
             EW6079=sum(EW6079, na.rm = TRUE),
@@ -628,8 +638,16 @@ ausgangsdaten_ror <- ausgangsdaten %>%
          Infected60p=Infected6079+Infected80,
          cases60p=cases6079+cases80) %>% 
   left_join(impfquoten_voll, by=c("IdBundesland"="id", "date")) %>% 
-  arrange(IdBundesland, desc(date)) %>% 
+  group_by(ROR11) %>% 
+  arrange(desc(date), .by_group = TRUE) %>% 
   fill(geo, impf_quote_voll, impf_quote_voll_alter_60plus) %>% 
+  ungroup() %>% 
+  group_by(ROR11) %>% 
+  arrange(date, .by_group = TRUE) %>% 
+  mutate(impf_quote_voll=lag(impf_quote_voll, 14),
+         impf_quote_voll_alter_60plus=lag(impf_quote_voll_alter_60plus, 14)) %>% 
+  ungroup() %>% 
+  filter(date%in%c(maxdatum, lastsunday, sundaybeforelastsunday)) %>%
   mutate(periode=case_when(
     date>="2020-01-01" & date<="2020-03-31" ~ 1,
     date>="2020-04-01" & date<="2020-04-30" ~ 2,
@@ -643,7 +661,21 @@ ausgangsdaten_ror <- ausgangsdaten %>%
   mutate(`ueber 60`=(`60-80`*EW6079+`ueber 80`*EW80)/(EW6079+EW80)) %>% 
   mutate(impf_quote_voll_alter_60minus=(impf_quote_voll*(EW059+EW60p)-impf_quote_voll_alter_60plus*EW60p)/EW059) %>% 
   mutate(icurate_mitgeimpften_60minus= `bis 60`*(1-0.9*impf_quote_voll_alter_60minus/100),
-         icurate_mitgeimpften_60plus=`ueber 60`*(1-0.9*impf_quote_voll_alter_60plus/100))
+         icurate_mitgeimpften_60plus=`ueber 60`*(1-0.9*impf_quote_voll_alter_60plus/100)) %>% 
+  group_by(ROR11) %>% 
+  arrange(date, .by_group = TRUE) %>% 
+  fill(geo,
+       impf_quote_voll, 
+       impf_quote_voll_alter_60plus, impf_quote_voll_alter_60minus, 
+       icurate_mitgeimpften_60minus, icurate_mitgeimpften_60plus) %>% 
+  ungroup() %>% 
+  mutate(impf_quote_voll=ifelse(is.na(impf_quote_voll), 0, impf_quote_voll),
+         impf_quote_voll_alter_60plus=ifelse(
+           is.na(impf_quote_voll_alter_60plus),
+           0,
+           impf_quote_voll_alter_60plus
+         ))
+
 ## berechne vorwarnzeit
 myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
                                      (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
