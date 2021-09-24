@@ -39,7 +39,7 @@ gelieferte_dosen <- read_json("../data/tabledata/impfsim_start.json",
                               simplifyVector = TRUE) %>% 
   filter(geo=="Gesamt")
 impfen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv") %>% 
-  select(-X1) %>%
+  select(-1) %>%
   mutate(KW=isoweek(date)) %>% 
   group_by(KW, Bundesland) %>% 
   summarise(Impfungen=sum(`Ad26.COV2.S`+`AZD1222`+`BNT162b2`+`mRNA-1273`))
@@ -185,6 +185,8 @@ eumapping <- tibble(english=c(
 )
 
 almev <- read_csv("../data/almev.csv")
+
+rki_hosp_inzidenz <- read_csv("../data/rki_hosp_inzidenz.csv")
 
 # # rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 # 
@@ -705,7 +707,10 @@ rwert7ti <- tibble(
     "- Davon 15-bis-34-Jährige",
     "- Davon 35-bis-59-Jährige",
     "- Davon 60-bis-79-Jährige",
-    "- Davon Über-80-Jährige"#,
+    "- Davon Über-80-Jährige",
+    "Neue hospitalisierte Fälle je 100.000 EW in 7 Tagen:",
+    "Gesamtbevölkerung",
+    "- Davon über 60-Jährige"#,
     # "Regionen mit 7-TI bei Über-60-Jährigen:",
     # "> 35",
     # "> 50"#,
@@ -721,7 +726,10 @@ rwert7ti <- tibble(
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)#,
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
+    NA,
+    rki_hosp_inzidenz %>% filter(date==maxdate-days(7)+1) %>% pull(hospinzidenz_gesamt),
+    rki_hosp_inzidenz %>% filter(date==maxdate-days(7)+1) %>% pull(hospinzidenz_ue60)#,
     # NA,
     # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
     # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
@@ -737,7 +745,10 @@ rwert7ti <- tibble(
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`))#,
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
+    NA,
+    rki_hosp_inzidenz %>% filter(date==maxdate+1) %>% pull(hospinzidenz_gesamt),
+    rki_hosp_inzidenz %>% filter(date==maxdate+1) %>% pull(hospinzidenz_ue60)#,
     # NA,
     # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
     # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
