@@ -30,7 +30,7 @@ In der untenstehenden Tabelle sind die entsprechenden Anteile in Prozent für di
 
 Stand Impfdaten (RKI): `r format(as_date(max(rki_vacc$date, na.rm = TRUE))+1,format="%d.%m.%Y")`.
 
-Das Zi stellt auch ein Online-Tool zur Modellierung des Impffortschritts bereit, dieses Tool finden Sie [hier](https://www.zidatasciencelab.de/cov19vaccsim/).
+Das Zi stellt auch ein Online-Tool zur Darstellung der Impfungen in Praxen und an anderen Impforten bereit, dieses Tool finden Sie [hier](https://www.zidatasciencelab.de/covidimpfindex/).
 
 Row
 -----------------------------------------------------------------------
