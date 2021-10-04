@@ -6,7 +6,7 @@ library(ISOcodes)
 
 ## impfungen in praxen nach bundeslaendern von lars
 impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv") %>% 
-  select(-X1) %>% 
+  select(-1) %>% 
   rename(`BNT/Pfizer`=`BNT162b2`,
          `Moderna`=`mRNA-1273`,
          `AZ`=`AZD1222`,
@@ -407,3 +407,4 @@ for (i in 3:7) {
 erstzweit_gesamt$Vollgeimpft[8] <- erstzweit_gesamt$Erstgeimpft[8]
 
 write_csv(erstzweit_gesamt, "../data/tabledata/aktuelle_kapazitaet_erstzweit.csv") # [1:finalrow, ]
+
