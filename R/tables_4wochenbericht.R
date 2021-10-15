@@ -1,6 +1,6 @@
 # manual updates:
 # almev.csv tuesdays from https://www.alm-ev.de/aktuell/corona-themenseite/datenerhebung-alm-ev/
-# rki_ifsg.csv ifsg 23 and 36 data from rki situationsbericht last sunday and sunday before
+# rki_hosp_inzidenz.csv from rki situationsbericht last monday and monday before
 ##### Packages
 library(DT)
 library(DBI)
@@ -622,10 +622,10 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
   arrange(Meldedatum,Altersgruppe) %>% collect() %>%
-  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
-         Altersgruppe=case_when(Altersgruppe %in% c("00-04","05-14") ~ "0-14",
-                                TRUE ~ Altersgruppe
-                                )
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")#,
+         # Altersgruppe=case_when(Altersgruppe %in% c("00-04","05-14") ~ "0-14",
+         #                        TRUE ~ Altersgruppe
+         #                        )
          ) %>%
   group_by(Meldedatum, Altersgruppe) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
@@ -638,14 +638,20 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   mutate(date=date(Meldedatum)) %>%
   filter(date>=maxdate-6 & date<=maxdate) %>%
-  summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-14`),
+  summarise(#`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-14`),
+            `Faelle_letzte_7_Tage_0-4`=sum(`Fälle_00-04`),
+            `Faelle_letzte_7_Tage_5-14`=sum(`Fälle_05-14`),
             `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
             `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
   bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
-  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=
-           round(`Faelle_letzte_7_Tage_0-14`/((bund_regstat_alter$ag_1+bund_regstat_alter$ag_2)/100000)),
+  mutate(#`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=
+         #  round(`Faelle_letzte_7_Tage_0-14`/((bund_regstat_alter$ag_1+bund_regstat_alter$ag_2)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_0-4`=
+           round(`Faelle_letzte_7_Tage_0-4`/((bund_regstat_alter$ag_1)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_5-14`=
+           round(`Faelle_letzte_7_Tage_5-14`/((bund_regstat_alter$ag_2)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_15-34`=
            round(`Faelle_letzte_7_Tage_15-34`/(bund_regstat_alter$ag_3/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_35-59`=
@@ -663,10 +669,10 @@ vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>%
   summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
             AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
   arrange(Meldedatum,Altersgruppe) %>% collect() %>%
-  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
-         Altersgruppe=case_when(Altersgruppe %in% c("00-04","05-14") ~ "0-14",
-                                TRUE ~ Altersgruppe
-         )
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")#,
+         #Altersgruppe=case_when(Altersgruppe %in% c("00-04","05-14") ~ "0-14",
+         #                       TRUE ~ Altersgruppe
+         #)
          ) %>%
   group_by(Meldedatum, Altersgruppe) %>% 
   summarise("Fälle"=sum(AnzahlFall , na.rm = T),
@@ -679,14 +685,20 @@ vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>%
   mutate(Meldedatum=lubridate::as_date(Meldedatum)) %>%
   mutate(date=date(Meldedatum)) %>%
   filter(date>=maxdate-6-7 & date<=maxdate-7) %>%
-  summarise(`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-14`),
+  summarise(#`Faelle_letzte_7_Tage_0-14`=sum(`Fälle_0-14`),
+    `Faelle_letzte_7_Tage_0-4`=sum(`Fälle_00-04`),
+    `Faelle_letzte_7_Tage_5-14`=sum(`Fälle_05-14`),
             `Faelle_letzte_7_Tage_15-34`=sum(`Fälle_15-34`),
             `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
   bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
-  mutate(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=
-           round(`Faelle_letzte_7_Tage_0-14`/((bund_regstat_alter$ag_1+bund_regstat_alter$ag_2)/100000)),
+  mutate(#`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=
+    #  round(`Faelle_letzte_7_Tage_0-14`/((bund_regstat_alter$ag_1+bund_regstat_alter$ag_2)/100000)),
+    `Faelle_letzte_7_Tage_je100TsdEinw_0-4`=
+      round(`Faelle_letzte_7_Tage_0-4`/((bund_regstat_alter$ag_1)/100000)),
+    `Faelle_letzte_7_Tage_je100TsdEinw_5-14`=
+      round(`Faelle_letzte_7_Tage_5-14`/((bund_regstat_alter$ag_2)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_15-34`=
            round(`Faelle_letzte_7_Tage_15-34`/(bund_regstat_alter$ag_3/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_35-59`=
@@ -703,7 +715,9 @@ rwert7ti <- tibble(
     "Reproduktionszahl R",
     "Neue Fälle je 100.000 EW in 7 Tagen bezogen auf die jeweilige Gruppe:",
     "Gesamtbevölkerung",
-    "- Davon Unter-14-Jährige",
+    # "- Davon Unter-14-Jährige",
+    "- Davon Unter-4-Jährige",
+    "- Davon 5-bis-14-Jährige",
     "- Davon 15-bis-34-Jährige",
     "- Davon 35-bis-59-Jährige",
     "- Davon 60-bis-79-Jährige",
@@ -722,7 +736,9 @@ rwert7ti <- tibble(
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`), 2),
     NA,
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz`)),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`),
+    # vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-4`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_5-14`),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`),
     vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`),
@@ -741,7 +757,9 @@ rwert7ti <- tibble(
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`), 2),
     NA,
     round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`7-Tage-Inzidenz`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`)),
+    # round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-4`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_5-14`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`)),
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`)),
