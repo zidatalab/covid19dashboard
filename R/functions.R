@@ -215,7 +215,7 @@ rki_vacc <- rki_vacc %>%
 mytemp <- tempfile()
 kbv_vacc_data <- "https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv"
 download.file(kbv_vacc_data, mytemp, method = "curl")
-vacc_zahlen_kbv <- read_csv(mytemp) %>% select(-X1) %>% 
+vacc_zahlen_kbv <- read_csv(mytemp) %>% select(-1) %>% 
   rename(`BNT/Pfizer`=BNT162b2,
          `Moderna`=`mRNA-1273`,
          `AZ`=`AZD1222`,
