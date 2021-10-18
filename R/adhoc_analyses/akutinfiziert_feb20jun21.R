@@ -51,7 +51,7 @@ akutinfiziert_data <- brd_timeseries %>% filter(id==0) %>%
          Infected=cases-lag(cases, infektperiode)) %>% #
   filter(!is.na(Infected)) %>%
   mutate(date=date(date)) %>%
-  filter(date>=date("2020-03-02")) %>%
+  # filter(date>=date("2020-03-02")) %>%
   select(date, Infected)
 
 akutinfiziert_plot <- ggplot(akutinfiziert_data %>% 
