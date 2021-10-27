@@ -76,19 +76,79 @@ pop_bev <- destatis_pop_by_state %>%
 
 ### auffr pro tag/woche
 auffr_zeitreihe <- rki_vacc %>% 
-  filter(geo=="Germany" & metric=="personen_auffr_kumulativ" & isoyear(date)==2021) %>% 
-  mutate(KW=isoweek(date)) %>% 
-  group_by(KW) %>% 
+  filter(metric=="personen_auffr_kumulativ" & isoyear(date)==2021) %>% 
+  mutate(KW=isoweek(date),
+         Monat=month(date)) %>% 
+  group_by(KW, geo) %>% 
   summarise(auffr_kumulativ=max(value), .groups="drop") %>% 
+  group_by(geo) %>% 
   arrange(-KW) %>% 
   mutate(auffr_kumulativ=ifelse(is.na(auffr_kumulativ), 0, auffr_kumulativ),
          new_auffr=auffr_kumulativ-lead(auffr_kumulativ)) %>% 
+  ungroup() %>% 
   filter(new_auffr>0) %>% 
-  select(KW, new_auffr)
+  select(geo, KW, new_auffr)
+
+vollst_zeitreihe <- rki_vacc %>% 
+  filter(metric=="personen_voll_kumulativ" & isoyear(date)==2021) %>% 
+  mutate(KW=isoweek(date),
+         Monat=month(date)) %>% 
+  group_by(KW, geo) %>% 
+  summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
+  group_by(geo) %>% 
+  arrange(-KW) %>% 
+  mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
+         new_vollst=vollst_kumulativ-lead(vollst_kumulativ)) %>% 
+  ungroup() %>% 
+  filter(new_vollst>0) %>% 
+  select(geo, KW, new_vollst)
+
+istsoll_auffr <- expand_grid(KW=1:52, geo=unique(rki_vacc$geo)) %>% 
+  left_join(vollst_zeitreihe %>% 
+              mutate(KW=ifelse(KW<=13, 13, KW)) %>% 
+              group_by(geo, KW) %>% 
+              summarise(new_vollst=sum(new_vollst, na.rm=TRUE),
+                        .groups="drop"),
+            by=c("KW", "geo")) %>% 
+  group_by(geo) %>% 
+  arrange(-KW) %>% 
+  mutate(soll=lead(new_vollst, 30)) %>% 
+  ungroup() %>% 
+  left_join(auffr_zeitreihe, by=c("geo", "KW"))
+
+istsoll_stand <- istsoll_auffr %>% 
+  filter(KW<=isoweek(max(vacc_zahlen$date))) %>% 
+  group_by(geo) %>% 
+  summarise(soll=sum(soll, na.rm=TRUE),
+            ist=sum(new_auffr, na.rm=TRUE),
+            .groups = "drop") %>% 
+  mutate(luecke=ist-soll,
+         istminussolldurchsoll=luecke/soll) %>% 
+  rename(Bundesland=geo)
+
+istsoll_ausblick <- istsoll_auffr %>% 
+  filter(KW>isoweek(max(vacc_zahlen$date))) %>% 
+  filter(KW<=isoweek(max(vacc_zahlen$date))+6) %>% 
+  rowwise() %>% 
+  mutate(luecke_6wochen=round(abs(istsoll_stand$luecke[istsoll_stand$Bundesland==geo[1]])/6),
+         sollplusluecke=soll+luecke_6wochen) %>% 
+  ungroup() %>% 
+  select(KW, Bundesland=geo, soll, luecke_6wochen, sollplusluecke) %>% 
+  arrange(Bundesland, KW)
+  
 
 library(openxlsx)
-write.xlsx(auffr_zeitreihe, "data/auffrischen_zeitreihe_kw.xlsx",
+auffr_table <- list(stand_dritt=istsoll_stand,
+                    ausblick_dritt=istsoll_ausblick)
+write.xlsx(auffr_table, "data/auffrischen_kw.xlsx",
            overwrite=TRUE)
+
+
+
+
+
+
+
 
 
 
