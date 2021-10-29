@@ -186,6 +186,9 @@ eumapping <- tibble(english=c(
 )
 )
 
+rki_mappings <- read_csv("../data/rki_mappings_landkreise.csv") %>% 
+  mutate(IdLandkreis=as.integer(IdLandkreis))
+
 almev <- read_csv("../data/almev.csv")
 
 rki_hosp_inzidenz <- read_csv("../data/rki_hosp_inzidenz.csv")
@@ -285,7 +288,9 @@ rki <- tbl(conn,"rki") %>% collect()
 # rki <- tbl(conn,"rki_archive") %>% filter(Datenstand=="2021-07-29") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
-rki <- rki %>% mutate(Meldedatum=as_date(Meldedatum)) %>%
+rki <- rki %>%
+  left_join(rki_mappings, by="IdLandkreis") %>% 
+  mutate(Meldedatum=as_date(Meldedatum)) %>%
   mutate(AnzahlFall=ifelse(NeuerFall>=0, AnzahlFall, 0),
          AnzahlTodesfall=ifelse(NeuerTodesfall>=0, AnzahlTodesfall, 0))
 international <- tbl(conn,"trends") %>%
