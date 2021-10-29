@@ -70,7 +70,7 @@ itsquoten <- read_csv("data/itsquoten_final.csv") %>%
 kreise_regstat_alter <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt", 
                                    ";",
                                    escape_double = FALSE,
-                                   col_types = cols(X1 = col_skip()), 
+                                   col_types = cols(`...1` = col_skip()), 
                                    trim_ws = TRUE) %>%
   mutate(id=ifelse(Kreis==11000, 11, Kreis*1000)) %>%
   select(-Kreis, -m, -w) %>%
@@ -112,9 +112,17 @@ brd_timeseries <- tbl(conn,"brd_timeseries") %>%
   mutate(date=base::as.Date(date))
 rki <- tbl(conn,"rki") %>% 
   collect()
-# for assessment of meldeverzug
-# write_csv(rki, paste0("data/rki_", max(as_date(rki$Meldedatum)), ".csv"))
-# continue
+
+# rki_gestern <- tbl(conn, "rki_archive") %>% 
+#   filter(Datenstand=="2021-10-28") %>% 
+#   collect()
+# rki_mappings <- rki_gestern %>% 
+#   select(IdLandkreis, IdBundesland, Bundesland, Landkreis) %>% 
+#   distinct()
+# write_csv(rki_mappings, "data/rki_mappings_landkreise.csv")
+rki_mappings <- read_csv("data/rki_mappings_landkreise.csv") %>% 
+  mutate(IdLandkreis=as.integer(IdLandkreis))
+
 divi <- tbl(conn,"divi") %>% 
   collect() %>% 
   mutate(daten_stand=as_date(daten_stand))
@@ -219,6 +227,7 @@ if (max(divi$daten_stand<maxdatum)) {
 ## rki imputation because of delayed gesundheitsamt-meldungen
 rki_original <- rki
 rki <- rki %>%
+  left_join(rki_mappings, by="IdLandkreis") %>% 
   mutate(AnzahlFall=ifelse(NeuerFall>=0, AnzahlFall, 0),
          AnzahlTodesfall=ifelse(NeuerTodesfall>=0, AnzahlTodesfall, 0))
 rkitimeframe <- rki %>% summarise(mindate=min(date(Meldedatum)), 

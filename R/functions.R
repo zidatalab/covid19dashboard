@@ -70,7 +70,7 @@ itsquoten <- read_csv("data/itsquoten_final.csv") %>%
 kreise_regstat_alter <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt", 
                                    ";",
                                    escape_double = FALSE,
-                                   col_types = cols(X1 = col_skip()), 
+                                   col_types = cols(`...1` = col_skip()), 
                                    trim_ws = TRUE) %>%
   mutate(id=ifelse(Kreis==11000, 11, Kreis*1000)) %>%
   select(-Kreis, -m, -w) %>%
