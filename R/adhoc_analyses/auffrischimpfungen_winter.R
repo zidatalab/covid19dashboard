@@ -55,7 +55,7 @@ rkiagegroups <- c("A00-A04", "A05-A14", "A15-A34", "A35-A59", "A60-A79", "A80+")
 #   },
 #   error=function(e) {
 #     # read old data
-    vacc_zahlen <- read_csv("./data/vacc_zahlen_ard.csv")
+    vacc_zahlen <- read_csv("data/vacc_zahlen_ard.csv")
 #     return(vacc_zahlen)
 #   }
 # )
