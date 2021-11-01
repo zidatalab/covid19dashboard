@@ -79,66 +79,72 @@ auffr_zeitreihe <- rki_vacc %>%
   filter(metric=="personen_auffr_kumulativ" & isoyear(date)==2021) %>% 
   mutate(KW=isoweek(date),
          Monat=month(date)) %>% 
-  group_by(KW, geo) %>% 
+  group_by(Monat, geo) %>% 
   summarise(auffr_kumulativ=max(value), .groups="drop") %>% 
   group_by(geo) %>% 
-  arrange(-KW) %>% 
+  arrange(-Monat) %>% 
   mutate(auffr_kumulativ=ifelse(is.na(auffr_kumulativ), 0, auffr_kumulativ),
          new_auffr=auffr_kumulativ-lead(auffr_kumulativ)) %>% 
   ungroup() %>% 
   filter(new_auffr>0) %>% 
-  select(geo, KW, new_auffr)
+  select(geo, Monat, new_auffr)
 
 vollst_zeitreihe <- rki_vacc %>% 
   filter(metric=="personen_voll_kumulativ" & isoyear(date)==2021) %>% 
   mutate(KW=isoweek(date),
          Monat=month(date)) %>% 
-  group_by(KW, geo) %>% 
+  group_by(Monat, geo) %>% 
   summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
   group_by(geo) %>% 
-  arrange(-KW) %>% 
+  arrange(-Monat) %>% 
   mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
-         new_vollst=vollst_kumulativ-lead(vollst_kumulativ)) %>% 
+         new_vollst=vollst_kumulativ-lead(vollst_kumulativ),
+         new_vollst=ifelse(is.na(new_vollst), vollst_kumulativ, new_vollst)) %>% 
   ungroup() %>% 
   filter(new_vollst>0) %>% 
-  select(geo, KW, new_vollst)
+  select(geo, Monat, new_vollst)
 
-istsoll_auffr <- expand_grid(KW=1:52, geo=unique(rki_vacc$geo)) %>% 
+istsoll_auffr <- expand_grid(Monat=c(1:13), geo=unique(rki_vacc$geo)) %>% 
   left_join(vollst_zeitreihe %>% 
-              mutate(KW=ifelse(KW<=13, 13, KW)) %>% 
-              group_by(geo, KW) %>% 
+              # mutate(KW=ifelse(KW<=13, 13, KW)) %>% 
+              mutate(Monat=ifelse(Monat<=3, 3, Monat)) %>% 
+              group_by(geo, Monat) %>% 
               summarise(new_vollst=sum(new_vollst, na.rm=TRUE),
                         .groups="drop"),
-            by=c("KW", "geo")) %>% 
+            by=c("Monat", "geo")) %>% 
   group_by(geo) %>% 
-  arrange(-KW) %>% 
-  mutate(soll=lead(new_vollst, 30)) %>% 
+  arrange(-Monat) %>% 
+  mutate(soll=lead(new_vollst, 7)) %>% 
   ungroup() %>% 
-  left_join(auffr_zeitreihe, by=c("geo", "KW"))
+  left_join(auffr_zeitreihe, by=c("geo", "Monat"))
 
 istsoll_stand <- istsoll_auffr %>% 
-  filter(KW<=isoweek(max(vacc_zahlen$date))) %>% 
+  filter(Monat<=month(max(vacc_zahlen$date))) %>% 
   group_by(geo) %>% 
   summarise(soll=sum(soll, na.rm=TRUE),
             ist=sum(new_auffr, na.rm=TRUE),
             .groups = "drop") %>% 
   mutate(luecke=ist-soll,
          istminussolldurchsoll=luecke/soll) %>% 
+  mutate(luecke=-luecke, istminussolldurchsoll=-istminussolldurchsoll) %>% 
   rename(Bundesland=geo)
 
 istsoll_ausblick <- istsoll_auffr %>% 
-  filter(KW>isoweek(max(vacc_zahlen$date))) %>% 
-  filter(KW<=isoweek(max(vacc_zahlen$date))+6) %>% 
+  filter(Monat>month(max(vacc_zahlen$date))) %>% 
+  filter(Monat<=month(max(vacc_zahlen$date))+3) %>% 
   rowwise() %>% 
-  mutate(luecke_6wochen=round(abs(istsoll_stand$luecke[istsoll_stand$Bundesland==geo[1]])/6),
-         sollplusluecke=soll+luecke_6wochen) %>% 
+  mutate(luecke_1monat=round(abs(istsoll_stand$luecke[istsoll_stand$Bundesland==geo[1]])),
+         sollplusluecke=soll+ifelse(Monat==11, luecke_1monat, 0)) %>% 
   ungroup() %>% 
-  select(KW, Bundesland=geo, soll, luecke_6wochen, sollplusluecke) %>% 
-  arrange(Bundesland, KW)
+  select(Monat, Bundesland=geo, sollplusluecke) %>% 
+  arrange(Bundesland, Monat) %>% 
+  pivot_wider(id_cols=Bundesland, names_from = Monat, values_from = sollplusluecke)
   
+final_auffrischen_bl <- istsoll_stand %>% 
+  left_join(istsoll_ausblick, by="Bundesland")
 
 library(openxlsx)
-auffr_table <- list(stand_dritt=istsoll_stand,
-                    ausblick_dritt=istsoll_ausblick)
-write.xlsx(auffr_table, "data/auffrischen_kw.xlsx",
+# auffr_table <- list(stand_dritt=istsoll_stand,
+#                     ausblick_dritt=istsoll_ausblick)
+write.xlsx(final_auffrischen_bl, "data/auffrischen_monat_bl.xlsx",
            overwrite=TRUE)
