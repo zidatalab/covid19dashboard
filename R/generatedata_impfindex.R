@@ -98,7 +98,15 @@ rki_vacc <- rki_vacc %>%
   mutate(geo=ifelse(region=="DE", "Germany", geo),
          geotype=ifelse(region=="DE", "nation", "state"))
 
-
+rki_github_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
+dritt_tag_bl <- rki_github_bl %>% 
+  mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
+  filter(Impfserie==3) %>% 
+  group_by(Impfdatum, blid) %>% 
+  summarise(dritte_alle=sum(Anzahl)) %>% 
+  left_join(bev_gesamt_laender %>% select(blid, Name), by="blid") %>% 
+  select(Bundesland=Name, date=Impfdatum, dritte_alle)
+write_csv(dritt_tag_bl, "../data/tabledata/dritte_alle_rki.csv") # [1:finalrow, ]
 
 
 ## Impfdosen Bunddashboard
