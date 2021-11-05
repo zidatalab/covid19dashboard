@@ -72,6 +72,9 @@ if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
   DBI::dbWriteTable(conn, "rki_impfdaten", vacc_zahlen, overwrite=TRUE)
 }
 
-DBI::dbDisconnect(conn)
 
 source("generatedata_impfindex.R")
+lieferungen <- read_csv("../data/tabledata/impfstoff_lieferungen_bmg.csv")
+DBI::dbWriteTable(conn, "bmg_impfstofflieferungen", lieferungen, overwrite=TRUE)
+
+DBI::dbDisconnect(conn)

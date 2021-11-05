@@ -119,6 +119,24 @@ impfdashboardde <- read_tsv(
   left_join(ISOcodes::ISO_3166_2 %>% 
               select(region=Code,
                      geo=Name), by="region")
+
+write_csv(impfdashboardde %>%
+            mutate(
+              geo=ifelse(region=="DE-BUND", "Bund", geo),
+              geo=ifelse(region=="DE-Betriebe", "Betriebe", geo),
+              Hersteller=case_when(
+                impfstoff=="comirnaty" ~ "BNT/Pfizer",
+                impfstoff=="moderna" ~ "Moderna",
+                impfstoff=="astra" ~ "AZ",
+                impfstoff=="johnson" ~ "J&J",
+                TRUE ~ "error"),
+              KW=isoweek(date),
+              wochentag=wday(date, week_start = 1),
+              KW=ifelse(wochentag>=5, KW+1, KW),
+              Jahr=year(date)
+            ),
+          "../data/tabledata/impfstoff_lieferungen_bmg.csv")
+
 bunddashboard_daten <- impfdashboardde %>% 
   #filter(date <= "2021-05-11") %>%
   mutate(
