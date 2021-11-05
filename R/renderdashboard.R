@@ -68,6 +68,8 @@ if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
                   " Uhr"))
   DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
   write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
+  vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
+  DBI::dbWriteTable(conn, "rki_impfdaten", vacc_zahlen, overwrite=TRUE)
 }
 
 DBI::dbDisconnect(conn)
