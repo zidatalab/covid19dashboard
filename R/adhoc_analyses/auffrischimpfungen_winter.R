@@ -130,7 +130,7 @@ istsoll_stand <- istsoll_auffr %>%
   rename(Bundesland=geo)
 
 istsoll_ausblick <- istsoll_auffr %>% 
-  filter(Monat>month(max(vacc_zahlen$date))) %>% 
+  filter(Monat>=month(max(vacc_zahlen$date))) %>% 
   filter(Monat<=month(max(vacc_zahlen$date))+3) %>% 
   rowwise() %>% 
   mutate(luecke_1monat=round(abs(istsoll_stand$luecke[istsoll_stand$Bundesland==geo[1]])),
@@ -148,3 +148,29 @@ library(openxlsx)
 #                     ausblick_dritt=istsoll_ausblick)
 write.xlsx(final_auffrischen_bl, "data/auffrischen_monat_bl.xlsx",
            overwrite=TRUE)
+
+### boostern praxen tempo
+kbv_boostern <- tbl(conn,"kbvcovidvacczi") %>% 
+  collect()
+auffr_dosen_praxen <- kbv_boostern %>% 
+  mutate(anzahl=as.integer(anzahl)) %>% 
+  filter(vacc_series==3) %>% 
+  group_by(kw) %>% 
+  summarise(dosen=sum(anzahl))
+
+## niedersachsen
+vollst_zeitreihe_ni <- rki_vacc %>% 
+  filter(metric=="personen_voll_kumulativ" & isoyear(date)==2021 &
+           geo=="Niedersachsen") %>% 
+  mutate(KW=isoweek(date),
+         Monat=month(date)) %>% 
+  group_by(KW) %>% 
+  summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
+  arrange(-KW) %>% 
+  mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
+         new_vollst=vollst_kumulativ-lead(vollst_kumulativ),
+         new_vollst=ifelse(is.na(new_vollst), vollst_kumulativ, new_vollst)) %>% 
+  ungroup() %>% 
+  filter(new_vollst>0) %>% 
+  select(KW, `neu vollst. geimpft`=new_vollst)
+write.xlsx(vollst_zeitreihe_ni, "data/niedersachsen_vollstgeimpft.xlsx")
