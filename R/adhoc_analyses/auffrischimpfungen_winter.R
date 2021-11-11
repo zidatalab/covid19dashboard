@@ -158,19 +158,99 @@ auffr_dosen_praxen <- kbv_boostern %>%
   group_by(kw) %>% 
   summarise(dosen=sum(anzahl))
 
+kbv_plz_liste <- read_csv("data/kbv_plz_liste.csv") %>% 
+  group_by(plz) %>% filter(row_number()==1)
+
+##bayern
+impfungen_gesamt_bayern <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  filter(Bundesland=="Bayern") %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_gesamt_bund <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  # filter(Bundesland=="Bayern") %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_auffr_bayern <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  filter(Bundesland=="Bayern" & vacc_series==3) %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_auffr_bund <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  filter(vacc_series==3) %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_gesamt_bayern_tag <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  filter(Bundesland=="Bayern") %>% 
+  group_by(vacc_date) %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_gesamt_bund_tag <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  # filter(Bundesland=="Bayern") %>% 
+  group_by(vacc_date) %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_auffr_bayern_tag <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  filter(Bundesland=="Bayern" & vacc_series==3) %>% 
+  group_by(vacc_date) %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+impfungen_auffr_bund_tag <- kbv_boostern %>% 
+  mutate(arzt_plz=as.integer(arzt_plz),
+         anzahl=as.integer(anzahl)) %>% 
+  left_join(kbv_plz_liste, by=c("arzt_plz"="plz")) %>% 
+  filter(vacc_series==3) %>% 
+  group_by(vacc_date) %>% 
+  summarise(impfungen_praxen=sum(anzahl))
+
+impfungen_tag <- bind_rows(impfungen_gesamt_bayern_tag %>% mutate(geo="Bayern"),
+                           impfungen_gesamt_bund_tag %>% mutate(geo="Bund")) %>% 
+  left_join(bind_rows(impfungen_auffr_bayern_tag %>% mutate(geo="Bayern"),
+                      impfungen_auffr_bund_tag %>% mutate(geo="Bund")) %>% 
+              rename(auffrimpfungen_praxen=impfungen_praxen),
+            by=c("geo", "vacc_date"))
+
+ggplot(impfungen_tag %>% 
+         filter(vacc_date>="2021-10-01") %>% 
+         rename(`Auffr.-Impfungen`=auffrimpfungen_praxen,
+                `alle Impfungen`=impfungen_praxen) %>% 
+         pivot_longer(cols=c(`alle Impfungen`, `Auffr.-Impfungen`), 
+                      values_to='Anzahl'), 
+       aes(x=vacc_date, y=Anzahl)) +
+  geom_line() +
+  theme_zi() +
+  geom_smooth(se=FALSE) +
+  facet_wrap(geo~name, scales = "free_y") +
+  scale_y_continuous(limits = c(0, NA), 
+                     labels = scales::comma_format(big.mark = ".",
+                                                   decimal.mark = ","))
+
 ## niedersachsen
-vollst_zeitreihe_ni <- rki_vacc %>% 
-  filter(metric=="personen_voll_kumulativ" & isoyear(date)==2021 &
-           geo=="Niedersachsen") %>% 
-  mutate(KW=isoweek(date),
-         Monat=month(date)) %>% 
-  group_by(KW) %>% 
-  summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
-  arrange(-KW) %>% 
-  mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
-         new_vollst=vollst_kumulativ-lead(vollst_kumulativ),
-         new_vollst=ifelse(is.na(new_vollst), vollst_kumulativ, new_vollst)) %>% 
-  ungroup() %>% 
-  filter(new_vollst>0) %>% 
-  select(KW, `neu vollst. geimpft`=new_vollst)
-write.xlsx(vollst_zeitreihe_ni, "data/niedersachsen_vollstgeimpft.xlsx")
+# vollst_zeitreihe_ni <- rki_vacc %>% 
+#   filter(metric=="personen_voll_kumulativ" & isoyear(date)==2021 &
+#            geo=="Niedersachsen") %>% 
+#   mutate(KW=isoweek(date),
+#          Monat=month(date)) %>% 
+#   group_by(KW) %>% 
+#   summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
+#   arrange(-KW) %>% 
+#   mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
+#          new_vollst=vollst_kumulativ-lead(vollst_kumulativ),
+#          new_vollst=ifelse(is.na(new_vollst), vollst_kumulativ, new_vollst)) %>% 
+#   ungroup() %>% 
+#   filter(new_vollst>0) %>% 
+#   select(KW, `neu vollst. geimpft`=new_vollst)
+# write.xlsx(vollst_zeitreihe_ni, "data/niedersachsen_vollstgeimpft.xlsx",
+#            overwrite=TRUE)
