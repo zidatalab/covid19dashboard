@@ -200,7 +200,7 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 2)
 rki_hosp_age <- read_excel(destfile_rkihosp,
                                   sheet = 3,
-                                  skip = 4)
+                                  skip = 5) # immer wieder schön: excel ändert sich ständig
 # Attention: BUG RKI
 rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
 
@@ -608,21 +608,25 @@ itstabelle <- tibble(
 ) %>% mutate(
   Vorwoche=c(
     divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(ICU_Betten),
-    paste0(round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(auslastungcovid))*100)), 
-           " %\n",
-           divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(faelle_covid_aktuell)),
-    paste0(round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(quotefrei))*100)), 
-           " %\n",
-           divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(betten_frei))
+    paste0(divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(faelle_covid_aktuell), 
+           "\n", 
+           round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(auslastungcovid))*100)),
+           " %"),
+    paste0(divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(betten_frei), 
+           "\n",
+           round(((divi0 %>% filter(daten_stand==maxdividate-7) %>% pull(quotefrei))*100)),
+           " %")
   ),
   dieseWoche=c(
     divi0 %>% filter(daten_stand==maxdividate) %>% pull(ICU_Betten),
-    paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(auslastungcovid))*100)), 
-           " %\n",
-           divi0 %>% filter(daten_stand==maxdividate) %>% pull(faelle_covid_aktuell)),
-    paste0(round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(quotefrei))*100)), 
-           " %\n",
-           divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei))
+    paste0(divi0 %>% filter(daten_stand==maxdividate) %>% pull(faelle_covid_aktuell), 
+           "\n",
+           round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(auslastungcovid))*100)),
+           " %"),
+    paste0(divi0 %>% filter(daten_stand==maxdividate) %>% pull(betten_frei), 
+           "\n",
+           round(((divi0 %>% filter(daten_stand==maxdividate) %>% pull(quotefrei))*100)),
+           " %")
   )
 )  %>%
   select(Intensivbetten, Vorwoche, !!paste0("KW ", isoweek(maxdividate)):=dieseWoche, Veraenderung)
