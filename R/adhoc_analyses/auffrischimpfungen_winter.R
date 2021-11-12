@@ -79,47 +79,47 @@ auffr_zeitreihe <- rki_vacc %>%
   filter(metric=="personen_auffr_kumulativ" & isoyear(date)==2021) %>% 
   mutate(KW=isoweek(date),
          Monat=month(date)) %>% 
-  group_by(Monat, geo) %>% 
+  group_by(KW, geo) %>% 
   summarise(auffr_kumulativ=max(value), .groups="drop") %>% 
   group_by(geo) %>% 
-  arrange(-Monat) %>% 
+  arrange(-KW) %>% 
   mutate(auffr_kumulativ=ifelse(is.na(auffr_kumulativ), 0, auffr_kumulativ),
          new_auffr=auffr_kumulativ-lead(auffr_kumulativ)) %>% 
   ungroup() %>% 
   filter(new_auffr>0) %>% 
-  select(geo, Monat, new_auffr)
+  select(geo, KW, new_auffr)
 
 vollst_zeitreihe <- rki_vacc %>% 
   filter(metric=="personen_voll_kumulativ" & isoyear(date)==2021) %>% 
   mutate(KW=isoweek(date),
          Monat=month(date)) %>% 
-  group_by(Monat, geo) %>% 
+  group_by(KW, geo) %>% 
   summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
   group_by(geo) %>% 
-  arrange(-Monat) %>% 
+  arrange(-KW) %>% 
   mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
          new_vollst=vollst_kumulativ-lead(vollst_kumulativ),
          new_vollst=ifelse(is.na(new_vollst), vollst_kumulativ, new_vollst)) %>% 
   ungroup() %>% 
   filter(new_vollst>0) %>% 
-  select(geo, Monat, new_vollst)
+  select(geo, KW, new_vollst)
 
-istsoll_auffr <- expand_grid(Monat=c(1:13), geo=unique(rki_vacc$geo)) %>% 
+istsoll_auffr <- expand_grid(KW=c(13:56), geo=unique(rki_vacc$geo)) %>%  #expand_grid(Monat=c(1:13), geo=unique(rki_vacc$geo)) %>% 
   left_join(vollst_zeitreihe %>% 
-              # mutate(KW=ifelse(KW<=13, 13, KW)) %>% 
-              mutate(Monat=ifelse(Monat<=3, 3, Monat)) %>% 
-              group_by(geo, Monat) %>% 
+              mutate(KW=ifelse(KW<=13, 13, KW)) %>% 
+              # mutate(Monat=ifelse(Monat<=3, 3, Monat)) %>% 
+              group_by(geo, KW) %>% 
               summarise(new_vollst=sum(new_vollst, na.rm=TRUE),
                         .groups="drop"),
-            by=c("Monat", "geo")) %>% 
+            by=c("KW", "geo")) %>% 
   group_by(geo) %>% 
-  arrange(-Monat) %>% 
-  mutate(soll=lead(new_vollst, 7)) %>% 
+  arrange(-KW) %>% 
+  mutate(soll=lead(new_vollst, 27)) %>% # 7 für Monat 
   ungroup() %>% 
-  left_join(auffr_zeitreihe, by=c("geo", "Monat"))
+  left_join(auffr_zeitreihe, by=c("geo", "KW"))
 
 istsoll_stand <- istsoll_auffr %>% 
-  filter(Monat<=month(max(vacc_zahlen$date))) %>% 
+  filter(KW<=isoweek(max(vacc_zahlen$date))) %>% 
   group_by(geo) %>% 
   summarise(soll=sum(soll, na.rm=TRUE),
             ist=sum(new_auffr, na.rm=TRUE),
@@ -130,15 +130,21 @@ istsoll_stand <- istsoll_auffr %>%
   rename(Bundesland=geo)
 
 istsoll_ausblick <- istsoll_auffr %>% 
-  filter(Monat>=month(max(vacc_zahlen$date))) %>% 
-  filter(Monat<=month(max(vacc_zahlen$date))+3) %>% 
+  filter(KW>=isoweek(max(vacc_zahlen$date))) %>% 
+  filter(KW<=max(istsoll_auffr$KW)) %>% 
   rowwise() %>% 
-  mutate(luecke_1monat=round(abs(istsoll_stand$luecke[istsoll_stand$Bundesland==geo[1]])),
-         sollplusluecke=soll+ifelse(Monat==11, luecke_1monat, 0)) %>% 
+  mutate(luecke_verteilen=round(abs(
+    istsoll_stand$luecke[istsoll_stand$Bundesland==geo[1]])),
+         sollplusluecke=soll+
+      round(luecke_verteilen/(max(istsoll_auffr$KW)-isoweek(max(vacc_zahlen$date))+1))
+      # ifelse(KW<=isoweek(max(vacc_zahlen$date))+5, # auf nächste 6 wochen verteilt
+      #        round(luecke_verteilen/6),
+      #        0)
+    ) %>% 
   ungroup() %>% 
-  select(Monat, Bundesland=geo, sollplusluecke) %>% 
-  arrange(Bundesland, Monat) %>% 
-  pivot_wider(id_cols=Bundesland, names_from = Monat, values_from = sollplusluecke)
+  select(KW, Bundesland=geo, sollplusluecke) %>% 
+  arrange(Bundesland, KW) %>% 
+  pivot_wider(id_cols=Bundesland, names_from = KW, values_from = sollplusluecke)
   
 final_auffrischen_bl <- istsoll_stand %>% 
   left_join(istsoll_ausblick, by="Bundesland")
@@ -146,12 +152,14 @@ final_auffrischen_bl <- istsoll_stand %>%
 library(openxlsx)
 # auffr_table <- list(stand_dritt=istsoll_stand,
 #                     ausblick_dritt=istsoll_ausblick)
-write.xlsx(final_auffrischen_bl, "data/auffrischen_monat_bl.xlsx",
+write.xlsx(final_auffrischen_bl, "data/auffrischen_kw_bl.xlsx",
            overwrite=TRUE)
 
 ### boostern praxen tempo
 kbv_boostern <- tbl(conn,"kbvcovidvacczi") %>% 
   collect()
+# kbv_age <- tbl(conn,"kbvcovidagegroup") %>% 
+#   collect()
 auffr_dosen_praxen <- kbv_boostern %>% 
   mutate(anzahl=as.integer(anzahl)) %>% 
   filter(vacc_series==3) %>% 
@@ -236,6 +244,21 @@ ggplot(impfungen_tag %>%
   scale_y_continuous(limits = c(0, NA), 
                      labels = scales::comma_format(big.mark = ".",
                                                    decimal.mark = ","))
+# nur bund
+ggplot(impfungen_tag %>% 
+         filter(vacc_date>="2021-10-01" & geo=="Bund") %>% 
+         rename(`Auffr.-Impfungen`=auffrimpfungen_praxen,
+                `alle Impfungen`=impfungen_praxen) %>% 
+         pivot_longer(cols=c(`alle Impfungen`, `Auffr.-Impfungen`), 
+                      values_to='Anzahl'), 
+       aes(x=vacc_date, y=Anzahl)) +
+  geom_line() +
+  theme_zi() +
+  geom_smooth(se=FALSE) +
+  facet_wrap(.~name, scales = "free_y") +
+  scale_y_continuous(limits = c(0, NA), 
+                     labels = scales::comma_format(big.mark = ".",
+                                                   decimal.mark = ","))
 
 ## niedersachsen
 # vollst_zeitreihe_ni <- rki_vacc %>% 
@@ -254,3 +277,18 @@ ggplot(impfungen_tag %>%
 #   select(KW, `neu vollst. geimpft`=new_vollst)
 # write.xlsx(vollst_zeitreihe_ni, "data/niedersachsen_vollstgeimpft.xlsx",
 #            overwrite=TRUE)
+
+# erst biontech
+bnt_zeitreihe <- rki_vacc %>% 
+  filter(metric=="personen_erst_biontech_kumulativ" & isoyear(date)==2021) %>% 
+  mutate(KW=isoweek(date),
+         Monat=month(date)) %>% 
+  group_by(KW) %>% 
+  summarise(vollst_kumulativ=max(value), .groups="drop") %>% 
+  arrange(-KW) %>% 
+  mutate(vollst_kumulativ=ifelse(is.na(vollst_kumulativ), 0, vollst_kumulativ),
+         new_vollst=vollst_kumulativ-lead(vollst_kumulativ),
+         new_vollst=ifelse(is.na(new_vollst), vollst_kumulativ, new_vollst)) %>% 
+  ungroup() %>% 
+  filter(new_vollst>0) %>% 
+  select(KW, new_vollst)
