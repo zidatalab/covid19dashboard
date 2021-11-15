@@ -220,7 +220,9 @@ istsoll_stand <- istsoll_auffr %>%
             .groups = "drop") %>% 
   mutate(luecke=ist-soll,
          istminussolldurchsoll=luecke/soll) %>% 
-  mutate(luecke=-luecke, istminussolldurchsoll=-istminussolldurchsoll)
+  mutate(luecke=-luecke, istminussolldurchsoll=-istminussolldurchsoll) %>% 
+  left_join(anteile_praxen_oegd_letztekw, by="Kreis2016") %>% 
+  left_join(anteile_praxen_oegd_gesamt, by="Kreis2016")
 
 istsoll_stand_kv <- istsoll_stand %>% 
   group_by(kv) %>% 
@@ -257,6 +259,7 @@ if (dim(anzahl_praxen_oegd_diesekw)[1]==0) {
   final_auffrischen_kreise <- istsoll_stand %>% 
     left_join(istsoll_ausblick %>% 
                 select(-kv, -Kreis2016name), by="Kreis2016") %>% 
+    select(-contains("oegd"), -anteil_praxen_gesamtezeit) %>% 
     mutate(aktuelleKW=0)
   
   final_auffrischen_kv <- istsoll_stand_kv %>% 
@@ -267,6 +270,7 @@ if (dim(anzahl_praxen_oegd_diesekw)[1]==0) {
   final_auffrischen_kreise <- istsoll_stand %>% 
     left_join(istsoll_ausblick %>% 
                 select(-kv, -Kreis2016name), by="Kreis2016") %>% 
+    select(-contains("oegd"), -anteil_praxen_gesamtezeit) %>% 
     left_join(anzahl_praxen_oegd_diesekw %>% 
                 select(Kreis2016, aktuelleKW=anzahl_alleorte_diesekw),
               by="Kreis2016")
@@ -296,10 +300,25 @@ final_auffrischen_kv <- bind_rows(final_auffrischen_kv %>%
            "Gesamtzahl Auffr. letzte KW"=anzahl_alleorte_letztekw,
            "Ist aktuelle KW"=aktuelleKW)
 
+final_auffrischen_kreise <- final_auffrischen_kreise %>% 
+  relocate("Gemeindeschlüssel"=Kreis2016,
+           "Kreisname"=Kreis2016name,
+           "KV"=kv,
+           "Soll Auffr."=soll,
+           "Ist Auffr."=ist,
+           "Soll nicht erfüllt"=luecke,
+           "Anteil Soll nicht erfüllt"=istminussolldurchsoll,
+           "Anzahl Auffr. in Praxen letzte KW"=anzahl_praxen_letztekw,
+           "Anteil der Praxen an Auffr. letzte KW"=anteil_praxen_letztekw,
+           "Gesamtzahl Auffr. letzte KW"=anzahl_alleorte_letztekw,
+           "Ist aktuelle KW"=aktuelleKW)
+
 library(openxlsx)
 # auffr_table <- list(stand_dritt=istsoll_stand,
 #                     ausblick_dritt=istsoll_ausblick)
-write.xlsx(final_auffrischen_bl, "data/auffrischen_kw_bl.xlsx",
+write.xlsx(final_auffrischen_kv, "data/auffrischen_kw_kv.xlsx",
+           overwrite=TRUE)
+write.xlsx(final_auffrischen_kreise, "data/auffrischen_kw_kreise.xlsx",
            overwrite=TRUE)
 
 
