@@ -279,7 +279,7 @@ if (dim(anzahl_praxen_oegd_diesekw)[1]==0) {
     left_join(istsoll_ausblick_kv, by="kv") %>% 
     select(-contains("oegd"), -anteil_praxen_gesamtezeit) %>% 
     left_join(anzahl_praxen_oegd_kv_diesekw %>% 
-                select(Kreis2016, aktuelleKW=anzahl_alleorte_diesekw),
+                select(kv, aktuelleKW=anzahl_alleorte_diesekw),
               by="kv")
 }
   
