@@ -38,8 +38,137 @@ if (DashboardStand<RepoStand) {
     }
   )
   write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
+  
+
 }
 
+test_new_kbv_vacc <- tbl(conn,"kbvcovidvacczi") %>% 
+  summarise(maxdate=max(vacc_date)) %>%
+  collect() %>% 
+  pull(maxdate)
+
+test_kbv_aggr_vacc <- tbl(conn,"kbv_impfstoff_kreise") %>% 
+  summarise(maxdate=max(vacc_date)) %>%
+  collect() %>% 
+  pull(maxdate)
+
+if (test_new_kbv_vacc>test_kbv_aggr_vacc) {
+  kbv_impfstoff <- tbl(conn,"kbvcovidvacczi") %>% 
+    collect()
+  kbv_age <- tbl(conn,"kbvcovidagegroup") %>%
+    collect()
+  
+  kreise_plz <- read_csv2("../data/plz_krs_2016.csv") %>% 
+    mutate(PLZ=as.integer(PLZ)) %>% 
+    select(PLZ, Kreis2016, Kreis2016name) %>% 
+    bind_rows(tibble(PLZ=0, Kreis2016=0, Kreis2016name="unbekannt"))
+  
+  kbv_plz_kv_liste <- read_csv("../data/kbv_plz_liste.csv") %>% 
+    group_by(plz) %>% filter(row_number()==1) %>% 
+    bind_rows(tibble(plz=0, kv="unbekannt"))
+  
+  rki_vacc_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv") %>% 
+    mutate(LandkreisId=ifelse(LandkreisId_Impfort=="u" | 
+                                LandkreisId_Impfort=="17000", 
+                              "0",
+                              LandkreisId_Impfort),
+           LandkreisId=as.integer(LandkreisId),
+           Impfdatum=as_date(Impfdatum)) %>% 
+    select(vacc_date=Impfdatum, LandkreisId, vacc_series=Impfschutz,
+           Altersgruppe,
+           anzahl_alleorte=Anzahl) %>% 
+    group_by(vacc_date, LandkreisId, vacc_series, Altersgruppe) %>% 
+    summarise(anzahl_alleorte=sum(anzahl_alleorte))
+  
+  kbv_impfstoff_plz <- kbv_impfstoff %>% 
+    mutate(anzahl=as.integer(anzahl),
+           arzt_plz=as.integer(arzt_plz),
+           vacc_series=as.integer(vacc_series)) %>% 
+    select(vacc_date, PLZ=arzt_plz, 
+           vacc_product,
+           vacc_series, anzahl_praxen=anzahl) %>% 
+    group_by(vacc_date, PLZ, vacc_series, vacc_product) %>% 
+    summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
+              .groups="drop") %>% 
+    mutate(PLZ=ifelse(PLZ%in%setdiff(unique(PLZ), unique(kreise_plz$PLZ)), 
+                      0, 
+                      PLZ))
+  
+  kbv_age_plz <- kbv_age %>% 
+    mutate(anzahl=as.integer(anzahl),
+           arzt_plz=as.integer(arzt_plz),
+           vacc_series=as.integer(vacc_series)) %>% 
+    select(vacc_date, PLZ=arzt_plz, 
+           Altersgruppe=altersgruppe,
+           vacc_series, anzahl_praxen=anzahl) %>% 
+    group_by(vacc_date, PLZ, vacc_series, Altersgruppe) %>% 
+    summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
+              .groups="drop") %>% 
+    mutate(PLZ=ifelse(PLZ%in%setdiff(unique(PLZ), unique(kreise_plz$PLZ)), 
+                      0, 
+                      PLZ)) %>% 
+    mutate(Altersgruppe=case_when(
+      Altersgruppe=="0" ~ "18-59",
+      Altersgruppe=="1" ~ "60+",
+      Altersgruppe=="2" ~ "12-17",
+      TRUE ~ "u"
+    ))
+  
+  kbv_impfen_plz <- kbv_age_plz %>% 
+    group_by(vacc_date, PLZ, vacc_series) %>% 
+    summarise(anzahl_praxen=sum(anzahl_praxen),
+              .groups="drop")
+  
+  rki_impfen_kreise <- rki_vacc_kreise %>% 
+    group_by(vacc_date, LandkreisId, vacc_series) %>% 
+    summarise(anzahl_alleorte=sum(anzahl_alleorte), .groups="drop")
+  
+  kbv_impfen_kreise_kv <- kbv_impfen_plz %>% 
+    left_join(kreise_plz, by="PLZ") %>% 
+    left_join(kbv_plz_kv_liste %>% 
+                select(plz, kv), by=c("PLZ"="plz")) %>% 
+    group_by(vacc_date, Kreis2016, vacc_series) %>% 
+    summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
+              kv=kv[1],
+              Kreis2016name=Kreis2016name[1],
+              .groups="drop")
+  
+  kbv_age_kreise_kv <- kbv_age_plz %>% 
+    left_join(kreise_plz, by="PLZ") %>% 
+    left_join(kbv_plz_kv_liste %>% 
+                select(plz, kv), by=c("PLZ"="plz")) %>% 
+    group_by(vacc_date, Kreis2016, vacc_series, Altersgruppe) %>% 
+    summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
+              kv=kv[1],
+              Kreis2016name=Kreis2016name[1],
+              .groups="drop")
+  
+  kbv_impfstoff_kreise_kv <- kbv_impfstoff_plz %>% 
+    left_join(kreise_plz, by="PLZ") %>% 
+    left_join(kbv_plz_kv_liste %>% 
+                select(plz, kv), by=c("PLZ"="plz")) %>% 
+    group_by(vacc_date, Kreis2016, vacc_series, vacc_product) %>% 
+    summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
+              kv=kv[1],
+              Kreis2016name=Kreis2016name[1],
+              .groups="drop")
+  
+  age_kreise_kbv_rki <- full_join(kbv_age_kreise_kv,
+                                     rki_vacc_kreise,
+                                     by=c("vacc_date",
+                                          "Kreis2016"="LandkreisId",
+                                          "Altersgruppe",
+                                          "vacc_series")) %>% 
+    mutate(across(c(anzahl_praxen, anzahl_alleorte), ~replace(., is.na(.), 0))) %>% 
+    group_by(Kreis2016) %>% 
+    mutate(kv=max(kv, na.rm=TRUE),
+           Kreis2016name=max(Kreis2016name, na.rm=TRUE)) %>% 
+    ungroup()
+  
+  DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv, overwrite=TRUE)
+  DBI::dbWriteTable(conn, "kbv_rki_altersgruppen_kreise", age_kreise_kbv_rki, overwrite=TRUE)
+
+}
 
 test_new_vacc <- tryCatch(
   {
@@ -72,9 +201,10 @@ if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
   DBI::dbWriteTable(conn, "rki_impfdaten", vacc_zahlen, overwrite=TRUE)
 }
 
-
 source("generatedata_impfindex.R")
 lieferungen <- read_csv("../data/tabledata/impfstoff_lieferungen_bmg.csv")
 DBI::dbWriteTable(conn, "bmg_impfstofflieferungen", lieferungen, overwrite=TRUE)
+
+DBI::dbSendStatement(conn, "GRANT SELECT ON ALL TABLES IN SCHEMA public TO zireader;")
 
 DBI::dbDisconnect(conn)
