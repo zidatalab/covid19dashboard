@@ -1,3 +1,24 @@
+map_bl <- tibble(
+  BL_ID=0:16,
+  geo=c("Gesamt",
+        "Schleswig-Holstein",
+        "Hamburg",
+        "Niedersachsen",
+        "Bremen",
+        "Nordrhein-Westfalen",
+        "Hessen",
+        "Rheinland-Pfalz",
+        "Baden-Württemberg",
+        "Bayern",
+        "Saarland",
+        "Berlin",
+        "Brandenburg",
+        "Mecklenburg-Vorpommern",
+        "Sachsen",
+        "Sachsen-Anhalt",
+        "Thüringen")
+)
+
 #### icurates nach altersgruppen
 # delay für fälle-->icu:
 rkidivi <- rki_alter_destatis %>%
@@ -64,3 +85,36 @@ itslm$coefficients[1] + itslm$coefficients[2]*c(60000, 70000)
 # exp(predict(itsglm, newdata = tibble(infiziertue60=rkidivi %>% 
 #                                        filter(Meldedatum>=max(Meldedatum)-days(7)) %>% 
 #                                        pull(Infected60))))
+
+# its one-week steigerung
+itssteigerungen <- divi_all %>% 
+  filter(id<17) %>% 
+  mutate(Meldedatum=as_date(daten_stand)) %>% 
+  group_by(id) %>% 
+  arrange(Meldedatum) %>% 
+  mutate(itssteigerung_7tage=faelle_covid_aktuell/lag(faelle_covid_aktuell, 7)) %>% 
+  ungroup() %>% 
+  select(Meldedatum, id, itssteigerung_7tage, faelle_covid_aktuell, ICU_Betten, 
+         betten_frei) %>% 
+  filter(Meldedatum>max(Meldedatum)-days(7)) %>% 
+  group_by(id) %>% 
+  arrange(rev(Meldedatum)) %>% 
+  summarise(itssteigerung_7tage=mean(itssteigerung_7tage),
+            faelle_covid_aktuell=faelle_covid_aktuell[1],
+            ICU_Betten=ICU_Betten[1],
+            betten_frei=betten_frei[1],
+            .groups="drop"
+            ) %>% 
+  left_join(map_bl, by=c("id"="BL_ID")) %>% 
+  mutate(aktuelle_kapazitaet_covid=faelle_covid_aktuell+betten_frei,
+         its_projektion_naechstewoche=round(itssteigerung_7tage*faelle_covid_aktuell),
+         auslastung_projektion_naechstewoche=round(its_projektion_naechstewoche/aktuelle_kapazitaet_covid, 3),
+         itssteigerung_7tage_prozent=round(itssteigerung_7tage-1, 3)) %>% 
+  select(Bundesland=geo, 
+         `durchschnittl. ITS-Steigerung pro Woche`=itssteigerung_7tage_prozent,
+         `Aktuelle Belegung ITS mit COVID-19`=faelle_covid_aktuell,
+         `Projektion Belegung ITS mit COVID-19 in 7 Tagen`=its_projektion_naechstewoche,
+         `Aktuelle Kapazität für COVID-19-Behandlungen auf ITS`=aktuelle_kapazitaet_covid,
+         `Projizierte Auslastung Kapazität in 7 Tagen`=auslastung_projektion_naechstewoche)
+library(openxlsx)
+write.xlsx(itssteigerungen, "data/its_projektion_7tage.xlsx")
