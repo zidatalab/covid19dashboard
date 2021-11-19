@@ -15,6 +15,8 @@ output:
     logo: static/logo.png
     theme: bootstrap
     css: static/styles.css
+    includes:
+      after_body: static/html/counter_Report.html
     
     
 ---

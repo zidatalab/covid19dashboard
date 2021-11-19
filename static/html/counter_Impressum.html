@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>    
+    <script type="text/javascript">
+        // Put your values here:
+        let trackerurl = 'https://analytics.ziapp.de/view/';
+        let sitename = "covid19dashboard"
+        // Do not change anything below this line
+        // ======================================
+        let docName = window.location.pathname;
+        let thequery = trackerurl + sitename + '/data?pageid=' + docName + "&cookiedissent=true";
+        // Uncomment for Testing
+        document.getElementById("sendinfo").innerHTML = thequery;
+        // Execute Request 
+        const Http = new XMLHttpRequest();
+        Http.open("GET", thequery);
+        Http.withCredentials = true;
+        Http.send();
+        // Request Debug uncomment for testing
+        Http.onreadystatechange = (e) => {
+            document.getElementById("sendresultheader").innerHTML = "Result:";
+            document.getElementById("sendresult").innerHTML = Http.responseText;
+        }
+      </script>
+      <noscript>
+        // Begin of Zi anonymous web Analytics using img counter, no IP is recorded
+        // Please edit values in the URI, "testpixel" to yourprojectname and /test.html to yout pagename.
+        <img src="https://analytics.ziapp.de/view/covid19dashboard/counter.png?pageid=/Impressum.html&cookiedissent=true" style="border:0"
+            alt="">
+      </noscript>
+</html>
