@@ -221,7 +221,7 @@ jhu_germany <- jhu_germany %>%
 maxdatum <- max(as_date(rki$Meldedatum))
 lastsunday <- floor_date(maxdatum, "week")
 sundaybeforelastsunday <- lastsunday-7
-if (max(divi$daten_stand<maxdatum)) {
+if (max(divi_all$daten_stand)<maxdatum) {
   divi_all <- bind_rows(divi_all, divi %>% mutate(daten_stand=as_date(maxdatum)))
 }
 ## rki imputation because of delayed gesundheitsamt-meldungen
