@@ -5345,8 +5345,8 @@ In der untenstehenden Tabelle sind die entsprechenden Anteile in Prozent für di
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div id="htmlwidget-8dd56cfcbcf365c2d467" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-8dd56cfcbcf365c2d467">{"x":{"filter":"none","extensions":["Responsive"],"fillContainer":true,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Gesamt","Baden-Württemberg","Bayern","Berlin","Brandenburg","Bremen","Hamburg","Hessen","Mecklenburg-Vorpommern","Niedersachsen","Nordrhein-Westfalen","Rheinland-Pfalz","Saarland","Sachsen","Sachsen-Anhalt","Schleswig-Holstein","Thüringen"],["139720","134383","135708","144119","125871","162525","149494","138613","135704","142820","147339","141170","152098","118581","129100","149888","127158"],["70,3","67,5","67,7","70,6","63,8","81,8","75,4","70,1","68,1","72,6","74,4","71,7","76,2","59,5","65,1","74,8","62,6"],["67,8","65,9","65,9","68,3","61,7","79,3","73,5","66,9","66,2","69,7","71,1","67,6","74,0","57,4","63,7","72,4","61,3"],["5,7","5,0","5,7","8,5","4,5","8,1","5,6","5,3","5,2","5,7","6,1","5,7","6,4","4,1","4,9","7,2","6,9"]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Bundesland<\/th>\n      <th>Impfungen pro 100k EW<\/th>\n      <th>Gesamt min. 1x<\/th>\n      <th>Gesamt vollst.<\/th>\n      <th>Gesamt Auffr.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"paging":false,"pageLength":20,"scrollY":1000,"scrollCollapse":true,"columnDefs":[{"className":"dt-center","targets":[2,3,4]},{"orderable":false,"targets":0}],"searching":false,"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json"},"server":false,"initComplete":"function(settings, json) {\n$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});\n}","order":[],"autoWidth":false,"orderClasses":false,"responsive":true,"lengthMenu":[10,20,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(row).css({'font-weight':value == \"Gesamt\" ? \"bold\" : null});\n}"}},"evals":["options.initComplete","options.rowCallback"],"jsHooks":[]}</script>
+<div id="htmlwidget-ad4ac7bf026760ab6e16" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ad4ac7bf026760ab6e16">{"x":{"filter":"none","extensions":["Responsive"],"fillContainer":true,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Gesamt","Baden-Württemberg","Bayern","Berlin","Brandenburg","Bremen","Hamburg","Hessen","Mecklenburg-Vorpommern","Niedersachsen","Nordrhein-Westfalen","Rheinland-Pfalz","Saarland","Sachsen","Sachsen-Anhalt","Schleswig-Holstein","Thüringen"],["139720","134383","135708","144119","125871","162525","149494","138613","135704","142820","147339","141170","152098","118581","129100","149888","127158"],["70,3","67,5","67,7","70,6","63,8","81,8","75,4","70,1","68,1","72,6","74,4","71,7","76,2","59,5","65,1","74,8","62,6"],["67,8","65,9","65,9","68,3","61,7","79,3","73,5","66,9","66,2","69,7","71,1","67,6","74,0","57,4","63,7","72,4","61,3"],["5,7","5,0","5,7","8,5","4,5","8,1","5,6","5,3","5,2","5,7","6,1","5,7","6,4","4,1","4,9","7,2","6,9"]],"container":"<table class=\"display fill-container\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Bundesland<\/th>\n      <th>Impfungen pro 100k EW<\/th>\n      <th>Gesamt min. 1x<\/th>\n      <th>Gesamt vollst.<\/th>\n      <th>Gesamt Auffr.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"paging":false,"pageLength":20,"scrollY":1000,"scrollCollapse":true,"columnDefs":[{"className":"dt-center","targets":[2,3,4]},{"orderable":false,"targets":0}],"searching":false,"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json"},"server":false,"initComplete":"function(settings, json) {\n$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});\n}","order":[],"autoWidth":false,"orderClasses":false,"responsive":true,"lengthMenu":[10,20,25,50,100],"rowCallback":"function(row, data) {\nvar value=data[1]; $(row).css({'font-weight':value == \"Gesamt\" ? \"bold\" : null});\n}"}},"evals":["options.initComplete","options.rowCallback"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -5376,6 +5376,35 @@ $(document).ready(function () {
 });
 </script>
 
+<!DOCTYPE html>
+<html>    
+    <script type="text/javascript">
+        // Put your values here:
+        let trackerurl = 'https://analytics.ziapp.de/view/';
+        let sitename = "covid19dashboard"
+        // Do not change anything below this line
+        // ======================================
+        let docName = window.location.pathname;
+        let thequery = trackerurl + sitename + '/data?pageid=' + docName + "&cookiedissent=true";
+        // Uncomment for Testing
+        document.getElementById("sendinfo").innerHTML = thequery;
+        // Execute Request 
+        const Http = new XMLHttpRequest();
+        Http.open("GET", thequery);
+        Http.withCredentials = true;
+        Http.send();
+        // Request Debug uncomment for testing
+        Http.onreadystatechange = (e) => {
+            document.getElementById("sendresultheader").innerHTML = "Result:";
+            document.getElementById("sendresult").innerHTML = Http.responseText;
+        }
+      </script>
+      <noscript>
+        // Begin of Zi anonymous web Analytics using img counter, no IP is recorded
+        // Please edit values in the URI, &quot;testpixel&quot; to yourprojectname and /test.html to yout pagename.
+        <img src="data:application/json;base64,eyJkZXRhaWwiOiJSZXF1ZXN0IG5vdCBmb3JtYXR0ZWQgcHJvcGVybHksIHNlZSBkb2NzLiJ9" style="border:0" alt>
+      </noscript>
+</html>
 <script type="text/javascript">
 $(document).ready(function () {
   FlexDashboard.init({
