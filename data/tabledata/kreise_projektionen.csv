@@ -1,401 +1,401 @@
 7-Tage-Inzidenz,Vorwarnzeit_ROR,Kreis,AGS (num),R(t),Bundesland,Inzidenz<50 bei R(t) aktuell,Inzidenz<35 bei R(t) aktuell,Inzidenz<10 bei R(t) aktuell,"Inzidenz<50 bei R(t)=0,7","Inzidenz<35 bei R(t)=0,7","Inzidenz<10 bei R(t)=0,7",datenstand
-227,64,Ahrweiler,7131,"1,27",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-576,26,Aichach-Friedberg,9771,"1,14",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-582,27,Alb-Donau-Kreis,8425,"1,16",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-877,28,Altenburger Land,16077,"1,28",Thüringen,nie,nie,nie,02.01.2022,07.01.2022,25.01.2022,2021-11-24
-268,64,Altenkirchen (Westerwald),7132,"1,22",Rheinland-Pfalz,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-24
-693,23,Altmarkkreis Salzwedel,15081,"1,02",Sachsen-Anhalt,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-24
-913,21,Altötting,9171,"1,20",Bayern,nie,nie,nie,03.01.2022,08.01.2022,25.01.2022,2021-11-24
-286,49,Alzey-Worms,7331,"1,29",Rheinland-Pfalz,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-230,48,Amberg-Sulzbach,9371,"0,82",Bayern,01.01.2022,10.01.2022,11.02.2022,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-230,48,"Amberg, Stadt",9361,"1,02",Bayern,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-175,52,Ammerland,3451,"1,29",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,02.01.2022,2021-11-24
-530,29,Anhalt-Bitterfeld,15082,"1,43",Sachsen-Anhalt,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-688,39,Ansbach,9571,"1,23",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-24
-560,39,"Ansbach, Stadt",9561,"1,36",Bayern,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-394,12,Aschaffenburg,9671,"1,23",Bayern,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-473,12,"Aschaffenburg, Stadt",9661,"1,15",Bayern,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-24
-669,26,Augsburg,9772,"1,22",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-509,26,"Augsburg, Stadt",9761,"1,11",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-143,59,Aurich,3452,"1,63",Niedersachsen,nie,nie,nie,08.12.2021,13.12.2021,30.12.2021,2021-11-24
-281,33,Bad Dürkheim,7332,"1,17",Rheinland-Pfalz,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-399,45,Bad Kissingen,9672,"0,96",Bayern,23.08.2022,09.10.2022,23.03.2023,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-213,49,Bad Kreuznach,7133,"1,22",Rheinland-Pfalz,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-642,38,Bad Tölz-Wolfratshausen,9173,"0,94",Bayern,30.06.2022,30.07.2022,15.11.2022,29.12.2021,03.01.2022,20.01.2022,2021-11-24
-509,19,"Baden-Baden, Stadt",8211,"1,45",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-887,27,Bamberg,9471,"1,43",Bayern,nie,nie,nie,02.01.2022,07.01.2022,25.01.2022,2021-11-24
-460,27,"Bamberg, Stadt",9461,"1,21",Bayern,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-385,24,Barnim,12060,"1,27",Brandenburg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-1220,17,Bautzen,14625,"1,26",Sachsen,nie,nie,nie,07.01.2022,12.01.2022,29.01.2022,2021-11-24
-469,44,Bayreuth,9472,"1,14",Bayern,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-451,44,"Bayreuth, Stadt",9462,"1,35",Bayern,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-24
-1084,21,Berchtesgadener Land,9172,"1,07",Bayern,nie,nie,nie,05.01.2022,10.01.2022,28.01.2022,2021-11-24
-379,35,Bergstraße,6431,"1,30",Hessen,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-348,56,Berlin,11000,"1,08",Berlin,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-190,66,Bernkastel-Wittlich,7231,"1,39",Rheinland-Pfalz,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-711,27,Biberach,8426,"1,02",Baden-Württemberg,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-24
-291,52,"Bielefeld, Stadt",5711,"1,32",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-275,49,Birkenfeld,7134,"1,18",Rheinland-Pfalz,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-24
-441,30,Böblingen,8115,"1,19",Baden-Württemberg,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-24
-235,55,"Bochum, Stadt",5911,"1,14",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-638,36,Bodenseekreis,8435,"1,09",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-24
-275,44,"Bonn, Stadt",5314,"1,43",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-24
-222,19,Börde,15083,"0,91",Sachsen-Anhalt,13.02.2022,04.03.2022,12.05.2022,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-234,49,Borken,5554,"1,34",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-162,77,"Bottrop, Stadt",5512,"1,21",Nordrhein-Westfalen,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-24
-382,24,"Brandenburg an der Havel, Stadt",12051,"1,40",Brandenburg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-182,44,"Braunschweig, Stadt",3101,"1,35",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-283,54,Breisgau-Hochschwarzwald,8315,"1,03",Baden-Württemberg,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-199,60,"Bremen, Stadt",4011,"1,56",Bremen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-204,47,"Bremerhaven, Stadt",4012,"1,27",Bremen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-933,26,Burgenlandkreis,15084,"1,25",Sachsen-Anhalt,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-24
-579,20,Calw,8235,"1,23",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-202,51,Celle,3351,"1,31",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-730,43,Cham,9372,"1,29",Bayern,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-24
-841,19,"Chemnitz, Stadt",14511,"1,30",Sachsen,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-24
-353,52,Cloppenburg,3453,"1,01",Niedersachsen,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-651,27,Coburg,9473,"1,10",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-433,27,"Coburg, Stadt",9463,"0,91",Bayern,22.03.2022,10.04.2022,18.06.2022,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-249,64,Cochem-Zell,7135,"1,08",Rheinland-Pfalz,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-24
-153,49,Coesfeld,5558,"1,53",Nordrhein-Westfalen,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-734,15,"Cottbus, Stadt",12052,"1,59",Brandenburg,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-24
-129,47,Cuxhaven,3352,"1,34",Niedersachsen,nie,nie,nie,06.12.2021,11.12.2021,29.12.2021,2021-11-24
-604,26,Dachau,9174,"1,23",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-949,15,Dahme-Spreewald,12061,"1,27",Brandenburg,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-24
-301,35,Darmstadt-Dieburg,6432,"1,24",Hessen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-24
-288,35,"Darmstadt, Stadt",6411,"1,27",Hessen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-975,25,Deggendorf,9271,"1,19",Bayern,nie,nie,nie,04.01.2022,09.01.2022,26.01.2022,2021-11-24
-232,31,"Delmenhorst, Stadt",3401,"1,04",Niedersachsen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-605,29,"Dessau-Roßlau, Stadt",15001,"1,24",Sachsen-Anhalt,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-142,31,Diepholz,3251,"1,12",Niedersachsen,nie,nie,nie,08.12.2021,13.12.2021,30.12.2021,2021-11-24
-728,26,Dillingen a.d.Donau,9773,"1,08",Bayern,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-24
-1086,8,Dingolfing-Landau,9279,"1,12",Bayern,nie,nie,nie,05.01.2022,10.01.2022,28.01.2022,2021-11-24
-94,43,Dithmarschen,1051,"1,18",Schleswig-Holstein,nie,nie,nie,02.12.2021,07.12.2021,24.12.2021,2021-11-24
-715,26,Donau-Ries,9779,"1,04",Bayern,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-24
-185,57,Donnersbergkreis,7333,"1,23",Rheinland-Pfalz,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-264,54,"Dortmund, Stadt",5913,"1,30",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-471,65,"Dresden, Stadt",14612,"0,89",Sachsen,26.02.2022,13.03.2022,06.05.2022,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-219,59,"Duisburg, Stadt",5112,"1,18",Nordrhein-Westfalen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-240,42,Düren,5358,"1,21",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-24
-307,50,"Düsseldorf, Stadt",5111,"1,22",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-24
-645,26,Ebersberg,9175,"0,95",Bayern,08.08.2022,13.09.2022,18.01.2023,29.12.2021,03.01.2022,20.01.2022,2021-11-24
-492,28,Eichsfeld,16061,"1,11",Thüringen,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-24
-542,29,Eichstätt,9176,"1,06",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-191,66,Eifelkreis Bitburg-Prüm,7232,"1,57",Rheinland-Pfalz,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-1399,15,Elbe-Elster,12062,"1,33",Brandenburg,nie,nie,nie,09.01.2022,14.01.2022,31.01.2022,2021-11-24
-126,59,"Emden, Stadt",3402,"1,33",Niedersachsen,nie,nie,nie,06.12.2021,11.12.2021,29.12.2021,2021-11-24
-343,54,Emmendingen,8316,"1,27",Baden-Württemberg,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-273,39,Emsland,3454,"1,29",Niedersachsen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-24
-183,55,Ennepe-Ruhr-Kreis,5954,"1,14",Nordrhein-Westfalen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-619,20,Enzkreis,8236,"1,24",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-740,26,Erding,9177,"1,02",Bayern,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-24
-629,38,"Erfurt, Stadt",16051,"0,98",Thüringen,19.07.2023,12.10.2023,05.08.2024,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-411,33,Erlangen-Höchstadt,9572,"1,09",Bayern,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-336,33,"Erlangen, Stadt",9562,"1,12",Bayern,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-1483,19,Erzgebirgskreis,14521,"1,42",Sachsen,nie,nie,nie,10.01.2022,15.01.2022,01.02.2022,2021-11-24
-213,59,"Essen, Stadt",5113,"1,21",Nordrhein-Westfalen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-516,30,Esslingen,8116,"1,20",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-263,42,Euskirchen,5366,"1,19",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-155,33,"Flensburg, Stadt",1001,"1,21",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-515,27,Forchheim,9474,"1,04",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-330,33,"Frankenthal (Pfalz), Stadt",7311,"1,39",Rheinland-Pfalz,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-24
-675,29,"Frankfurt (Oder), Stadt",12053,"1,36",Brandenburg,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-364,49,"Frankfurt am Main, Stadt",6412,"1,17",Hessen,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-24
-337,54,"Freiburg im Breisgau, Stadt",8311,"1,09",Baden-Württemberg,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-455,26,Freising,9178,"1,04",Bayern,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-559,20,Freudenstadt,8237,"1,18",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-1508,25,Freyung-Grafenau,9272,"1,40",Bayern,nie,nie,nie,10.01.2022,15.01.2022,01.02.2022,2021-11-24
-223,59,Friesland,3455,"1,89",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-261,63,Fulda,6631,"1,26",Hessen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-496,26,Fürstenfeldbruck,9179,"0,96",Bayern,23.08.2022,04.10.2022,02.03.2023,25.12.2021,30.12.2021,17.01.2022,2021-11-24
-603,33,Fürth,9573,"1,28",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-631,33,"Fürth, Stadt",9563,"1,12",Bayern,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-24
-550,38,Garmisch-Partenkirchen,9180,"0,83",Bayern,27.01.2022,05.02.2022,11.03.2022,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-268,77,"Gelsenkirchen, Stadt",5513,"1,37",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-24
-721,28,"Gera, Stadt",16052,"1,16",Thüringen,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-24
-556,33,Germersheim,7334,"1,29",Rheinland-Pfalz,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-157,67,Gießen,6531,"1,06",Hessen,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-24
-262,44,Gifhorn,3151,"1,12",Niedersachsen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-432,30,Göppingen,8117,"1,19",Baden-Württemberg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-390,17,Görlitz,14626,"0,89",Sachsen,22.02.2022,10.03.2022,05.05.2022,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-183,44,Goslar,3153,"1,39",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-783,38,Gotha,16067,"0,83",Thüringen,06.02.2022,15.02.2022,21.03.2022,01.01.2022,06.01.2022,23.01.2022,2021-11-24
-186,74,Göttingen,3159,"1,07",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-295,39,Grafschaft Bentheim,3456,"1,58",Niedersachsen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-874,28,Greiz,16076,"1,31",Thüringen,nie,nie,nie,02.01.2022,07.01.2022,25.01.2022,2021-11-24
-243,35,Groß-Gerau,6433,"1,15",Hessen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-24
-689,31,Günzburg,9774,"1,06",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-24
-327,52,Gütersloh,5754,"1,24",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-24
-289,55,"Hagen, Stadt",5914,"1,23",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-586,26,"Halle (Saale), Stadt",15002,"1,38",Sachsen-Anhalt,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-187,70,"Hamburg, Stadt",2000,"1,14",Hamburg,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-172,56,Hameln-Pyrmont,3252,"1,27",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-24
-232,54,"Hamm, Stadt",5915,"1,36",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-141,51,Harburg,3353,"1,10",Niedersachsen,nie,nie,nie,08.12.2021,13.12.2021,30.12.2021,2021-11-24
-876,19,Harz,15085,"1,83",Sachsen-Anhalt,nie,nie,nie,02.01.2022,07.01.2022,25.01.2022,2021-11-24
-668,45,Haßberge,9674,"1,15",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-422,24,Havelland,12063,"1,38",Brandenburg,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-100,51,Heidekreis,3358,"1,36",Niedersachsen,nie,nie,nie,03.12.2021,08.12.2021,25.12.2021,2021-11-24
-240,40,"Heidelberg, Stadt",8221,"1,11",Baden-Württemberg,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-24
-600,16,Heidenheim,8135,"1,10",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-534,28,Heilbronn,8125,"1,08",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-585,28,"Heilbronn, Stadt",8121,"1,15",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-294,42,Heinsberg,5370,"1,22",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-221,44,Helmstedt,3154,"1,55",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-329,52,Herford,5758,"1,34",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-24
-272,55,"Herne, Stadt",5916,"1,35",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-24
-105,63,Hersfeld-Rotenburg,6632,"0,89",Hessen,24.12.2021,08.01.2022,02.03.2022,03.12.2021,08.12.2021,26.12.2021,2021-11-24
-213,51,Herzogtum Lauenburg,1053,"1,36",Schleswig-Holstein,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-1171,36,Hildburghausen,16069,"1,11",Thüringen,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-24
-187,56,Hildesheim,3254,"1,46",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-147,62,Hochsauerlandkreis,5958,"1,13",Nordrhein-Westfalen,nie,nie,nie,08.12.2021,13.12.2021,31.12.2021,2021-11-24
-250,49,Hochtaunuskreis,6434,"1,15",Hessen,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-24
-409,44,Hof,9475,"1,00",Bayern,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-286,44,"Hof, Stadt",9464,"1,08",Bayern,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-508,28,Hohenlohekreis,8126,"1,36",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-85,74,Holzminden,3255,"1,06",Niedersachsen,nie,nie,nie,30.11.2021,05.12.2021,23.12.2021,2021-11-24
-156,45,Höxter,5762,"1,02",Nordrhein-Westfalen,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-24
-989,38,Ilm-Kreis,16070,"1,26",Thüringen,nie,nie,nie,04.01.2022,09.01.2022,26.01.2022,2021-11-24
-552,29,"Ingolstadt, Stadt",9161,"1,23",Bayern,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-539,28,"Jena, Stadt",16053,"1,16",Thüringen,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-340,19,Jerichower Land,15086,"1,15",Sachsen-Anhalt,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-234,57,Kaiserslautern,7335,"1,27",Rheinland-Pfalz,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-216,57,"Kaiserslautern, Stadt",7312,"1,39",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-424,19,Karlsruhe,8215,"1,22",Baden-Württemberg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-387,19,"Karlsruhe, Stadt",8212,"1,22",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-183,63,Kassel,6633,"1,31",Hessen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-209,63,"Kassel, Stadt",6611,"1,32",Hessen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-813,25,"Kaufbeuren, Stadt",9762,"1,47",Bayern,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-24
-585,43,Kelheim,9273,"1,12",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-769,25,"Kempten (Allgäu), Stadt",9763,"1,02",Bayern,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-24
-142,77,"Kiel, Stadt",1002,"1,12",Schleswig-Holstein,nie,nie,nie,08.12.2021,13.12.2021,30.12.2021,2021-11-24
-430,50,Kitzingen,9675,"1,17",Bayern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-288,59,Kleve,5154,"1,33",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-187,64,"Koblenz, Stadt",7111,"1,26",Rheinland-Pfalz,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-336,50,"Köln, Stadt",5315,"1,23",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-316,22,Konstanz,8335,"1,29",Baden-Württemberg,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-24
-304,50,"Krefeld, Stadt",5114,"1,46",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-24
-772,27,Kronach,9476,"1,00",Bayern,06.05.2034,20.12.2035,31.08.2041,31.12.2021,05.01.2022,23.01.2022,2021-11-24
-349,44,Kulmbach,9477,"1,10",Bayern,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-234,57,Kusel,7336,"1,28",Rheinland-Pfalz,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-857,28,Kyffhäuserkreis,16065,"1,21",Thüringen,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-24
-195,67,Lahn-Dill-Kreis,6532,"1,09",Hessen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-499,33,"Landau in der Pfalz, Stadt",7313,"1,35",Rheinland-Pfalz,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-24
-354,56,Landkreis Rostock,13072,"1,16",Mecklenburg-Vorpommern,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-544,26,Landsberg am Lech,9181,"1,30",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-914,8,Landshut,9274,"1,20",Bayern,nie,nie,nie,03.01.2022,08.01.2022,25.01.2022,2021-11-24
-616,8,"Landshut, Stadt",9261,"1,31",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-212,59,Leer,3457,"1,22",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-1068,19,Leipzig,14729,"0,96",Sachsen,07.11.2022,18.12.2022,10.05.2023,05.01.2022,10.01.2022,27.01.2022,2021-11-24
-599,19,"Leipzig, Stadt",14713,"1,42",Sachsen,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-379,50,"Leverkusen, Stadt",5316,"1,27",Nordrhein-Westfalen,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-678,27,Lichtenfels,9478,"1,37",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-24
-155,67,Limburg-Weilburg,6533,"1,08",Hessen,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-576,25,Lindau (Bodensee),9776,"0,97",Bayern,24.02.2023,02.05.2023,23.12.2023,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-260,52,Lippe,5766,"1,19",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-398,22,Lörrach,8336,"1,38",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-156,79,"Lübeck, Stadt",1003,"1,21",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-24
-219,29,Lüchow-Dannenberg,3354,"1,28",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-369,30,Ludwigsburg,8118,"1,04",Baden-Württemberg,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-297,33,"Ludwigshafen am Rhein, Stadt",7314,"1,30",Rheinland-Pfalz,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-24
-195,46,Ludwigslust-Parchim,13076,"6,97",Mecklenburg-Vorpommern,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-135,29,Lüneburg,3355,"1,39",Niedersachsen,nie,nie,nie,07.12.2021,12.12.2021,29.12.2021,2021-11-24
-520,19,"Magdeburg, Stadt",15003,"1,30",Sachsen-Anhalt,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-295,49,Main-Kinzig-Kreis,6435,"1,18",Hessen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-252,50,Main-Spessart,9677,"1,22",Bayern,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-24
-392,28,Main-Tauber-Kreis,8128,"1,10",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-265,49,Main-Taunus-Kreis,6436,"1,32",Hessen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-214,49,Mainz-Bingen,7339,"1,20",Rheinland-Pfalz,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-189,49,"Mainz, Stadt",7315,"1,15",Rheinland-Pfalz,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-520,40,"Mannheim, Stadt",8222,"1,16",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-938,26,Mansfeld-Südharz,15087,"2,09",Sachsen-Anhalt,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-24
-136,67,Marburg-Biedenkopf,6534,"1,07",Hessen,nie,nie,nie,07.12.2021,12.12.2021,30.12.2021,2021-11-24
-359,29,Märkisch-Oderland,12064,"1,23",Brandenburg,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-24
-278,55,Märkischer Kreis,5962,"1,50",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-203,64,Mayen-Koblenz,7137,"1,18",Rheinland-Pfalz,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-375,37,Mecklenburgische Seenplatte,13071,"1,21",Mecklenburg-Vorpommern,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-1166,65,Meißen,14627,"1,03",Sachsen,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-24
-531,31,"Memmingen, Stadt",9764,"1,12",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-417,51,Merzig-Wadern,10042,"1,56",Saarland,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-264,50,Mettmann,5158,"1,18",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-705,38,Miesbach,9182,"0,83",Bayern,31.01.2022,10.02.2022,14.03.2022,30.12.2021,04.01.2022,22.01.2022,2021-11-24
-420,12,Miltenberg,9676,"1,21",Bayern,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-312,52,Minden-Lübbecke,5770,"1,06",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-24
-1082,19,Mittelsachsen,14522,"1,34",Sachsen,nie,nie,nie,05.01.2022,10.01.2022,28.01.2022,2021-11-24
-208,50,"Mönchengladbach, Stadt",5116,"1,08",Nordrhein-Westfalen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-1166,21,Mühldorf a.Inn,9183,"1,05",Bayern,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-24
-204,59,"Mülheim an der Ruhr, Stadt",5117,"1,26",Nordrhein-Westfalen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-439,26,München,9184,"1,15",Bayern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-596,26,"München, Stadt",9162,"1,33",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-155,49,"Münster, Stadt",5515,"1,00",Nordrhein-Westfalen,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-432,40,Neckar-Odenwald-Kreis,8225,"1,14",Baden-Württemberg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-588,31,Neu-Ulm,9775,"1,01",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-823,29,Neuburg-Schrobenhausen,9185,"1,27",Bayern,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-24
-806,43,Neumarkt i.d.OPf.,9373,"1,05",Bayern,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-24
-226,77,"Neumünster, Stadt",1004,"1,39",Schleswig-Holstein,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-293,51,Neunkirchen,10043,"1,45",Saarland,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-334,39,Neustadt a.d.Aisch-Bad Windsheim,9575,"0,98",Bayern,09.01.2023,27.03.2023,24.12.2023,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-680,48,Neustadt a.d.Waldnaab,9374,"1,37",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-24
-411,33,"Neustadt an der Weinstraße, Stadt",7316,"1,37",Rheinland-Pfalz,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-237,64,Neuwied,7138,"1,33",Rheinland-Pfalz,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-91,56,Nienburg (Weser),3256,"1,06",Niedersachsen,nie,nie,nie,01.12.2021,06.12.2021,24.12.2021,2021-11-24
-111,33,Nordfriesland,1054,"1,05",Schleswig-Holstein,nie,nie,nie,04.12.2021,09.12.2021,27.12.2021,2021-11-24
-414,28,Nordhausen,16062,"1,34",Thüringen,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-1092,19,Nordsachsen,14730,"1,56",Sachsen,nie,nie,nie,05.01.2022,10.01.2022,28.01.2022,2021-11-24
-254,46,Nordwestmecklenburg,13074,"1,66",Mecklenburg-Vorpommern,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-24
-208,74,Northeim,3155,"1,04",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-582,33,"Nürnberg, Stadt",9564,"1,01",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-498,33,Nürnberger Land,9574,"1,11",Bayern,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-24
-860,25,Oberallgäu,9780,"0,96",Bayern,08.11.2022,22.12.2022,25.05.2023,02.01.2022,07.01.2022,24.01.2022,2021-11-24
-334,50,Oberbergischer Kreis,5374,"1,37",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-190,59,"Oberhausen, Stadt",5119,"1,28",Nordrhein-Westfalen,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-516,22,Oberhavel,12065,"1,46",Brandenburg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-1283,15,Oberspreewald-Lausitz,12066,"1,46",Brandenburg,nie,nie,nie,07.01.2022,12.01.2022,30.01.2022,2021-11-24
-396,35,Odenwaldkreis,6437,"1,24",Hessen,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-629,29,Oder-Spree,12067,"1,29",Brandenburg,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-313,49,Offenbach,6438,"1,20",Hessen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-24
-294,49,"Offenbach am Main, Stadt",6413,"1,01",Hessen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-196,52,Oldenburg,3458,"1,26",Niedersachsen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-174,52,"Oldenburg (Oldenburg), Stadt",3403,"1,34",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-24
-181,64,Olpe,5966,"1,02",Nordrhein-Westfalen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-566,54,Ortenaukreis,8317,"1,29",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-154,83,Osnabrück,3459,"1,18",Niedersachsen,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-89,83,"Osnabrück, Stadt",3404,"1,08",Niedersachsen,nie,nie,nie,01.12.2021,06.12.2021,24.12.2021,2021-11-24
-654,16,Ostalbkreis,8136,"1,45",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-978,25,Ostallgäu,9777,"1,18",Bayern,nie,nie,nie,04.01.2022,09.01.2022,26.01.2022,2021-11-24
-107,31,Osterholz,3356,"1,26",Niedersachsen,nie,nie,nie,04.12.2021,09.12.2021,26.12.2021,2021-11-24
-127,79,Ostholstein,1055,"1,18",Schleswig-Holstein,nie,nie,nie,06.12.2021,11.12.2021,29.12.2021,2021-11-24
-525,22,Ostprignitz-Ruppin,12068,"1,20",Brandenburg,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-276,45,Paderborn,5774,"1,29",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-906,25,Passau,9275,"1,28",Bayern,nie,nie,nie,03.01.2022,08.01.2022,25.01.2022,2021-11-24
-568,25,"Passau, Stadt",9262,"1,39",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-203,44,Peine,3157,"1,33",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-628,29,Pfaffenhofen a.d.Ilm,9186,"1,20",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-604,20,"Pforzheim, Stadt",8231,"1,24",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-205,51,Pinneberg,1056,"1,47",Schleswig-Holstein,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-199,57,"Pirmasens, Stadt",7317,"1,20",Rheinland-Pfalz,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-107,77,Plön,1057,"1,34",Schleswig-Holstein,nie,nie,nie,04.12.2021,09.12.2021,26.12.2021,2021-11-24
-546,24,Potsdam-Mittelmark,12069,"1,15",Brandenburg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-342,24,"Potsdam, Stadt",12054,"1,13",Brandenburg,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-374,22,Prignitz,12070,"1,34",Brandenburg,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-531,19,Rastatt,8216,"1,26",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-585,36,Ravensburg,8436,"1,08",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-200,77,Recklinghausen,5562,"1,17",Nordrhein-Westfalen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-992,25,Regen,9276,"1,20",Bayern,nie,nie,nie,04.01.2022,09.01.2022,26.01.2022,2021-11-24
-509,43,Regensburg,9375,"1,11",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-515,43,"Regensburg, Stadt",9362,"1,03",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-172,56,Region Hannover,3241,"1,22",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-24
-426,51,Regionalverband Saarbrücken,10041,"1,65",Saarland,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-457,30,Rems-Murr-Kreis,8119,"1,11",Baden-Württemberg,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-228,50,"Remscheid, Stadt",5120,"1,12",Nordrhein-Westfalen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-86,77,Rendsburg-Eckernförde,1058,"1,06",Schleswig-Holstein,nie,nie,nie,01.12.2021,06.12.2021,23.12.2021,2021-11-24
-391,27,Reutlingen,8415,"1,07",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-304,50,Rhein-Erft-Kreis,5362,"1,37",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-24
-276,64,Rhein-Hunsrück-Kreis,7140,"1,27",Rheinland-Pfalz,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-221,50,Rhein-Kreis Neuss,5162,"1,15",Nordrhein-Westfalen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-187,64,Rhein-Lahn-Kreis,7141,"1,31",Rheinland-Pfalz,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-351,40,Rhein-Neckar-Kreis,8226,"1,12",Baden-Württemberg,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-24
-373,33,Rhein-Pfalz-Kreis,7338,"1,23",Rheinland-Pfalz,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-236,44,Rhein-Sieg-Kreis,5382,"1,30",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-205,49,Rheingau-Taunus-Kreis,6439,"1,22",Hessen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-248,50,Rheinisch-Bergischer Kreis,5378,"1,38",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-24
-635,45,Rhön-Grabfeld,9673,"1,24",Bayern,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-24
-1360,21,Rosenheim,9187,"1,24",Bayern,nie,nie,nie,08.01.2022,13.01.2022,31.01.2022,2021-11-24
-1169,21,"Rosenheim, Stadt",9163,"1,32",Bayern,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-24
-281,56,"Rostock, Stadt",13003,"1,07",Mecklenburg-Vorpommern,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-111,51,Rotenburg (Wümme),3357,"1,01",Niedersachsen,nie,nie,nie,04.12.2021,09.12.2021,27.12.2021,2021-11-24
-551,33,Roth,9576,"1,12",Bayern,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-1274,8,Rottal-Inn,9277,"1,24",Bayern,nie,nie,nie,07.01.2022,12.01.2022,30.01.2022,2021-11-24
-631,16,Rottweil,8325,"1,10",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-24
-823,28,Saale-Holzland-Kreis,16074,"1,30",Thüringen,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-24
-1151,28,Saale-Orla-Kreis,16075,"1,39",Thüringen,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-24
-700,26,Saalekreis,15088,"1,34",Sachsen-Anhalt,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-24
-783,28,Saalfeld-Rudolstadt,16073,"1,51",Thüringen,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-24
-483,51,Saarlouis,10044,"1,45",Saarland,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-24
-368,51,Saarpfalz-Kreis,10045,"1,62",Saarland,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-1612,65,Sächsische Schweiz-Osterzgebirge,14628,"1,22",Sachsen,nie,nie,nie,11.01.2022,16.01.2022,02.02.2022,2021-11-24
-388,44,"Salzgitter, Stadt",3102,"1,29",Niedersachsen,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-24
-545,19,Salzlandkreis,15089,"1,46",Sachsen-Anhalt,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-189,56,Schaumburg,3257,"1,13",Niedersachsen,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-109,33,Schleswig-Flensburg,1059,"1,00",Schleswig-Holstein,nie,nie,nie,04.12.2021,09.12.2021,26.12.2021,2021-11-24
-452,36,Schmalkalden-Meiningen,16066,"0,93",Thüringen,16.04.2022,09.05.2022,30.07.2022,24.12.2021,29.12.2021,15.01.2022,2021-11-24
-578,33,"Schwabach, Stadt",9565,"1,19",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-454,28,Schwäbisch Hall,8127,"1,19",Baden-Württemberg,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-24
-146,63,Schwalm-Eder-Kreis,6634,"1,02",Hessen,nie,nie,nie,08.12.2021,13.12.2021,31.12.2021,2021-11-24
-600,48,Schwandorf,9376,"1,13",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-24
-676,16,Schwarzwald-Baar-Kreis,8326,"1,06",Baden-Württemberg,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-24
-568,45,Schweinfurt,9678,"1,28",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-470,45,"Schweinfurt, Stadt",9662,"1,13",Bayern,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-369,46,"Schwerin, Stadt",13004,"1,74",Mecklenburg-Vorpommern,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-153,51,Segeberg,1060,"1,17",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-190,64,Siegen-Wittgenstein,5970,"1,14",Nordrhein-Westfalen,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-567,36,Sigmaringen,8437,"1,03",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-139,62,Soest,5974,"0,93",Nordrhein-Westfalen,29.01.2022,21.02.2022,14.05.2022,07.12.2021,12.12.2021,30.12.2021,2021-11-24
-296,50,"Solingen, Stadt",5122,"1,19",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-308,38,Sömmerda,16068,"1,12",Thüringen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-24
-1308,36,Sonneberg,16072,"1,06",Thüringen,nie,nie,nie,08.01.2022,13.01.2022,30.01.2022,2021-11-24
-411,33,"Speyer, Stadt",7318,"1,22",Rheinland-Pfalz,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-24
-1007,15,Spree-Neiße,12071,"1,39",Brandenburg,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-24
-279,51,St. Wendel,10046,"1,18",Saarland,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-24
-142,51,Stade,3359,"1,31",Niedersachsen,nie,nie,nie,08.12.2021,13.12.2021,30.12.2021,2021-11-24
-252,42,Städteregion Aachen,5334,"1,23",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-24
-512,26,Starnberg,9188,"1,18",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-154,43,Steinburg,1061,"1,42",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-24
-233,49,Steinfurt,5566,"1,40",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-24
-324,23,Stendal,15090,"1,13",Sachsen-Anhalt,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-24
-206,51,Stormarn,1062,"1,32",Schleswig-Holstein,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-841,25,Straubing-Bogen,9278,"1,10",Bayern,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-24
-651,25,"Straubing, Stadt",9263,"1,11",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-333,30,"Stuttgart, Stadt",8111,"0,91",Baden-Württemberg,27.02.2022,17.03.2022,19.05.2022,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-455,33,Südliche Weinstraße,7337,"1,25",Rheinland-Pfalz,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-375,57,Südwestpfalz,7340,"1,36",Rheinland-Pfalz,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-843,36,"Suhl, Stadt",16054,"1,35",Thüringen,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-24
-574,24,Teltow-Fläming,12072,"1,10",Brandenburg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-436,48,Tirschenreuth,9377,"1,16",Bayern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-1056,21,Traunstein,9189,"1,10",Bayern,nie,nie,nie,05.01.2022,10.01.2022,27.01.2022,2021-11-24
-191,66,Trier-Saarburg,7235,"1,05",Rheinland-Pfalz,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-24
-126,66,"Trier, Stadt",7211,"1,07",Rheinland-Pfalz,nie,nie,nie,06.12.2021,11.12.2021,29.12.2021,2021-11-24
-402,27,Tübingen,8416,"1,25",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-617,16,Tuttlingen,8327,"1,29",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-24
-668,24,Uckermark,12073,"1,46",Brandenburg,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-24
-165,29,Uelzen,3360,"1,12",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,01.01.2022,2021-11-24
-516,27,"Ulm, Stadt",8421,"1,19",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-24
-211,54,Unna,5978,"1,38",Nordrhein-Westfalen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-585,28,Unstrut-Hainich-Kreis,16064,"1,05",Thüringen,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-24
-875,31,Unterallgäu,9778,"1,12",Bayern,nie,nie,nie,02.01.2022,07.01.2022,25.01.2022,2021-11-24
-333,83,Vechta,3460,"1,41",Niedersachsen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-24
-222,31,Verden,3361,"1,03",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-291,50,Viersen,5166,"1,20",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-169,67,Vogelsbergkreis,6535,"0,97",Hessen,13.05.2022,02.07.2022,25.12.2022,10.12.2021,15.12.2021,02.01.2022,2021-11-24
-1018,19,Vogtlandkreis,14523,"1,22",Sachsen,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-24
-428,56,Vorpommern-Greifswald,13075,"1,57",Mecklenburg-Vorpommern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-24
-364,56,Vorpommern-Rügen,13073,"1,28",Mecklenburg-Vorpommern,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-24
-224,66,Vulkaneifel,7233,"1,52",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-186,63,Waldeck-Frankenberg,6635,"1,37",Hessen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-24
-370,22,Waldshut,8337,"1,17",Baden-Württemberg,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-256,49,Warendorf,5570,"1,24",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-24
-801,36,Wartburgkreis,16063,"1,12",Thüringen,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-24
-531,48,"Weiden i.d.OPf., Stadt",9363,"1,36",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-24
-766,38,Weilheim-Schongau,9190,"1,31",Bayern,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-24
-457,38,"Weimar, Stadt",16055,"0,96",Thüringen,18.08.2022,30.09.2022,01.03.2023,24.12.2021,29.12.2021,16.01.2022,2021-11-24
-733,38,Weimarer Land,16071,"1,31",Thüringen,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-24
-853,39,Weißenburg-Gunzenhausen,9577,"1,10",Bayern,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-24
-231,63,Werra-Meißner-Kreis,6636,"1,12",Hessen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-24
-257,59,Wesel,5170,"1,28",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-158,47,Wesermarsch,3461,"1,42",Niedersachsen,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-24
-211,64,Westerwaldkreis,7143,"1,20",Rheinland-Pfalz,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-24
-221,49,Wetteraukreis,6440,"1,14",Hessen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-24
-199,49,"Wiesbaden, Stadt",6414,"1,29",Hessen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-24
-110,59,"Wilhelmshaven, Stadt",3405,"1,32",Niedersachsen,nie,nie,nie,04.12.2021,09.12.2021,27.12.2021,2021-11-24
-796,29,Wittenberg,15091,"1,41",Sachsen-Anhalt,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-24
-206,59,Wittmund,3462,"1,81",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-24
-171,44,Wolfenbüttel,3158,"1,25",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-24
-245,44,"Wolfsburg, Stadt",3103,"1,06",Niedersachsen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-24
-379,49,"Worms, Stadt",7319,"1,15",Rheinland-Pfalz,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-24
-326,44,Wunsiedel i.Fichtelgebirge,9479,"0,79",Bayern,02.01.2022,09.01.2022,04.02.2022,19.12.2021,24.12.2021,11.01.2022,2021-11-24
-257,50,"Wuppertal, Stadt",5124,"1,17",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-24
-356,50,Würzburg,9679,"1,16",Bayern,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-24
-402,50,"Würzburg, Stadt",9663,"1,21",Bayern,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-24
-556,27,Zollernalbkreis,8417,"1,18",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-24
-295,57,"Zweibrücken, Stadt",7320,"1,62",Rheinland-Pfalz,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-24
-1040,19,Zwickau,14524,"1,27",Sachsen,nie,nie,nie,05.01.2022,10.01.2022,27.01.2022,2021-11-24
+227,60,Ahrweiler,7131,"1,30",Rheinland-Pfalz,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-25
+584,27,Aichach-Friedberg,9771,"1,13",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+558,28,Alb-Donau-Kreis,8425,"1,12",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+965,25,Altenburger Land,16077,"1,19",Thüringen,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+278,60,Altenkirchen (Westerwald),7132,"1,16",Rheinland-Pfalz,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+654,23,Altmarkkreis Salzwedel,15081,"1,06",Sachsen-Anhalt,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+954,21,Altötting,9171,"1,12",Bayern,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+312,46,Alzey-Worms,7331,"1,28",Rheinland-Pfalz,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+311,43,Amberg-Sulzbach,9371,"1,01",Bayern,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+303,43,"Amberg, Stadt",9361,"1,27",Bayern,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+173,53,Ammerland,3451,"1,24",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+497,26,Anhalt-Bitterfeld,15082,"1,46",Sachsen-Anhalt,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+676,41,Ansbach,9571,"1,21",Bayern,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-25
+548,41,"Ansbach, Stadt",9561,"1,28",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+367,13,Aschaffenburg,9671,"1,22",Bayern,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+445,13,"Aschaffenburg, Stadt",9661,"1,20",Bayern,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+670,27,Augsburg,9772,"1,19",Bayern,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+534,27,"Augsburg, Stadt",9761,"1,07",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-25
+158,52,Aurich,3452,"1,48",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-25
+286,31,Bad Dürkheim,7332,"1,13",Rheinland-Pfalz,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+413,56,Bad Kissingen,9672,"1,01",Bayern,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-25
+246,46,Bad Kreuznach,7133,"1,31",Rheinland-Pfalz,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+618,44,Bad Tölz-Wolfratshausen,9173,"0,96",Bayern,27.10.2022,14.12.2022,31.05.2023,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+526,20,"Baden-Baden, Stadt",8211,"1,37",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-25
+864,31,Bamberg,9471,"1,22",Bayern,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-25
+443,31,"Bamberg, Stadt",9461,"1,07",Bayern,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+382,26,Barnim,12060,"1,33",Brandenburg,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-25
+1192,22,Bautzen,14625,"1,22",Sachsen,nie,nie,nie,07.01.2022,12.01.2022,30.01.2022,2021-11-25
+468,48,Bayreuth,9472,"1,08",Bayern,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+415,48,"Bayreuth, Stadt",9462,"1,24",Bayern,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-25
+1092,21,Berchtesgadener Land,9172,"1,01",Bayern,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-25
+379,28,Bergstraße,6431,"1,31",Hessen,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+344,55,Berlin,11000,"1,07",Berlin,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-25
+246,67,Bernkastel-Wittlich,7231,"1,38",Rheinland-Pfalz,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+701,28,Biberach,8426,"1,04",Baden-Württemberg,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-25
+285,55,"Bielefeld, Stadt",5711,"1,30",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+282,46,Birkenfeld,7134,"1,13",Rheinland-Pfalz,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+476,30,Böblingen,8115,"1,16",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+253,56,"Bochum, Stadt",5911,"1,20",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+747,31,Bodenseekreis,8435,"1,29",Baden-Württemberg,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-25
+283,51,"Bonn, Stadt",5314,"1,32",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+219,19,Börde,15083,"0,91",Sachsen-Anhalt,10.02.2022,01.03.2022,05.05.2022,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+252,50,Borken,5554,"1,24",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+185,70,"Bottrop, Stadt",5512,"1,11",Nordrhein-Westfalen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-25
+449,21,"Brandenburg an der Havel, Stadt",12051,"1,29",Brandenburg,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+191,47,"Braunschweig, Stadt",3101,"1,29",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-25
+323,51,Breisgau-Hochschwarzwald,8315,"1,05",Baden-Württemberg,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+185,49,"Bremen, Stadt",4011,"1,39",Bremen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-25
+214,49,"Bremerhaven, Stadt",4012,"1,16",Bremen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+947,24,Burgenlandkreis,15084,"1,39",Sachsen-Anhalt,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+573,24,Calw,8235,"1,19",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+211,42,Celle,3351,"1,17",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+789,40,Cham,9372,"1,27",Bayern,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-25
+965,18,"Chemnitz, Stadt",14511,"1,32",Sachsen,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+311,53,Cloppenburg,3453,"1,01",Niedersachsen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+669,31,Coburg,9473,"1,14",Bayern,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+460,31,"Coburg, Stadt",9463,"0,92",Bayern,12.04.2022,04.05.2022,22.07.2022,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+288,60,Cochem-Zell,7135,"1,06",Rheinland-Pfalz,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+151,50,Coesfeld,5558,"1,40",Nordrhein-Westfalen,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-25
+722,14,"Cottbus, Stadt",12052,"1,63",Brandenburg,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-25
+140,49,Cuxhaven,3352,"1,27",Niedersachsen,nie,nie,nie,08.12.2021,13.12.2021,31.12.2021,2021-11-25
+575,28,Dachau,9174,"1,23",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+1054,14,Dahme-Spreewald,12061,"1,25",Brandenburg,nie,nie,nie,06.01.2022,11.01.2022,28.01.2022,2021-11-25
+297,28,Darmstadt-Dieburg,6432,"1,22",Hessen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+294,28,"Darmstadt, Stadt",6411,"1,29",Hessen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+964,23,Deggendorf,9271,"1,07",Bayern,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+222,21,"Delmenhorst, Stadt",3401,"1,04",Niedersachsen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+496,26,"Dessau-Roßlau, Stadt",15001,"1,17",Sachsen-Anhalt,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+160,21,Diepholz,3251,"1,09",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-25
+700,27,Dillingen a.d.Donau,9773,"1,02",Bayern,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-25
+1083,7,Dingolfing-Landau,9279,"1,10",Bayern,nie,nie,nie,06.01.2022,11.01.2022,29.01.2022,2021-11-25
+91,52,Dithmarschen,1051,"1,15",Schleswig-Holstein,nie,nie,nie,02.12.2021,07.12.2021,25.12.2021,2021-11-25
+732,27,Donau-Ries,9779,"1,03",Bayern,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-25
+174,50,Donnersbergkreis,7333,"1,23",Rheinland-Pfalz,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+260,53,"Dortmund, Stadt",5913,"1,24",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+629,60,"Dresden, Stadt",14612,"0,98",Sachsen,28.11.2023,11.03.2024,09.03.2025,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+229,58,"Duisburg, Stadt",5112,"1,19",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-25
+248,46,Düren,5358,"1,17",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+320,44,"Düsseldorf, Stadt",5111,"1,27",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+656,28,Ebersberg,9175,"1,03",Bayern,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+484,27,Eichsfeld,16061,"1,13",Thüringen,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+588,32,Eichstätt,9176,"1,06",Bayern,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-25
+153,67,Eifelkreis Bitburg-Prüm,7232,"1,44",Rheinland-Pfalz,nie,nie,nie,10.12.2021,15.12.2021,01.01.2022,2021-11-25
+1462,14,Elbe-Elster,12062,"1,26",Brandenburg,nie,nie,nie,10.01.2022,15.01.2022,02.02.2022,2021-11-25
+184,52,"Emden, Stadt",3402,"1,27",Niedersachsen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-25
+359,51,Emmendingen,8316,"1,24",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-25
+303,39,Emsland,3454,"1,23",Niedersachsen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+198,56,Ennepe-Ruhr-Kreis,5954,"1,09",Nordrhein-Westfalen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-25
+518,24,Enzkreis,8236,"1,19",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-25
+749,28,Erding,9177,"1,01",Bayern,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+662,34,"Erfurt, Stadt",16051,"0,98",Thüringen,09.03.2024,03.07.2024,12.08.2025,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+385,32,Erlangen-Höchstadt,9572,"1,04",Bayern,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-25
+331,32,"Erlangen, Stadt",9562,"1,12",Bayern,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+1642,18,Erzgebirgskreis,14521,"1,41",Sachsen,nie,nie,nie,12.01.2022,17.01.2022,04.02.2022,2021-11-25
+204,58,"Essen, Stadt",5113,"1,29",Nordrhein-Westfalen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+472,30,Esslingen,8116,"1,18",Baden-Württemberg,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+300,46,Euskirchen,5366,"1,23",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+151,30,"Flensburg, Stadt",1001,"1,13",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-25
+486,31,Forchheim,9474,"1,01",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+318,31,"Frankenthal (Pfalz), Stadt",7311,"1,32",Rheinland-Pfalz,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+771,29,"Frankfurt (Oder), Stadt",12053,"1,32",Brandenburg,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+358,51,"Frankfurt am Main, Stadt",6412,"1,18",Hessen,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-25
+340,51,"Freiburg im Breisgau, Stadt",8311,"1,09",Baden-Württemberg,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-25
+471,28,Freising,9178,"1,03",Bayern,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+632,24,Freudenstadt,8237,"1,20",Baden-Württemberg,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-25
+1487,23,Freyung-Grafenau,9272,"1,25",Bayern,nie,nie,nie,11.01.2022,16.01.2022,02.02.2022,2021-11-25
+215,52,Friesland,3455,"1,79",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+295,64,Fulda,6631,"1,32",Hessen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+461,28,Fürstenfeldbruck,9179,"1,01",Bayern,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+563,32,Fürth,9573,"1,26",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+621,32,"Fürth, Stadt",9563,"1,15",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+545,44,Garmisch-Partenkirchen,9180,"0,85",Bayern,05.02.2022,16.02.2022,26.03.2022,27.12.2021,01.01.2022,19.01.2022,2021-11-25
+291,70,"Gelsenkirchen, Stadt",5513,"1,28",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+769,25,"Gera, Stadt",16052,"1,12",Thüringen,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+558,31,Germersheim,7334,"1,22",Rheinland-Pfalz,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+168,68,Gießen,6531,"1,03",Hessen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+267,47,Gifhorn,3151,"1,12",Niedersachsen,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+480,30,Göppingen,8117,"1,16",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+729,22,Görlitz,14626,"1,07",Sachsen,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-25
+172,47,Goslar,3153,"1,23",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+901,34,Gotha,16067,"0,86",Thüringen,02.03.2022,14.03.2022,26.04.2022,04.01.2022,09.01.2022,26.01.2022,2021-11-25
+217,58,Göttingen,3159,"1,04",Niedersachsen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+305,39,Grafschaft Bentheim,3456,"1,42",Niedersachsen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+924,25,Greiz,16076,"1,34",Thüringen,nie,nie,nie,04.01.2022,09.01.2022,26.01.2022,2021-11-25
+254,28,Groß-Gerau,6433,"1,14",Hessen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+692,29,Günzburg,9774,"1,07",Bayern,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-25
+335,55,Gütersloh,5754,"1,20",Nordrhein-Westfalen,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-25
+313,56,"Hagen, Stadt",5914,"1,18",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+600,24,"Halle (Saale), Stadt",15002,"1,36",Sachsen-Anhalt,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-25
+185,67,"Hamburg, Stadt",2000,"1,14",Hamburg,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-25
+168,58,Hameln-Pyrmont,3252,"1,28",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+246,53,"Hamm, Stadt",5915,"1,34",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+142,52,Harburg,3353,"1,14",Niedersachsen,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-25
+929,19,Harz,15085,"2,13",Sachsen-Anhalt,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+641,56,Haßberge,9674,"1,12",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-25
+444,21,Havelland,12063,"1,31",Brandenburg,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+113,42,Heidekreis,3358,"1,28",Niedersachsen,nie,nie,nie,05.12.2021,10.12.2021,28.12.2021,2021-11-25
+235,41,"Heidelberg, Stadt",8221,"1,14",Baden-Württemberg,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-25
+586,16,Heidenheim,8135,"1,07",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-25
+544,25,Heilbronn,8125,"1,08",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-25
+596,25,"Heilbronn, Stadt",8121,"1,13",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-25
+331,46,Heinsberg,5370,"1,16",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+204,47,Helmstedt,3154,"1,38",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+322,55,Herford,5758,"1,17",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+300,56,"Herne, Stadt",5916,"1,25",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+149,64,Hersfeld-Rotenburg,6632,"0,98",Hessen,09.08.2022,01.11.2022,24.08.2023,09.12.2021,14.12.2021,01.01.2022,2021-11-25
+197,51,Herzogtum Lauenburg,1053,"1,27",Schleswig-Holstein,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-25
+1366,31,Hildburghausen,16069,"1,09",Thüringen,nie,nie,nie,09.01.2022,14.01.2022,01.02.2022,2021-11-25
+205,58,Hildesheim,3254,"1,40",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+155,52,Hochsauerlandkreis,5958,"1,13",Nordrhein-Westfalen,nie,nie,nie,10.12.2021,15.12.2021,01.01.2022,2021-11-25
+219,51,Hochtaunuskreis,6434,"1,11",Hessen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+469,48,Hof,9475,"1,05",Bayern,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+297,48,"Hof, Stadt",9464,"1,09",Bayern,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+569,25,Hohenlohekreis,8126,"1,28",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+85,58,Holzminden,3255,"1,05",Niedersachsen,nie,nie,nie,01.12.2021,06.12.2021,24.12.2021,2021-11-25
+165,46,Höxter,5762,"1,05",Nordrhein-Westfalen,nie,nie,nie,11.12.2021,16.12.2021,02.01.2022,2021-11-25
+1016,34,Ilm-Kreis,16070,"1,32",Thüringen,nie,nie,nie,05.01.2022,10.01.2022,28.01.2022,2021-11-25
+581,32,"Ingolstadt, Stadt",9161,"1,16",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+570,25,"Jena, Stadt",16053,"1,36",Thüringen,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+357,19,Jerichower Land,15086,"1,10",Sachsen-Anhalt,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-25
+258,50,Kaiserslautern,7335,"1,20",Rheinland-Pfalz,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+221,50,"Kaiserslautern, Stadt",7312,"1,28",Rheinland-Pfalz,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+439,20,Karlsruhe,8215,"1,15",Baden-Württemberg,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-25
+368,20,"Karlsruhe, Stadt",8212,"1,13",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+214,61,Kassel,6633,"1,26",Hessen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+248,61,"Kassel, Stadt",6611,"1,34",Hessen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+854,18,"Kaufbeuren, Stadt",9762,"1,31",Bayern,nie,nie,nie,03.01.2022,08.01.2022,25.01.2022,2021-11-25
+605,40,Kelheim,9273,"1,07",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+723,18,"Kempten (Allgäu), Stadt",9763,"1,05",Bayern,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-25
+145,75,"Kiel, Stadt",1002,"1,13",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-25
+431,48,Kitzingen,9675,"1,17",Bayern,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-25
+289,58,Kleve,5154,"1,33",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+209,60,"Koblenz, Stadt",7111,"1,32",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+335,47,"Köln, Stadt",5315,"1,23",Nordrhein-Westfalen,nie,nie,nie,21.12.2021,26.12.2021,12.01.2022,2021-11-25
+359,22,Konstanz,8335,"1,22",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-25
+317,44,"Krefeld, Stadt",5114,"1,27",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+760,31,Kronach,9476,"1,08",Bayern,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+327,48,Kulmbach,9477,"1,15",Bayern,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+215,50,Kusel,7336,"1,22",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+858,27,Kyffhäuserkreis,16065,"1,20",Thüringen,nie,nie,nie,03.01.2022,08.01.2022,25.01.2022,2021-11-25
+210,68,Lahn-Dill-Kreis,6532,"1,12",Hessen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+399,31,"Landau in der Pfalz, Stadt",7313,"1,34",Rheinland-Pfalz,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+373,50,Landkreis Rostock,13072,"1,16",Mecklenburg-Vorpommern,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+584,28,Landsberg am Lech,9181,"1,22",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+875,7,Landshut,9274,"1,22",Bayern,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-25
+618,7,"Landshut, Stadt",9261,"1,31",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+210,52,Leer,3457,"1,14",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+1280,18,Leipzig,14729,"0,96",Sachsen,04.01.2023,17.02.2023,24.07.2023,08.01.2022,13.01.2022,31.01.2022,2021-11-25
+875,18,"Leipzig, Stadt",14713,"1,38",Sachsen,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-25
+396,47,"Leverkusen, Stadt",5316,"1,27",Nordrhein-Westfalen,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+731,31,Lichtenfels,9478,"1,33",Bayern,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-25
+169,68,Limburg-Weilburg,6533,"1,06",Hessen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+583,18,Lindau (Bodensee),9776,"1,03",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+275,55,Lippe,5766,"1,15",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-25
+410,22,Lörrach,8336,"1,43",Baden-Württemberg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+167,66,"Lübeck, Stadt",1003,"1,15",Schleswig-Holstein,nie,nie,nie,11.12.2021,16.12.2021,02.01.2022,2021-11-25
+229,35,Lüchow-Dannenberg,3354,"1,21",Niedersachsen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-25
+368,30,Ludwigsburg,8118,"1,06",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+327,31,"Ludwigshafen am Rhein, Stadt",7314,"1,30",Rheinland-Pfalz,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+267,54,Ludwigslust-Parchim,13076,"3,18",Mecklenburg-Vorpommern,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+156,35,Lüneburg,3355,"1,30",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-25
+496,19,"Magdeburg, Stadt",15003,"1,22",Sachsen-Anhalt,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+282,51,Main-Kinzig-Kreis,6435,"1,16",Hessen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+250,48,Main-Spessart,9677,"1,10",Bayern,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+387,25,Main-Tauber-Kreis,8128,"1,12",Baden-Württemberg,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-25
+257,51,Main-Taunus-Kreis,6436,"1,26",Hessen,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+233,46,Mainz-Bingen,7339,"1,30",Rheinland-Pfalz,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-25
+209,46,"Mainz, Stadt",7315,"1,18",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+512,41,"Mannheim, Stadt",8222,"1,20",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-25
+996,24,Mansfeld-Südharz,15087,"1,98",Sachsen-Anhalt,nie,nie,nie,05.01.2022,10.01.2022,28.01.2022,2021-11-25
+134,68,Marburg-Biedenkopf,6534,"1,07",Hessen,nie,nie,nie,08.12.2021,13.12.2021,30.12.2021,2021-11-25
+402,29,Märkisch-Oderland,12064,"1,19",Brandenburg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+286,56,Märkischer Kreis,5962,"1,38",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+214,60,Mayen-Koblenz,7137,"1,17",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+411,37,Mecklenburgische Seenplatte,13071,"1,15",Mecklenburg-Vorpommern,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-25
+1285,60,Meißen,14627,"1,00",Sachsen,nie,nie,nie,09.01.2022,14.01.2022,31.01.2022,2021-11-25
+635,29,"Memmingen, Stadt",9764,"1,10",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-25
+451,54,Merzig-Wadern,10042,"1,47",Saarland,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+276,44,Mettmann,5158,"1,14",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+732,44,Miesbach,9182,"0,91",Bayern,14.04.2022,03.05.2022,08.07.2022,01.01.2022,06.01.2022,23.01.2022,2021-11-25
+443,13,Miltenberg,9676,"1,23",Bayern,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+355,55,Minden-Lübbecke,5770,"1,05",Nordrhein-Westfalen,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-25
+1166,18,Mittelsachsen,14522,"1,33",Sachsen,nie,nie,nie,07.01.2022,12.01.2022,30.01.2022,2021-11-25
+233,44,"Mönchengladbach, Stadt",5116,"1,07",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-25
+1137,21,Mühldorf a.Inn,9183,"1,05",Bayern,nie,nie,nie,07.01.2022,12.01.2022,29.01.2022,2021-11-25
+187,58,"Mülheim an der Ruhr, Stadt",5117,"1,19",Nordrhein-Westfalen,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-25
+468,28,München,9184,"1,14",Bayern,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+499,28,"München, Stadt",9162,"1,21",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+168,50,"Münster, Stadt",5515,"1,08",Nordrhein-Westfalen,nie,nie,nie,11.12.2021,16.12.2021,03.01.2022,2021-11-25
+451,41,Neckar-Odenwald-Kreis,8225,"1,11",Baden-Württemberg,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+662,29,Neu-Ulm,9775,"0,96",Bayern,10.10.2022,23.11.2022,28.04.2023,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+825,32,Neuburg-Schrobenhausen,9185,"1,17",Bayern,nie,nie,nie,02.01.2022,07.01.2022,25.01.2022,2021-11-25
+762,40,Neumarkt i.d.OPf.,9373,"0,95",Bayern,20.08.2022,25.09.2022,27.01.2023,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+201,75,"Neumünster, Stadt",1004,"1,17",Schleswig-Holstein,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+318,54,Neunkirchen,10043,"1,33",Saarland,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+316,41,Neustadt a.d.Aisch-Bad Windsheim,9575,"1,00",Bayern,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+606,43,Neustadt a.d.Waldnaab,9374,"1,22",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+445,31,"Neustadt an der Weinstraße, Stadt",7316,"1,26",Rheinland-Pfalz,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+280,60,Neuwied,7138,"1,28",Rheinland-Pfalz,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+106,56,Nienburg (Weser),3256,"1,05",Niedersachsen,nie,nie,nie,05.12.2021,10.12.2021,27.12.2021,2021-11-25
+113,30,Nordfriesland,1054,"1,10",Schleswig-Holstein,nie,nie,nie,05.12.2021,10.12.2021,28.12.2021,2021-11-25
+571,27,Nordhausen,16062,"1,28",Thüringen,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+1310,18,Nordsachsen,14730,"1,42",Sachsen,nie,nie,nie,09.01.2022,14.01.2022,31.01.2022,2021-11-25
+250,54,Nordwestmecklenburg,13074,"1,50",Mecklenburg-Vorpommern,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+208,58,Northeim,3155,"1,04",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+571,32,"Nürnberg, Stadt",9564,"1,19",Bayern,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+553,32,Nürnberger Land,9574,"1,16",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+870,18,Oberallgäu,9780,"0,95",Bayern,06.09.2022,11.10.2022,13.02.2023,03.01.2022,08.01.2022,26.01.2022,2021-11-25
+365,47,Oberbergischer Kreis,5374,"1,22",Nordrhein-Westfalen,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-25
+203,58,"Oberhausen, Stadt",5119,"1,29",Nordrhein-Westfalen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+452,14,Oberhavel,12065,"1,24",Brandenburg,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+1137,14,Oberspreewald-Lausitz,12066,"1,39",Brandenburg,nie,nie,nie,07.01.2022,12.01.2022,29.01.2022,2021-11-25
+408,28,Odenwaldkreis,6437,"1,20",Hessen,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+669,29,Oder-Spree,12067,"1,24",Brandenburg,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+319,51,Offenbach,6438,"1,16",Hessen,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+309,51,"Offenbach am Main, Stadt",6413,"1,01",Hessen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+206,53,Oldenburg,3458,"1,22",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+176,53,"Oldenburg (Oldenburg), Stadt",3403,"1,37",Niedersachsen,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-25
+190,64,Olpe,5966,"0,99",Nordrhein-Westfalen,08.04.2025,03.03.2026,01.05.2029,13.12.2021,18.12.2021,04.01.2022,2021-11-25
+636,51,Ortenaukreis,8317,"1,23",Baden-Württemberg,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-25
+160,74,Osnabrück,3459,"1,20",Niedersachsen,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-25
+93,74,"Osnabrück, Stadt",3404,"1,05",Niedersachsen,nie,nie,nie,03.12.2021,08.12.2021,25.12.2021,2021-11-25
+600,16,Ostalbkreis,8136,"1,33",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-25
+1059,18,Ostallgäu,9777,"1,05",Bayern,nie,nie,nie,06.01.2022,11.01.2022,28.01.2022,2021-11-25
+102,21,Osterholz,3356,"1,21",Niedersachsen,nie,nie,nie,04.12.2021,09.12.2021,27.12.2021,2021-11-25
+147,66,Ostholstein,1055,"1,08",Schleswig-Holstein,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-25
+509,14,Ostprignitz-Ruppin,12068,"1,15",Brandenburg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-25
+240,46,Paderborn,5774,"1,22",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+1039,23,Passau,9275,"0,99",Bayern,17.11.2024,25.03.2025,18.06.2026,06.01.2022,11.01.2022,28.01.2022,2021-11-25
+608,23,"Passau, Stadt",9262,"1,11",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+214,47,Peine,3157,"1,28",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+626,32,Pfaffenhofen a.d.Ilm,9186,"1,15",Bayern,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+524,24,"Pforzheim, Stadt",8231,"1,20",Baden-Württemberg,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-25
+219,51,Pinneberg,1056,"1,42",Schleswig-Holstein,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+229,50,"Pirmasens, Stadt",7317,"1,16",Rheinland-Pfalz,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-25
+120,75,Plön,1057,"1,27",Schleswig-Holstein,nie,nie,nie,06.12.2021,11.12.2021,29.12.2021,2021-11-25
+587,21,Potsdam-Mittelmark,12069,"1,10",Brandenburg,nie,nie,nie,29.12.2021,03.01.2022,20.01.2022,2021-11-25
+406,21,"Potsdam, Stadt",12054,"1,12",Brandenburg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+390,14,Prignitz,12070,"1,26",Brandenburg,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-25
+554,20,Rastatt,8216,"1,22",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+607,31,Ravensburg,8436,"1,10",Baden-Württemberg,nie,nie,nie,29.12.2021,03.01.2022,21.01.2022,2021-11-25
+225,70,Recklinghausen,5562,"1,17",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-25
+1041,23,Regen,9276,"1,16",Bayern,nie,nie,nie,06.01.2022,11.01.2022,28.01.2022,2021-11-25
+482,40,Regensburg,9375,"1,06",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+492,40,"Regensburg, Stadt",9362,"1,01",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+190,56,Region Hannover,3241,"1,17",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-25
+466,54,Regionalverband Saarbrücken,10041,"1,53",Saarland,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+464,30,Rems-Murr-Kreis,8119,"1,07",Baden-Württemberg,nie,nie,nie,25.12.2021,30.12.2021,17.01.2022,2021-11-25
+254,44,"Remscheid, Stadt",5120,"1,30",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+89,75,Rendsburg-Eckernförde,1058,"1,04",Schleswig-Holstein,nie,nie,nie,02.12.2021,07.12.2021,25.12.2021,2021-11-25
+363,27,Reutlingen,8415,"1,08",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,13.01.2022,2021-11-25
+312,47,Rhein-Erft-Kreis,5362,"1,45",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+293,60,Rhein-Hunsrück-Kreis,7140,"1,24",Rheinland-Pfalz,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+234,44,Rhein-Kreis Neuss,5162,"1,19",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-25
+192,60,Rhein-Lahn-Kreis,7141,"1,23",Rheinland-Pfalz,nie,nie,nie,13.12.2021,18.12.2021,04.01.2022,2021-11-25
+354,41,Rhein-Neckar-Kreis,8226,"1,15",Baden-Württemberg,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-25
+378,31,Rhein-Pfalz-Kreis,7338,"1,27",Rheinland-Pfalz,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+261,51,Rhein-Sieg-Kreis,5382,"1,32",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+215,51,Rheingau-Taunus-Kreis,6439,"1,22",Hessen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+270,47,Rheinisch-Bergischer Kreis,5378,"1,36",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-25
+652,56,Rhön-Grabfeld,9673,"1,20",Bayern,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+1470,21,Rosenheim,9187,"1,19",Bayern,nie,nie,nie,10.01.2022,15.01.2022,02.02.2022,2021-11-25
+1271,21,"Rosenheim, Stadt",9163,"1,26",Bayern,nie,nie,nie,08.01.2022,13.01.2022,31.01.2022,2021-11-25
+259,50,"Rostock, Stadt",13003,"1,09",Mecklenburg-Vorpommern,nie,nie,nie,17.12.2021,22.12.2021,09.01.2022,2021-11-25
+128,52,Rotenburg (Wümme),3357,"1,12",Niedersachsen,nie,nie,nie,07.12.2021,12.12.2021,30.12.2021,2021-11-25
+539,32,Roth,9576,"1,08",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-25
+1306,7,Rottal-Inn,9277,"1,06",Bayern,nie,nie,nie,09.01.2022,14.01.2022,31.01.2022,2021-11-25
+693,12,Rottweil,8325,"1,08",Baden-Württemberg,nie,nie,nie,31.12.2021,05.01.2022,22.01.2022,2021-11-25
+958,25,Saale-Holzland-Kreis,16074,"1,30",Thüringen,nie,nie,nie,04.01.2022,09.01.2022,27.01.2022,2021-11-25
+1233,25,Saale-Orla-Kreis,16075,"1,36",Thüringen,nie,nie,nie,08.01.2022,13.01.2022,30.01.2022,2021-11-25
+761,24,Saalekreis,15088,"1,27",Sachsen-Anhalt,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+887,25,Saalfeld-Rudolstadt,16073,"1,41",Thüringen,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-25
+505,54,Saarlouis,10044,"1,33",Saarland,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+395,54,Saarpfalz-Kreis,10045,"1,43",Saarland,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+1682,60,Sächsische Schweiz-Osterzgebirge,14628,"1,09",Sachsen,nie,nie,nie,12.01.2022,17.01.2022,04.02.2022,2021-11-25
+389,47,"Salzgitter, Stadt",3102,"1,21",Niedersachsen,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-25
+631,19,Salzlandkreis,15089,"1,33",Sachsen-Anhalt,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-25
+195,56,Schaumburg,3257,"1,09",Niedersachsen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-25
+108,30,Schleswig-Flensburg,1059,"1,04",Schleswig-Holstein,nie,nie,nie,05.12.2021,10.12.2021,27.12.2021,2021-11-25
+449,31,Schmalkalden-Meiningen,16066,"1,06",Thüringen,nie,nie,nie,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+561,32,"Schwabach, Stadt",9565,"1,09",Bayern,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+475,25,Schwäbisch Hall,8127,"1,18",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+144,61,Schwalm-Eder-Kreis,6634,"1,08",Hessen,nie,nie,nie,09.12.2021,14.12.2021,31.12.2021,2021-11-25
+520,43,Schwandorf,9376,"1,13",Bayern,nie,nie,nie,27.12.2021,01.01.2022,18.01.2022,2021-11-25
+730,12,Schwarzwald-Baar-Kreis,8326,"1,07",Baden-Württemberg,nie,nie,nie,01.01.2022,06.01.2022,23.01.2022,2021-11-25
+631,56,Schweinfurt,9678,"1,24",Bayern,nie,nie,nie,30.12.2021,04.01.2022,21.01.2022,2021-11-25
+494,56,"Schweinfurt, Stadt",9662,"1,13",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+346,54,"Schwerin, Stadt",13004,"1,51",Mecklenburg-Vorpommern,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-25
+155,51,Segeberg,1060,"1,18",Schleswig-Holstein,nie,nie,nie,10.12.2021,15.12.2021,01.01.2022,2021-11-25
+224,64,Siegen-Wittgenstein,5970,"1,12",Nordrhein-Westfalen,nie,nie,nie,15.12.2021,20.12.2021,07.01.2022,2021-11-25
+561,31,Sigmaringen,8437,"1,04",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+156,52,Soest,5974,"0,96",Nordrhein-Westfalen,01.05.2022,19.06.2022,10.12.2022,10.12.2021,15.12.2021,02.01.2022,2021-11-25
+305,44,"Solingen, Stadt",5122,"1,15",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+269,34,Sömmerda,16068,"1,14",Thüringen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-25
+1454,31,Sonneberg,16072,"1,09",Thüringen,nie,nie,nie,10.01.2022,15.01.2022,02.02.2022,2021-11-25
+475,31,"Speyer, Stadt",7318,"1,39",Rheinland-Pfalz,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+1133,14,Spree-Neiße,12071,"1,37",Brandenburg,nie,nie,nie,07.01.2022,12.01.2022,29.01.2022,2021-11-25
+279,54,St. Wendel,10046,"1,14",Saarland,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+148,52,Stade,3359,"1,29",Niedersachsen,nie,nie,nie,09.12.2021,14.12.2021,01.01.2022,2021-11-25
+292,46,Städteregion Aachen,5334,"1,25",Nordrhein-Westfalen,nie,nie,nie,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+532,28,Starnberg,9188,"1,13",Bayern,nie,nie,nie,27.12.2021,01.01.2022,19.01.2022,2021-11-25
+158,52,Steinburg,1061,"1,31",Schleswig-Holstein,nie,nie,nie,10.12.2021,15.12.2021,02.01.2022,2021-11-25
+233,50,Steinfurt,5566,"1,33",Nordrhein-Westfalen,nie,nie,nie,16.12.2021,21.12.2021,07.01.2022,2021-11-25
+325,23,Stendal,15090,"1,18",Sachsen-Anhalt,nie,nie,nie,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+195,51,Stormarn,1062,"1,23",Schleswig-Holstein,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-25
+706,23,Straubing-Bogen,9278,"1,03",Bayern,nie,nie,nie,31.12.2021,05.01.2022,23.01.2022,2021-11-25
+475,23,"Straubing, Stadt",9263,"1,03",Bayern,nie,nie,nie,26.12.2021,31.12.2021,17.01.2022,2021-11-25
+331,30,"Stuttgart, Stadt",8111,"0,93",Baden-Württemberg,02.04.2022,27.04.2022,22.07.2022,20.12.2021,25.12.2021,12.01.2022,2021-11-25
+413,31,Südliche Weinstraße,7337,"1,29",Rheinland-Pfalz,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-25
+412,50,Südwestpfalz,7340,"1,26",Rheinland-Pfalz,nie,nie,nie,24.12.2021,29.12.2021,15.01.2022,2021-11-25
+881,31,"Suhl, Stadt",16054,"1,31",Thüringen,nie,nie,nie,03.01.2022,08.01.2022,26.01.2022,2021-11-25
+763,21,Teltow-Fläming,12072,"0,99",Brandenburg,26.01.2027,30.09.2027,14.02.2030,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+407,43,Tirschenreuth,9377,"1,17",Bayern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+1118,21,Traunstein,9189,"1,05",Bayern,nie,nie,nie,07.01.2022,12.01.2022,29.01.2022,2021-11-25
+187,67,Trier-Saarburg,7235,"1,04",Rheinland-Pfalz,nie,nie,nie,12.12.2021,17.12.2021,04.01.2022,2021-11-25
+130,67,"Trier, Stadt",7211,"1,14",Rheinland-Pfalz,nie,nie,nie,07.12.2021,12.12.2021,30.12.2021,2021-11-25
+380,27,Tübingen,8416,"1,15",Baden-Württemberg,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+570,12,Tuttlingen,8327,"1,23",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+673,26,Uckermark,12073,"1,32",Brandenburg,nie,nie,nie,30.12.2021,04.01.2022,22.01.2022,2021-11-25
+165,35,Uelzen,3360,"1,10",Niedersachsen,nie,nie,nie,11.12.2021,16.12.2021,02.01.2022,2021-11-25
+499,28,"Ulm, Stadt",8421,"1,12",Baden-Württemberg,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+200,53,Unna,5978,"1,29",Nordrhein-Westfalen,nie,nie,nie,13.12.2021,18.12.2021,05.01.2022,2021-11-25
+580,27,Unstrut-Hainich-Kreis,16064,"1,06",Thüringen,nie,nie,nie,28.12.2021,02.01.2022,20.01.2022,2021-11-25
+976,29,Unterallgäu,9778,"1,01",Bayern,nie,nie,nie,05.01.2022,10.01.2022,27.01.2022,2021-11-25
+387,74,Vechta,3460,"1,30",Niedersachsen,nie,nie,nie,23.12.2021,28.12.2021,14.01.2022,2021-11-25
+201,21,Verden,3361,"1,01",Niedersachsen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+313,44,Viersen,5166,"1,25",Nordrhein-Westfalen,nie,nie,nie,20.12.2021,25.12.2021,11.01.2022,2021-11-25
+204,68,Vogelsbergkreis,6535,"0,97",Hessen,21.08.2022,28.10.2022,25.06.2023,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+1134,18,Vogtlandkreis,14523,"1,34",Sachsen,nie,nie,nie,07.01.2022,12.01.2022,29.01.2022,2021-11-25
+410,53,Vorpommern-Greifswald,13075,"1,44",Mecklenburg-Vorpommern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+373,53,Vorpommern-Rügen,13073,"1,23",Mecklenburg-Vorpommern,nie,nie,nie,22.12.2021,27.12.2021,14.01.2022,2021-11-25
+241,67,Vulkaneifel,7233,"1,54",Rheinland-Pfalz,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+219,61,Waldeck-Frankenberg,6635,"1,42",Hessen,nie,nie,nie,15.12.2021,20.12.2021,06.01.2022,2021-11-25
+401,22,Waldshut,8337,"1,13",Baden-Württemberg,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+271,50,Warendorf,5570,"1,19",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,09.01.2022,2021-11-25
+795,31,Wartburgkreis,16063,"1,11",Thüringen,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-25
+491,43,"Weiden i.d.OPf., Stadt",9363,"1,29",Bayern,nie,nie,nie,26.12.2021,31.12.2021,18.01.2022,2021-11-25
+768,44,Weilheim-Schongau,9190,"1,23",Bayern,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+451,34,"Weimar, Stadt",16055,"0,94",Thüringen,06.06.2022,07.07.2022,26.10.2022,25.12.2021,30.12.2021,16.01.2022,2021-11-25
+781,34,Weimarer Land,16071,"1,23",Thüringen,nie,nie,nie,02.01.2022,07.01.2022,24.01.2022,2021-11-25
+842,41,Weißenburg-Gunzenhausen,9577,"1,05",Bayern,nie,nie,nie,03.01.2022,08.01.2022,25.01.2022,2021-11-25
+247,61,Werra-Meißner-Kreis,6636,"1,11",Hessen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+255,58,Wesel,5170,"1,24",Nordrhein-Westfalen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+178,49,Wesermarsch,3461,"1,30",Niedersachsen,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-25
+202,60,Westerwaldkreis,7143,"1,31",Rheinland-Pfalz,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+210,51,Wetteraukreis,6440,"1,09",Hessen,nie,nie,nie,14.12.2021,19.12.2021,06.01.2022,2021-11-25
+207,51,"Wiesbaden, Stadt",6414,"1,08",Hessen,nie,nie,nie,14.12.2021,19.12.2021,05.01.2022,2021-11-25
+116,52,"Wilhelmshaven, Stadt",3405,"1,33",Niedersachsen,nie,nie,nie,06.12.2021,11.12.2021,28.12.2021,2021-11-25
+774,26,Wittenberg,15091,"1,26",Sachsen-Anhalt,nie,nie,nie,01.01.2022,06.01.2022,24.01.2022,2021-11-25
+253,52,Wittmund,3462,"1,54",Niedersachsen,nie,nie,nie,17.12.2021,22.12.2021,08.01.2022,2021-11-25
+178,47,Wolfenbüttel,3158,"1,38",Niedersachsen,nie,nie,nie,12.12.2021,17.12.2021,03.01.2022,2021-11-25
+247,47,"Wolfsburg, Stadt",3103,"1,45",Niedersachsen,nie,nie,nie,16.12.2021,21.12.2021,08.01.2022,2021-11-25
+432,46,"Worms, Stadt",7319,"1,17",Rheinland-Pfalz,nie,nie,nie,24.12.2021,29.12.2021,16.01.2022,2021-11-25
+288,48,Wunsiedel i.Fichtelgebirge,9479,"0,90",Bayern,17.02.2022,06.03.2022,05.05.2022,19.12.2021,24.12.2021,10.01.2022,2021-11-25
+279,44,"Wuppertal, Stadt",5124,"1,17",Nordrhein-Westfalen,nie,nie,nie,18.12.2021,23.12.2021,10.01.2022,2021-11-25
+343,48,Würzburg,9679,"1,15",Bayern,nie,nie,nie,21.12.2021,26.12.2021,13.01.2022,2021-11-25
+403,48,"Würzburg, Stadt",9663,"1,24",Bayern,nie,nie,nie,23.12.2021,28.12.2021,15.01.2022,2021-11-25
+560,27,Zollernalbkreis,8417,"1,14",Baden-Württemberg,nie,nie,nie,28.12.2021,02.01.2022,19.01.2022,2021-11-25
+307,50,"Zweibrücken, Stadt",7320,"1,43",Rheinland-Pfalz,nie,nie,nie,19.12.2021,24.12.2021,11.01.2022,2021-11-25
+1068,18,Zwickau,14524,"1,28",Sachsen,nie,nie,nie,06.01.2022,11.01.2022,28.01.2022,2021-11-25
