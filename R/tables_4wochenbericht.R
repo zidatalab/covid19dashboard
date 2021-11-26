@@ -209,6 +209,7 @@ rki_hosp <- rki_hosp %>% mutate(YearKW=Meldejahr*100+MW)
 rki_hosp_age <- rki_hosp_age %>% mutate(YearKW=as.integer(Meldejahr)*100+as.integer(Meldewoche))
 
 # ard impfdaten
+# check
 vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
 
 bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
