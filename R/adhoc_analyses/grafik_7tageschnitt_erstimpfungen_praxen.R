@@ -32,14 +32,18 @@ stschnitt <- impfungen_tc %>%
   select(Datum, stschnitt)
 
 stschnitt_plot <- ggplot(stschnitt,
-                         aes(x=Datum, y=stschnitt)) +
-  geom_bar(stat="identity", fill=zi_cols("ziblue")) +
+                         aes(x=Datum, y=stschnitt)) + #, label=round(stschnitt)
+  # geom_bar(stat="identity", fill=zi_cols("ziblue")) +
+  # coord_flip()+
+  geom_line(col=zi_cols("ziblue"), size=3) +
   scale_y_continuous(labels=scales::comma_format(decimal.mark = ",", 
-                                                 big.mark = ".")) +
+                                                 big.mark = "."),
+                     limits=c(0, NA)) +
   theme_zi() +
-  theme(axis.text.x = element_text(angle = 45, vjust = +1.5, hjust=1)) +
+  theme(axis.text.x = element_text(angle=45)) +
   labs(title = "Anstieg der Erstimpfungen in ärztlichen Praxen",
        subtitle = "Sieben-Tages-Durchschnitt der Erstimpfungen (Nov. 2021)") +
+  # geom_text(size = 3, hjust=1.1, col="white") +
   scale_x_date(#date_breaks="days", 
                breaks=as_date(min(stschnitt$Datum):max(stschnitt$Datum)),
                date_labels = "%d.%m.")  # , limits = as_date(c(min(stschnitt$Datum), max(stschnitt$Datum)))
