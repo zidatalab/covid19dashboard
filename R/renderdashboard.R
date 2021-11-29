@@ -205,7 +205,8 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc) {
                                          by=c("vacc_date",
                                               "vacc_series",
                                               "Impfstoff",
-                                              "Bundesland"))
+                                              "Bundesland")) %>% 
+    mutate(KW=isoweek(vacc_date))
   
   age_kreise_kbv_rki <- full_join(kbv_age_kreise_kv,
                                      rki_vacc_kreise,
@@ -217,10 +218,12 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc) {
     group_by(Kreis2016) %>% 
     mutate(kv=max(kv, na.rm=TRUE),
            Kreis2016name=max(Kreis2016name, na.rm=TRUE)) %>% 
-    ungroup()
+    ungroup() %>% 
+    mutate(KW=isoweek(vacc_date))
   
   DBI::dbWriteTable(conn, "kbv_rki_impfstoffe_laender", impfstoff_laender_kbv_rki, overwrite=TRUE)
-  DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv, overwrite=TRUE)
+  DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv %>% 
+                      mutate(KW=isoweek(vacc_date)), overwrite=TRUE)
   DBI::dbWriteTable(conn, "kbv_rki_altersgruppen_kreise", age_kreise_kbv_rki, overwrite=TRUE)
 
 }
@@ -263,3 +266,5 @@ DBI::dbWriteTable(conn, "bmg_impfstofflieferungen", lieferungen, overwrite=TRUE)
 DBI::dbSendStatement(conn, "GRANT SELECT ON ALL TABLES IN SCHEMA public TO zireader;")
 
 DBI::dbDisconnect(conn)
+# DBI::dbListTables(conn)
+# DBI::dbRemoveTable(conn, "brd_testungen")
