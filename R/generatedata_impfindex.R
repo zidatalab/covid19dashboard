@@ -131,7 +131,7 @@ write_csv(impfdashboardde %>%
                 impfstoff=="johnson" ~ "J&J",
                 TRUE ~ "error"),
               KW=isoweek(date),
-              wochentag=wday(date, week_start = 1),
+              wochentag=lubridate::wday(date, week_start = 1),
               KW=ifelse(wochentag>=5, KW+1, KW),
               Jahr=year(date)
             ),
@@ -148,7 +148,7 @@ bunddashboard_daten <- impfdashboardde %>%
       impfstoff=="johnson" ~ "J&J",
       TRUE ~ "error"),
     KW=isoweek(date),
-    wochentag=wday(date, week_start = 1),
+    wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
     Jahr=year(date)
   ) %>% 
@@ -280,7 +280,7 @@ fuerpraxen <- impfdashboardde %>%
       impfstoff=="johnson" ~ "J&J",
       TRUE ~ "error"),
     KW=isoweek(date),
-    wochentag=wday(date, week_start = 1),
+    wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
     Jahr=year(date)
   ) %>% 
@@ -308,7 +308,7 @@ fuerimpfzentren <- impfdashboardde %>%
       impfstoff=="johnson" ~ "J&J",
       TRUE ~ "error"),
     KW=isoweek(date),
-    wochentag=wday(date, week_start = 1),
+    wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
     Jahr=year(date)
   ) %>% 
@@ -337,7 +337,7 @@ fuerandere <- impfdashboardde %>%
       impfstoff=="johnson" ~ "J&J",
       TRUE ~ "error"),
     KW=isoweek(date),
-    wochentag=wday(date, week_start = 1),
+    wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
     Jahr=year(date)
   ) %>% 

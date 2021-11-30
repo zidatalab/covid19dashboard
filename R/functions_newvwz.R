@@ -137,10 +137,10 @@ jhu_germany <- tbl(conn, "trends") %>%
   filter(Country=="Germany") %>% 
   select(date, cases, deaths, incident_cases) %>% 
   collect()
-vaccinations <- tbl(conn, "vaccinations") %>% 
-  collect() %>% 
-  mutate(datum=as_date(date),
-         pubdatum=as_date(as_datetime(publication_date)))
+# vaccinations <- tbl(conn, "vaccinations") %>% 
+#   collect() %>% 
+#   mutate(datum=as_date(date),
+#          pubdatum=as_date(as_datetime(publication_date)))
 # tt <- system.time({rki_dailycases <- tbl(conn, "rki_archive") %>%
 #   filter(NeuerFall==1 | NeuerFall==-1) %>%
 #   select(AnzahlFall, Datenstand) %>% 
