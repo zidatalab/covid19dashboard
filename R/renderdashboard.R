@@ -52,7 +52,46 @@ test_kbv_aggr_vacc <- tbl(conn,"kbv_impfstoff_kreise") %>%
   collect() %>% 
   pull(maxdate)
 
-if (test_new_kbv_vacc>test_kbv_aggr_vacc) {
+rki_vacc_laender <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv") %>% 
+  mutate(BundeslandId_Impfort=as.integer(BundeslandId_Impfort),
+         Bundesland=case_when(
+           BundeslandId_Impfort == 1 ~ "Schleswig-Holstein",
+           BundeslandId_Impfort == 2 ~ "Hamburg",
+           BundeslandId_Impfort == 3 ~ "Niedersachsen",
+           BundeslandId_Impfort == 4 ~ "Bremen",
+           BundeslandId_Impfort == 6 ~ "Hessen",
+           BundeslandId_Impfort == 7 ~ "Rheinland-Pfalz",
+           BundeslandId_Impfort == 8 ~ "Baden-Württemberg",
+           BundeslandId_Impfort == 9 ~ "Bayern",
+           BundeslandId_Impfort == 10 ~ "Saarland",
+           BundeslandId_Impfort == 11 ~ "Berlin",
+           BundeslandId_Impfort == 12 ~ "Brandenburg",
+           BundeslandId_Impfort == 13 ~ "Mecklenburg-Vorpommern",
+           BundeslandId_Impfort == 14 ~ "Sachsen",
+           BundeslandId_Impfort == 15 ~ "Sachsen-Anhalt",
+           BundeslandId_Impfort == 16 ~ "Thüringen",
+           BundeslandId_Impfort == 5 ~ "Nordrhein-Westfalen",
+           BundeslandId_Impfort == 17 ~ "Bundesressorts",
+           TRUE ~ "ERROR"
+         ),
+         Impfdatum=as_date(Impfdatum)) %>% 
+  select(vacc_date=Impfdatum, BundeslandId_Impfort,
+         Bundesland,
+         vacc_series=Impfserie,
+         Impfstoff,
+         anzahl_alleorte=Anzahl) # %>% 
+# group_by(vacc_date, LandkreisId, vacc_series, Altersgruppe) %>% 
+# summarise(anzahl_alleorte=sum(anzahl_alleorte), .groups = "drop")
+
+test_new_rki_vacc <- max(rki_vacc_laender$vacc_date)
+
+test_old_rki_vacc <- tbl(conn,"kbv_rki_impfstoffe_laender") %>% 
+  filter(!is.na(anzahl_alleorte)) %>% 
+  summarise(maxdate=max(vacc_date)) %>%
+  collect() %>% 
+  pull(maxdate)
+
+if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) {
   kbv_impfstoff <- tbl(conn,"kbvcovidvacczi") %>% 
     collect()
   kbv_age <- tbl(conn,"kbvcovidagegroup") %>%
@@ -79,37 +118,6 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc) {
            anzahl_alleorte=Anzahl) %>% 
     group_by(vacc_date, LandkreisId, vacc_series, Altersgruppe) %>% 
     summarise(anzahl_alleorte=sum(anzahl_alleorte))
-  
-  rki_vacc_laender <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv") %>% 
-    mutate(BundeslandId_Impfort=as.integer(BundeslandId_Impfort),
-           Bundesland=case_when(
-      BundeslandId_Impfort == 1 ~ "Schleswig-Holstein",
-      BundeslandId_Impfort == 2 ~ "Hamburg",
-      BundeslandId_Impfort == 3 ~ "Niedersachsen",
-      BundeslandId_Impfort == 4 ~ "Bremen",
-      BundeslandId_Impfort == 6 ~ "Hessen",
-      BundeslandId_Impfort == 7 ~ "Rheinland-Pfalz",
-      BundeslandId_Impfort == 8 ~ "Baden-Württemberg",
-      BundeslandId_Impfort == 9 ~ "Bayern",
-      BundeslandId_Impfort == 10 ~ "Saarland",
-      BundeslandId_Impfort == 11 ~ "Berlin",
-      BundeslandId_Impfort == 12 ~ "Brandenburg",
-      BundeslandId_Impfort == 13 ~ "Mecklenburg-Vorpommern",
-      BundeslandId_Impfort == 14 ~ "Sachsen",
-      BundeslandId_Impfort == 15 ~ "Sachsen-Anhalt",
-      BundeslandId_Impfort == 16 ~ "Thüringen",
-      BundeslandId_Impfort == 5 ~ "Nordrhein-Westfalen",
-      BundeslandId_Impfort == 17 ~ "Bundesressorts",
-      TRUE ~ "ERROR"
-    ),
-           Impfdatum=as_date(Impfdatum)) %>% 
-    select(vacc_date=Impfdatum, BundeslandId_Impfort,
-           Bundesland,
-           vacc_series=Impfserie,
-           Impfstoff,
-           anzahl_alleorte=Anzahl) # %>% 
-    # group_by(vacc_date, LandkreisId, vacc_series, Altersgruppe) %>% 
-    # summarise(anzahl_alleorte=sum(anzahl_alleorte), .groups = "drop")
   
   kbv_impfstoff_plz <- kbv_impfstoff %>% 
     mutate(anzahl=as.integer(anzahl),
