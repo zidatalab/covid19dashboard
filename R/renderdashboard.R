@@ -123,6 +123,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     mutate(anzahl=as.integer(anzahl),
            arzt_plz=as.integer(arzt_plz),
            vacc_series=as.integer(vacc_series)) %>% 
+    # mutate(vacc_series=ifelse(vacc_series==2 & vacc_product=="Ad26.COV2.S", 1, vacc_series)) %>% 
     select(vacc_date, PLZ=arzt_plz, 
            vacc_product,
            vacc_series, anzahl_praxen=anzahl) %>% 
