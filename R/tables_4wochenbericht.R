@@ -1279,12 +1279,12 @@ hersteller_table <- tibble(
   )
 ) %>%
   mutate(anteil_vorwoche=paste0(" (", 
-                       format(round(100*Vorwoche/(Vorwoche[1]+Vorwoche[5]+Vorwoche[9]+Vorwoche[13]), 
+                       format(round(100*Vorwoche/(Vorwoche[1]+Vorwoche[6]+Vorwoche[11]+Vorwoche[16]), 
                                     1), 
                               decimal.mark=","), 
                        " %)"),
          anteil=paste0(" (", 
-                       format(round(100*dieseWoche/(dieseWoche[1]+dieseWoche[5]+dieseWoche[9]+dieseWoche[13]), 
+                       format(round(100*dieseWoche/(dieseWoche[1]+dieseWoche[6]+dieseWoche[11]+dieseWoche[16]), 
                                     1), 
                               decimal.mark=","), 
                        " %)")) %>%
