@@ -587,7 +587,8 @@ maxdividate <- maxdate # max(divi_all$daten_stand)
 divi0 <- divi_all %>%
   filter(id==0) %>%
   mutate(auslastungcovid=faelle_covid_aktuell/ICU_Betten,
-         quotefrei=betten_frei/ICU_Betten)
+         quotefrei=betten_frei/ICU_Betten,
+         date)
 # Intensivbaetten
 itstabelle <- tibble(
   Intensivbetten=c(
