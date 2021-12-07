@@ -133,7 +133,13 @@ write_csv(impfdashboardde %>%
               KW=isoweek(date),
               wochentag=lubridate::wday(date, week_start = 1),
               KW=ifelse(wochentag>=5, KW+1, KW),
-              Jahr=year(date)
+              Jahr=year(date),
+              Monat=month(date),
+              Jahr=case_when(
+                KW>=52 & Monat==1 ~ Jahr-1,
+                TRUE ~ Jahr
+              ),
+              JahrKW=Jahr*100+KW
             ),
           "../data/tabledata/impfstoff_lieferungen_bmg.csv")
 
@@ -150,7 +156,13 @@ bunddashboard_daten <- impfdashboardde %>%
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
-    Jahr=year(date)
+    Jahr=year(date),
+    Monat=month(date),
+    Jahr=case_when(
+      KW>=52 & Monat==1 ~ Jahr-1,
+      TRUE ~ Jahr
+    ),
+    JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
   group_by(Hersteller, KW, Jahr, geo) %>% 
@@ -282,7 +294,13 @@ fuerpraxen <- impfdashboardde %>%
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
-    Jahr=year(date)
+    Jahr=year(date),
+    Monat=month(date),
+    Jahr=case_when(
+      KW>=52 & Monat==1 ~ Jahr-1,
+      TRUE ~ Jahr
+    ),
+    JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
   group_by(Hersteller, KW, Jahr, geo) %>% 
@@ -310,7 +328,13 @@ fuerimpfzentren <- impfdashboardde %>%
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
-    Jahr=year(date)
+    Jahr=year(date),
+    Monat=month(date),
+    Jahr=case_when(
+      KW>=52 & Monat==1 ~ Jahr-1,
+      TRUE ~ Jahr
+    ),
+    JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
   group_by(Hersteller, KW, Jahr, geo) %>% 
@@ -339,7 +363,13 @@ fuerandere <- impfdashboardde %>%
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
-    Jahr=year(date)
+    Jahr=year(date),
+    Monat=month(date),
+    Jahr=case_when(
+      KW>=52 & Monat==1 ~ Jahr-1,
+      TRUE ~ Jahr
+    ),
+    JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
   group_by(Hersteller, KW, Jahr, geo) %>% 
@@ -358,8 +388,15 @@ write_json(fuerandere, "../data/tabledata/impfsim_lieferungenandere.json")
 
 # impfungen in impfzentren nach ländern
 impfungen_praxen_bl_kw <- impfungen_praxen_bl %>% 
-  mutate(KW=isoweek(date), Jahr=ifelse(KW==53, 2020, year(date)), 
-         JahrKW=100*Jahr+KW) %>% 
+  mutate(    KW=isoweek(date),
+             wochentag=lubridate::wday(date, week_start = 1),
+             Jahr=year(date),
+             Monat=month(date),
+             Jahr=case_when(
+               KW>=52 & Monat==1 ~ Jahr-1,
+               TRUE ~ Jahr
+             ),
+             JahrKW=Jahr*100+KW) %>% 
   group_by(KW, Jahr, JahrKW, Bundesland) %>% 
   summarise(Impfungen_Praxen_KW=sum(`BNT/Pfizer`+
                                       `Moderna`+
@@ -376,8 +413,15 @@ impfungen_praxen_bl_kw <- bind_rows(impfungen_praxen_bl_kw,
                                                 .groups="drop"))
 iz_vergangen_laender <- rki_vacc %>% 
   filter(metric=="dosen_kumulativ") %>% 
-  mutate(KW=isoweek(date), Jahr=ifelse(KW==53, 2020, year(date)), 
-         JahrKW=100*Jahr+KW) %>% 
+  mutate(    KW=isoweek(date),
+             wochentag=lubridate::wday(date, week_start = 1),
+             Jahr=year(date),
+             Monat=month(date),
+             Jahr=case_when(
+               KW>=52 & Monat==1 ~ Jahr-1,
+               TRUE ~ Jahr
+             ),
+             JahrKW=Jahr*100+KW) %>% 
   group_by(KW, Jahr, JahrKW, geo) %>% 
   summarise(Impfungen_kum=max(value), .groups="drop") %>% 
   arrange(JahrKW) %>% 

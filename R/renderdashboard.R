@@ -215,7 +215,14 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
                                               "vacc_series",
                                               "Impfstoff",
                                               "Bundesland")) %>% 
-    mutate(KW=isoweek(vacc_date))
+    mutate(KW=isoweek(vacc_date),
+           Jahr=year(vacc_date),
+           Monat=month(vacc_date),
+           Jahr=case_when(
+             KW>=52 & Monat==1 ~ Jahr-1,
+             TRUE ~ Jahr
+           ),
+           JahrKW=100*Jahr+KW)
   
   age_kreise_kbv_rki <- full_join(kbv_age_kreise_kv,
                                      rki_vacc_kreise,
@@ -228,7 +235,14 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     mutate(kv=max(kv, na.rm=TRUE),
            Kreis2016name=max(Kreis2016name, na.rm=TRUE)) %>% 
     ungroup() %>% 
-    mutate(KW=isoweek(vacc_date))
+    mutate(KW=isoweek(vacc_date),
+           Jahr=year(vacc_date),
+           Monat=month(vacc_date),
+           Jahr=case_when(
+             KW>=52 & Monat==1 ~ Jahr-1,
+             TRUE ~ Jahr
+           ),
+           JahrKW=100*Jahr+KW)
   
   DBI::dbWriteTable(conn, "kbv_rki_impfstoffe_laender", impfstoff_laender_kbv_rki, overwrite=TRUE)
   DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv %>% 
