@@ -744,7 +744,12 @@ rki_7ti_kreise <- rki %>%
   filter(Altersgruppe!="unbekannt") %>%
   filter(AnzahlFall>=0) %>%
   mutate(KW=isoweek(Meldedatum),
-         Jahr=ifelse(KW==53, 2020, year(Meldedatum)),
+         Jahr=year(Meldedatum),
+         Monat=month(Meldedatum),
+         Jahr=case_when(
+           KW>=52 & Monat==1 ~ Jahr-1,
+           TRUE ~ Jahr
+         ),
          JahrKW=paste0(Jahr, "-", str_pad(KW, 2, pad="0")),
          # Altersgruppe=case_when(
          #   Altersgruppe=="A00-A04" ~ "ag_1",
@@ -798,8 +803,10 @@ rki_7ti_alle <- bind_rows(rki_7ti_bund %>%
   mutate(STI=round(AnzahlFall/Einwohnende*100000),
          datesunday=case_when(JahrKW=="2020-53" ~ base::as.Date("2021-01-03"),
                               JahrKW<"2020-53" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w"),
-                              JahrKW>="2021-01" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7)
-                           ) %>%
+                              JahrKW>="2021-01" & JahrKW<"2021-52" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7,
+                              JahrKW=="2021-52" ~ base::as.Date("2022-01-02"),
+                              JahrKW>="2022-01" ~ base::as.Date(paste0(JahrKW, "-0"), format="%Y-%W-%w")+7
+                           )) %>%
   filter(datesunday<=lastsunday)
 ## rki-r-wert und vorwarnzeit
 rki_reformat_r_ts <- RKI_R %>%
