@@ -219,7 +219,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
            Jahr=year(vacc_date),
            Monat=month(vacc_date),
            Jahr=case_when(
-             KW>=52 & Monat==1 ~ Jahr-1,
+             KW>=52 & Monat==1 ~ Jahr-1L,
              TRUE ~ Jahr
            ),
            JahrKW=100*Jahr+KW)
@@ -239,7 +239,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
            Jahr=year(vacc_date),
            Monat=month(vacc_date),
            Jahr=case_when(
-             KW>=52 & Monat==1 ~ Jahr-1,
+             KW>=52 & Monat==1 ~ Jahr-1L,
              TRUE ~ Jahr
            ),
            JahrKW=100*Jahr+KW)
