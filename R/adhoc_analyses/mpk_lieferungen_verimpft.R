@@ -1,3 +1,5 @@
+lieferungen <- read_csv("../data/tabledata/impfstoff_lieferungen_bmg.csv")
+
 View(lieferungen %>% 
        filter(dosen>0) %>% 
        mutate(jahr=year(date),
@@ -31,7 +33,11 @@ View(impfstoff_laender_kbv_rki %>%
 View(impfstoff_laender_kbv_rki %>% 
        group_by(KW, Impfstoff, vacc_series) %>% 
        filter(KW<52) %>%
-       summarise(verimpft_serie=sum(anzahl_alleorte, na.rm=TRUE)))
+       summarise(verimpft_serie=sum(anzahl_alleorte, na.rm=TRUE),
+                 .groups = "drop") %>% 
+       group_by(KW, Impfstoff) %>% 
+       mutate(anteil_serie=round(100*verimpft_serie/sum(verimpft_serie, na.rm=TRUE))) %>% 
+       ungroup())
 
 # lager bund bis november
 lager_bund <- tibble(

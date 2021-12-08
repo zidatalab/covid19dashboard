@@ -118,7 +118,11 @@ impfdashboardde <- read_tsv(
 ) %>% 
   left_join(ISOcodes::ISO_3166_2 %>% 
               select(region=Code,
-                     geo=Name), by="region")
+                     geo=Name), by="region") %>% 
+  mutate(dosen=case_when(
+    impfstoff=="moderna" & date>="2021-10-26" ~ dosen*2, # booster moderna sind doppelt ab KW43 laut bmg
+    TRUE ~ dosen
+  ))
 
 write_csv(impfdashboardde %>%
             mutate(

@@ -54,7 +54,11 @@ impfdashboardde <- read_tsv(
 ) %>% 
   left_join(ISOcodes::ISO_3166_2 %>% 
               select(region=Code,
-                     geo=Name), by="region")
+                     geo=Name), by="region") %>% 
+  mutate(dosen=case_when(
+    impfstoff=="Moderna" & date>="2021-10-26" ~ dosen*2, # booster sind doppelt für moderna ab kw43 laut bmg
+    TRUE ~ dosen
+  ))
 
 # daten übersterblichkeit
 url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
