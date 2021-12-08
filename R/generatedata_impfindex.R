@@ -136,7 +136,7 @@ write_csv(impfdashboardde %>%
               Jahr=year(date),
               Monat=month(date),
               Jahr=case_when(
-                KW>=52 & Monat==1 ~ Jahr-1,
+                KW>=52 & Monat==1 ~ Jahr-1L,
                 TRUE ~ Jahr
               ),
               JahrKW=Jahr*100+KW
@@ -159,7 +159,7 @@ bunddashboard_daten <- impfdashboardde %>%
     Jahr=year(date),
     Monat=month(date),
     Jahr=case_when(
-      KW>=52 & Monat==1 ~ Jahr-1,
+      KW>=52 & Monat==1 ~ Jahr-1L,
       TRUE ~ Jahr
     ),
     JahrKW=Jahr*100+KW
@@ -297,7 +297,7 @@ fuerpraxen <- impfdashboardde %>%
     Jahr=year(date),
     Monat=month(date),
     Jahr=case_when(
-      KW>=52 & Monat==1 ~ Jahr-1,
+      KW>=52 & Monat==1 ~ Jahr-1L,
       TRUE ~ Jahr
     ),
     JahrKW=Jahr*100+KW
@@ -331,7 +331,7 @@ fuerimpfzentren <- impfdashboardde %>%
     Jahr=year(date),
     Monat=month(date),
     Jahr=case_when(
-      KW>=52 & Monat==1 ~ Jahr-1,
+      KW>=52 & Monat==1 ~ Jahr-1L,
       TRUE ~ Jahr
     ),
     JahrKW=Jahr*100+KW
@@ -366,7 +366,7 @@ fuerandere <- impfdashboardde %>%
     Jahr=year(date),
     Monat=month(date),
     Jahr=case_when(
-      KW>=52 & Monat==1 ~ Jahr-1,
+      KW>=52 & Monat==1 ~ Jahr-1L,
       TRUE ~ Jahr
     ),
     JahrKW=Jahr*100+KW
@@ -393,7 +393,7 @@ impfungen_praxen_bl_kw <- impfungen_praxen_bl %>%
              Jahr=year(date),
              Monat=month(date),
              Jahr=case_when(
-               KW>=52 & Monat==1 ~ Jahr-1,
+               KW>=52 & Monat==1 ~ Jahr-1L,
                TRUE ~ Jahr
              ),
              JahrKW=Jahr*100+KW) %>% 
@@ -418,7 +418,7 @@ iz_vergangen_laender <- rki_vacc %>%
              Jahr=year(date),
              Monat=month(date),
              Jahr=case_when(
-               KW>=52 & Monat==1 ~ Jahr-1,
+               KW>=52 & Monat==1 ~ Jahr-1L,
                TRUE ~ Jahr
              ),
              JahrKW=Jahr*100+KW) %>% 

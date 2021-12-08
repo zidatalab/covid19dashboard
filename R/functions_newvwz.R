@@ -747,7 +747,7 @@ rki_7ti_kreise <- rki %>%
          Jahr=year(Meldedatum),
          Monat=month(Meldedatum),
          Jahr=case_when(
-           KW>=52 & Monat==1 ~ Jahr-1,
+           KW>=52 & Monat==1 ~ Jahr-1L,
            TRUE ~ Jahr
          ),
          JahrKW=paste0(Jahr, "-", str_pad(KW, 2, pad="0")),
