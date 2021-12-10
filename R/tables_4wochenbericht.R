@@ -39,12 +39,19 @@ gelieferte_dosen <- read_json("../data/tabledata/impfsim_start.json",
   filter(geo=="Gesamt")
 impfen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv") %>% 
   select(-1) %>%
-  mutate(KW=isoweek(date)) %>% 
-  group_by(KW, Bundesland) %>% 
+  mutate(KW=isoweek(date),
+         Jahr=year(date),
+         Monat=month(date),
+         Jahr=case_when(
+           KW>=52 & Monat==1 ~ Jahr-1L,
+           TRUE ~ Jahr
+         ),
+         JahrKW=100*Jahr+KW) %>% 
+  group_by(Jahr, KW, Bundesland) %>% 
   summarise(Impfungen=sum(`Ad26.COV2.S`+`AZD1222`+`BNT162b2`+`mRNA-1273`))
 impfen_praxen_bl <- bind_rows(impfen_praxen_bl,
                               impfen_praxen_bl %>% 
-                                group_by(KW) %>% 
+                                group_by(Jahr, KW) %>% 
                                 summarise(Bundesland="Gesamt",
                                           Impfungen=sum(Impfungen)))
 
@@ -206,7 +213,7 @@ rki_hosp_age <- read_excel(destfile_rkihosp,
                                   sheet = 3,
                                   skip = 5) # immer wieder schön: excel ändert sich ständig
 # Attention: BUG RKI
-rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
+# rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
 
 rki_hosp <- rki_hosp %>% mutate(YearKW=Meldejahr*100+MW)
 
