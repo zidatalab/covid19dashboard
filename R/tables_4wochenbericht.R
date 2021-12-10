@@ -487,11 +487,17 @@ EUmal4tabelle <- tibble(
 
 
 rki <- rki %>% mutate(KW=isoweek(Meldedatum),
-                      YearKW=ifelse(KW==53, 202053, year(Meldedatum)*100+KW))
+                      Jahr=year(Meldedatum),
+                      Monat=month(Meldedatum),
+                      Jahr=case_when(
+                        KW>=52 & Monat==1 ~ Jahr-1L,
+                        TRUE ~ Jahr
+                      ),
+                      YearKW=100*Jahr+KW)
 thisKW <- max(rki$YearKW)
-sterbeKW <- thisKW-5
+sterbeKW <- sort(unique(rki$YearKW), decreasing = TRUE)[6]
 sterbeJahr <- floor(sterbeKW/100)
-vorsterbeKW <- ifelse(sterbeKW==202101, 202053, sterbeKW-1)
+vorsterbeKW <- sort(unique(rki$YearKW), decreasing = TRUE)[7]
 vorsterbeJahr <- floor(vorsterbeKW/100)
 sterbestichtag <- as_date(max(rki %>%
                                 filter(YearKW==sterbeKW) %>%
@@ -812,8 +818,9 @@ rwert7ti <- rwert7ti %>%
 
 testmaxkw <- max(almev$KW)
 testmaxjahr <- floor(testmaxkw/100)
-vortestmaxkw <- ifelse(testmaxkw==202101, 202053, testmaxkw-1)
+vortestmaxkw <- sort(unique(almev$KW), decreasing = TRUE)[2]
 vortestmaxjahr <- floor(vortestmaxkw/100)
+
 almev <- almev %>%
   mutate(positivrate=positivtests/pcrtests,
          auslastung=pcrtests/testkapazitaet)
@@ -920,13 +927,18 @@ testtabelle <- tibble(
 # 
 ## hospitalisierungen nach altersgruppen
 maxweek_rki_hosp_age <- max(rki_hosp_age$YearKW, na.rm=TRUE)
-hosp_age_thisweek <- maxweek_rki_hosp_age-2
-hosp_age_beforeweek <- hosp_age_thisweek-1
+hosp_age_thisweek <- sort(unique(rki_hosp_age$YearKW), decreasing = TRUE)[3]
+hosp_age_beforeweek <- sort(unique(rki_hosp_age$YearKW), decreasing = TRUE)[4]
 
 rki_agg_kw_ag <- rki %>%
-  mutate(Jahr=year(Meldedatum),
-         KW=isoweek(Meldedatum),
-         YearKW=ifelse(KW!=53, Jahr*100+KW, 202053)) %>%
+  mutate(KW=isoweek(Meldedatum),
+         Jahr=year(Meldedatum),
+         Monat=month(Meldedatum),
+         Jahr=case_when(
+           KW>=52 & Monat==1 ~ Jahr-1L,
+           TRUE ~ Jahr
+         ),
+         YearKW=100*Jahr+KW) %>%
   group_by(YearKW, Altersgruppe) %>%
   summarise(AnzahlFaelle=sum(AnzahlFall[NeuerFall>=0]),
             .groups="drop")
@@ -1044,7 +1056,7 @@ hosp_ag_tabelle <- tibble(
                                 format(round(100*VorwocheAnteil, 1),
                                        decimal.mark=","),
                                 "%)")),
-         !!paste0("KW ", hosp_age_thisweek-202100) :=
+         !!paste0("KW ", hosp_age_thisweek%%100) :=
            ifelse(dieseWoche==0,
                   0,
                   paste0(dieseWoche,
@@ -1053,7 +1065,7 @@ hosp_ag_tabelle <- tibble(
                                 decimal.mark=","),
                          "%)"))) %>%
   select(Hospitalisierungen, Vorwoche,
-         !!paste0("KW ", hosp_age_thisweek-202100), Veraenderung)
+         !!paste0("KW ", hosp_age_thisweek%%100), Veraenderung)
 
 
 vaccmaxdate <- max(vacc_zahlen$date)
@@ -1136,8 +1148,8 @@ geimpfte_gesamt <- tibble(
            dieseWoche,
          Anteil_Veraenderung)
 
-impfkw <- thisKW-1
-vorimpfkw <- impfkw-1
+impfkw <- sort(unique(rki$YearKW), decreasing = TRUE)[2]
+vorimpfkw <- sort(unique(rki$YearKW), decreasing = TRUE)[3]
 # Impffortschritt
 fortschritt_table <- tibble(
   "Impffortschritt"=c(
@@ -1203,7 +1215,7 @@ bl_impfungen <- vacc_table_faktenblatt %>%
          `7-Tage-Inzidenz`,
          `7-Tage-Inzidenz 60+`) %>% 
   left_join(impfen_praxen_bl %>%
-              filter(KW==impfkw-202100) %>% 
+              filter(KW==impfkw%%100 & Jahr==floor(impfkw/100)) %>% 
               select(Bundesland, Impfungen), by="Bundesland") %>% 
   select("Bundesland", "Impfungen Praxen"=Impfungen,
          `Gesamt min. 1x`,
