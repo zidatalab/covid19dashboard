@@ -60,8 +60,8 @@ rki_7ti_kreise <- rki %>%
            Altersgruppe=="A60-A79" ~ "60-79",
            Altersgruppe=="A35-A59" ~ "35-59",
            Altersgruppe=="A15-A34" ~ "15-34",
-           Altersgruppe=="A05-A14" ~ "0-14",
-           Altersgruppe=="A00-A04" ~ "0-14",
+           Altersgruppe=="A05-A14" ~ "5-14",
+           Altersgruppe=="A00-A04" ~ "0-4",
            TRUE ~ "error"
          )) %>%
   group_by(IdLandkreis, JahrKW, Altersgruppe) %>%
@@ -98,8 +98,8 @@ rki_7ti_alle <- bind_rows(rki_7ti_bund %>%
                 Altersgruppe=="ag_5" ~ "60-79",
                 Altersgruppe=="ag_4" ~ "35-59",
                 Altersgruppe=="ag_3" ~ "15-34",
-                Altersgruppe=="ag_2" ~ "0-14",
-                Altersgruppe=="ag_1" ~ "0-14",
+                Altersgruppe=="ag_2" ~ "5-14",
+                Altersgruppe=="ag_1" ~ "0-4",
                 TRUE ~ "error"
               )) %>%
               group_by(id, Altersgruppe) %>%
@@ -139,8 +139,8 @@ rki_7ti_ag <- bind_rows(rki_7ti_bund %>%
                 Altersgruppe=="ag_5" ~ "60-79",
                 Altersgruppe=="ag_4" ~ "35-59",
                 Altersgruppe=="ag_3" ~ "15-34",
-                Altersgruppe=="ag_2" ~ "0-14",
-                Altersgruppe=="ag_1" ~ "0-14",
+                Altersgruppe=="ag_2" ~ "5-14",
+                Altersgruppe=="ag_1" ~ "0-4",
                 TRUE ~ "error"
               )) %>%
               group_by(id, Altersgruppe) %>%
