@@ -211,7 +211,7 @@ rki_hosp <- read_excel(destfile_rkihosp,
                        skip = 2)
 rki_hosp_age <- read_excel(destfile_rkihosp,
                                   sheet = 3,
-                                  skip = 5) # immer wieder schön: excel ändert sich ständig
+                                  skip = 6) # immer wieder schön: excel ändert sich ständig
 # Attention: BUG RKI
 # rki_hosp <- rki_hosp %>% mutate(Meldejahr = case_when(Meldejahr == 2022 ~ 2021, TRUE ~ Meldejahr))
 

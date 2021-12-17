@@ -151,6 +151,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
       Altersgruppe=="0" ~ "18-59",
       Altersgruppe=="1" ~ "60+",
       Altersgruppe=="2" ~ "12-17",
+      Altersgruppe=="3" ~ "5-11",
       TRUE ~ "u"
     ))
   
