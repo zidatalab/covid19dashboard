@@ -226,7 +226,12 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
            JahrKW=100*Jahr+KW)
   
   age_kreise_kbv_rki <- full_join(kbv_age_kreise_kv,
-                                     rki_vacc_kreise,
+                                  rki_vacc_kreise %>% 
+                                    mutate(Altersgruppe=ifelse(
+                                      Altersgruppe=="05-11",
+                                      "5-11",
+                                      Altersgruppe
+                                    )),
                                      by=c("vacc_date",
                                           "Kreis2016"="LandkreisId",
                                           "Altersgruppe",
