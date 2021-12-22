@@ -77,7 +77,8 @@ bremen_letzte4wochen <- kbv_rki_age_bremen %>%
          "Alle-Anteil"=`Alle-Praxen`/`Alle-Gesamt`)
 
 tabelle_4wochen <- bind_rows(bremen_gesamtezeit,
-                             bremen_letzte4wochen)
+                             bremen_letzte4wochen) %>% 
+  mutate(across(contains("Anteil"), function(x) paste0(round(100*x), "%")))
 
 stschnitt <- kbv_rki_age_bremen %>% 
   group_by(vacc_date) %>% 
