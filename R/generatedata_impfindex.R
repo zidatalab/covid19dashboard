@@ -320,7 +320,7 @@ fuerpraxen <-
 write_json(fuerpraxen, "../data/tabledata/impfsim_lieferungenpraxen.json")
 
 fuerimpfzentren <- impfdashboardde %>% 
-  filter(einrichtung=="impfzentren") %>%
+  filter(einrichtung=="impfzentren" | einrichtung=="oegd") %>%
   mutate(
     geo=ifelse(region=="DE-BUND", "Zentren_Bund", geo),
     Hersteller=case_when(
@@ -354,7 +354,8 @@ fuerimpfzentren <-
 write_json(fuerimpfzentren, "../data/tabledata/impfsim_lieferungenimpfzentren.json")
 
 fuerandere <- impfdashboardde %>% 
-  filter(einrichtung=="bund" | einrichtung=="betriebe") %>%
+  filter(einrichtung!="arztpraxen" & einrichtung!="impfzentren" & einrichtung!="oegd") %>%
+  # filter(einrichtung=="bund" | einrichtung=="betriebe") %>%
   mutate(
     geo=ifelse(region=="DE-BUND", "Bund", geo),
     geo=ifelse(region=="DE-Betriebe", "Betriebe", geo),
