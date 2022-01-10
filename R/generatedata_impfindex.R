@@ -99,6 +99,7 @@ rki_vacc <- rki_vacc %>%
          geotype=ifelse(region=="DE", "nation", "state"))
 
 rki_github_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
+rki_github_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv")
 alle_tag_bl <- rki_github_bl %>% 
   mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
   # filter(Impfserie==3) %>% 
@@ -111,6 +112,37 @@ alle_tag_bl <- rki_github_bl %>%
   select(Bundesland=Name, date=Impfdatum, contains("Impfserie"))
 write_csv(alle_tag_bl, "../data/tabledata/alle_impfungen_tag_bl_serie_rki.csv") # [1:finalrow, ]
 
+praxen_14tage_impfstoff <- impfungen_praxen_bl %>% 
+  pivot_longer(-c(Bundesland, date), names_to="Impfstoff", values_to="anzahl") %>% 
+  mutate(Impfstoff=case_when(
+    Impfstoff=="BNT162b2-Kinder" ~ "BNT/Pfizer",
+    TRUE ~ Impfstoff
+  )) %>% 
+  group_by(date, Impfstoff) %>% 
+  summarise(impfungen_praxen=sum(anzahl, na.rm=TRUE), 
+            .groups="drop") %>% 
+  rename(Impfdatum=date) %>% 
+  filter(Impfdatum>=max(Impfdatum)-days(13))
+alle_14tage_impfstoff <- rki_github_bl %>% 
+  mutate(Impfstoff=case_when(
+    Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
+    Impfstoff=="Janssen" ~ "J&J",
+    Impfstoff=="AstraZeneca" ~ "AZ",
+    Impfstoff=="Moderna" ~ "Moderna",
+    TRUE ~ "error"
+  )) %>% 
+  group_by(Impfdatum, Impfstoff) %>% 
+  summarise(impfungen_alle=sum(Anzahl), .groups="drop") %>% 
+  filter(Impfdatum>=max(praxen_14tage_impfstoff$Impfdatum)-days(13))
+praxen_andere_14tage_impfstoff <- left_join(
+  praxen_14tage_impfstoff,
+  alle_14tage_impfstoff,
+  by=c("Impfdatum", "Impfstoff")
+) %>% 
+  mutate(impfungen_zentrenetc=impfungen_alle-impfungen_praxen,
+         impfungen_zentrenetc=ifelse(impfungen_zentrenetc<=0, NA, impfungen_zentrenetc)) %>% 
+  arrange(Impfdatum)
+write_csv(praxen_andere_14tage_impfstoff, "../data/tabledata/praxen_andere_14tage_impfstoff.csv") # [1:finalrow, ]
 
 ## Impfdosen Bunddashboard
 impfdashboardde <- read_tsv(
