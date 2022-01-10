@@ -141,7 +141,15 @@ praxen_andere_14tage_impfstoff <- left_join(
 ) %>% 
   mutate(impfungen_zentrenetc=impfungen_alle-impfungen_praxen,
          impfungen_zentrenetc=ifelse(impfungen_zentrenetc<=0, NA, impfungen_zentrenetc)) %>% 
-  arrange(Impfdatum)
+  arrange(Impfdatum) %>% 
+  select(-impfungen_alle) %>% 
+  pivot_longer(cols = contains("impfungen"),
+               names_to = "Ort", values_to="Anzahl") %>% 
+  mutate(Ort=case_when(
+    Ort=="impfungen_praxen" ~ "Praxen",
+    Ort=="impfungen_zentrenetc" ~ "Andere",
+    TRUE ~ "error"
+  ))
 write_csv(praxen_andere_14tage_impfstoff, "../data/tabledata/praxen_andere_14tage_impfstoff.csv") # [1:finalrow, ]
 
 ## Impfdosen Bunddashboard
