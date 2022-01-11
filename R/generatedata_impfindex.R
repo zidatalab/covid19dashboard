@@ -114,10 +114,10 @@ write_csv(alle_tag_bl, "../data/tabledata/alle_impfungen_tag_bl_serie_rki.csv") 
 
 praxen_14tage_impfstoff <- impfungen_praxen_bl %>% 
   pivot_longer(-c(Bundesland, date), names_to="Impfstoff", values_to="anzahl") %>% 
-  mutate(Impfstoff=case_when(
-    Impfstoff=="BNT162b2-Kinder" ~ "BNT/Pfizer",
-    TRUE ~ Impfstoff
-  )) %>% 
+  # mutate(Impfstoff=case_when(
+  #   Impfstoff=="BNT162b2-Kinder" ~ "BNT/Pfizer",
+  #   TRUE ~ Impfstoff
+  # )) %>% 
   group_by(date, Impfstoff) %>% 
   summarise(impfungen_praxen=sum(anzahl, na.rm=TRUE), 
             .groups="drop") %>% 
@@ -150,7 +150,11 @@ praxen_andere_14tage_impfstoff <- left_join(
   #   Ort=="impfungen_zentrenetc" ~ "Andere",
   #   TRUE ~ "error"
   # ))
-write_csv(praxen_andere_14tage_impfstoff, "../data/tabledata/praxen_andere_14tage_impfstoff.csv") # [1:finalrow, ]
+write_csv(praxen_andere_14tage_impfstoff %>% 
+            group_by(Impfstoff) %>% 
+            summarise(impfungen_praxen=sum(impfungen_praxen),
+                      impfungen_zentrenetc=sum(impfungen_zentrenetc, na.rm=TRUE)) %>% 
+            mutate(impfungen_alle=impfungen_praxen+impfungen_zentrenetc), "../data/tabledata/praxen_andere_14tage_impfstoff.csv") # [1:finalrow, ]
 
 ## Impfdosen Bunddashboard
 impfdashboardde <- read_tsv(
