@@ -201,7 +201,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
       TRUE ~ kv
     ),
     Impfstoff=case_when(
-      vacc_product=="BNT162b2" ~ "Comirnaty",
+      vacc_product=="BNT162b2" | vacc_product=="BNT162b2-Kinder" ~ "Comirnaty",
       vacc_product=="AZD1222" ~ "AstraZeneca",
       vacc_product=="mRNA-1273" ~ "Moderna",
       vacc_product=="Ad26.COV2.S" ~ "Janssen",
