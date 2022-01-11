@@ -1,8 +1,4 @@
 Impfdatum,Impfstoff,impfungen_praxen,impfungen_zentrenetc
-2021-12-27,AZ,476,152
-2021-12-27,BNT/Pfizer,123745,172178
-2021-12-27,J&J,697,384
-2021-12-27,Moderna,92458,197426
 2021-12-28,AZ,214,131
 2021-12-28,BNT/Pfizer,190837,175022
 2021-12-28,J&J,851,567
@@ -55,3 +51,7 @@ Impfdatum,Impfstoff,impfungen_praxen,impfungen_zentrenetc
 2022-01-09,BNT/Pfizer,28583,75706
 2022-01-09,J&J,116,129
 2022-01-09,Moderna,20864,44320
+2022-01-10,AZ,4,6
+2022-01-10,BNT/Pfizer,169952,103855
+2022-01-10,J&J,729,239
+2022-01-10,Moderna,110128,96486
