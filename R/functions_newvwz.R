@@ -602,7 +602,7 @@ ausgangsdaten <- letzte_7_tage %>%
     date>="2020-05-01" & date<="2020-05-31"  ~ 3,
     date>="2020-06-01" & date<="2020-09-30"  ~ 4,
     date>="2020-10-01" & date<="2020-11-30"  ~ 5,
-    date>="2020-12-01" & date<="2021-12-31"  ~ 6
+    date>="2020-12-01" ~ 6
   )) %>%
   left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
             by="periode") %>% 
@@ -663,7 +663,7 @@ ausgangsdaten_ror <- ausgangsdaten %>%
     date>="2020-05-01" & date<="2020-05-31"  ~ 3,
     date>="2020-06-01" & date<="2020-09-30"  ~ 4,
     date>="2020-10-01" & date<="2020-11-30"  ~ 5,
-    date>="2020-12-01" & date<="2021-12-31"  ~ 6
+    date>="2020-12-01" ~ 6
   )) %>%
   left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
             by="periode") %>% 
