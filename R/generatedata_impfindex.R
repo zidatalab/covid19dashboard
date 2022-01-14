@@ -154,7 +154,8 @@ write_csv(praxen_andere_14tage_impfstoff %>%
             group_by(Impfstoff) %>% 
             summarise(impfungen_praxen=sum(impfungen_praxen),
                       impfungen_zentrenetc=sum(impfungen_zentrenetc, na.rm=TRUE)) %>% 
-            mutate(impfungen_alle=impfungen_praxen+impfungen_zentrenetc), "../data/tabledata/praxen_andere_14tage_impfstoff.csv") # [1:finalrow, ]
+            mutate(impfungen_alle=impfungen_praxen+impfungen_zentrenetc), 
+          "../data/tabledata/praxen_andere_14tage_impfstoff.csv") # [1:finalrow, ]
 
 ## Impfdosen Bunddashboard
 impfdashboardde <- read_tsv(
