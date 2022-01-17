@@ -43,6 +43,7 @@ altersgruppen_bund <- tibble("unter 20"=18.4,
 infektperiode <- 8
 icu_days <- 21
 infekt2icudays <- 14
+reinfectiondays <- 180
 
 ##### Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
@@ -59,7 +60,9 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 # its quoten
 altersgruppen_beatmet <- as.vector(read_csv(file = "data/its_altersverteilung.csv") %>% 
                                      pivot_wider(names_from = Altersgruppe,
-                                                 values_from = anzahl_beatmet))[c(2,1,3)]
+                                                 values_from = anzahl_beatmet))[c(2,1,3)] %>% 
+  mutate(`ueber 60`=`60-80`+`ueber 80`) %>% 
+  select(`bis 60`, `ueber 60`)
 
 itsquoten <- read_csv("data/itsquoten_final.csv") %>% 
   mutate(quote_its=quote_its/100) %>% 
@@ -399,7 +402,12 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
                                             `Todesfälle_60-79`=sum(`Todesfälle_60-79`),
                                             `Todesfälle_80+`=sum(`Todesfälle_80+`),
                                             `Todesfälle_60+`=sum(`Todesfälle_60-79`+`Todesfälle_80+`, na.rm = TRUE), .groups="drop") %>%
-                                   mutate(id=0, blid=0))
+                                   mutate(id=0, blid=0)) %>% 
+  group_by(id) %>%
+  arrange(Meldedatum) %>% 
+  mutate(cases6m059=lag(cases059, 180, 0),
+         cases6m60=lag(cases60, 180, 0)) %>% 
+  ungroup()
 ## 7-tage-inzidenzen nach altersgruppe für den bund
 letzte_7_tage_altersgruppen_bund <- rki %>% 
   filter(Altersgruppe!="unbekannt") %>%
@@ -526,7 +534,11 @@ letzte_7_tage_altersgruppen_regstat <- rki_alter_destatis %>%
          `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((ag_5+ag_6)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/((ag_5)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/((ag_6)/100000))) %>%
-  left_join(., rki_alter_destatis %>% select(cases059, cases6079, cases80, Infected059, Infected6079, Infected80, id, Meldedatum), by=c("id"="id", "date"="Meldedatum")) %>%
+  left_join(., rki_alter_destatis %>% select(cases059, cases6079, cases80, 
+                                             cases6m059, cases6m60,
+                                             Infected059, Infected6079, Infected80, 
+                                             id, Meldedatum), 
+            by=c("id"="id", "date"="Meldedatum")) %>%
   mutate(EW059=ag_1+ag_2+ag_3+ag_4,
          EW6079=ag_5,
          EW80=ag_6,
@@ -562,6 +574,7 @@ ausgangsdaten <- letzte_7_tage %>%
     id,
     date,
     cases059, cases6079, cases80,
+    cases6m059, cases6m60,
     Infected059, Infected6079, Infected80,
     EW059, EW6079, EW80,
     EW_insgesamt,
@@ -639,6 +652,8 @@ ausgangsdaten_ror <- ausgangsdaten %>%
             cases059=sum(cases059, na.rm = TRUE),
             cases6079=sum(cases6079, na.rm = TRUE),
             cases80=sum(cases80, na.rm = TRUE),
+            cases6m059=sum(cases6m059, na.rm = TRUE),
+            cases6m60=sum(cases6m60, na.rm = TRUE),
             faelle_covid_aktuell=sum(faelle_covid_aktuell, na.rm = TRUE),
             Kapazitaet_Betten=sum(Kapazitaet_Betten, na.rm = TRUE),
             .groups="drop") %>% 
@@ -689,8 +704,9 @@ ausgangsdaten_ror <- ausgangsdaten %>%
 myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
                                      (date%in%c(maxdatum, lastsunday, sundaybeforelastsunday) & id>16) ) %>%
   rowwise() %>%
-  do(Tage = vorwarnzeit_berechnen_AG2(ngesamt = c(.$EW059, .$EW60p),
+  do(Tage = vorwarnzeit_berechnen_sihrs(ngesamt = c(.$EW059, .$EW60p),
                                      cases = c(.$cases059, .$cases60p),
+                                     cases6m = c(.$cases6m059, .$cases6m60),
                                      akutinfiziert = c(.$Infected059, .$Infected60p),
                                      icubelegt = round(
                                        (.$faelle_covid_aktuell*
@@ -706,8 +722,9 @@ myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
   unnest(cols = c(Tage), keep_empty=TRUE)
 myTage_ror <- ausgangsdaten_ror %>% 
   rowwise() %>%
-  do(Tage = vorwarnzeit_berechnen_AG2(ngesamt = c(.$EW059, .$EW60p),
+  do(Tage = vorwarnzeit_berechnen_sihrs(ngesamt = c(.$EW059, .$EW60p),
                                      cases = c(.$cases059, .$cases60p),
+                                     cases6m = c(.$cases6m059, .$cases6m60),
                                      akutinfiziert = c(.$Infected059, 
                                                        .$Infected60p),
                                      icubelegt = round((.$faelle_covid_aktuell*
@@ -736,7 +753,6 @@ vorwarnzeitergebnis <- vorwarnzeitergebnis %>%
             by=c("date", "ROR11"),
             suffix=c("", "_ROR"))
 R_aktuell_Bund <- aktuell$R0[aktuell$id==0]
-
 
 ##### weitere daten für dashboard
 ## siebentageinzidenzen verlauf
