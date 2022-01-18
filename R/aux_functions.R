@@ -168,7 +168,7 @@ vorwarnzeit_berechnen_AG2 <- function(ngesamt, cases, akutinfiziert, icubelegt,
   }
   return(myresult)
 }
-vorwarnzeit_berechnen_sihrs <- function(ngesamt, cases, cases6m, akutinfiziert, icubelegt, 
+vorwarnzeit_berechnen_sihrs <- function(ngesamt, cases, cases_old, akutinfiziert, icubelegt, 
                                       Kapazitaet_Betten, Rt=1.3, 
                                       icurate_altersgruppen){
   # achtung, hier sind ngesamt, cases und faelle jeweils vektoren der dim 2 (AG 0-59, 60+)
@@ -180,7 +180,7 @@ vorwarnzeit_berechnen_sihrs <- function(ngesamt, cases, cases6m, akutinfiziert, 
     nu <- 1/icu_days # time in icu
     omicron <- 1/reinfectiondays # time after which you can be reinfected
     infected <- akutinfiziert-icubelegt
-    recovered <- cases-infected-icubelegt-cases6m
+    recovered <- cases-infected-icubelegt-cases_old
     mysir_AG <- vector("list", 2)
     for (i in 1:2) {
       mysir <- sihrsmodel(ngesamt = ngesamt[i],

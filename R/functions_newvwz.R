@@ -43,7 +43,7 @@ altersgruppen_bund <- tibble("unter 20"=18.4,
 infektperiode <- 8
 icu_days <- 21
 infekt2icudays <- 14
-reinfectiondays <- 180
+reinfectiondays <- 30
 
 ##### Connect to DB
 # conn <- dbConnect(RSQLite::SQLite(), "../covid-19/data/covid19db.sqlite")
@@ -405,8 +405,8 @@ rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>%
                                    mutate(id=0, blid=0)) %>% 
   group_by(id) %>%
   arrange(Meldedatum) %>% 
-  mutate(cases6m059=lag(cases059, 180, 0),
-         cases6m60=lag(cases60, 180, 0)) %>% 
+  mutate(cases_old059=lag(cases059, reinfectiondays, 0),
+         cases_old60=lag(cases60, reinfectiondays, 0)) %>% 
   ungroup()
 ## 7-tage-inzidenzen nach altersgruppe für den bund
 letzte_7_tage_altersgruppen_bund <- rki %>% 
@@ -535,7 +535,7 @@ letzte_7_tage_altersgruppen_regstat <- rki_alter_destatis %>%
          `Faelle_letzte_7_Tage_je100TsdEinw_60-79`=round(`Faelle_letzte_7_Tage_60-79`/((ag_5)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_80+`=round(`Faelle_letzte_7_Tage_80+`/((ag_6)/100000))) %>%
   left_join(., rki_alter_destatis %>% select(cases059, cases6079, cases80, 
-                                             cases6m059, cases6m60,
+                                             cases_old059, cases_old60,
                                              Infected059, Infected6079, Infected80, 
                                              id, Meldedatum), 
             by=c("id"="id", "date"="Meldedatum")) %>%
@@ -574,7 +574,7 @@ ausgangsdaten <- letzte_7_tage %>%
     id,
     date,
     cases059, cases6079, cases80,
-    cases6m059, cases6m60,
+    cases_old059, cases_old60,
     Infected059, Infected6079, Infected80,
     EW059, EW6079, EW80,
     EW_insgesamt,
@@ -620,9 +620,13 @@ ausgangsdaten <- letzte_7_tage %>%
   left_join(itsquoten %>% select(periode, `bis 60`, `60-80`, `ueber 80`),
             by="periode") %>% 
   mutate(`ueber 60`=(`60-80`*EW6079+`ueber 80`*EW80)/(EW6079+EW80)) %>% 
-  mutate(impf_quote_voll_alter_60minus=(impf_quote_voll*(EW059+EW60p)-impf_quote_voll_alter_60plus*EW60p)/EW059) %>% 
-  mutate(icurate_mitgeimpften_60minus= `bis 60`*(1-0.9*impf_quote_voll_alter_60minus/100),
-         icurate_mitgeimpften_60plus=`ueber 60`*(1-0.9*impf_quote_voll_alter_60plus/100)) %>% 
+  mutate(impf_quote_voll_alter_60minus=
+           (impf_quote_voll*(EW059+EW60p) - 
+              impf_quote_voll_alter_60plus*EW60p)/EW059) %>% 
+  mutate(icurate_mitgeimpften_60minus=
+           `bis 60`*(1-0.9*(impf_quote_voll_alter_60minus+(100-impf_quote_voll_alter_60minus)*cases_old059/EW059)/100),
+         icurate_mitgeimpften_60plus=
+           `ueber 60`*(1-0.9*(impf_quote_voll_alter_60plus+(100-impf_quote_voll_alter_60plus)*cases_old60/EW60p)/100)) %>% 
   group_by(id) %>% 
   arrange(date, .by_group = TRUE) %>% 
   fill(geo,
@@ -652,8 +656,8 @@ ausgangsdaten_ror <- ausgangsdaten %>%
             cases059=sum(cases059, na.rm = TRUE),
             cases6079=sum(cases6079, na.rm = TRUE),
             cases80=sum(cases80, na.rm = TRUE),
-            cases6m059=sum(cases6m059, na.rm = TRUE),
-            cases6m60=sum(cases6m60, na.rm = TRUE),
+            cases_old059=sum(cases_old059, na.rm = TRUE),
+            cases_old60=sum(cases_old60, na.rm = TRUE),
             faelle_covid_aktuell=sum(faelle_covid_aktuell, na.rm = TRUE),
             Kapazitaet_Betten=sum(Kapazitaet_Betten, na.rm = TRUE),
             .groups="drop") %>% 
@@ -684,8 +688,10 @@ ausgangsdaten_ror <- ausgangsdaten %>%
             by="periode") %>% 
   mutate(`ueber 60`=(`60-80`*EW6079+`ueber 80`*EW80)/(EW6079+EW80)) %>% 
   mutate(impf_quote_voll_alter_60minus=(impf_quote_voll*(EW059+EW60p)-impf_quote_voll_alter_60plus*EW60p)/EW059) %>% 
-  mutate(icurate_mitgeimpften_60minus= `bis 60`*(1-0.9*impf_quote_voll_alter_60minus/100),
-         icurate_mitgeimpften_60plus=`ueber 60`*(1-0.9*impf_quote_voll_alter_60plus/100)) %>% 
+  mutate(icurate_mitgeimpften_60minus=
+           `bis 60`*(1-0.9*(impf_quote_voll_alter_60minus+(100-impf_quote_voll_alter_60minus)*cases_old059/EW059)/100),
+         icurate_mitgeimpften_60plus=
+           `ueber 60`*(1-0.9*(impf_quote_voll_alter_60plus+(100-impf_quote_voll_alter_60plus)*cases_old60/EW60p)/100)) %>% 
   group_by(ROR11) %>% 
   arrange(date, .by_group = TRUE) %>% 
   fill(geo,
@@ -706,7 +712,7 @@ myTage <- ausgangsdaten %>% filter((date>=as_date("2020-03-13") & id<=16) |
   rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_sihrs(ngesamt = c(.$EW059, .$EW60p),
                                      cases = c(.$cases059, .$cases60p),
-                                     cases6m = c(.$cases6m059, .$cases6m60),
+                                     cases_old = c(.$cases_old059, .$cases_old60),
                                      akutinfiziert = c(.$Infected059, .$Infected60p),
                                      icubelegt = round(
                                        (.$faelle_covid_aktuell*
@@ -724,7 +730,7 @@ myTage_ror <- ausgangsdaten_ror %>%
   rowwise() %>%
   do(Tage = vorwarnzeit_berechnen_sihrs(ngesamt = c(.$EW059, .$EW60p),
                                      cases = c(.$cases059, .$cases60p),
-                                     cases6m = c(.$cases6m059, .$cases6m60),
+                                     cases_old = c(.$cases_old059, .$cases_old60),
                                      akutinfiziert = c(.$Infected059, 
                                                        .$Infected60p),
                                      icubelegt = round((.$faelle_covid_aktuell*
