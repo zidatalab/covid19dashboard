@@ -240,11 +240,11 @@ agefatality_data <- read_json("../data/plotdata/agefatality.json",
   mutate(Meldedatum=as_date(Meldedatum))
 
 sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
-                                        sheet = "D_2016_2021_KW_AG_Männlich", 
+                                        sheet = "D_2016_2022_KW_AG_Männlich", 
                                         skip = 8,
                                         na="X") %>% mutate(sex="maennlich"),
                              read_excel(destfile_sterblk, 
-                                        sheet = "D_2016_2021_KW_AG_Weiblich", 
+                                        sheet = "D_2016_2022_KW_AG_Weiblich", 
                                         skip = 8,
                                         na="X") %>% mutate(sex="weiblich")) %>%
   select(-"Nr.") %>% 
