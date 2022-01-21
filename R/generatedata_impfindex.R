@@ -368,7 +368,7 @@ fuerpraxen <- impfdashboardde %>%
     JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
-  group_by(Hersteller, KW, Jahr, geo) %>% 
+  group_by(Hersteller, KW, Jahr, JahrKW, geo) %>% 
   summarise(Lieferung_Praxen=sum(dosen),
             .groups="drop")
 fuerpraxen <- 
@@ -402,7 +402,7 @@ fuerimpfzentren <- impfdashboardde %>%
     JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
-  group_by(Hersteller, KW, Jahr, geo) %>% 
+  group_by(Hersteller, KW, Jahr, JahrKW, geo) %>% 
   summarise(Lieferung_IZ=sum(dosen),
             .groups="drop")
 fuerimpfzentren <- 
@@ -438,7 +438,7 @@ fuerandere <- impfdashboardde %>%
     JahrKW=Jahr*100+KW
   ) %>% 
   # filter(region!="Zentren_Bund") %>%
-  group_by(Hersteller, KW, Jahr, geo) %>% 
+  group_by(Hersteller, KW, Jahr, JahrKW, geo) %>% 
   summarise(Lieferung_Bund_oder_Betriebe=sum(dosen),
             .groups="drop")
 
