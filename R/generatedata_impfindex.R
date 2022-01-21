@@ -163,11 +163,11 @@ impfdashboardde <- read_tsv(
 ) %>% 
   left_join(ISOcodes::ISO_3166_2 %>% 
               select(region=Code,
-                     geo=Name), by="region") %>% 
-  mutate(dosen=case_when(
-    impfstoff=="moderna" & date>="2021-10-26" ~ dosen*2, # booster moderna sind doppelt ab KW43 laut bmg
-    TRUE ~ dosen
-  ))
+                     geo=Name), by="region") #%>% 
+  # mutate(dosen=case_when(
+  #   impfstoff=="moderna" & date>="2021-10-26" ~ dosen*2, # booster moderna sind doppelt ab KW43 laut bmg
+  #   TRUE ~ dosen
+  # ))
 
 write_csv(impfdashboardde %>%
             mutate(
@@ -333,7 +333,15 @@ sum(dosen_verabreicht %>% filter(geo=="Gesamt") %>%
       pull(dosen_geliefert))
 
 dosen_verabreicht <- dosen_verabreicht %>% 
-  select(-population, -lager)
+  select(-population, -lager) %>% 
+  mutate(dosen_geliefert=case_when(
+    hersteller=="Moderna" ~ dosen_geliefert+dosen_verabreicht_dritt,
+    TRUE ~ dosen_geliefert
+  ))
+
+## small check
+sum(dosen_verabreicht %>% filter(geo=="Gesamt") %>% 
+      pull(dosen_geliefert))
 
 write_json(dosen_verabreicht, "../data/tabledata/impfsim_start.json")
 
