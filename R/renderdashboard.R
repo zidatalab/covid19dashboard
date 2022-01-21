@@ -250,6 +250,15 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
            ),
            JahrKW=100*Jahr+KW)
   
+  moderna_auffr <- impfstoff_laender_kbv_rki %>% 
+    filter(vacc_series==3 & Impfstoff=="Moderna") %>% 
+    group_by(Bundesland, KW, Jahr, JahrKW) %>% 
+    summarise(anzahl_moderna_auffr_praxen=sum(anzahl_praxen, na.rm=TRUE),
+              anzahl_moderna_auffr_alleorte=sum(anzahl_alleorte, na.rm=TRUE),
+              .groups="drop")
+  
+  write_csv(moderna_auffr, "../data/moderna_auffr.csv")
+  
   DBI::dbWriteTable(conn, "kbv_rki_impfstoffe_laender", impfstoff_laender_kbv_rki, overwrite=TRUE)
   DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv %>% 
                       mutate(KW=isoweek(vacc_date)), overwrite=TRUE)
