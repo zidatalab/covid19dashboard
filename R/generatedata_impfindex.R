@@ -233,19 +233,23 @@ rki_vacc_lastday <- rki_vacc %>%
          metric=case_when(
            metric=="personen_voll_biontech_kumulativ" ~ "zweit_BNT/Pfizer",
            metric=="personen_erst_biontech_kumulativ" ~ "erst_BNT/Pfizer",
+           metric=="personen_auffr_biontech_kumulativ" ~ "dritt_BNT/Pfizer",
            metric=="personen_voll_moderna_kumulativ" ~ "zweit_Moderna",
            metric=="personen_erst_moderna_kumulativ" ~ "erst_Moderna",
+           metric=="personen_auffr_moderna_kumulativ" ~ "dritt_Moderna",
            metric=="personen_voll_astrazeneca_kumulativ" ~ "zweit_AZ",
            metric=="personen_erst_astrazeneca_kumulativ" ~ "erst_AZ",
+           metric=="personen_auffr_astrazeneca_kumulativ" ~ "dritt_AZ",
            metric=="personen_voll_janssen_kumulativ" ~ "zweit_J&J",
            metric=="personen_voll_janssen_kumulativ" ~ "erst_J&J",
+           metric=="personen_auffr_janssen_kumulativ" ~ "dritt_J&J",
            TRUE ~ "else"
          )) %>%
   filter(metric!="else")
 
 ## verabreichte dosen
 hersteller_laender <- expand_grid(geo=unique(rki_vacc_lastday$geo),
-                                  erstzweit=c("erst", "zweit"),
+                                  erstzweitdritt=c("erst", "zweit", "dritt"),
                                   hersteller=unique(
                                     bunddashboard_daten$Hersteller)
 )
@@ -255,16 +259,17 @@ dosen_verabreicht <- rki_vacc_lastday %>%
               select(population, geo=Name) %>% 
               mutate(geo=ifelse(geo=="Gesamt", "Germany", geo)),
             by="geo") %>% 
-  separate(metric, into=c("erstzweit", "hersteller"), sep="_") %>%
+  separate(metric, into=c("erstzweitdritt", "hersteller"), sep="_") %>%
   right_join(hersteller_laender,
-             by=c("hersteller", "geo", "erstzweit")) %>%
+             by=c("hersteller", "geo", "erstzweitdritt")) %>%
   group_by(geo) %>%
   fill(population) %>%
   ungroup() %>%
   pivot_wider(id_cols = c("geo", "population", "hersteller"),
-              names_from = "erstzweit",
+              names_from = "erstzweitdritt",
               values_from=value) %>%
   rename(
+    dosen_verabreicht_dritt=dritt,
     dosen_verabreicht_zweit=zweit,
     dosen_verabreicht_erst=erst
   ) %>%
@@ -273,6 +278,9 @@ dosen_verabreicht <- rki_vacc_lastday %>%
                                        0),
          dosen_verabreicht_zweit=ifelse(!is.na(dosen_verabreicht_zweit), 
                                         dosen_verabreicht_zweit,
+                                        0),
+         dosen_verabreicht_dritt=ifelse(!is.na(dosen_verabreicht_dritt), 
+                                        dosen_verabreicht_dritt,
                                         0)) %>%
   left_join(bunddashboard_daten %>%
               # filter(KW<=kwstart-1 | Jahr==2020) %>%
@@ -291,7 +299,7 @@ dosen_verabreicht <- rki_vacc_lastday %>%
          )) %>%
   mutate(#Stand_letzteKW=isoweek(prognosestart-days(1)),
          #Stand_BMG=bmgstand,
-         lager=dosen_geliefert-dosen_verabreicht_erst-dosen_verabreicht_zweit)
+         lager=dosen_geliefert-dosen_verabreicht_erst-dosen_verabreicht_zweit-dosen_verabreicht_dritt)
 
 ## small check
 sum(dosen_verabreicht %>% filter(geo=="Gesamt") %>% 
