@@ -2,6 +2,7 @@ library(lubridate)
 library(dplyr)
 library(stringr)
 library(readr)
+library(tidyverse)
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
                        dbname = Sys.getenv("DBNAME"),
@@ -300,6 +301,16 @@ if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
 source("generatedata_impfindex.R")
 lieferungen <- read_csv("../data/tabledata/impfstoff_lieferungen_bmg.csv")
 DBI::dbWriteTable(conn, "bmg_impfstofflieferungen", lieferungen, overwrite=TRUE)
+
+rki_hosp_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Hospitalisierungen_in_Deutschland/master/Aktuell_Deutschland_COVID-19-Hospitalisierungen.csv")
+# hosp_erweiterung <- expand_grid(Datum=as_date("2020-02-22")+days(0:7),
+#                                 Bundesland=unique(rki_hosp_bl$Bundesland),
+#                                 Altersgruppe=unique(rki_hosp_bl$Altersgruppe),
+#                                 Neue_Hospitalisierung_Faelle=0,
+#                                 `7T_Hospitalisierung_Faelle`=0)
+rki_hosp_bl <- rki_hosp_bl %>% 
+  mutate(ST_neueFaelle_estimate=round(`7T_Hospitalisierung_Faelle`/7))
+DBI::dbWriteTable(conn, "rki_hospitalisierung_faelle_bl", rki_hosp_bl, overwrite=TRUE)
 
 DBI::dbSendStatement(conn, "GRANT SELECT ON ALL TABLES IN SCHEMA public TO zireader;")
 
