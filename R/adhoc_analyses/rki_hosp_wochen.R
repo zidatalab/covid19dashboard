@@ -73,8 +73,9 @@ rki_faelle_bl_ag <- rki %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")) %>% 
   mutate(Bundesland_Id=floor(IdLandkreis/1000),
          Meldedatum=as_date(Meldedatum),
-         JahrMonat=year(Meldedatum)*100+month(Meldedatum)) %>% 
-  group_by(Bundesland_Id, Altersgruppe, JahrMonat) %>% 
+         wtag=wday(Meldedatum, week_start = 1)) %>% 
+  filter(wtag==1) %>% 
+  group_by(Bundesland_Id, Altersgruppe, Meldedatum) %>% 
   summarise(AnzahlFall=sum(AnzahlFall[NeuerFall>=0], na.rm=TRUE),
             .groups = "drop")
 
@@ -101,9 +102,11 @@ bl_regstat_alter <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt",
 
 rki_hosp_bl_ag <- rki_hosp_bl %>% 
   filter(Bundesland!="Bundesgebiet" & Altersgruppe!="00+") %>% 
-  mutate(JahrMonat=year(Datum)*100+month(Datum),
+  mutate(wtag=wday(Datum, week_start = 1),
          Bundesland_Id=as.integer(Bundesland_Id)) %>% 
-  group_by(Bundesland_Id, Altersgruppe, JahrMonat) %>% 
+  filter(wtag==1) %>% 
+  rename(Meldedatum=Datum) %>% 
+  group_by(Bundesland_Id, Altersgruppe, Meldedatum) %>% 
     summarise(Bundesland=Bundesland[1],
               Hospitalisierung_Faelle=round(sum(`7T_Hospitalisierung_Faelle`, 
                                           na.rm=TRUE)/7),
@@ -111,13 +114,13 @@ rki_hosp_bl_ag <- rki_hosp_bl %>%
 
 bl_jm_ag <- rki_hosp_bl_ag %>% 
   left_join(rki_faelle_bl_ag, 
-            by=c("Bundesland_Id", "JahrMonat", "Altersgruppe")) %>% 
+            by=c("Bundesland_Id", "Meldedatum", "Altersgruppe")) %>% 
   left_join(bl_regstat_alter,
             by=c("Bundesland_Id", "Altersgruppe")) %>% 
   drop_na()
 
 bund_jm_ag <- bl_jm_ag %>% 
-  group_by(Altersgruppe, JahrMonat) %>% 
+  group_by(Altersgruppe, Meldedatum) %>% 
   summarise(across(c(Hospitalisierung_Faelle, AnzahlFall), sum),
             .groups="drop") %>% 
   left_join(bl_regstat_alter %>% 
@@ -126,7 +129,7 @@ bund_jm_ag <- bl_jm_ag %>%
             by="Altersgruppe")
 
 bl_jm <- bl_jm_ag %>% 
-  group_by(Bundesland_Id, JahrMonat, Bundesland) %>% 
+  group_by(Bundesland_Id, Meldedatum, Bundesland) %>% 
   summarise(across(c(Hospitalisierung_Faelle, AnzahlFall), sum),
             .groups="drop") %>% 
   left_join(bl_regstat_alter%>% 
@@ -134,7 +137,7 @@ bl_jm <- bl_jm_ag %>%
               summarise(Bev=sum(Bev), .groups="drop"), by="Bundesland_Id")
 
 bund_jm <- bl_jm_ag %>% 
-  group_by(JahrMonat) %>% 
+  group_by(Meldedatum) %>% 
   summarise(across(c(Hospitalisierung_Faelle, AnzahlFall), sum),
             .groups="drop") %>% 
   bind_cols(bl_regstat_alter %>% 
@@ -172,17 +175,17 @@ bund_ohnealles <- bl_jm_ag %>%
 full_data <- bind_rows(bund_ohnealles %>% 
                          mutate(Bundesland_Id=0,
                                 Altersgruppe="alle",
-                                JahrMonat=0,
+                                Meldedatum=as_date(0),
                                 Bundesland="Gesamt"),
                        bl_ohnealles %>% 
                          mutate(Altersgruppe="alle",
-                                JahrMonat=0),
+                                Meldedatum=as_date(0)),
                        bund_ag %>% 
                          mutate(Bundesland_Id=0,
-                                JahrMonat=0,
+                                Meldedatum=as_date(0),
                                 Bundesland="Gesamt"),
                        bl_ag %>% 
-                         mutate(JahrMonat=0),
+                         mutate(Meldedatum=as_date(0)),
                        bund_jm %>% 
                          mutate(Bundesland_Id=0,
                                 Altersgruppe="alle",
@@ -197,7 +200,12 @@ full_data <- bind_rows(bund_ohnealles %>%
          Hosp_Inzidenz_100TEW=round(Hospitalisierung_Faelle/Bev*100000, 1))
 
 ggplot(full_data %>% 
-         filter(Bundesland_Id==0 & JahrMonat!=0),
-       aes(x=ym(JahrMonat), y=Hosp_Inzidenz_100TEW)) +
-  geom_line(aes(col=Altersgruppe)) #+
-  # facet_wrap(. ~ Altersgruppe, scales="free_y", ncol=3)
+         filter(Bundesland_Id==0 & Meldedatum!=as_date(0)),
+       aes(x=Meldedatum, y=Hosp_Inzidenz_100TEW)) +
+  geom_line(aes(col=Altersgruppe))
+
+ggplot(full_data %>% 
+         filter(Meldedatum!=as_date(0) & Altersgruppe=="alle"),
+       aes(x=Meldedatum, y=Hosp_Inzidenz_100TEW)) +
+  geom_line() +
+  facet_wrap(. ~ Bundesland, ncol=4)
