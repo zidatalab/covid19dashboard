@@ -1,0 +1,70 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    includes:
+      after_body: static/html/counter_Kreise_select.html
+---
+
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zur Inzidenz ausgewählter Kreise**
+
+Nachfolgend erhalten Sie einen Überblick zur Situation einzelner Kreise.
+Die berichteten Inzidenzen können sich wegen der Zi-Korrektur für Meldeverzüge leicht unterscheiden von der offiziellen Sieben-Tage-Inzidenz, wie sie vom RKI berichtet wird.
+
+Stand RKI-Meldedaten: `r format(as_date(max(rki$Datenstand, na.rm = TRUE)),format="%d.%m.%Y")` (sollte Stand gestern sein, sonst bitte auf corona.rki.de die aktuellen Zahlen anschauen!).
+
+Row
+-----------------------------------------------------------------------
+
+<div style = "width:99% !important; height:auto; margin: auto;">
+```{r tableKreise}
+DT::datatable(kreise_table %>%
+                filter(Kreis %in% c(
+                  "Rheinisch-Bergischer Kreis",
+                  "Bochum, Stadt",
+                  "Berlin",
+                  "Unna",
+                  "Bonn, Stadt",
+                  "Braunschweig, Stadt",
+                  "Bremen, Stadt",
+                  "Havelland",
+                  "Vorpommern-Greifswald",
+                  "Herne, Stadt",
+                  "Oberhavel",
+                  "Köln, Stadt",
+                  "Rhein-Sieg-Kreis",
+                  "Leverkusen, Stadt",
+                  "Potsdam, Stadt",
+                  "Märkisch-Oderland",
+                  "Rostock, Stadt",
+                  "Potsdam-Mittelmark"
+                )) %>%
+                select(Kreis, Bundesland, `7-Tage-Inzidenz`),
+              extensions = 'Responsive',
+              options = list(paging = TRUE,
+                             pageLength=20,
+                             # columnDefs = list(list(className = 'dt-center', targets = 2:3)),
+                             searching = TRUE,
+                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
+                             server = FALSE,
+                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
+
+```
+</div>
+

@@ -15,7 +15,8 @@ RepoStand <- as_date((tbl(conn,"Stand") %>% collect())$Datum)
 DashboardStand <- as_date((tbl(conn,"Dashboardstand") %>% collect())$Datum)
 
 if (DashboardStand<RepoStand) {
-  rmarkdown::render('../Start.Rmd')
+  # rmarkdown::render('../Start.Rmd')
+  source("functions_newvwz.R", encoding = "UTF-8")
   Dashboardstand <- tibble(
     "Datum"=as.character(date(now())),
     "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),
@@ -285,7 +286,8 @@ test_new_vacc <- tryCatch(
 test_old_vacc <- read_csv("../data/test_vacc_ard_old.csv")
 
 if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
-  rmarkdown::render('../Start.Rmd')
+  # rmarkdown::render('../Start.Rmd')
+  source("functions_newvwz.R", encoding = "UTF-8")
   Dashboardstand <- tibble(
     "Datum"=as.character(date(now())),
     "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),

@@ -1,0 +1,45 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    includes:
+      after_body: static/html/counter_Daten.html    
+---
+
+Row
+------------------------------------------------------------------------
+
+### **Datenbasis- und Quellenangaben**
+
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Folgende Daten und Quellen benutzen wir:
+
+-   Robert Koch-Institut (RKI):
+
+    -   COVID-19-Fallzahlen und -Todesfälle ([Link](https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0/data))
+
+    -   klinische Aspekte der Infektionen ([Link](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.html))
+
+    -   Infektionen in bestimmten Gruppen nach Infektionsschutzgesetz (tägliche Situationsberichte des RKI, [Link](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Situationsberichte/Gesamt.html))
+
+    -   Impfdaten ([Link](https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquoten-Tab.html)), aufbereite Daten von T. Westerhuys/Github ([Link](https://github.com/n0rdlicht/rki-vaccination-scraper))
+
+-   internationale COVID-19-Fallzahlen der Johns Hopkins University (JHU, [Link](https://github.com/CSSEGISandData/COVID-19))
+
+-   intensivmedizinische COVID-19-Fälle aus dem Intensivregister der Deutschen Interdisziplinären Vereinigung für Intensiv- und Notfallmedizin (DIVI, [Link](https://www.divi.de/register/tagesreport))
+
+-   demographische Daten zu Bevölkerungszahlen, Pflegeheimen und Sterbezahlen vom Statistischen Bundesamt (Destatis, [Link](https://www.destatis.de/DE/Home/_inhalt.html))
+
+-   Zahlen zu durchgeführten Tests vom Akkreditierte Labore in der Medizin e.V. (ALM e.V., [Link](https://www.alm-ev.de/aktuell/corona-themenseite/datenerhebung-alm-ev/))
