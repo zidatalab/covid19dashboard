@@ -1,0 +1,76 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start_old.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    includes:
+      after_body: static/html/counter_Impressum.html
+    
+---
+
+```{r jsonzide, include=FALSE}
+# Datenexport für zi.de-Box
+frueindikatoren <- bind_cols("Indikator"=c("R-Wert",
+                                           "Neue Fälle pro Tag",
+                                           "Vorwarnzeit aktuell in Tagen",
+                                           "Handlungsgrenze",
+                                           "Inzidenzprojektion"),
+                             "Wert"=c(format(indicatorR,digits = 2,decimal.mark = ","),
+                                      faelleprotag,
+                                      paste(vorwarnzeitaktuell,"Tage"),
+                                      faelle7tage100kEW,
+                                      indicatorIncProj))
+
+write_json(frueindikatoren,"data/frueindikatoren.json")
+```
+
+Row
+-----------------------------------------------------------------------
+
+### **Impressum**
+
+**Zentralinstitut für die kassenärztliche Versorgung in der Bundesrepublik Deutschland (Stiftung des bürgerlichen Rechts)**
+
+Salzufer 8  
+10587 Berlin  
+Telefon: (030) 4005-2450  
+Fax: (030) 4005-2490
+
+E-Mail: [zi(at)zi.de](mailto:zi(at)zi.de)  
+Internet: [www.zi.de](http://www.zi.de)
+
+**Vertretung der Stiftung:**
+
+Die Stiftung wird gerichtlich und außergerichtlich durch den Vorstand vertreten. Der Vorstand handelt durch seinen Vorsitzenden allein. Im Falle der Verhinderung des Vorsitzenden wird die Stiftung durch den Stellvertretenden Vorstandsvorsitzenden allein vertreten.
+
+**Vorstandsvorsitzender:**
+
+Dr. Dominik von Stillfried  
+
+**Stellvertretender Vorstandsvorsitzender:**
+
+Thomas Czihal
+
+**Verantwortlicher für redaktionelle Inhalte:**
+
+Dr. Dominik Graf von Stillfried
+
+*USt-IdNr.: DE239451993*
+  
+Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen.
+
+### Datenschutzhinweis
+
+Um die durch das Zi durchgeführten Berechnungen zur COVID-19-Pandemie vollständig zu dokumentieren und so nachvollziehbar zu machen, wird die Quellcodeverwaltungsplattform github.com genutzt. Auf der Plattform ist der Quellcode für das vorliegende Dashboard, inklusive aller Änderungen, vollumfänglich unter [github.com/zidatalab/covid19dashboard] (https://github.com/zidatalab/covid19dashboard) dokumentiert. Für die Nutzung dieser Internetseite gelten darum die Datenschutzinformationen von github.com [(Github Privacy Statement)](https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-privacy-statement).

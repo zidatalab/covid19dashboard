@@ -1,0 +1,57 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start_old.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    includes:
+      after_body: static/html/counter_Kreise.html
+    
+    
+---
+
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zu den Kennzahlen der Kreise**
+
+Nachfolgend erhalten Sie einen Überblick zur Situation der einzelnen Kreise. Bitte beachten Sie, dass der Indikator Vorwarnzeit auf Ebene der Kreise und Städte nicht losgelöst von der Situation in der jeweiligen Region betrachtet werden sollte. Wir berichten deshalb eine Vorwarnzeit der übergeordneten Raumordnungsregion (ROR) sowie die Vorwarnzeit lokal auf Kreisebene. Die Risikostufe bezieht sich auf die Unterstützungsnotwendigkeit durch besondere Maßnahmen im medizinischen bzw. mittelbar im pflegerischen Bereich und erlaubt so eine weitere Differenzierung der Kreise.\
+
+Row
+-----------------------------------------------------------------------
+
+### **Kennzahlen Kreise**
+
+<div style = "width:99% !important; height:auto; margin: auto;">
+```{r tableKreise}
+DT::datatable(kreise_table,
+              extensions = 'Responsive',
+              options = list(paging = TRUE,
+                             scrollY=1000,
+                             scrollCollapse=TRUE,
+                             # columnDefs = list(list(className = 'dt-center', targets = 2:3)),
+                             searching = TRUE,
+                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
+                             server = FALSE,
+                             initComplete = JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}")))
+
+```
+</div>
+
+Row
+------------------------------------------------------------------------
+
+### **Datenbasis- und Quellenangaben**
+
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Eine Übersicht über die benutzten Quellen finden Sie [hier](Daten.html).

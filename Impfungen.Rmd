@@ -1,0 +1,67 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start_old.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    includes:
+      after_body: static/html/counter_Impfungen.html    
+    
+---
+
+Row
+-----------------------------------------------------------------------
+
+### **Impffortschritt in Deutschland** 
+
+Derzeit werden vier Impfstoffe zur Verhinderung einer COVID-19-Erkrankung eingesetzt ("Comirnaty" von Biontech/Pfizer, "mRNA-1273" von Moderna, "Vaxzevria" von AstraZeneca, sowie "COVID-19 Vaccine Janssen" von Johnson&Johnson). Drei der Impfstoffe setzen zwei verabreichte Impfdosen (mit unterschiedlichen Abständen) in einer Impfserie für einen vollständigen Impfschutz voraus (Biontech, AstraZeneca, Moderna), während mit Johnson&Johnson nur einmal geimpft wird.\
+Das RKI berichtet für Deutschland und die Bundesländer die Gesamtzahl der Impfungen sowie die Zahl der begonnenen Impfserien und die Zahl der vollständig geimpften Personen (1x geimpft für Johnson&Johnson, sonst 2x geimpft). Für einige Bundesländer sind auch Zahlen für die Altersgruppen der Über-60-Jährigen sowie Unter-60-Jährigen verfügbar. Für diese Altersgruppen kann nicht genau berechnet werden, wie viele Personen mindestens eine Impfung erhalten haben, da hier nicht nach Impfstoffherstelller differenziert wird. Die Spalten "Alter 60+ min. 1x" und "Alter <60 min. 1x" in untenstehender Tabelle enthalten deshalb keine Impfungen mit Johnson&Johnson und entsprechen nur den begonnenen Impfserien mit den anderen drei Impfstoffen. Die Spalten "Alter 60+ vollst." und "Alter <60 vollst." geben dafür den Anteil der jeweiligen Altersgruppe an, der vollständig mit einem der 4 Impfstoffe geimpft wurde. Die Spalte "Gesamt min. 1x" berücksichtigt auch Impfungen mit Johnson&Johnson.\
+In der untenstehenden Tabelle sind die entsprechenden Anteile in Prozent für die durchgeführten Impfungen relativ zur Größe der jeweiligen Bevölkerungsgruppe angegeben. Weiterhin berichten wir die Anzahl der insgesamt durchgeführten Impfungen (Erst- plus Zweitimpfungen), umgerechnet auf jeweils 100.000 Einwohnende.\
+
+Stand Impfdaten (RKI): `r format(as_date(max(rki_vacc$date, na.rm = TRUE))+1,format="%d.%m.%Y")`.
+
+Das Zi stellt auch ein Online-Tool zur Darstellung der Impfungen in Praxen und an anderen Impforten bereit, dieses Tool finden Sie [hier](https://www.zidatasciencelab.de/covidimpfindex/).
+
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zum Impffortschritt in den Bundesländern**
+
+<div style = "width:99% !important; height:auto; margin: auto;">
+```{r tableBL_vacc}
+DT::datatable(vacc_table,
+              extensions = 'Responsive',
+              options = list(paging = FALSE,          
+                             pageLength=20,
+                             scrollY=1000,
+                             scrollCollapse=TRUE,
+                             columnDefs = list(list(className = 'dt-center', targets = 2:4)), # 8
+                             searching = FALSE,
+                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
+                             server = FALSE,
+                             initComplete = DT::JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}"))) %>% formatStyle(
+  'Bundesland',
+  target = 'row',
+  fontWeight = styleEqual(c("Gesamt"), c('bold'))
+)
+
+```
+</div>
+
+Row
+------------------------------------------------------------------------
+
+### **Datenbasis- und Quellenangaben**
+
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Eine Übersicht über die benutzten Quellen finden Sie [hier](Daten.html).

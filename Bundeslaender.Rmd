@@ -1,0 +1,191 @@
+---
+title: "Zi-Frühindikatoren zu COVID-19"
+output: 
+  flexdashboard::flex_dashboard:
+    navbar:
+       - { title: "Dashboard", href: "Start_old.html", align: left }
+       - { title: "Bundesländer", href: "Bundeslaender.html", align: left }
+       - { title: "Kreise", href: "Kreise.html", align: left }
+       - { title: "Impfungen", href: "Impfungen.html", align: left }
+       - { title: "Projektion", href: "Projektion.html", align: left }
+       - { title: "KBV-Report", href: "Report.html", align: left }
+       - { title: "Impressum/Datenschutz", href: "Impressum.html", align: left }
+    orientation: rows
+    vertical_layout: scroll 
+    logo: static/logo.png
+    theme: bootstrap
+    css: static/styles.css
+    includes:
+      after_body: static/html/counter_Bundeslaender.html        
+    
+---
+
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zu den aktuellen Kennzahlen der Bundesländer**
+
+<div style = "width:99% !important; height:auto; margin: auto;">
+```{r tableBL}
+DT::datatable(bundeslaender_table,
+              extensions = 'Responsive',
+              options = list(paging = FALSE,
+                             scrollY=1000,
+                             scrollCollapse=TRUE,
+                             pageLength=20,
+                             columnDefs = list(list(className = 'dt-center', targets = 2:3)),
+                             searching = FALSE,
+                             language = list(url = '//cdn.datatables.net/plug-ins/1.10.11/i18n/German.json'),
+                             server = FALSE,
+                             initComplete = DT::JS("function(settings, json) {","$(this.api().table().header()).css({'background-color':'#0086C5','color': '#fff'});","}"))) %>% formatStyle(
+  'Bundesland',
+  target = 'row',
+  fontWeight = styleEqual(c("Gesamt"), c('bold')))
+
+```
+</div>
+
+Row
+-----------------------------------------------------------------------
+
+### **Überblick zum Verlauf der altersgruppenspezifischen Inzidenzen und der Vorwarnzeit in den Bundesländern**
+
+Nachfolgend erhalten Sie einen Überblick zur allgemeinen historischen Situation der einzelnen Bundesländer. Dargestellt werden die Sieben-Tages-Inzidenzen (Fälle pro 100.000 Einwohnende in den letzten sieben Tagen) nach Altersgruppen und die Vorwarnzeit. Ein kontinuierlicher Rückgang der Vorwarnzeit ist als kritisch einzuschätzen. Fehlende Werte für die Vorwarnzeit ergeben sich aus 0 gemeldeten neuen Fällen im entsprechenden Bundesland oder Vorwarnzeiten größer als 180 Tage.
+
+Row {.tabset .tabset-fade data-height=500}
+-------------------------------------
+   
+### Schleswig-Holstein {#bl01}
+
+```{r plotsBL01}
+bundeslaender_stiag_und_vwz_plot(1) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Hamburg {#bl02}
+    
+```{r plotsBL02}
+bundeslaender_stiag_und_vwz_plot(2) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Niedersachsen {#bl03}
+
+```{r plotsBL03}
+bundeslaender_stiag_und_vwz_plot(3) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Bremen {#bl04}
+    
+```{r plotsBL04}
+bundeslaender_stiag_und_vwz_plot(4) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Nordrhein-Westfalen {#bl05}
+
+```{r plotsBL05}
+bundeslaender_stiag_und_vwz_plot(5) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Hessen {#bl06}
+    
+```{r plotsBL06}
+bundeslaender_stiag_und_vwz_plot(6) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Rheinland-Pfalz {#bl07}
+
+```{r plotsBL07}
+bundeslaender_stiag_und_vwz_plot(7) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Baden-Württemberg {#bl08}
+    
+```{r plotsBL08}
+bundeslaender_stiag_und_vwz_plot(8) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Bayern {#bl09}
+
+```{r plotsBL09}
+bundeslaender_stiag_und_vwz_plot(9) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Saarland {#bl10}
+    
+```{r plotsBL10}
+bundeslaender_stiag_und_vwz_plot(10) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Berlin {#bl11}
+
+```{r plotsBL11}
+bundeslaender_stiag_und_vwz_plot(11) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Brandenburg {#bl12}
+    
+```{r plotsBL12}
+bundeslaender_stiag_und_vwz_plot(12) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Mecklenburg-Vorpommern {#bl13}
+
+```{r plotsBL13}
+bundeslaender_stiag_und_vwz_plot(13) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Sachsen {#bl14}
+    
+```{r plotsBL14}
+bundeslaender_stiag_und_vwz_plot(14) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+### Sachsen-Anhalt {#bl15}
+
+```{r plotsBL15}
+bundeslaender_stiag_und_vwz_plot(15) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```   
+ 
+### Thüringen {#bl16}
+    
+```{r plotsBL16}
+bundeslaender_stiag_und_vwz_plot(16) %>%
+  layout(legend = list(orientation = "h", x = 0.6, y = 1.2), autosize=TRUE) %>%
+   config(displayModeBar = FALSE, responsive=T)
+```
+
+Row
+------------------------------------------------------------------------
+
+### **Datenbasis- und Quellenangaben**
+
+Für das Zi-Dashboard führen wir Zahlen aus unterschiedlichen Quellen zusammen und erweitern sie mit eigenen Berechnungen. Eine Übersicht über die benutzten Quellen finden Sie [hier](Daten.html).
