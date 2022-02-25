@@ -343,6 +343,8 @@ international <- tbl(conn,"trends") %>%
   collect() %>%
   mutate(date=as_date(date)) %>%
   left_join(., params, by=c("Country"="name"))
+kbv_rki_impfstoffe <- tbl(conn,"kbv_rki_impfstoffe_laender") %>% 
+  collect()
 
 # tables for excel
 maxdate <- max(bundeslaender_table_faktenblatt$Datum)
@@ -1084,7 +1086,8 @@ geimpfte_gesamt <- tibble(
     "Gesamt",
     "Nicht vollst. geimpft",
     "Vollst. geimpft",
-    "Zusätzl. Booster-Impfung"
+    "Zusätzl. Booster-Impfung",
+    "Zusätzl. 2. Booster-Impfung"
   ),
   Vorwoche=c(
     NA,
@@ -1092,7 +1095,8 @@ geimpfte_gesamt <- tibble(
     vacc_brd_vorwoche$personen_min1_kumulativ - 
       vacc_brd_vorwoche$personen_voll_kumulativ,
     vacc_brd_vorwoche$personen_voll_kumulativ,
-    vacc_brd_vorwoche$personen_auffr_kumulativ
+    vacc_brd_vorwoche$personen_auffr_kumulativ,
+    NA
   ),
   VorwocheAnteil=c(
     NA,
@@ -1100,7 +1104,8 @@ geimpfte_gesamt <- tibble(
     (vacc_brd_vorwoche$personen_min1_kumulativ - 
        vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100,
     (vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100,
-    (vacc_brd_vorwoche$personen_auffr_kumulativ)/83166711*100
+    (vacc_brd_vorwoche$personen_auffr_kumulativ)/83166711*100,
+    NA
   ),
   dieseWoche=c(
     NA,
@@ -1108,7 +1113,8 @@ geimpfte_gesamt <- tibble(
     vacc_brd$personen_min1_kumulativ - 
       vacc_brd$personen_voll_kumulativ,
     vacc_brd$personen_voll_kumulativ,
-    vacc_brd$personen_auffr_kumulativ
+    vacc_brd$personen_auffr_kumulativ,
+    NA
   ),
   dieseWocheAnteil=c(
     NA,
@@ -1116,7 +1122,8 @@ geimpfte_gesamt <- tibble(
     (vacc_brd$personen_min1_kumulativ - 
        vacc_brd$personen_voll_kumulativ)/83166711*100,
     (vacc_brd$personen_voll_kumulativ)/83166711*100,
-    (vacc_brd$personen_auffr_kumulativ)/83166711*100
+    (vacc_brd$personen_auffr_kumulativ)/83166711*100,
+    NA
   )
 ) %>%
   mutate(Vorwoche=ifelse(is.na(Vorwoche), 
@@ -1244,11 +1251,13 @@ hersteller_table <- tibble(
     "Erstimpfungen",
     "Zweitimpfungen",
     "Booster",
+    "2. Booster",
     "geliefert",
     "Moderna",
     "Erstimpfungen",
     "Zweitimpfungen",
     "Booster",
+    "2. Booster",
     "geliefert",
     "AstraZeneca",
     "Erstimpfungen",
@@ -1256,8 +1265,10 @@ hersteller_table <- tibble(
     "Booster",
     "geliefert",
     "Johnson&Johnson",
-    "Einzeldosisimpfung",
+    "Erstimpfungen",
+    "Zweitimpfungen",
     "Booster",
+    "2. Booster",
     "geliefert"
   ),
   "Vorwoche"=c(
@@ -1265,11 +1276,13 @@ hersteller_table <- tibble(
     hersteller_brd_vorwoche %>% filter(metric=="personen_erst_biontech_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_voll_biontech_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_biontech_kumulativ") %>% pull(value),
+    NA,
     geliefert_vorwoche %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     hersteller_brd_vorwoche %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_erst_moderna_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_voll_moderna_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_moderna_kumulativ") %>% pull(value),
+    NA,
     geliefert_vorwoche %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
     hersteller_brd_vorwoche %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_erst_astrazeneca_kumulativ") %>% pull(value),
@@ -1277,8 +1290,10 @@ hersteller_table <- tibble(
     hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_astrazeneca_kumulativ") %>% pull(value),
     geliefert_vorwoche %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
     hersteller_brd_vorwoche %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value),
+    NA,
     hersteller_brd_vorwoche %>% filter(metric=="personen_voll_janssen_kumulativ") %>% pull(value),
     hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_janssen_kumulativ") %>% pull(value),
+    NA,
     geliefert_vorwoche %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   ),
   "dieseWoche"=c(
@@ -1286,11 +1301,13 @@ hersteller_table <- tibble(
     hersteller_brd %>% filter(metric=="personen_erst_biontech_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_voll_biontech_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_auffr_biontech_kumulativ") %>% pull(value),
+    NA,
     geliefert %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_erst_moderna_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_voll_moderna_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_auffr_moderna_kumulativ") %>% pull(value),
+    NA,
     geliefert %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_erst_astrazeneca_kumulativ") %>% pull(value),
@@ -1298,8 +1315,10 @@ hersteller_table <- tibble(
     hersteller_brd %>% filter(metric=="personen_auffr_astrazeneca_kumulativ") %>% pull(value),
     geliefert %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
     hersteller_brd %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value),
+    NA,
     hersteller_brd %>% filter(metric=="personen_voll_janssen_kumulativ") %>% pull(value),
     hersteller_brd %>% filter(metric=="personen_auffr_janssen_kumulativ") %>% pull(value),
+    NA,
     geliefert %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert)
   )
 ) %>%
