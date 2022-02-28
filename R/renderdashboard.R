@@ -3,6 +3,9 @@ library(dplyr)
 library(stringr)
 library(readr)
 library(tidyverse)
+library(openxlsx)
+library(readxl)
+
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
                        dbname = Sys.getenv("DBNAME"),
@@ -313,6 +316,50 @@ rki_hosp_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/
 rki_hosp_bl <- rki_hosp_bl %>% 
   mutate(ST_neueFaelle_estimate=round(`7T_Hospitalisierung_Faelle`/7))
 DBI::dbWriteTable(conn, "rki_hospitalisierung_faelle_bl", rki_hosp_bl, overwrite=TRUE)
+
+# push tables for corona report
+alm_ev <- read_csv("../data/almev.csv")
+DBI::dbWriteTable(conn, "alm_ev", alm_ev, overwrite=TRUE)
+
+wtag <- wday(today(), week_start = 1)
+
+if (wtag==5) { # friday/freitag: tabelle erscheint beim rki immer do
+  url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
+  destfile_rkihosp <- "../data/klinische_aspekte.xlsx"
+  curl::curl_download(url_rkihosp, destfile_rkihosp)
+  rki_hosp <- read_excel(destfile_rkihosp)
+  skip = which(rki_hosp[1] == "Meldejahr" & rki_hosp[2] == "MW") # often changes
+  rki_hosp <- read_excel(destfile_rkihosp,
+                         # sheet = "Daten",
+                         skip = skip)
+  rki_hosp_age <- read_excel(destfile_rkihosp,
+                             sheet = 3)
+  skip = which(rki_hosp_age[1] == "Meldejahr" & rki_hosp_age[2] == "Meldewoche") # often changes
+  rki_hosp_age <- read_excel(destfile_rkihosp,
+                             sheet = 3,
+                             skip = skip)
+  DBI::dbWriteTable(conn, "rki_klinischeaspekte_sympt_hosp", rki_hosp, overwrite=TRUE)
+  DBI::dbWriteTable(conn, "rki_klinischeaspekte_age_hosp", rki_hosp_age, overwrite=TRUE)
+}
+
+if (wtag==3) { # wednesday/mittwoch: tabelle erscheibt bei destatis immer di
+  url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
+  destfile_sterblk <- "../data/sonderauswertung_sterbefaelle.xlsx"
+  curl::curl_download(url_sterblk, destfile_sterblk)
+  sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
+                                          sheet = "D_2016_2022_KW_AG_Männlich", 
+                                          skip = 8,
+                                          na="X") %>% mutate(sex="maennlich"),
+                               read_excel(destfile_sterblk, 
+                                          sheet = "D_2016_2022_KW_AG_Weiblich", 
+                                          skip = 8,
+                                          na="X") %>% mutate(sex="weiblich")) %>%
+    select(-"Nr.") %>% 
+    rename("Jahr"="...2", "Alter"= "unter … Jahren" ) %>%
+    relocate(Jahr,Alter,sex) %>% 
+    pivot_longer(cols=-c("Jahr", "Alter", "sex"), names_to="KW", values_to="Tote")
+  DBI::dbWriteTable(conn, "destatis_sterblichkeit", sterbefaelle_kw, overwrite=TRUE)
+}
 
 DBI::dbSendStatement(conn, "GRANT SELECT ON ALL TABLES IN SCHEMA public TO zireader;")
 
