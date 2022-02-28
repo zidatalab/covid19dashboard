@@ -19,6 +19,7 @@ library(ggplot2)
 library(dtplyr)
 library(zoo)
 require(ISOcodes)
+library(janitor)
 
 ##### Source files
 source("R/aux_functions.R")
@@ -1355,8 +1356,16 @@ kreise_projektionen <- ausgangsdaten %>%
 #   dosen_verabreicht_bl_gesamt <- bind_rows(dosen_verabreicht_bl_gesamt,
 #                                            this_bl_dosen_verabreicht)
 # }
-  
-  
+
+# save vwz etc to database
+DBI::dbWriteTable(conn, 
+                  "vorwarnzeit_etc", 
+                  vorwarnzeitergebnis %>% 
+                    clean_names(),
+                  overwrite=TRUE)
+DBI::dbSendStatement(conn, "GRANT SELECT ON ALL TABLES IN SCHEMA public TO zireader;")
+
+
 ##### write data for displayed tables/plots to jsons
 write_json(bundeslaender_table, "./data/tabledata/bundeslaender_table.json")
 write_json(bundeslaender_table_faktenblatt, "./data/tabledata/bundeslaender_table_faktenblatt.json")

@@ -5,6 +5,7 @@ library(readr)
 library(tidyverse)
 library(openxlsx)
 library(readxl)
+library(janitor)
 
 conn <- DBI::dbConnect(RPostgres::Postgres(),
                        host   = Sys.getenv("DBHOST"),
@@ -321,7 +322,7 @@ DBI::dbWriteTable(conn, "rki_hospitalisierung_faelle_bl", rki_hosp_bl, overwrite
 alm_ev <- read_csv("../data/almev.csv")
 DBI::dbWriteTable(conn, "alm_ev", alm_ev, overwrite=TRUE)
 
-wtag <- wday(today(), week_start = 1)
+wtag <- lubridate::wday(today(), week_start = 1)
 
 if (wtag==5) { # friday/freitag: tabelle erscheint beim rki immer do
   url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
@@ -331,13 +332,15 @@ if (wtag==5) { # friday/freitag: tabelle erscheint beim rki immer do
   skip = which(rki_hosp[1] == "Meldejahr" & rki_hosp[2] == "MW") # often changes
   rki_hosp <- read_excel(destfile_rkihosp,
                          # sheet = "Daten",
-                         skip = skip)
+                         skip = skip) %>% 
+    clean_names()
   rki_hosp_age <- read_excel(destfile_rkihosp,
                              sheet = 3)
   skip = which(rki_hosp_age[1] == "Meldejahr" & rki_hosp_age[2] == "Meldewoche") # often changes
   rki_hosp_age <- read_excel(destfile_rkihosp,
                              sheet = 3,
-                             skip = skip)
+                             skip = skip) %>% 
+    clean_names()
   DBI::dbWriteTable(conn, "rki_klinischeaspekte_sympt_hosp", rki_hosp, overwrite=TRUE)
   DBI::dbWriteTable(conn, "rki_klinischeaspekte_age_hosp", rki_hosp_age, overwrite=TRUE)
 }
