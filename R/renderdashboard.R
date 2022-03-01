@@ -211,6 +211,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
       vacc_product=="AZD1222" ~ "AstraZeneca",
       vacc_product=="mRNA-1273" ~ "Moderna",
       vacc_product=="Ad26.COV2.S" ~ "Janssen",
+      vacc_product=="NVX-CoV2373" ~ "Novavax",
       TRUE ~ "ERROR"
     )) %>% 
     group_by(vacc_date, vacc_series, Impfstoff, Bundesland) %>% 

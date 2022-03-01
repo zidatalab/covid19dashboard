@@ -9,6 +9,7 @@ impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publ
   select(-1) %>% 
   rename(`BNT/Pfizer`=`BNT162b2`,
          `Moderna`=`mRNA-1273`,
+         `Novavax`=`NVX-CoV2373`,
          `AZ`=`AZD1222`,
          `J&J`=`Ad26.COV2.S`)
 
@@ -129,6 +130,7 @@ alle_14tage_impfstoff <- rki_github_bl %>%
     Impfstoff=="Janssen" ~ "J&J",
     Impfstoff=="AstraZeneca" ~ "AZ",
     Impfstoff=="Moderna" ~ "Moderna",
+    Impfstoff=="Novavax" ~ "Novavax",
     TRUE ~ "error"
   )) %>% 
   group_by(Impfdatum, Impfstoff) %>% 
@@ -178,6 +180,7 @@ write_csv(impfdashboardde %>%
                 impfstoff=="moderna" ~ "Moderna",
                 impfstoff=="astra" ~ "AZ",
                 impfstoff=="johnson" ~ "J&J",
+                impfstoff=="novavax" ~ "Novavax",
                 TRUE ~ "error"),
               KW=isoweek(date),
               wochentag=lubridate::wday(date, week_start = 1),
@@ -201,6 +204,7 @@ bunddashboard_daten <- impfdashboardde %>%
       impfstoff=="moderna" ~ "Moderna",
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
+      impfstoff=="novavax" ~ "Novavax",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -243,6 +247,9 @@ rki_vacc_lastday <- rki_vacc %>%
            metric=="personen_voll_janssen_kumulativ" ~ "zweit_J&J",
            metric=="personen_voll_janssen_kumulativ" ~ "erst_J&J",
            metric=="personen_auffr_janssen_kumulativ" ~ "dritt_J&J",
+           metric=="personen_voll_novavax_kumulativ" ~ "zweit_Novavax",
+           metric=="personen_erst_novavax_kumulativ" ~ "erst_Novavax",
+           metric=="personen_auffr_novavax_kumulativ" ~ "dritt_Novavax",
            TRUE ~ "else"
          )) %>%
   filter(metric!="else")
@@ -294,7 +301,7 @@ dosen_verabreicht <- rki_vacc_lastday %>%
   #           by=c("hersteller"="Hersteller", "geo"="Bundesland")) %>%
   mutate(dosen_geliefert=ifelse(!is.na(dosen_geliefert), dosen_geliefert, 0),
          zugelassen=case_when(
-           hersteller%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J") ~ 1, # 
+           hersteller%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J", "Novavax") ~ 1, # 
            TRUE ~ 0
          )) %>%
   mutate(#Stand_letzteKW=isoweek(prognosestart-days(1)),
@@ -355,6 +362,7 @@ fuerpraxen <- impfdashboardde %>%
       impfstoff=="moderna" ~ "Moderna",
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
+      impfstoff=="novavax" ~ "Novavax",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -389,6 +397,7 @@ fuerimpfzentren <- impfdashboardde %>%
       impfstoff=="moderna" ~ "Moderna",
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
+      impfstoff=="novavax" ~ "Novavax",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -425,6 +434,7 @@ fuerandere <- impfdashboardde %>%
       impfstoff=="moderna" ~ "Moderna",
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
+      impfstoff=="novavax" ~ "Novavax",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -467,7 +477,8 @@ impfungen_praxen_bl_kw <- impfungen_praxen_bl %>%
   summarise(Impfungen_Praxen_KW=sum(`BNT/Pfizer`+
                                       `Moderna`+
                                       `AZ`+
-                                      `J&J`), .groups="drop") %>% 
+                                      `J&J`+
+                                      `Novavax`), .groups="drop") %>% 
   mutate(Impfungen_Praxen_KW=ifelse(is.na(Impfungen_Praxen_KW),
                                           0,
                                           Impfungen_Praxen_KW))
