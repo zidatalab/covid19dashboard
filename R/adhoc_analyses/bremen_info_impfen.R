@@ -49,10 +49,26 @@ bremen_gesamtezeit <- kbv_rki_age_bremen %>%
          'Zweit-Anteil'=anteil_praxen_2,
          'Booster-Praxen'=gesamtezeit_praxen_3,
          'Booster-Gesamt'=gesamtezeit_gesamt_3,
-         'Booster-Anteil'=anteil_praxen_3) %>% 
-  mutate('Alle-Praxen'=`Erst-Praxen`+`Zweit-Praxen`+`Booster-Praxen`,
-         'Alle-Gesamt'=`Erst-Gesamt`+`Zweit-Gesamt`+`Booster-Gesamt`,
-         "Alle-Anteil"=`Alle-Praxen`/`Alle-Gesamt`)
+         'Booster-Anteil'=anteil_praxen_3,
+         'Viert-Praxen'=gesamtezeit_praxen_4,
+         'Viert-Gesamt'=gesamtezeit_praxen_4, # !!!
+         'Viert-Anteil'=anteil_praxen_4) %>% 
+  mutate(`Viert-Anteil`=NA) %>% 
+  mutate('Alle-Praxen'=`Erst-Praxen`+`Zweit-Praxen`+`Booster-Praxen`+`Viert-Praxen`,
+         'Alle-Gesamt'=`Erst-Gesamt`+`Zweit-Gesamt`+`Booster-Gesamt`+`Viert-Gesamt`,
+         "Alle-Anteil"=`Alle-Praxen`/`Alle-Gesamt`) %>% 
+  pivot_longer(cols=`Erst-Praxen`:`Alle-Anteil`,
+               names_to = c("Impfserie", "Impfort"),
+               values_to = "value",
+               names_pattern="(.*)-(.*)") %>% 
+  pivot_wider(id_cols="Impfserie",
+              names_from="Impfort") %>% 
+  mutate(`Anteil Praxen`=paste0(round(100*`Praxen`/`Gesamt`), "%")) %>% 
+  mutate(Praxen=format(Praxen, big.mark="."),
+         Gesamt=format(Gesamt, big.mark=".")) %>% 
+  mutate(Gesamt=ifelse(Impfserie=="Viert", "unbekannt", Gesamt)) %>% 
+  mutate(`Anteil Praxen`=ifelse(Impfserie=="Viert", "unbekannt", `Anteil Praxen`)) %>% 
+  select(-Anteil)
 
 bremen_letzte4wochen <- kbv_rki_age_bremen %>% 
   filter(vacc_date>=today()-days(28)) %>% 
@@ -71,9 +87,13 @@ bremen_letzte4wochen <- kbv_rki_age_bremen %>%
          'Zweit-Anteil'=anteil_praxen_2,
          'Booster-Praxen'=letzte4wochen_praxen_3,
          'Booster-Gesamt'=letzte4wochen_gesamt_3,
-         'Booster-Anteil'=anteil_praxen_3) %>% 
-  mutate('Alle-Praxen'=`Erst-Praxen`+`Zweit-Praxen`+`Booster-Praxen`,
-         'Alle-Gesamt'=`Erst-Gesamt`+`Zweit-Gesamt`+`Booster-Gesamt`,
+         'Booster-Anteil'=anteil_praxen_3,
+         'Viert-Praxen'=letzte4wochen_praxen_4,
+         'Viert-Gesamt'=letzte4wochen_gesamt_4, # !!!
+         'Viert-Anteil'=anteil_praxen_4)  %>% 
+  mutate(`Viert-Anteil`=NA) %>% 
+  mutate('Alle-Praxen'=`Erst-Praxen`+`Zweit-Praxen`+`Booster-Praxen`+`Viert-Praxen`,
+         'Alle-Gesamt'=`Erst-Gesamt`+`Zweit-Gesamt`+`Booster-Gesamt`+`Viert-Gesamt`,
          "Alle-Anteil"=`Alle-Praxen`/`Alle-Gesamt`)
 
 tabelle_4wochen <- bind_rows(bremen_gesamtezeit,
