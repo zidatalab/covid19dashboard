@@ -266,6 +266,14 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   
   write_csv(moderna_auffr, "../data/moderna_auffr.csv")
   
+  viertimpfungen_praxen <- impfstoff_laender_kbv_rki %>% 
+    filter(vacc_series==4) %>% 
+    group_by(vacc_date, Bundesland) %>% 
+    summarise(viert_praxen=sum(anzahl_praxen),
+              .groups="drop")
+  
+  write_csv(viertimpfungen_praxen, "../data/impfdax/viertimpfungen_praxen.csv")
+
   DBI::dbWriteTable(conn, "kbv_rki_impfstoffe_laender", impfstoff_laender_kbv_rki, overwrite=TRUE)
   DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv %>% 
                       mutate(KW=isoweek(vacc_date)), overwrite=TRUE)
