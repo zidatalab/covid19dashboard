@@ -68,11 +68,12 @@ impfdashboardde <- read_tsv(
   ))
 
 # daten übersterblichkeit
-## download mit curl funktioniert gerade nicht (11. maerz 2022)
-## muss von hand downgeloadet und dort gespeichert werden
-#url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx"
+## download mit curl funktioniert evtl nicht (11. maerz 2022)
+## dann muss von hand downgeloadet und dort gespeichert werden:
+# https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.html
+url_sterblk <- "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Sterbefaelle-Lebenserwartung/Tabellen/sonderauswertung-sterbefaelle.xlsx?__blob=publicationFile"
 destfile_sterblk <- "../data/sonderauswertung-sterbefaelle.xlsx"
-#curl::curl_download(url_sterblk, destfile_sterblk)
+curl::curl_download(url_sterblk, destfile_sterblk)
 
 # daten rki symptomanteil, hospitalisierungsrate und sterberate
 url_rkihosp <- "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Klinische_Aspekte.xlsx?__blob=publicationFile"
