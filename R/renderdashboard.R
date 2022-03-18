@@ -103,14 +103,11 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   kbv_age <- tbl(conn,"kbvcovidagegroup") %>%
     collect()
   
-  kreise_plz <- read_csv2("../data/plz_krs_2016.csv") %>% 
-    mutate(PLZ=as.integer(PLZ)) %>% 
-    select(PLZ, Kreis2016, Kreis2016name) %>% 
-    bind_rows(tibble(PLZ=0, Kreis2016=0, Kreis2016name="unbekannt"))
-  
-  kbv_plz_kv_liste <- read_csv("../data/kbv_plz_liste.csv") %>% 
-    group_by(plz) %>% filter(row_number()==1) %>% 
-    bind_rows(tibble(plz=0, kv="unbekannt"))
+  kreise_plz <- read_csv2("../data/plz_kreis_bl.csv") %>% 
+    select(PLZ, Kreis2016, Kreis2016name, KV, KVname, BL, BLname) %>% 
+    bind_rows(tibble(PLZ="0", Kreis2016=0, Kreis2016name="unbekannt",
+                     BL=0, BLname="unbekannt",
+                     KV=0, KVname="unbekannt"))
   
   rki_vacc_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv") %>% 
     mutate(LandkreisId=ifelse(LandkreisId_Impfort=="u" | 
@@ -126,9 +123,9 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     summarise(anzahl_alleorte=sum(anzahl_alleorte))
   
   kbv_impfstoff_plz <- kbv_impfstoff %>% 
-    mutate(anzahl=as.integer(anzahl),
-           arzt_plz=as.integer(arzt_plz),
-           vacc_series=as.integer(vacc_series)) %>% 
+    # mutate(anzahl=as.integer(anzahl),
+    #        arzt_plz=as.integer(arzt_plz),
+    #        vacc_series=as.integer(vacc_series)) %>% 
     # mutate(vacc_series=ifelse(vacc_series==2 & vacc_product=="Ad26.COV2.S", 1, vacc_series)) %>% 
     select(vacc_date, PLZ=arzt_plz, 
            vacc_product,
@@ -137,13 +134,13 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
               .groups="drop") %>% 
     mutate(PLZ=ifelse(PLZ%in%setdiff(unique(PLZ), unique(kreise_plz$PLZ)), 
-                      0, 
+                      "0", 
                       PLZ))
   
   kbv_age_plz <- kbv_age %>% 
-    mutate(anzahl=as.integer(anzahl),
-           arzt_plz=as.integer(arzt_plz),
-           vacc_series=as.integer(vacc_series)) %>% 
+    # mutate(anzahl=as.integer(anzahl),
+    #        arzt_plz=as.integer(arzt_plz),
+    #        vacc_series=as.integer(vacc_series)) %>% 
     select(vacc_date, PLZ=arzt_plz, 
            Altersgruppe=altersgruppe,
            vacc_series, anzahl_praxen=anzahl) %>% 
@@ -151,7 +148,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
               .groups="drop") %>% 
     mutate(PLZ=ifelse(PLZ%in%setdiff(unique(PLZ), unique(kreise_plz$PLZ)), 
-                      0, 
+                      "0", 
                       PLZ)) %>% 
     mutate(Altersgruppe=case_when(
       Altersgruppe=="0" ~ "18-59",
@@ -161,52 +158,30 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
       TRUE ~ "u"
     ))
   
-  kbv_impfen_plz <- kbv_age_plz %>% 
-    group_by(vacc_date, PLZ, vacc_series) %>% 
-    summarise(anzahl_praxen=sum(anzahl_praxen),
-              .groups="drop")
-  
-  rki_impfen_kreise <- rki_vacc_kreise %>% 
-    group_by(vacc_date, LandkreisId, vacc_series) %>% 
-    summarise(anzahl_alleorte=sum(anzahl_alleorte), .groups="drop")
-  
-  kbv_impfen_kreise_kv <- kbv_impfen_plz %>% 
+  kbv_age_kreise_kv_bl <- kbv_age_plz %>% 
     left_join(kreise_plz, by="PLZ") %>% 
-    left_join(kbv_plz_kv_liste %>% 
-                select(plz, kv), by=c("PLZ"="plz")) %>% 
-    group_by(vacc_date, Kreis2016, vacc_series) %>% 
-    summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
-              kv=kv[1],
-              Kreis2016name=Kreis2016name[1],
-              .groups="drop")
-  
-  kbv_age_kreise_kv <- kbv_age_plz %>% 
-    left_join(kreise_plz, by="PLZ") %>% 
-    left_join(kbv_plz_kv_liste %>% 
-                select(plz, kv), by=c("PLZ"="plz")) %>% 
     group_by(vacc_date, Kreis2016, vacc_series, Altersgruppe) %>% 
     summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
-              kv=kv[1],
               Kreis2016name=Kreis2016name[1],
+              kv=KV[1],
+              kvname=KVname[1],
+              BundeslandId=BL[1],
+              Bundesland=BLname[1],
               .groups="drop")
   
-  kbv_impfstoff_kreise_kv <- kbv_impfstoff_plz %>% 
+  kbv_impfstoff_kreise_kv_bl <- kbv_impfstoff_plz %>% 
     left_join(kreise_plz, by="PLZ") %>% 
-    left_join(kbv_plz_kv_liste %>% 
-                select(plz, kv), by=c("PLZ"="plz")) %>% 
     group_by(vacc_date, Kreis2016, vacc_series, vacc_product) %>% 
     summarise(anzahl_praxen=sum(anzahl_praxen, na.rm=TRUE),
-              kv=kv[1],
               Kreis2016name=Kreis2016name[1],
+              kv=KV[1],
+              kvname=KVname[1],
+              BundeslandId=BL[1],
+              Bundesland=BLname[1],
               .groups="drop")
-  kbv_impfstoff_laender <- kbv_impfstoff_kreise_kv %>% 
-    mutate(Bundesland=case_when(
-      kv=="Westfalen-Lippe" ~ "Nordrhein-Westfalen",
-      kv=="Nordrhein" ~ "Nordrhein-Westfalen",
-      kv=="Bayerns" ~ "Bayern",
-      TRUE ~ kv
-    ),
-    Impfstoff=case_when(
+  
+  kbv_impfstoff_laender <- kbv_impfstoff_kreise_kv_bl %>% 
+    mutate(Impfstoff=case_when(
       vacc_product=="BNT162b2" | vacc_product=="BNT162b2-Kinder" ~ "Comirnaty",
       vacc_product=="AZD1222" ~ "AstraZeneca",
       vacc_product=="mRNA-1273" ~ "Moderna",
@@ -217,47 +192,44 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     group_by(vacc_date, vacc_series, Impfstoff, Bundesland) %>% 
     summarise(anzahl_praxen=sum(anzahl_praxen), .groups = "drop")
   
-  impfstoff_laender_kbv_rki <- full_join(kbv_impfstoff_laender,
-                                         rki_vacc_laender,
-                                         by=c("vacc_date",
-                                              "vacc_series",
-                                              "Impfstoff",
-                                              "Bundesland")) %>% 
+  kbv_rki_impfstoff_laender <- 
+    full_join(
+      kbv_impfstoff_laender,
+      rki_vacc_laender,
+      by=c("vacc_date",
+           "vacc_series",
+           "Impfstoff",
+           "Bundesland")) %>% 
     mutate(KW=isoweek(vacc_date),
            Jahr=year(vacc_date),
            Monat=month(vacc_date),
-           Jahr=case_when(
-             KW>=52 & Monat==1 ~ Jahr-1L,
-             TRUE ~ Jahr
-           ),
+           Jahr=isoyear(vacc_date),
            JahrKW=100*Jahr+KW)
   
-  age_kreise_kbv_rki <- full_join(kbv_age_kreise_kv,
-                                  rki_vacc_kreise %>% 
-                                    mutate(Altersgruppe=ifelse(
-                                      Altersgruppe=="05-11",
-                                      "5-11",
-                                      Altersgruppe
-                                    )),
-                                     by=c("vacc_date",
-                                          "Kreis2016"="LandkreisId",
-                                          "Altersgruppe",
-                                          "vacc_series")) %>% 
+  kbv_rki_age_kreise <- 
+    full_join(
+      kbv_age_kreise_kv_bl,
+      rki_vacc_kreise %>% 
+        mutate(Altersgruppe=ifelse(
+          Altersgruppe=="05-11",
+          "5-11",
+          Altersgruppe
+        )),
+      by=c("vacc_date",
+           "Kreis2016"="LandkreisId",
+           "Altersgruppe",
+           "vacc_series")) %>% 
     mutate(across(c(anzahl_praxen, anzahl_alleorte), ~replace(., is.na(.), 0))) %>% 
     group_by(Kreis2016) %>% 
-    mutate(kv=max(kv, na.rm=TRUE),
-           Kreis2016name=max(Kreis2016name, na.rm=TRUE)) %>% 
+    mutate(across(Kreis2016name:Bundesland, ~max(., na.rm=TRUE))) %>% 
     ungroup() %>% 
     mutate(KW=isoweek(vacc_date),
            Jahr=year(vacc_date),
            Monat=month(vacc_date),
-           Jahr=case_when(
-             KW>=52 & Monat==1 ~ Jahr-1L,
-             TRUE ~ Jahr
-           ),
+           Jahr=isoyear(vacc_date),
            JahrKW=100*Jahr+KW)
   
-  moderna_auffr <- impfstoff_laender_kbv_rki %>% 
+  moderna_auffr <- kbv_rki_impfstoff_laender %>% 
     filter(vacc_series==3 & Impfstoff=="Moderna") %>% 
     group_by(Bundesland, KW, Jahr, JahrKW) %>% 
     summarise(anzahl_moderna_auffr_praxen=sum(anzahl_praxen, na.rm=TRUE),
@@ -266,7 +238,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   
   write_csv(moderna_auffr, "../data/moderna_auffr.csv")
   
-  viertimpfungen_praxen <- impfstoff_laender_kbv_rki %>% 
+  viertimpfungen_praxen <- kbv_rki_impfstoff_laender %>% 
     filter(vacc_series==4) %>% 
     group_by(vacc_date, Bundesland) %>% 
     summarise(viert_praxen=sum(anzahl_praxen),
@@ -274,10 +246,12 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   
   write_csv(viertimpfungen_praxen, "../data/impfdax/viertimpfungen_praxen.csv")
 
-  DBI::dbWriteTable(conn, "kbv_rki_impfstoffe_laender", impfstoff_laender_kbv_rki, overwrite=TRUE)
-  DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv %>% 
+  DBI::dbWriteTable(conn, "kbv_rki_impfstoffe_laender", 
+                    kbv_rki_impfstoff_laender, overwrite=TRUE)
+  DBI::dbWriteTable(conn, "kbv_impfstoff_kreise", kbv_impfstoff_kreise_kv_bl %>% 
                       mutate(KW=isoweek(vacc_date)), overwrite=TRUE)
-  DBI::dbWriteTable(conn, "kbv_rki_altersgruppen_kreise", age_kreise_kbv_rki, overwrite=TRUE)
+  DBI::dbWriteTable(conn, "kbv_rki_altersgruppen_kreise", kbv_rki_age_kreise,
+                    overwrite=TRUE)
 
 }
 
