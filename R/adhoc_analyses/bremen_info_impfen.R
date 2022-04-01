@@ -21,7 +21,7 @@ kbv_rki_age <- tbl(conn,"kbv_rki_altersgruppen_kreise") %>%
 kbv_rki_impfstoff_bremen <- kbv_rki_impfstoff %>% 
   filter(Bundesland=="Bremen")
 kbv_rki_age_bremen <- kbv_rki_age %>% 
-  filter(kv=="Bremen")
+  filter(kvname=="Bremen")
 
 # bremen_gesamt <- kbv_rki_age_bremen %>% 
 #   summarise(gesamt=sum(anzahl_alleorte, na.rm = TRUE)) %>%
@@ -34,6 +34,7 @@ kbv_rki_age_bremen <- kbv_rki_age %>%
 # anteil_praxen_bremen <- bremen_praxen_gesamt/bremen_gesamt
 
 bremen_gesamtezeit <- kbv_rki_age_bremen %>% 
+  mutate(anzahl_alleorte=ifelse(vacc_series==4, anzahl_praxen, anzahl_alleorte)) %>% 
   group_by(vacc_series) %>% 
   summarise(gesamtezeit_praxen=sum(anzahl_praxen, na.rm=TRUE),
             gesamtezeit_gesamt=sum(anzahl_alleorte, na.rm=TRUE),
@@ -64,20 +65,22 @@ bremen_gesamtezeit <- kbv_rki_age_bremen %>%
   pivot_wider(id_cols="Impfserie",
               names_from="Impfort") %>% 
   mutate(`Anteil Praxen`=paste0(round(100*`Praxen`/`Gesamt`), "%")) %>% 
-  mutate(Praxen=format(Praxen, big.mark="."),
-         Gesamt=format(Gesamt, big.mark=".")) %>% 
+  mutate(Praxen=format(Praxen, big.mark=".", decimal.mark=","),
+         Gesamt=format(Gesamt, big.mark=".", decimal.mark=",")) %>% 
   mutate(Gesamt=ifelse(Impfserie=="Viert", "unbekannt", Gesamt)) %>% 
   mutate(`Anteil Praxen`=ifelse(Impfserie=="Viert", "unbekannt", `Anteil Praxen`)) %>% 
   select(-Anteil)
 
-bremen_letzte4wochen <- kbv_rki_age_bremen %>% 
-  filter(vacc_date>=today()-days(28)) %>% 
-  group_by(vacc_series) %>% 
+bremen_letzte4wochen <- kbv_rki_age_bremen %>%
+  filter(vacc_date>=today()-days(28)) %>%
+  mutate(anzahl_alleorte=ifelse(vacc_series==4, anzahl_praxen, anzahl_alleorte)) %>%
+  group_by(vacc_series) %>%
   summarise(letzte4wochen_praxen=sum(anzahl_praxen, na.rm=TRUE),
             letzte4wochen_gesamt=sum(anzahl_alleorte, na.rm=TRUE),
-            anteil_praxen=sum(letzte4wochen_praxen/letzte4wochen_gesamt)) %>% 
-  pivot_wider(names_from = vacc_series, values_from = letzte4wochen_praxen:anteil_praxen) %>% 
-  mutate('Land Bremen'='letzte 4 Wochen') %>% 
+            anteil_praxen=sum(letzte4wochen_praxen/letzte4wochen_gesamt),
+            .groups="drop") %>%
+  pivot_wider(names_from = vacc_series, values_from = letzte4wochen_praxen:anteil_praxen) %>%
+  mutate('Land Bremen'='letzte 4 Wochen') %>%
   select('Land Bremen',
          'Erst-Praxen'=letzte4wochen_praxen_1,
          'Erst-Gesamt'=letzte4wochen_gesamt_1,
@@ -90,17 +93,30 @@ bremen_letzte4wochen <- kbv_rki_age_bremen %>%
          'Booster-Anteil'=anteil_praxen_3,
          'Viert-Praxen'=letzte4wochen_praxen_4,
          'Viert-Gesamt'=letzte4wochen_gesamt_4, # !!!
-         'Viert-Anteil'=anteil_praxen_4)  %>% 
-  mutate(`Viert-Anteil`=NA) %>% 
+         'Viert-Anteil'=anteil_praxen_4)  %>%
+  mutate(`Viert-Anteil`=NA) %>%
   mutate('Alle-Praxen'=`Erst-Praxen`+`Zweit-Praxen`+`Booster-Praxen`+`Viert-Praxen`,
          'Alle-Gesamt'=`Erst-Gesamt`+`Zweit-Gesamt`+`Booster-Gesamt`+`Viert-Gesamt`,
-         "Alle-Anteil"=`Alle-Praxen`/`Alle-Gesamt`)
+         "Alle-Anteil"=`Alle-Praxen`/`Alle-Gesamt`) %>% 
+  pivot_longer(cols=`Erst-Praxen`:`Alle-Anteil`,
+               names_to = c("Impfserie", "Impfort"),
+               values_to = "value",
+               names_pattern="(.*)-(.*)") %>% 
+  pivot_wider(id_cols="Impfserie",
+              names_from="Impfort") %>% 
+  mutate(`Anteil Praxen`=paste0(round(100*`Praxen`/`Gesamt`), "%")) %>% 
+  mutate(Praxen=format(Praxen, big.mark=".", decimal.mark=","),
+         Gesamt=format(Gesamt, big.mark=".", decimal.mark=",")) %>% 
+  mutate(Gesamt=ifelse(Impfserie=="Viert", "unbekannt", Gesamt)) %>% 
+  mutate(`Anteil Praxen`=ifelse(Impfserie=="Viert", "unbekannt", `Anteil Praxen`)) %>% 
+  select(-Anteil)
 
-tabelle_4wochen <- bind_rows(bremen_gesamtezeit,
-                             bremen_letzte4wochen) %>% 
-  mutate(across(contains("Anteil"), function(x) paste0(round(100*x), "%")))
+# tabelle_4wochen <- bind_rows(bremen_gesamtezeit,
+#                              bremen_letzte4wochen) %>% 
+#   mutate(across(contains("Anteil"), function(x) paste0(round(100*x), "%")))
 
 stschnitt <- kbv_rki_age_bremen %>% 
+  mutate(anzahl_alleorte=ifelse(vacc_series==4, anzahl_praxen, anzahl_alleorte)) %>%
   group_by(vacc_date) %>% 
   summarise(impfungen_praxen=sum(anzahl_praxen, na.rm=TRUE),
             impfungen_gesamt=sum(anzahl_alleorte, na.rm=TRUE)) %>% 
