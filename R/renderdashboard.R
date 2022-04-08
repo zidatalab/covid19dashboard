@@ -252,6 +252,10 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
                       mutate(KW=isoweek(vacc_date)), overwrite=TRUE)
   DBI::dbWriteTable(conn, "kbv_rki_altersgruppen_kreise", kbv_rki_age_kreise,
                     overwrite=TRUE)
+  DBI::dbWriteTable(conn, "rki_impfstoffe_laender", rki_vacc_laender,
+                    overwrite=TRUE)
+  DBI::dbWriteTable(conn, "rki_altersgruppen_kreise", rki_vacc_kreise,
+                    overwrite=TRUE)
 
 }
 
