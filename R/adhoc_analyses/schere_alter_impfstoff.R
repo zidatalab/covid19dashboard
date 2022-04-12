@@ -40,17 +40,39 @@ kbv_impfstoff_sh4 <- kbv_impfstoff %>%
   group_by(Bundesland) %>% 
   summarise(anzahlpraxen4is=sum(anzahl))
 
+kbv_alter_sh4 <- kbv_age %>% 
+  filter(vacc_series==4) %>% 
+  left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
+  # left_join(rki_mappings, by=c("Kreis2016"="IdLandkreis")) %>% 
+  group_by(Bundesland) %>% 
+  summarise(anzahlpraxen4age=sum(anzahl))
+
+kbv_ageimpfstoff <- kbv_impfstoff %>% 
+  left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
+  # left_join(rki_mappings, by=c("Kreis2016"="IdLandkreis")) %>% 
+  group_by(Bundesland, vacc_series) %>% 
+  summarise(anzahlpraxen_is=sum(anzahl)) %>% 
+  left_join(kbv_age %>% 
+              left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
+              # left_join(rki_mappings, by=c("Kreis2016"="IdLandkreis")) %>% 
+              group_by(Bundesland, vacc_series) %>% 
+              summarise(anzahlpraxen_age=sum(anzahl)),
+            by=c("Bundesland", "vacc_series")) %>% 
+  mutate(differenz=anzahlpraxen_age-anzahlpraxen_is,
+         betrag_differenz=abs(differenz),
+         relativ=round(differenz/anzahlpraxen_is*100, 1))
+
 kbv_rki_impfstoff <- tbl(conn,"kbv_rki_impfstoffe_laender") %>% 
   collect()
 kbv_rki_age <- tbl(conn,"kbv_rki_altersgruppen_kreise") %>%
   collect()
 
 series_bl <- kbv_rki_impfstoff %>%
-  filter(vacc_date<="2022-03-15") %>% 
+  # filter(vacc_date<="2022-03-15") %>% 
   group_by(vacc_series, Bundesland) %>% 
   summarise(praxen_is=sum(anzahl_praxen, na.rm=TRUE)) %>% 
   full_join(kbv_rki_age %>% 
-              filter(vacc_date<="2022-03-15") %>% 
+              # filter(vacc_date<="2022-03-15") %>% 
               group_by(Bundesland, vacc_series) %>% 
               summarise(praxen_ag=sum(anzahl_praxen, na.rm=TRUE))) %>% 
   replace_na(list(Bundesland = "unbekannt",
