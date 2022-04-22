@@ -375,7 +375,7 @@ bltabelle <- bind_rows(
          Inzidenzprojektion=ifelse(Inzidenzprojektion=="nie", "wird nicht erreicht", Inzidenzprojektion)) %>%
   select(Bundesland, 
          `Bereits infizierte Bevölkerung`, 
-         Vorwarnzeit=`Vorwarnzeit`, 
+         # Vorwarnzeit=`Vorwarnzeit`, 
          `R(t)`,
          `7-Tage-Inzidenz 60+`, Hospitalisierungen, `7-Tage-Inzidenz`, 
          Inzidenzprojektion)
@@ -1352,7 +1352,7 @@ hersteller_table <- tibble(
     #       filter(Impfstoff=="Novavax") %>% 
     #       filter(vacc_series==4) %>% 
     #       pull(anzahl_praxen)),
-    NA #geliefert_vorwoche %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
+    geliefert_vorwoche %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
   ),
   "dieseWoche"=c(
     hersteller_brd %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value) +
@@ -1414,7 +1414,7 @@ hersteller_table <- tibble(
     #       filter(Impfstoff=="Novavax") %>% 
     #       filter(vacc_series==4) %>% 
     #       pull(anzahl_praxen)),
-    NA # geliefert %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
+    geliefert %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
   )
 ) %>%
   mutate(anteil_vorwoche=paste0(" (", 
