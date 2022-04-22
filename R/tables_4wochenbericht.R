@@ -1080,7 +1080,7 @@ vorvaccmaxdate <- vaccmaxdate-7
 vacc_brd <- vacc_zahlen %>% filter(region=="DE" & date==vaccmaxdate) %>% 
   pivot_wider(names_from = metric, values_from = value)
 vacc_brd_vorwoche <- vacc_zahlen %>% 
-  filter(region=="DE" & date==vorvaccmaxdate) %>% 
+  filter(region=="DE" & date==vorvaccmaxdate) %>% # -days(1)
   pivot_wider(names_from = metric, values_from = value)
 # Geimpfte Personen
 geimpfte_gesamt <- tibble(
