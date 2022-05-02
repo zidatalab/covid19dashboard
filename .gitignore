@@ -9,3 +9,4 @@ vorwarnzeitverlauf100.png
 *.RData
 *.Rout
 .ipynb_checkpoints
+data/rki_rwert_excel.xlsx
