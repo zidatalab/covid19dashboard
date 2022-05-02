@@ -220,9 +220,12 @@ ggplot(full_data %>%
 library(rpart)
 mytree <- rpart(Anteil_Hosp_an_Faelle ~ Meldedatum + Altersgruppe, 
                 data=full_data %>% 
-                  filter(  Altersgruppe!="alle" &
+                  filter( Bundesland_Id!=0 &
+                            Altersgruppe!="alle" &
                              Meldedatum!=as_date(0) & 
-                           Meldedatum<="2022-03-31"))
+                           Meldedatum<="2022-03-31") %>% 
+                  mutate(Anteil_Hosp_an_Faelle=pmin(1, Anteil_Hosp_an_Faelle)),
+                control=rpart.control(xval=10, cp=0.008))
 plotdata_ag_hospquote <- full_data %>% 
   filter(Bundesland_Id==0 & 
            Altersgruppe!="alle" &
@@ -255,3 +258,43 @@ ggplot(savedata_anteil_hosp,
 
 write_csv(savedata_anteil_hosp, "data/tree_prediction_hospquoten.csv")
 
+# nur berlin
+mytree_berlin <- rpart(Anteil_Hosp_an_Faelle ~ Meldedatum + Altersgruppe, 
+                data=full_data %>% 
+                  filter( Bundesland_Id==11 &
+                            Altersgruppe!="alle" &
+                             Meldedatum!=as_date(0) & 
+                             Meldedatum<="2022-03-31") %>% 
+                  mutate(Anteil_Hosp_an_Faelle=pmin(1, Anteil_Hosp_an_Faelle)),
+                control=rpart.control(xval=10, cp=0.008))
+plotdata_ag_hospquote_berlin <- full_data %>% 
+  filter(Bundesland_Id==11 & 
+           Altersgruppe!="alle" &
+           Meldedatum!=as_date(0) & 
+           Meldedatum<="2022-03-31") %>% 
+  mutate(treepred=predict(mytree, data.frame(Meldedatum=Meldedatum,
+                                             Altersgruppe=Altersgruppe)))
+
+ggplot(plotdata_ag_hospquote_berlin,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+savedata_anteil_hosp_berlin <- plotdata_ag_hospquote_berlin %>% 
+  bind_rows(plotdata_ag_hospquote_berlin %>% 
+              group_by(Meldedatum) %>% 
+              summarise(Anteil_Hosp_an_Faelle=sum(Anteil_Hosp_an_Faelle*Bev)/sum(Bev),
+                        treepred=sum(treepred*Bev)/sum(Bev),
+                        across(c(Hospitalisierung_Faelle:Bev), sum),
+                        Bundesland_Id=0,
+                        Altersgruppe="alle",
+                        Bundesland="Gesamt",
+                        Hosp_Inzidenz_100TEW=round(Hospitalisierung_Faelle/Bev*100000, 1)
+              ))
+
+ggplot(savedata_anteil_hosp_berlin,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+write_csv(savedata_anteil_hosp_berlin, "data/tree_prediction_hospquoten_berlin.csv")
