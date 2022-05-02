@@ -298,3 +298,18 @@ ggplot(savedata_anteil_hosp_berlin,
   geom_line(aes(y=treepred))
 
 write_csv(savedata_anteil_hosp_berlin, "data/tree_prediction_hospquoten_berlin.csv")
+
+# quartale berlin
+qberlin <- rki %>% 
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")) %>% 
+  mutate(Bundesland_Id=floor(IdLandkreis/1000),
+         Meldedatum=as_date(Meldedatum),
+         wtag=lubridate::wday(Meldedatum, week_start = 1),
+         Quartal=quarter(Meldedatum),
+         Jahr=year(Meldedatum)) %>% 
+  filter(Bundesland_Id==11) %>% 
+  group_by(Altersgruppe, Jahr, Quartal) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall[NeuerFall>=0], na.rm=TRUE),
+            .groups = "drop") %>% 
+  filter(!(Jahr==2022&Quartal==2))
+write_csv(qberlin, "data/anzahlcovidfaelle_berlin.csv")
