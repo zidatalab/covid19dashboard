@@ -56,7 +56,7 @@ rki_hosp_bl <- rki_hosp_bl %>%
 bund_gesamt <- rki_hosp_bl %>% 
   filter(Bundesland=="Bundesgebiet") %>% 
   filter(Altersgruppe=="00+") %>% 
-  mutate(dow=wday(Datum, week_start = 1),
+  mutate(dow=lubridate::wday(Datum, week_start = 1),
          quartal=quarter(Datum),
          Jahr=year(Datum)) %>% 
   filter(dow==1) %>% 
@@ -73,7 +73,7 @@ rki_faelle_bl_ag <- rki %>%
   mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")) %>% 
   mutate(Bundesland_Id=floor(IdLandkreis/1000),
          Meldedatum=as_date(Meldedatum),
-         wtag=wday(Meldedatum, week_start = 1)) %>% 
+         wtag=lubridate::wday(Meldedatum, week_start = 1)) %>% 
   filter(wtag==1) %>% 
   group_by(Bundesland_Id, Altersgruppe, Meldedatum) %>% 
   summarise(AnzahlFall=sum(AnzahlFall[NeuerFall>=0], na.rm=TRUE),
@@ -102,7 +102,7 @@ bl_regstat_alter <- read_delim("data/Bev2019_Kreis_AG_rki_geschlecht.txt",
 
 rki_hosp_bl_ag <- rki_hosp_bl %>% 
   filter(Bundesland!="Bundesgebiet" & Altersgruppe!="00+") %>% 
-  mutate(wtag=wday(Datum, week_start = 1),
+  mutate(wtag=lubridate::wday(Datum, week_start = 1),
          Bundesland_Id=as.integer(Bundesland_Id)) %>% 
   filter(wtag==1) %>% 
   rename(Meldedatum=Datum) %>% 
@@ -209,3 +209,48 @@ ggplot(full_data %>%
        aes(x=Meldedatum, y=Hosp_Inzidenz_100TEW)) +
   geom_line() +
   facet_wrap(. ~ Bundesland, ncol=4)
+
+ggplot(full_data %>% 
+         filter(Bundesland_Id==0 & Meldedatum!=as_date(0) & Meldedatum<="2022-03-31"),
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_smooth(se=FALSE, span=0.3) +
+  geom_point()
+
+### rpart for stepwise constant
+library(rpart)
+mytree <- rpart(Anteil_Hosp_an_Faelle ~ Meldedatum + Altersgruppe, 
+                data=full_data %>% 
+                  filter(  Altersgruppe!="alle" &
+                             Meldedatum!=as_date(0) & 
+                           Meldedatum<="2022-03-31"))
+plotdata_ag_hospquote <- full_data %>% 
+  filter(Bundesland_Id==0 & 
+           Altersgruppe!="alle" &
+           Meldedatum!=as_date(0) & 
+           Meldedatum<="2022-03-31") %>% 
+  mutate(treepred=predict(mytree, data.frame(Meldedatum=Meldedatum,
+                                             Altersgruppe=Altersgruppe)))
+
+ggplot(plotdata_ag_hospquote,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+savedata_anteil_hosp <- plotdata_ag_hospquote %>% 
+  bind_rows(plotdata_ag_hospquote %>% 
+              group_by(Meldedatum) %>% 
+              summarise(Anteil_Hosp_an_Faelle=sum(Anteil_Hosp_an_Faelle*Bev)/sum(Bev),
+                        treepred=sum(treepred*Bev)/sum(Bev),
+                        across(c(Hospitalisierung_Faelle:Bev), sum),
+                        Bundesland_Id=0,
+                        Altersgruppe="alle",
+                        Bundesland="Gesamt",
+                        Hosp_Inzidenz_100TEW=round(Hospitalisierung_Faelle/Bev*100000, 1)
+                        ))
+
+ggplot(savedata_anteil_hosp,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+write_csv(savedata_anteil_hosp, "data/tree_prediction_hospquoten.csv")
