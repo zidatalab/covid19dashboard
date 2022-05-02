@@ -254,3 +254,4 @@ ggplot(savedata_anteil_hosp,
   geom_line(aes(y=treepred))
 
 write_csv(savedata_anteil_hosp, "data/tree_prediction_hospquoten.csv")
+
