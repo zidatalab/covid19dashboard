@@ -62,6 +62,21 @@ kbv_ageimpfstoff <- kbv_impfstoff %>%
          betrag_differenz=abs(differenz),
          relativ=round(differenz/anzahlpraxen_is*100, 1))
 
+kbv_ageimpfstoff_sh <- kbv_impfstoff %>% 
+  left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
+  filter(Bundesland=="Schleswig-Holstein") %>% 
+  group_by(Bundesland, vacc_series, vacc_date) %>% 
+  summarise(anzahlpraxen_is=sum(anzahl)) %>% 
+  left_join(kbv_age %>% 
+              left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
+              filter(Bundesland=="Schleswig-Holstein") %>% 
+              group_by(Bundesland, vacc_series, vacc_date) %>% 
+              summarise(anzahlpraxen_age=sum(anzahl)),
+            by=c("Bundesland", "vacc_series", "vacc_date")) %>% 
+  mutate(differenz=anzahlpraxen_age-anzahlpraxen_is,
+         betrag_differenz=abs(differenz),
+         relativ=round(differenz/anzahlpraxen_is*100, 1))
+
 kbv_rki_impfstoff <- tbl(conn,"kbv_rki_impfstoffe_laender") %>% 
   collect()
 kbv_rki_age <- tbl(conn,"kbv_rki_altersgruppen_kreise") %>%

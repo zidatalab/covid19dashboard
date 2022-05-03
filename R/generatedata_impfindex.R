@@ -72,32 +72,32 @@ bev_gesamt_laender <- bind_rows(
 )
 
 ## Impfungen laut RKI
-rki_vacc <- # tryCatch(
-#   {
-#     mytemp <- tempfile()
-#     rki_vacc_data <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/all.csv"
-#     download.file(rki_vacc_data, mytemp, method = "curl")
-#     vacc_zahlen <- read_csv(mytemp)
-#     if (dim(vacc_zahlen)[2] != 5){
-#       stop("they changed the vacc table")
-#     } else {
-#       write_csv(vacc_zahlen, "./data/vacc_zahlen_ard.csv")
-#       vacc_zahlen
-#     }
-#   },
-#   error=function(e) {
-#     # read old data
-    vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
-#     return(vacc_zahlen)
-#   }
-# )
-rki_vacc <- rki_vacc %>% 
-  mutate(region=ifelse(region=="DE", "DE", paste0("DE-", region))) %>% 
-  left_join(ISOcodes::ISO_3166_2 %>% 
-              select(region=Code,
-                     geo=Name), by="region") %>% 
-  mutate(geo=ifelse(region=="DE", "Germany", geo),
-         geotype=ifelse(region=="DE", "nation", "state"))
+# rki_vacc <- # tryCatch(
+# #   {
+# #     mytemp <- tempfile()
+# #     rki_vacc_data <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/all.csv"
+# #     download.file(rki_vacc_data, mytemp, method = "curl")
+# #     vacc_zahlen <- read_csv(mytemp)
+# #     if (dim(vacc_zahlen)[2] != 5){
+# #       stop("they changed the vacc table")
+# #     } else {
+# #       write_csv(vacc_zahlen, "./data/vacc_zahlen_ard.csv")
+# #       vacc_zahlen
+# #     }
+# #   },
+# #   error=function(e) {
+# #     # read old data
+#     vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
+# #     return(vacc_zahlen)
+# #   }
+# # )
+# rki_vacc <- rki_vacc %>% 
+#   mutate(region=ifelse(region=="DE", "DE", paste0("DE-", region))) %>% 
+#   left_join(ISOcodes::ISO_3166_2 %>% 
+#               select(region=Code,
+#                      geo=Name), by="region") %>% 
+#   mutate(geo=ifelse(region=="DE", "Germany", geo),
+#          geotype=ifelse(region=="DE", "nation", "state"))
 
 rki_github_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
 rki_github_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv")
@@ -231,54 +231,65 @@ bunddashboard_daten <-
               mutate(geo="Gesamt"))
 
 # last day
-rki_vacc_lastday <- rki_vacc %>%
-  filter(date==max(date)) %>% # deal with public holidays and/or delayed RKI upload
-  mutate(geo=ifelse(geo=="Germany", "Gesamt", geo),
-         metric=case_when(
-           metric=="personen_voll_biontech_kumulativ" ~ "zweit_BNT/Pfizer",
-           metric=="personen_erst_biontech_kumulativ" ~ "erst_BNT/Pfizer",
-           metric=="personen_auffr_biontech_kumulativ" ~ "dritt_BNT/Pfizer",
-           metric=="personen_voll_moderna_kumulativ" ~ "zweit_Moderna",
-           metric=="personen_erst_moderna_kumulativ" ~ "erst_Moderna",
-           metric=="personen_auffr_moderna_kumulativ" ~ "dritt_Moderna",
-           metric=="personen_voll_astrazeneca_kumulativ" ~ "zweit_AZ",
-           metric=="personen_erst_astrazeneca_kumulativ" ~ "erst_AZ",
-           metric=="personen_auffr_astrazeneca_kumulativ" ~ "dritt_AZ",
-           metric=="personen_voll_janssen_kumulativ" ~ "zweit_J&J",
-           metric=="personen_voll_janssen_kumulativ" ~ "erst_J&J",
-           metric=="personen_auffr_janssen_kumulativ" ~ "dritt_J&J",
-           metric=="personen_voll_novavax_kumulativ" ~ "zweit_Novavax",
-           metric=="personen_erst_novavax_kumulativ" ~ "erst_Novavax",
-           metric=="personen_auffr_novavax_kumulativ" ~ "dritt_Novavax",
-           TRUE ~ "else"
-         )) %>%
-  filter(metric!="else")
+rki_vacc_lastday <- bind_rows(rki_github_bl %>%
+                                mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
+                                left_join(bev_gesamt_laender %>% select(blid, Name), by="blid") %>% 
+                                mutate(Name=ifelse(BundeslandId_Impfort=="17", "Bundzentren", Name)) %>% 
+                                filter(Impfdatum==max(Impfdatum)) %>% 
+                                mutate(Impfstoff=case_when(
+                                  Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
+                                  Impfstoff=="Janssen" ~ "J&J",
+                                  Impfstoff=="AstraZeneca" ~ "AZ",
+                                  Impfstoff=="Moderna" ~ "Moderna",
+                                  Impfstoff=="Novavax" ~ "Novavax",
+                                  TRUE ~ "error"
+                                )) %>% 
+                                group_by(Impfdatum, Impfstoff, Impfserie) %>% 
+                                summarise(BundeslandId_Impfort="00",
+                                          Anzahl=sum(Anzahl, na.rm = TRUE),
+                                          blid=0,
+                                          Name="Gesamt",
+                                          .groups = "drop"),
+                              rki_github_bl %>%
+                                mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
+                                left_join(bev_gesamt_laender %>% select(blid, Name), by="blid") %>% 
+                                mutate(Name=ifelse(BundeslandId_Impfort=="17", "Bundzentren", Name)) %>% 
+                                filter(Impfdatum==max(Impfdatum)) %>% 
+                                mutate(Impfstoff=case_when(
+                                  Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
+                                  Impfstoff=="Janssen" ~ "J&J",
+                                  Impfstoff=="AstraZeneca" ~ "AZ",
+                                  Impfstoff=="Moderna" ~ "Moderna",
+                                  Impfstoff=="Novavax" ~ "Novavax",
+                                  TRUE ~ "error"
+                                )))
+
+
 
 ## verabreichte dosen
-hersteller_laender <- expand_grid(geo=unique(rki_vacc_lastday$geo),
-                                  erstzweitdritt=c("erst", "zweit", "dritt"),
-                                  hersteller=unique(
+hersteller_laender <- expand_grid(Name=unique(rki_vacc_lastday$Name),
+                                  Impfserie=1:4,
+                                  Impfstoff=unique(
                                     bunddashboard_daten$Hersteller)
 )
 
 dosen_verabreicht <- rki_vacc_lastday %>%
   left_join(bev_gesamt_laender %>% 
-              select(population, geo=Name) %>% 
-              mutate(geo=ifelse(geo=="Gesamt", "Germany", geo)),
-            by="geo") %>% 
-  separate(metric, into=c("erstzweitdritt", "hersteller"), sep="_") %>%
+              select(population, Name),
+            by="Name") %>% 
   right_join(hersteller_laender,
-             by=c("hersteller", "geo", "erstzweitdritt")) %>%
-  group_by(geo) %>%
+             by=c("Impfstoff", "Name", "Impfserie")) %>%
+  group_by(Name) %>%
   fill(population) %>%
   ungroup() %>%
-  pivot_wider(id_cols = c("geo", "population", "hersteller"),
-              names_from = "erstzweitdritt",
-              values_from=value) %>%
+  pivot_wider(id_cols = c("Name", "population", "Impfstoff"),
+              names_from = "Impfserie",
+              values_from=Anzahl) %>%
   rename(
-    dosen_verabreicht_dritt=dritt,
-    dosen_verabreicht_zweit=zweit,
-    dosen_verabreicht_erst=erst
+    dosen_verabreicht_dritt=`3`,
+    dosen_verabreicht_zweit=`2`,
+    dosen_verabreicht_erst=`1`,
+    dosen_verabreicht_viert=`4`
   ) %>%
   mutate(dosen_verabreicht_erst=ifelse(!is.na(dosen_verabreicht_erst), 
                                        dosen_verabreicht_erst, 
@@ -288,12 +299,15 @@ dosen_verabreicht <- rki_vacc_lastday %>%
                                         0),
          dosen_verabreicht_dritt=ifelse(!is.na(dosen_verabreicht_dritt), 
                                         dosen_verabreicht_dritt,
+                                        0),
+         dosen_verabreicht_viert=ifelse(!is.na(dosen_verabreicht_viert), 
+                                        dosen_verabreicht_viert,
                                         0)) %>%
   left_join(bunddashboard_daten %>%
               # filter(KW<=kwstart-1 | Jahr==2020) %>%
               group_by(Hersteller, geo) %>%
               summarise(dosen_geliefert=sum(Lieferung_gesamt), .groups="drop"),
-            by=c("hersteller"="Hersteller", "geo"="geo")) %>%
+            by=c("Impfstoff"="Hersteller", "Name"="geo")) %>%
   # left_join(dosen_planung_kw %>%
   #             filter(KW<=kwstart-1) %>%
   #             group_by(Hersteller, Bundesland) %>%
@@ -301,12 +315,14 @@ dosen_verabreicht <- rki_vacc_lastday %>%
   #           by=c("hersteller"="Hersteller", "geo"="Bundesland")) %>%
   mutate(dosen_geliefert=ifelse(!is.na(dosen_geliefert), dosen_geliefert, 0),
          zugelassen=case_when(
-           hersteller%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J", "Novavax") ~ 1, # 
+           Impfstoff%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J", "Novavax") ~ 1, # 
            TRUE ~ 0
          )) %>%
   mutate(#Stand_letzteKW=isoweek(prognosestart-days(1)),
          #Stand_BMG=bmgstand,
-         lager=dosen_geliefert-dosen_verabreicht_erst-dosen_verabreicht_zweit-dosen_verabreicht_dritt)
+         lager=dosen_geliefert-dosen_verabreicht_erst-dosen_verabreicht_zweit-dosen_verabreicht_dritt-dosen_verabreicht_viert) %>% 
+  rename("geo"="Name",
+         "hersteller"="Impfstoff")
 
 ## small check
 sum(dosen_verabreicht %>% filter(geo=="Gesamt") %>% 
@@ -488,25 +504,56 @@ impfungen_praxen_bl_kw <- bind_rows(impfungen_praxen_bl_kw,
                                       summarise(Bundesland="Germany",
                                                 Impfungen_Praxen_KW=sum(Impfungen_Praxen_KW),
                                                 .groups="drop"))
-iz_vergangen_laender <- rki_vacc %>% 
-  filter(metric=="dosen_kumulativ") %>% 
-  mutate(    KW=isoweek(date),
-             wochentag=lubridate::wday(date, week_start = 1),
-             Jahr=year(date),
-             Monat=month(date),
-             Jahr=case_when(
-               KW>=52 & Monat==1 ~ Jahr-1L,
-               TRUE ~ Jahr
-             ),
-             JahrKW=Jahr*100+KW) %>% 
-  group_by(KW, Jahr, JahrKW, geo) %>% 
-  summarise(Impfungen_kum=max(value), .groups="drop") %>% 
+
+iz_vergangen_laender <- bind_rows(rki_github_bl %>% 
+                                    rename("date"=Impfdatum) %>% 
+                                    group_by(date) %>% 
+                                    summarise(Anzahl=sum(Anzahl, na.rm = TRUE),
+                                              .groups="drop") %>% 
+                                    arrange(date) %>% 
+                                    mutate(Anzahl=cumsum(Anzahl)) %>% 
+                                    mutate(    KW=isoweek(date),
+                                               wochentag=lubridate::wday(date, week_start = 1),
+                                               Jahr=year(date),
+                                               Monat=month(date),
+                                               Jahr=case_when(
+                                                 KW>=52 & Monat==1 ~ Jahr-1L,
+                                                 TRUE ~ Jahr
+                                               ),
+                                               JahrKW=Jahr*100+KW) %>%
+                                    group_by(KW, Jahr, JahrKW) %>% 
+                                    summarise(Impfungen_kum=max(Anzahl),
+                                              geo="Germany",
+                                              .groups="drop"),
+                                  rki_github_bl %>% 
+                                    mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
+                                    left_join(bev_gesamt_laender %>% select(blid, Name), by="blid") %>% 
+                                    mutate(geo=ifelse(BundeslandId_Impfort=="17", "Bundzentren", Name)) %>% 
+                                    rename("date"=Impfdatum) %>% 
+                                    group_by(date, geo) %>% 
+                                    summarise(Anzahl=sum(Anzahl, na.rm = TRUE),
+                                              .groups="drop") %>% 
+                                    group_by(geo) %>% 
+                                    arrange(date) %>% 
+                                    mutate(Anzahl=cumsum(Anzahl)) %>% 
+                                    ungroup() %>% 
+                                    mutate(    KW=isoweek(date),
+                                               wochentag=lubridate::wday(date, week_start = 1),
+                                               Jahr=year(date),
+                                               Monat=month(date),
+                                               Jahr=case_when(
+                                                 KW>=52 & Monat==1 ~ Jahr-1L,
+                                                 TRUE ~ Jahr
+                                               ),
+                                               JahrKW=Jahr*100+KW) %>% 
+                                    group_by(KW, Jahr, JahrKW, geo) %>% 
+                                    summarise(Impfungen_kum=max(Anzahl), .groups="drop")) %>% 
   arrange(JahrKW) %>% 
   group_by(geo) %>% 
   mutate(Impfungen_gesamt_KW=Impfungen_kum-lag(Impfungen_kum, default=0)) %>% 
   left_join(impfungen_praxen_bl_kw,
             by=c("KW", "Jahr", "JahrKW", "geo"="Bundesland")
-            ) %>% 
+  ) %>% 
   mutate(Impfungen_Praxen_KW=ifelse(is.na(Impfungen_Praxen_KW),
                                     0,
                                     Impfungen_Praxen_KW),
@@ -514,24 +561,39 @@ iz_vergangen_laender <- rki_vacc %>%
   arrange(JahrKW) %>% 
   group_by(geo) %>% 
   mutate(Impfungen_IZ_kum=cumsum(Impfungen_IZ))
-# iz_vergangen_laender <-
-#   bind_rows(rki_vacc %>% 
-#               filter(metric=="dosen_kumulativ" & date<="2021-04-06"),
-#             rki_vacc %>% 
-#               filter(metric=="dosen_kumulativ_impfstelle_zentral" &
-#                        date>="2021-04-07")) %>% 
-#   mutate(KW=isoweek(date), Jahr=ifelse(KW==53, 2020, year(date)), 
-#          JahrKW=100*Jahr+KW) %>% 
+  
+# iz_vergangen_laender_old <- rki_vacc %>% 
+#   filter(metric=="dosen_kumulativ") %>% 
+#   mutate(    KW=isoweek(date),
+#              wochentag=lubridate::wday(date, week_start = 1),
+#              Jahr=year(date),
+#              Monat=month(date),
+#              Jahr=case_when(
+#                KW>=52 & Monat==1 ~ Jahr-1L,
+#                TRUE ~ Jahr
+#              ),
+#              JahrKW=Jahr*100+KW) %>% 
 #   group_by(KW, Jahr, JahrKW, geo) %>% 
-#   summarise(Impfungen_IZ_kum=max(value), .groups="drop") %>% 
+#   summarise(Impfungen_kum=max(value), .groups="drop") %>% 
 #   arrange(JahrKW) %>% 
 #   group_by(geo) %>% 
-#   mutate(Impfungen_IZ=Impfungen_IZ_kum-lag(Impfungen_IZ_kum, default=0))
+#   mutate(Impfungen_gesamt_KW=Impfungen_kum-lag(Impfungen_kum, default=0)) %>% 
+#   left_join(impfungen_praxen_bl_kw,
+#             by=c("KW", "Jahr", "JahrKW", "geo"="Bundesland")
+#             ) %>% 
+#   mutate(Impfungen_Praxen_KW=ifelse(is.na(Impfungen_Praxen_KW),
+#                                     0,
+#                                     Impfungen_Praxen_KW),
+#          Impfungen_IZ=Impfungen_gesamt_KW-Impfungen_Praxen_KW) %>% 
+#   arrange(JahrKW) %>% 
+#   group_by(geo) %>% 
+#   mutate(Impfungen_IZ_kum=cumsum(Impfungen_IZ))
+
 write_json(iz_vergangen_laender, "../data/tabledata/impfsim_impfungenimpfzentren_historisch.json")
 
 # tabelle für SZ
 erstzweit_gesamt <- tibble(
-  Datum=floor_date(rki_vacc_lastday$date[1], unit="week", week_start = 0) + days(7*0:7),
+  Datum=floor_date(rki_vacc_lastday$Impfdatum[1], unit="week", week_start = 0) + days(7*0:7),
   Vollgeimpft=c(dosen_verabreicht %>% 
                   filter(geo=="Gesamt") %>% 
                   summarise(dosen_verabreicht_zweit=sum(dosen_verabreicht_zweit, 
