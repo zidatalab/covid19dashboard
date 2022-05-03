@@ -15,38 +15,38 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        port     = 5432,
                        sslmode = 'require')
 
-RepoStand <- as_date((tbl(conn,"Stand") %>% collect())$Datum)
-DashboardStand <- as_date((tbl(conn,"Dashboardstand") %>% collect())$Datum)
-
-if (DashboardStand<RepoStand) {
-  rmarkdown::render('../Start_old.Rmd')
-  # source("functions_newvwz.R", encoding = "UTF-8")
-  Dashboardstand <- tibble(
-    "Datum"=as.character(date(now())),
-    "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),
-                  ":",
-                  str_pad(format(minute(now())),2, pad = "0"),
-                  " Uhr"))
-  DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
-  test_new_vacc <- tryCatch(
-    {
-      mytemp <- tempfile()
-      test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v2/metric_dosen_astrazeneca_kumulativ.csv"
-      download.file(test_vacc_link, mytemp, method = "curl")
-      test_vacc_data <- read_csv(mytemp)
-      write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
-      test_vacc_data
-    },
-    error=function(e) {
-      # read old data
-      test_vacc_data <- read_csv("../data/test_vacc_ard_new.csv")
-      return(test_vacc_data)
-    }
-  )
-  write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
-  
-
-}
+# RepoStand <- as_date((tbl(conn,"Stand") %>% collect())$Datum)
+# DashboardStand <- as_date((tbl(conn,"Dashboardstand") %>% collect())$Datum)
+# 
+# if (DashboardStand<RepoStand) {
+#   #rmarkdown::render('../Start_old.Rmd')
+#   # source("functions_newvwz.R", encoding = "UTF-8")
+#   Dashboardstand <- tibble(
+#     "Datum"=as.character(date(now())),
+#     "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),
+#                   ":",
+#                   str_pad(format(minute(now())),2, pad = "0"),
+#                   " Uhr"))
+#   DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
+#   test_new_vacc <- tryCatch(
+#     {
+#       mytemp <- tempfile()
+#       test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v2/metric_dosen_astrazeneca_kumulativ.csv"
+#       download.file(test_vacc_link, mytemp, method = "curl")
+#       test_vacc_data <- read_csv(mytemp)
+#       write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
+#       test_vacc_data
+#     },
+#     error=function(e) {
+#       # read old data
+#       test_vacc_data <- read_csv("../data/test_vacc_ard_new.csv")
+#       return(test_vacc_data)
+#     }
+#   )
+#   write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
+#   
+# 
+# }
 
 test_new_kbv_vacc <- tbl(conn,"kbvcovidvacczi") %>% 
   summarise(maxdate=max(vacc_date)) %>%
@@ -230,7 +230,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
            JahrKW=100*Jahr+KW)
   
   moderna_auffr <- kbv_rki_impfstoff_laender %>% 
-    filter(vacc_series==3 & Impfstoff=="Moderna") %>% 
+    filter((vacc_series==3 | vacc_series==4) & Impfstoff=="Moderna") %>% 
     group_by(Bundesland, KW, Jahr, JahrKW) %>% 
     summarise(anzahl_moderna_auffr_praxen=sum(anzahl_praxen, na.rm=TRUE),
               anzahl_moderna_auffr_alleorte=sum(anzahl_alleorte, na.rm=TRUE),
@@ -259,37 +259,37 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
 
 }
 
-test_new_vacc <- tryCatch(
-  {
-    mytemp <- tempfile()
-    test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/metric_dosen_astrazeneca_kumulativ.csv"
-    download.file(test_vacc_link, mytemp, method = "curl")
-    test_vacc_data <- read_csv(mytemp)
-    write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
-    test_vacc_data
-  },
-  error=function(e) {
-    # read old data
-    test_vacc_data <- read_csv("../data/test_vacc_ard_new.csv")
-    return(test_vacc_data)
-  }
-)
-test_old_vacc <- read_csv("../data/test_vacc_ard_old.csv")
+# test_new_vacc <- tryCatch(
+#   {
+#     mytemp <- tempfile()
+#     test_vacc_link <- "https://raw.githubusercontent.com/ard-data/2020-rki-impf-archive/master/data/9_csv_v3/metric_dosen_astrazeneca_kumulativ.csv"
+#     download.file(test_vacc_link, mytemp, method = "curl")
+#     test_vacc_data <- read_csv(mytemp)
+#     write_csv(test_vacc_data, "../data/test_vacc_ard_new.csv")
+#     test_vacc_data
+#   },
+#   error=function(e) {
+#     # read old data
+#     test_vacc_data <- read_csv("../data/test_vacc_ard_new.csv")
+#     return(test_vacc_data)
+#   }
+# )
+# test_old_vacc <- read_csv("../data/test_vacc_ard_old.csv")
 
-if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
-  rmarkdown::render('../Start_old.Rmd')
+# if (max(test_new_vacc$date)>max(test_old_vacc$date)) {
+  # rmarkdown::render('../Start_old.Rmd')
   # source("functions_newvwz.R", encoding = "UTF-8")
-  Dashboardstand <- tibble(
-    "Datum"=as.character(date(now())),
-    "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),
-                  ":",
-                  str_pad(format(minute(now())),2, pad = "0"),
-                  " Uhr"))
-  DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
-  write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
-  vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
-  DBI::dbWriteTable(conn, "rki_excel_impfdaten", vacc_zahlen, overwrite=TRUE)
-}
+  # Dashboardstand <- tibble(
+  #   "Datum"=as.character(date(now())),
+  #   "Zeit"=paste0(str_pad(format(hour(now())),2, pad = "0"),
+  #                 ":",
+  #                 str_pad(format(minute(now())),2, pad = "0"),
+  #                 " Uhr"))
+  # DBI::dbWriteTable(conn,"Dashboardstand",Dashboardstand,overwrite=TRUE)
+  # write_csv(test_new_vacc, "../data/test_vacc_ard_old.csv")
+  # vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
+  # DBI::dbWriteTable(conn, "rki_excel_impfdaten", vacc_zahlen, overwrite=TRUE)
+# }
 
 source("generatedata_impfindex.R")
 lieferungen <- read_csv("../data/tabledata/impfstoff_lieferungen_bmg.csv")

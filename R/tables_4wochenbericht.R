@@ -205,8 +205,6 @@ rki_mappings <- read_csv("../data/rki_mappings_landkreise.csv") %>%
 
 almev <- read_csv("../data/almev.csv")
 
-rki_hosp_inzidenz <- read_csv("../data/rki_hosp_inzidenz.csv")
-
 # # rki_ifsg <- read_csv("../data/rki_ifsg.csv")
 # 
 rki_hosp <- read_excel(destfile_rkihosp,
@@ -237,10 +235,6 @@ vacc_table_faktenblatt <- read_json("../data/tabledata/vacc_table_faktenblatt.js
                                              simplifyVector = TRUE)
 vacc_alle_faktenblatt <- read_json("../data/tabledata/vacc_alle_faktenblatt.json",
                                     simplifyVector = TRUE)
-
-agefatality_data <- read_json("../data/plotdata/agefatality.json",
-                                             simplifyVector = TRUE) %>%
-  mutate(Meldedatum=as_date(Meldedatum))
 
 sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
                                         sheet = "D_2016_2022_KW_AG_Männlich", 
