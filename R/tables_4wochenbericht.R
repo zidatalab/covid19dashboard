@@ -223,18 +223,18 @@ rki_hosp_age <- rki_hosp_age %>% mutate(YearKW=as.integer(Meldejahr)*100+as.inte
 
 # ard impfdaten
 # check
-vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
+# vacc_zahlen <- read_csv("../data/vacc_zahlen_ard.csv")
 
-bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
-                                simplifyVector = TRUE) %>%
-  mutate(Datum=as_date(Datum))
-kreise_table_faktenblatt <- read_json("../data/tabledata/kreise_table_faktenblatt.json",
-                                simplifyVector = TRUE) %>%
-  mutate(Datum=as_date(Datum))
-vacc_table_faktenblatt <- read_json("../data/tabledata/vacc_table_faktenblatt.json",
-                                             simplifyVector = TRUE)
-vacc_alle_faktenblatt <- read_json("../data/tabledata/vacc_alle_faktenblatt.json",
-                                    simplifyVector = TRUE)
+# bundeslaender_table_faktenblatt <- read_json("../data/tabledata/bundeslaender_table_faktenblatt.json",
+#                                 simplifyVector = TRUE) %>%
+#   mutate(Datum=as_date(Datum))
+# kreise_table_faktenblatt <- read_json("../data/tabledata/kreise_table_faktenblatt.json",
+#                                 simplifyVector = TRUE) %>%
+#   mutate(Datum=as_date(Datum))
+# vacc_table_faktenblatt <- read_json("../data/tabledata/vacc_table_faktenblatt.json",
+#                                              simplifyVector = TRUE)
+# vacc_alle_faktenblatt <- read_json("../data/tabledata/vacc_alle_faktenblatt.json",
+#                                     simplifyVector = TRUE)
 
 sterbefaelle_kw <- bind_rows(read_excel(destfile_sterblk, 
                                         sheet = "D_2016_2022_KW_AG_Männlich", 
@@ -297,8 +297,7 @@ divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(da
 rki <- tbl(conn,"rki") %>% collect()
 
 # rki <- tbl(conn,"rki_archive") %>% filter(Datenstand=="2021-07-29") %>% collect()
-params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
-strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
+params <- tbl(conn,"params") %>% select(name, id, cases, R0, EW_insgesamt) %>% collect()
 brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect()
 rki <- rki %>%
   left_join(rki_mappings, by="IdLandkreis") %>% 
@@ -356,29 +355,6 @@ regional_hospinzidenz <- rki_hospinz %>%
   filter(Datum==maxdate & Altersgruppe=="00+") %>% 
   mutate(Bundesland=ifelse(Bundesland=="Bundesgebiet", "Gesamt", Bundesland)) %>% 
   select(Bundesland, `7T_Hospitalisierung_Inzidenz`)
-bltabelle <- bind_rows(
-  bundeslaender_table_faktenblatt %>%
-    filter(Bundesland=="Gesamt" & Datum==maxdate),
-  bundeslaender_table_faktenblatt %>%
-    filter(Bundesland!="Gesamt" & Datum==maxdate) %>%
-    arrange(Bundesland)
-) %>%
-  rowwise() %>%
-  mutate(`Inzidenzprojektion`=projektion_datum(STI_aktuell = `7-Tage-Inzidenz`,
-                                               STI_Ziel = 100,
-                                               Rt = `R(t)`,
-                                               tage_infektioes = 5)) %>%
-  ungroup() %>%
-  left_join(regional_hospinzidenz, by="Bundesland") %>% 
-  mutate(`R(t)`=format(`R(t)`, decimal.mark = ","),
-         `Hospitalisierungen`=format(round(`7T_Hospitalisierung_Inzidenz`,1), decimal.mark = ","),
-         Inzidenzprojektion=ifelse(Inzidenzprojektion=="nie", "wird nicht erreicht", Inzidenzprojektion)) %>%
-  select(Bundesland, 
-         `Bereits infizierte Bevölkerung`, 
-         # Vorwarnzeit=`Vorwarnzeit`, 
-         `R(t)`,
-         `7-Tage-Inzidenz 60+`, Hospitalisierungen, `7-Tage-Inzidenz`, 
-         Inzidenzprojektion)
 
 eumaxdate <- max(international$date)
 eumaxdate <- maxdate
@@ -687,7 +663,7 @@ letzte_7_tage_altersgruppen_bund <- rki %>%
             `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
-  bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
+  bind_cols(., altersgruppen_bund*params%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
   mutate(#`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=
          #  round(`Faelle_letzte_7_Tage_0-14`/((bund_regstat_alter$ag_1+bund_regstat_alter$ag_2)/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_0-4`=
@@ -734,7 +710,7 @@ vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>%
             `Faelle_letzte_7_Tage_35-59`=sum(`Fälle_35-59`),
             `Faelle_letzte_7_Tage_60-79`=sum(`Fälle_60-79`),
             `Faelle_letzte_7_Tage_80+`=sum(`Fälle_80+`), .groups="drop") %>%
-  bind_cols(., altersgruppen_bund*strukturdaten%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
+  bind_cols(., altersgruppen_bund*params%>%filter(id==0)%>%pull(EW_insgesamt)) %>%
   mutate(#`Faelle_letzte_7_Tage_je100TsdEinw_0-14`=
     #  round(`Faelle_letzte_7_Tage_0-14`/((bund_regstat_alter$ag_1+bund_regstat_alter$ag_2)/100000)),
     `Faelle_letzte_7_Tage_je100TsdEinw_0-4`=
@@ -749,78 +725,6 @@ vorwoche_letzte_7_tage_altersgruppen_bund <- rki %>%
            round(`Faelle_letzte_7_Tage_60-79`/(bund_regstat_alter$ag_5/100000)),
          `Faelle_letzte_7_Tage_je100TsdEinw_80+`=
            round(`Faelle_letzte_7_Tage_80+`/(bund_regstat_alter$ag_6/100000)))
-
-rwert7ti <- tibble(
-  `R-Wert & 7-Tage-Inzidenz`=c(
-    "Reproduktionszahl R",
-    "Neue Fälle je 100.000 EW in 7 Tagen bezogen auf die jeweilige Gruppe:",
-    "Gesamtbevölkerung",
-    # "- Davon Unter-14-Jährige",
-    "- Davon Unter-4-Jährige",
-    "- Davon 5-bis-14-Jährige",
-    "- Davon 15-bis-34-Jährige",
-    "- Davon 35-bis-59-Jährige",
-    "- Davon 60-bis-79-Jährige",
-    "- Davon Über-80-Jährige",
-    "Neue hospitalisierte Fälle je 100.000 EW in 7 Tagen:",
-    "Gesamtbevölkerung",
-    "- Davon über 80-Jährige"#,
-    # "Regionen mit 7-TI bei Über-60-Jährigen:",
-    # "> 35",
-    # "> 50"#,
-    # "Regionen mit 7-TI bei Über-80-Jährigen:",
-    # "> 35",
-    # "> 50"
-  ),
-  Vorwoche=c(
-    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`), 2),
-    NA,
-    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz`)),
-    # vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-4`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_5-14`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`),
-    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
-    NA,
-    rki_hospinz %>% filter(Datum==maxdate-days(7) & Altersgruppe=="00+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`),
-    rki_hospinz %>% filter(Datum==maxdate-days(7) & Altersgruppe=="80+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`)#,
-    # NA,
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
-    # NA,
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
-  ),
-  dieseWoche=c(
-    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`), 2),
-    NA,
-    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`7-Tage-Inzidenz`)),
-    # round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-4`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_5-14`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`)),
-    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
-    NA,
-    rki_hospinz %>% filter(Datum==maxdate & Altersgruppe=="00+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`),
-    rki_hospinz %>% filter(Datum==maxdate & Altersgruppe=="80+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`)#,
-    # NA,
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
-    # NA,
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
-    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
-  ),
-  Veraenderung=ifelse(is.na(Vorwoche), NA, paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ","), " %"))
-)
-rwert7ti <- rwert7ti %>%
-  mutate(Vorwoche = replace(Vorwoche, c(1,11,12), format(as.numeric(unlist(rwert7ti[c(1,11,12), 2])), decimal.mark=",")),
-         dieseWoche = replace(dieseWoche, c(1,11,12), format(as.numeric(unlist(rwert7ti[c(1,11,12), 3])), decimal.mark=",")))  %>%
-  select(`R-Wert & 7-Tage-Inzidenz`, Vorwoche, !!paste0("KW ", isoweek(maxdate)):=dieseWoche, Veraenderung)
-
 
 testmaxkw <- max(almev$KW)
 testmaxjahr <- floor(testmaxkw/100)
@@ -1557,6 +1461,110 @@ hersteller_table <- tibble(
     paste0(dieseWoche, anteil),
     dieseWoche)) %>%
   select(-anteil, -anteil_vorwoche)
+
+bltabelle <- bind_rows(
+  params %>%
+    filter(name=="Gesamt"),
+  params %>%
+    filter(name!="Gesamt" & id<17) %>%
+    arrange(name)
+) %>%
+  left_join(bl_inzidenz, by="id") %>% 
+  rowwise() %>%
+  mutate(`Inzidenzprojektion`=projektion_datum(STI_aktuell = `7-Tage-Inzidenz`,
+                                               STI_Ziel = 100,
+                                               Rt = `R0`,
+                                               tage_infektioes = 5)) %>%
+  ungroup() %>%
+  left_join(regional_hospinzidenz, by=c("name"="Bundesland")) %>% 
+  mutate(`R(t)`=format(round(`R0`, 2), decimal.mark = ","),
+         `Hospitalisierungen`=format(round(`7T_Hospitalisierung_Inzidenz`,1), 
+                                     decimal.mark = ","),
+         `Bereits infizierte Bevölkerung`=paste0(format(round(100*cases/EW_insgesamt, 
+                                                1),
+                                                decimal.mark=","),
+                                                " %"),
+         Inzidenzprojektion=ifelse(Inzidenzprojektion=="nie",
+                                   "wird nicht erreicht", 
+                                   Inzidenzprojektion)) %>%
+  select(Bundesland=name, 
+         `Bereits infizierte Bevölkerung`, 
+         # Vorwarnzeit=`Vorwarnzeit`, 
+         `R(t)`,
+         `7-Tage-Inzidenz 60+`, Hospitalisierungen, `7-Tage-Inzidenz`, 
+         Inzidenzprojektion)
+
+rwert7ti <- tibble(
+  `R-Wert & 7-Tage-Inzidenz`=c(
+    "Reproduktionszahl R",
+    "Neue Fälle je 100.000 EW in 7 Tagen bezogen auf die jeweilige Gruppe:",
+    "Gesamtbevölkerung",
+    # "- Davon Unter-14-Jährige",
+    "- Davon Unter-4-Jährige",
+    "- Davon 5-bis-14-Jährige",
+    "- Davon 15-bis-34-Jährige",
+    "- Davon 35-bis-59-Jährige",
+    "- Davon 60-bis-79-Jährige",
+    "- Davon Über-80-Jährige",
+    "Neue hospitalisierte Fälle je 100.000 EW in 7 Tagen:",
+    "Gesamtbevölkerung",
+    "- Davon über 80-Jährige"#,
+    # "Regionen mit 7-TI bei Über-60-Jährigen:",
+    # "> 35",
+    # "> 50"#,
+    # "Regionen mit 7-TI bei Über-80-Jährigen:",
+    # "> 35",
+    # "> 50"
+  ),
+  Vorwoche=c(
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`R(t)`), 2),
+    NA,
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz`)),
+    # vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-4`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_5-14`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`),
+    vorwoche_letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`),
+    NA,
+    rki_hospinz %>% filter(Datum==maxdate-days(7) & Altersgruppe=="00+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`),
+    rki_hospinz %>% filter(Datum==maxdate-days(7) & Altersgruppe=="80+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`)#,
+    # NA,
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
+    # NA,
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate-7) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
+  ),
+  dieseWoche=c(
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`R(t)`), 2),
+    NA,
+    round(bundeslaender_table_faktenblatt %>% filter(Bundesland=="Gesamt" & Datum==maxdate) %>% pull(`7-Tage-Inzidenz`)),
+    # round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-4`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_5-14`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_15-34`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_35-59`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_60-79`)),
+    round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_80+`)),
+    NA,
+    rki_hospinz %>% filter(Datum==maxdate & Altersgruppe=="00+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`),
+    rki_hospinz %>% filter(Datum==maxdate & Altersgruppe=="80+" & Bundesland_Id=="00") %>% pull(`7T_Hospitalisierung_Inzidenz`)#,
+    # NA,
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>35, na.rm=TRUE)),
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 60+`))>50, na.rm=TRUE))#,
+    # NA,
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>35, na.rm=TRUE)),
+    # round(sum((kreise_table_faktenblatt %>% filter(Datum==maxdate) %>% pull(`7-Tage-Inzidenz 80+`))>50, na.rm=TRUE))
+  ),
+  Veraenderung=ifelse(is.na(Vorwoche), NA, paste0(format(round(100*(dieseWoche-Vorwoche)/Vorwoche, 1), decimal.mark = ","), " %"))
+)
+rwert7ti <- rwert7ti %>%
+  mutate(Vorwoche = replace(Vorwoche, c(1,11,12), format(as.numeric(unlist(rwert7ti[c(1,11,12), 2])), decimal.mark=",")),
+         dieseWoche = replace(dieseWoche, c(1,11,12), format(as.numeric(unlist(rwert7ti[c(1,11,12), 3])), decimal.mark=",")))  %>%
+  select(`R-Wert & 7-Tage-Inzidenz`, Vorwoche, !!paste0("KW ", isoweek(maxdate)):=dieseWoche, Veraenderung)
+
 
 library(openxlsx)
 list_of_datasets <- list(
