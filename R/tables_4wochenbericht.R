@@ -295,9 +295,11 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
 divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(daten_stand))
 # takes a while ...
 rki <- tbl(conn,"rki") %>% collect()
+
 # rki <- tbl(conn,"rki_archive") %>% filter(Datenstand=="2021-07-29") %>% collect()
 params <- tbl(conn,"params") %>% select(name, EW_insgesamt) %>% collect()
 strukturdaten <- tbl(conn,"strukturdaten") %>% collect()
+brd_timeseries <- tbl(conn,"brd_timeseries") %>% collect()
 rki <- rki %>%
   left_join(rki_mappings, by="IdLandkreis") %>% 
   mutate(Meldedatum=as_date(Meldedatum)) %>%
@@ -342,9 +344,13 @@ international <- tbl(conn,"trends") %>%
   left_join(., params, by=c("Country"="name"))
 kbv_rki_impfstoffe <- tbl(conn,"kbv_rki_impfstoffe_laender") %>% 
   collect()
+rki_impfstoffe <- tbl(conn,"rki_impfstoffe_laender") %>% 
+  collect()
+rki_altersgruppen <- tbl(conn,"rki_altersgruppen_kreise") %>% 
+  collect()
 
 # tables for excel
-maxdate <- max(bundeslaender_table_faktenblatt$Datum)
+maxdate <- floor_date(today(), "week") # immer sonntag
 # Regionale Daten
 regional_hospinzidenz <- rki_hospinz %>% 
   filter(Datum==maxdate & Altersgruppe=="00+") %>% 
@@ -1068,14 +1074,16 @@ hosp_ag_tabelle <- tibble(
          !!paste0("KW ", hosp_age_thisweek%%100), Veraenderung)
 
 
-vaccmaxdate <- max(vacc_zahlen$date)
+vaccmaxdate <- max(kbv_rki_impfstoffe$vacc_date) # max(vacc_zahlen$date)
 vorvaccmaxdate <- vaccmaxdate-7
 # vacc_brd <- vacc_alle_faktenblatt %>% filter(geo=="Deutschland")
-vacc_brd <- vacc_zahlen %>% filter(region=="DE" & date==vaccmaxdate) %>% 
-  pivot_wider(names_from = metric, values_from = value)
-vacc_brd_vorwoche <- vacc_zahlen %>% 
-  filter(region=="DE" & date==vorvaccmaxdate) %>% # -days(1)
-  pivot_wider(names_from = metric, values_from = value)
+vacc_brd <- rki_impfstoffe %>% filter(vacc_date<=vaccmaxdate)
+# vacc_brd <- vacc_zahlen %>% filter(region=="DE" & date==vaccmaxdate) %>% 
+#   pivot_wider(names_from = metric, values_from = value)
+vacc_brd_vorwoche <- rki_impfstoffe %>% filter(vacc_date<=vorvaccmaxdate)
+# vacc_brd_vorwoche <- vacc_zahlen %>% 
+#   filter(region=="DE" & date==vorvaccmaxdate) %>% # -days(1)
+#   pivot_wider(names_from = metric, values_from = value)
 # Geimpfte Personen
 geimpfte_gesamt <- tibble(
   "Geimpfte Personen"=c(
@@ -1088,52 +1096,40 @@ geimpfte_gesamt <- tibble(
   ),
   Vorwoche=c(
     NA,
-    vacc_brd_vorwoche$personen_min1_kumulativ,
-    vacc_brd_vorwoche$personen_min1_kumulativ - 
-      vacc_brd_vorwoche$personen_voll_kumulativ,
-    vacc_brd_vorwoche$personen_voll_kumulativ,
-    vacc_brd_vorwoche$personen_auffr_kumulativ,
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vorvaccmaxdate) %>%
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen))
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)) - 
+      sum(vacc_brd_vorwoche %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==3) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==4) %>% pull(anzahl_alleorte))
   ),
   VorwocheAnteil=c(
     NA,
-    (vacc_brd_vorwoche$personen_min1_kumulativ)/83166711*100,
-    (vacc_brd_vorwoche$personen_min1_kumulativ - 
-       vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100,
-    (vacc_brd_vorwoche$personen_voll_kumulativ)/83166711*100,
-    (vacc_brd_vorwoche$personen_auffr_kumulativ)/83166711*100,
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vorvaccmaxdate) %>%
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen))/83166711*100
-  ),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)) - 
+      sum(vacc_brd_vorwoche %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==3) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd_vorwoche %>% filter(vacc_series==4) %>% pull(anzahl_alleorte))
+  )/83166711*100,
   dieseWoche=c(
     NA,
-    vacc_brd$personen_min1_kumulativ,
-    vacc_brd$personen_min1_kumulativ - 
-      vacc_brd$personen_voll_kumulativ,
-    vacc_brd$personen_voll_kumulativ,
-    vacc_brd$personen_auffr_kumulativ,
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vaccmaxdate) %>%
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen))
+    sum(vacc_brd %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)) - 
+      sum(vacc_brd %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==3) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==4) %>% pull(anzahl_alleorte))
   ),
   dieseWocheAnteil=c(
     NA,
-    (vacc_brd$personen_min1_kumulativ)/83166711*100,
-    (vacc_brd$personen_min1_kumulativ - 
-       vacc_brd$personen_voll_kumulativ)/83166711*100,
-    (vacc_brd$personen_voll_kumulativ)/83166711*100,
-    (vacc_brd$personen_auffr_kumulativ)/83166711*100,
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vaccmaxdate) %>%
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen))/83166711*100
-  )
+    sum(vacc_brd %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==1) %>% pull(anzahl_alleorte)) - 
+      sum(vacc_brd %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==2) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==3) %>% pull(anzahl_alleorte)),
+    sum(vacc_brd %>% filter(vacc_series==4) %>% pull(anzahl_alleorte))
+  )/83166711*100
 ) %>%
   mutate(Vorwoche=ifelse(is.na(Vorwoche), 
                          NA,
@@ -1224,32 +1220,122 @@ fortschritt_table <- tibble(
          Veraenderung)
 
 # Regionale Daten
-bl_impfungen <- vacc_table_faktenblatt %>%
-  select(Bundesland, 
-         `Gesamt min. 1x`,
-         `Gesamt vollst.`,
-         `Gesamt Auffr.`,
-         `7-Tage-Inzidenz`,
-         `7-Tage-Inzidenz 60+`) %>% 
-  left_join(impfen_praxen_bl %>%
-              filter(KW==impfkw%%100 & Jahr==floor(impfkw/100)) %>% 
-              select(Bundesland, Impfungen), by="Bundesland") %>% 
-  select("Bundesland", "Impfungen Praxen"=Impfungen,
-         `Gesamt min. 1x`,
-         `Gesamt vollst.`,
-         `Gesamt Auffr.`,
-         `7-Tage-Inzidenz`,
-         `7-Tage-Inzidenz 60+`)
+bl_impfungen_ohneinzidenz <- bind_rows(
+  kbv_rki_impfstoffe %>% 
+    summarise(Bundesland="Gesamt",
+              id=0,
+              `Impfungen Praxen`=sum(anzahl_praxen[vacc_date>maxdate-days(7) &
+                                                     vacc_date<=maxdate], 
+                                     na.rm=TRUE),
+              `Gesamt min. 1x`=sum(anzahl_alleorte[vacc_series==1], na.rm=TRUE),
+              `Gesamt vollst.`=sum(anzahl_alleorte[vacc_series==2], na.rm=TRUE),
+              `Gesamt Auffr.`=sum(anzahl_alleorte[vacc_series==3], na.rm=TRUE)),
+  kbv_rki_impfstoffe %>% 
+    filter(!Bundesland%in%c("Bundesressorts", "unbekannt")) %>% 
+    group_by(Bundesland) %>% 
+    summarise(id=BundeslandId_Impfort[1],
+              `Impfungen Praxen`=sum(anzahl_praxen[vacc_date>maxdate-days(7) &
+                                                     vacc_date<=maxdate], 
+                                     na.rm=TRUE),
+              `Gesamt min. 1x`=sum(anzahl_alleorte[vacc_series==1], na.rm=TRUE),
+              `Gesamt vollst.`=sum(anzahl_alleorte[vacc_series==2], na.rm=TRUE),
+              `Gesamt Auffr.`=sum(anzahl_alleorte[vacc_series==3], na.rm=TRUE)) %>% 
+    arrange(Bundesland)
+) %>% 
+  left_join(params, by=c("Bundesland"="name")) %>% 
+  mutate(across(contains("Gesamt "), ~ format(round(100*.x/EW_insgesamt, 
+                                                    1),
+                                              decimal.mark=","))) %>% 
+  select(-EW_insgesamt)
 
-hersteller_brd <- vacc_zahlen %>%
-  filter(date==vaccmaxdate & region=="DE")
-hersteller_brd_vorwoche <- vacc_zahlen %>%
-  filter(date==vaccmaxdate-7 & region=="DE")
+rki_alter_destatis_kreise <- rki %>% lazy_dt() %>%
+  group_by(Meldedatum, Altersgruppe, IdLandkreis) %>% # this takes long unfortunately... but much faster with dtplyr!
+  summarise(AnzahlFall=sum(AnzahlFall,na.rm = T),
+            AnzahlTodesfall=sum(AnzahlTodesfall,na.rm=T), .groups="drop") %>% 
+  collect() %>%
+  filter(Altersgruppe!="unbekannt") %>%
+  mutate(id=as.integer(IdLandkreis)*1000) %>%
+  filter(!is.na(id)) %>%
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A"),
+         Altersgruppe=ifelse(Altersgruppe %in% c("00-04", "05-14"),
+                             "0-15", Altersgruppe)) %>%
+  group_by(Meldedatum,Altersgruppe, id) %>% 
+  summarise("Fälle"=sum(AnzahlFall , na.rm = T),
+            "Todesfälle"=sum(AnzahlTodesfall, na.rm=T), .groups="drop") %>% 
+  pivot_wider(id_cols = c(Meldedatum, id),
+              names_from = Altersgruppe,
+              values_from = c("Fälle","Todesfälle"),
+              values_fill = list("Fälle"=0, "Todesfälle"=0)) %>% ungroup() %>%
+  mutate(Meldedatum=lubridate::as_date(Meldedatum), blid=floor(id/1000000),
+         `Fälle_60+`=`Fälle_60-79`+`Fälle_80+`) %>%
+  right_join(.,
+             expand_grid(Meldedatum=seq(min(.$Meldedatum), max(.$Meldedatum), by="days"),
+                         id=unique(.$id)),
+             by=c("Meldedatum", "id")) %>%
+  replace(is.na(.), 0) %>%
+  group_by(id) %>%
+  arrange(Meldedatum) %>%
+  mutate(cases059=cumsum(`Fälle_0-15`+`Fälle_15-34`+`Fälle_35-59`),
+         cases6079=cumsum(`Fälle_60-79`),
+         cases80=cumsum(`Fälle_80+`),
+         cases60=cumsum(`Fälle_60+`)) %>%
+  ungroup() %>%
+  mutate(blid=floor(id/1000000),
+         `Fälle`=`Fälle_0-15`+`Fälle_15-34`+`Fälle_35-59`+`Fälle_60+`) %>%
+  as_tibble()
+rki_alter_destatis <- bind_rows(rki_alter_destatis_kreise %>% # bundeslaender
+                                  group_by(Meldedatum, blid) %>%
+                                  summarise(cases059=sum(cases059),
+                                            cases6079=sum(cases6079),
+                                            cases80=sum(cases80),
+                                            cases60=sum(cases60),
+                                            `Fälle`=sum(`Fälle`),
+                                            `Fälle_60+`=sum(`Fälle_60+`),
+                                            .groups="drop") %>%
+                                  mutate(id=blid),
+                                rki_alter_destatis_kreise %>% # bund gesamt
+                                  group_by(Meldedatum) %>%
+                                  summarise(cases059=sum(cases059),
+                                            cases6079=sum(cases6079),
+                                            cases80=sum(cases80),
+                                            cases60=sum(cases60),
+                                            `Fälle`=sum(`Fälle`),
+                                            `Fälle_60+`=sum(`Fälle_60+`),
+                                            .groups="drop") %>%
+                                  mutate(id=0, blid=0))
+bl_inzidenz <- rki_alter_destatis %>%
+  mutate(date=date(Meldedatum)) %>%
+  group_by(id) %>% arrange(id, -as.numeric(date)) %>%
+  summarise(`Faelle_letzte_7_Tage`=zoo::rollsum(`Fälle`, 7),
+            `Faelle_letzte_7_Tage_60+`=zoo::rollsum(`Fälle_60+`, 7),
+            date=zoo::rollmax(date, 7),
+            .groups="drop") %>%
+  left_join(., kreise_regstat_alter, by=c("id")) %>%
+  mutate(`Faelle_letzte_7_Tage_je100TsdEinw`=round(`Faelle_letzte_7_Tage`/((ag_1+ag_2+ag_3+ag_4+ag_5+ag_6)/100000)),
+         `Faelle_letzte_7_Tage_je100TsdEinw_60+`=round(`Faelle_letzte_7_Tage_60+`/((ag_5+ag_6)/100000))) %>%
+  left_join(., rki_alter_destatis %>% select(cases059, cases6079, cases80, 
+                                             id, Meldedatum), 
+            by=c("id"="id", "date"="Meldedatum")) %>%
+  mutate(EW059=ag_1+ag_2+ag_3+ag_4,
+         EW6079=ag_5,
+         EW80=ag_6,
+         EW_insgesamt=EW059+EW6079+EW80) %>% 
+  filter(id<=16 & date==maxdate) %>% 
+  select(id,
+         `7-Tage-Inzidenz`=Faelle_letzte_7_Tage_je100TsdEinw,
+         `7-Tage-Inzidenz 60+`=`Faelle_letzte_7_Tage_je100TsdEinw_60+`)
+
+bl_impfungen <- bl_impfungen_ohneinzidenz %>% 
+  left_join(bl_inzidenz, by="id") %>% 
+  select(-id)
+
+hersteller_brd <- vacc_brd
+hersteller_brd_vorwoche <- vacc_brd_vorwoche
 geliefert <- impfdashboardde %>% 
   group_by(impfstoff) %>% 
   summarise(dosen_geliefert=sum(dosen))
 geliefert_vorwoche <- impfdashboardde %>% 
-  filter(date<=today()-7) %>% 
+  filter(date<=today()-14) %>% 
   group_by(impfstoff) %>% 
   summarise(dosen_geliefert=sum(dosen))
 
@@ -1272,10 +1358,11 @@ hersteller_table <- tibble(
     "Erstimpfungen",
     "Zweitimpfungen",
     "Booster",
+    "2. Booster",
     "geliefert",
     "Johnson&Johnson",
-    "Einzeldosis",
-    # "Zweitimpfungen",
+    "Erstimpfungen",
+    "Zweitimpfungen",
     "Booster",
     "2. Booster",
     "geliefert",
@@ -1283,133 +1370,173 @@ hersteller_table <- tibble(
     "Erstimpfungen",
     "Zweitimpfungen",
     "Booster",
-    # "2. Booster",
+    "2. Booster",
     "geliefert"
   ),
   "Vorwoche"=c(
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value) +
-      sum(kbv_rki_impfstoffe %>% 
-            filter(vacc_date<=vorvaccmaxdate) %>%
-            filter(Impfstoff=="Comirnaty") %>% 
-            filter(vacc_series==4) %>% 
-            pull(anzahl_praxen)),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_biontech_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_biontech_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_biontech_kumulativ") %>% pull(value),
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vorvaccmaxdate) %>%
-          filter(Impfstoff=="Comirnaty") %>% 
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Comirnaty") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert_vorwoche %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value) +
-      sum(kbv_rki_impfstoffe %>% 
-            filter(vacc_date<=vorvaccmaxdate) %>%
-            filter(Impfstoff=="Moderna") %>% 
-            filter(vacc_series==4) %>% 
-            pull(anzahl_praxen)),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_moderna_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_moderna_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_moderna_kumulativ") %>% pull(value),
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vorvaccmaxdate) %>%
-          filter(Impfstoff=="Moderna") %>% 
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Moderna") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert_vorwoche %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_astrazeneca_kumulativ") %>% pull(value),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="AstraZeneca") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert_vorwoche %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value) +
-      sum(kbv_rki_impfstoffe %>% 
-            filter(vacc_date<=vorvaccmaxdate) %>%
-            filter(Impfstoff=="Janssen") %>% 
-            filter(vacc_series==4) %>% 
-            pull(anzahl_praxen)),
-    # NA,
-    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_janssen_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_janssen_kumulativ") %>% pull(value),
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vorvaccmaxdate) %>%
-          filter(Impfstoff=="Janssen") %>% 
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Janssen") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert_vorwoche %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert),
-    hersteller_brd_vorwoche %>% filter(metric=="dosen_novavax_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_erst_novavax_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_voll_novavax_kumulativ") %>% pull(value),
-    hersteller_brd_vorwoche %>% filter(metric=="personen_auffr_novavax_kumulativ") %>% pull(value),
-    # sum(kbv_rki_impfstoffe %>% 
-    #       filter(vacc_date<=vorvaccmaxdate) %>%
-    #       filter(Impfstoff=="Novavax") %>% 
-    #       filter(vacc_series==4) %>% 
-    #       pull(anzahl_praxen)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Novavax") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert_vorwoche %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
   ),
   "dieseWoche"=c(
-    hersteller_brd %>% filter(metric=="dosen_biontech_kumulativ") %>% pull(value) +
-      sum(kbv_rki_impfstoffe %>% 
-            filter(vacc_date<=vaccmaxdate) %>%
-            filter(Impfstoff=="Comirnaty") %>% 
-            filter(vacc_series==4) %>% 
-            pull(anzahl_praxen)),
-    hersteller_brd %>% filter(metric=="personen_erst_biontech_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_voll_biontech_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_auffr_biontech_kumulativ") %>% pull(value),
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vaccmaxdate) %>%
-          filter(Impfstoff=="Comirnaty") %>% 
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Comirnaty") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Comirnaty" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
-    hersteller_brd %>% filter(metric=="dosen_moderna_kumulativ") %>% pull(value) +
-      sum(kbv_rki_impfstoffe %>% 
-            filter(vacc_date<=vaccmaxdate) %>%
-            filter(Impfstoff=="Moderna") %>% 
-            filter(vacc_series==4) %>% 
-            pull(anzahl_praxen)),
-    hersteller_brd %>% filter(metric=="personen_erst_moderna_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_voll_moderna_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_auffr_moderna_kumulativ") %>% pull(value),
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vaccmaxdate) %>%
-          filter(Impfstoff=="Moderna") %>% 
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Moderna") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Moderna" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
-    hersteller_brd %>% filter(metric=="dosen_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_erst_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_voll_astrazeneca_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_auffr_astrazeneca_kumulativ") %>% pull(value),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="AstraZeneca") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="AstraZeneca" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
-    hersteller_brd %>% filter(metric=="dosen_janssen_kumulativ") %>% pull(value) +
-      sum(kbv_rki_impfstoffe %>% 
-            filter(vacc_date<=vaccmaxdate) %>%
-            filter(Impfstoff=="Janssen") %>% 
-            filter(vacc_series==4) %>% 
-            pull(anzahl_praxen)),
-    # NA,
-    hersteller_brd %>% filter(metric=="personen_voll_janssen_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_auffr_janssen_kumulativ") %>% pull(value),
-    sum(kbv_rki_impfstoffe %>% 
-          filter(vacc_date<=vaccmaxdate) %>%
-          filter(Impfstoff=="Janssen") %>% 
-          filter(vacc_series==4) %>% 
-          pull(anzahl_praxen)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Janssen") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Janssen" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert),
-    hersteller_brd %>% filter(metric=="dosen_novavax_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_erst_novavax_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_voll_novavax_kumulativ") %>% pull(value),
-    hersteller_brd %>% filter(metric=="personen_auffr_novavax_kumulativ") %>% pull(value),
-    # sum(kbv_rki_impfstoffe %>% 
-    #       filter(vacc_date<=vaccmaxdate) %>%
-    #       filter(Impfstoff=="Novavax") %>% 
-    #       filter(vacc_series==4) %>% 
-    #       pull(anzahl_praxen)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Novavax") %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==1) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==2) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==3) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
+          filter(Impfstoff=="Novavax" & vacc_series==4) %>%
+          pull(anzahl_alleorte)),
     geliefert %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
-  )
+  ),
 ) %>%
   mutate(anteil_vorwoche=paste0(" (", 
                        format(round(100*Vorwoche/(Vorwoche[1]+Vorwoche[7]+Vorwoche[13]+Vorwoche[18]+Vorwoche[23]), 
@@ -1430,8 +1557,6 @@ hersteller_table <- tibble(
     paste0(dieseWoche, anteil),
     dieseWoche)) %>%
   select(-anteil, -anteil_vorwoche)
-
-
 
 library(openxlsx)
 list_of_datasets <- list(
