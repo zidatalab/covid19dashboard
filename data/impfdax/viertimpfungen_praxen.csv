@@ -2578,7 +2578,7 @@ vacc_date,Bundesland,viert_praxen
 2022-05-02,Hamburg,537
 2022-05-02,Hessen,1815
 2022-05-02,Mecklenburg-Vorpommern,839
-2022-05-02,Niedersachsen,2845
+2022-05-02,Niedersachsen,NA
 2022-05-02,Nordrhein-Westfalen,10511
 2022-05-02,Rheinland-Pfalz,NA
 2022-05-02,Saarland,225
@@ -2606,10 +2606,11 @@ vacc_date,Bundesland,viert_praxen
 2022-05-03,Thüringen,689
 2022-05-03,unbekannt,50
 2022-05-04,Baden-Württemberg,5319
-2022-05-04,Bayern,4936
+2022-05-04,Bayern,NA
 2022-05-04,Berlin,2601
 2022-05-04,Brandenburg,1615
-2022-05-04,Bremen,553
+2022-05-04,Bremen,NA
+2022-05-04,Bundesressorts,NA
 2022-05-04,Hamburg,1719
 2022-05-04,Hessen,5730
 2022-05-04,Mecklenburg-Vorpommern,2049
