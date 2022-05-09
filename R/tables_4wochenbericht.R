@@ -1242,7 +1242,7 @@ bl_inzidenz <- rki_alter_destatis %>%
 
 bl_impfungen <- bl_impfungen_ohneinzidenz %>% 
   left_join(bl_inzidenz, by="id") %>% 
-  select(-id)
+  select(-id, -cases, -R0)
 
 hersteller_brd <- vacc_brd
 hersteller_brd_vorwoche <- vacc_brd_vorwoche

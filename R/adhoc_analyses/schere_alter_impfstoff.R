@@ -52,7 +52,7 @@ kbv_ageimpfstoff <- kbv_impfstoff %>%
   # left_join(rki_mappings, by=c("Kreis2016"="IdLandkreis")) %>% 
   group_by(Bundesland, vacc_series) %>% 
   summarise(anzahlpraxen_is=sum(anzahl)) %>% 
-  left_join(kbv_age %>% 
+  full_join(kbv_age %>% 
               left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
               # left_join(rki_mappings, by=c("Kreis2016"="IdLandkreis")) %>% 
               group_by(Bundesland, vacc_series) %>% 
@@ -67,7 +67,7 @@ kbv_ageimpfstoff_sh <- kbv_impfstoff %>%
   filter(Bundesland=="Schleswig-Holstein") %>% 
   group_by(Bundesland, vacc_series, vacc_date) %>% 
   summarise(anzahlpraxen_is=sum(anzahl)) %>% 
-  left_join(kbv_age %>% 
+  full_join(kbv_age %>% 
               left_join(kreise_plz, by=c("arzt_plz"="PLZ")) %>% 
               filter(Bundesland=="Schleswig-Holstein") %>% 
               group_by(Bundesland, vacc_series, vacc_date) %>% 
