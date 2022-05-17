@@ -22,24 +22,43 @@ impfungen_tc <- read.xlsx("https://ziwebstorage.blob.core.windows.net/publicdata
          "Gesamt-Gesamt"=
            `Erst-Gesamt`+`Zweit-Gesamt`+`Dritt-Gesamt`+`Viert-Gesamt`)
 
-table_pk <- impfungen_tc %>% 
-  summarise(across(`Erst-Praxen`:`Gesamt-Gesamt`, sum)) %>% 
-  pivot_longer(cols = everything(),
-               names_to = c("Impfserie", ".value"),
-               names_pattern="(.*)-(.*)") %>% 
-  mutate(`Anteil Praxen`=paste0(round(100*`Praxen`/`Gesamt`), "%")) %>% 
+kbv_rki_altersgruppen <- tbl(conn,"kbv_rki_altersgruppen_kreise") %>% 
+  collect()
+
+impfungen_tc <- kbv_rki_altersgruppen %>% 
+  mutate(vacc_series=case_when(
+    vacc_series==1 ~ "Erst",
+    vacc_series==2 ~ "Zweit",
+    vacc_series==3 ~ "Dritt",
+    vacc_series==4 ~ "Viert",
+    TRUE ~ "error"
+  )) %>% 
+  group_by(vacc_date, vacc_series) %>% 
+  summarise(Praxen=sum(anzahl_praxen, na.rm=TRUE),
+            Gesamt=sum(anzahl_alleorte, na.rm=TRUE),
+            .groups="drop") %>% 
+  pivot_wider(id_cols = "vacc_date",
+              names_from = "vacc_series",
+              values_from = c("Praxen", "Gesamt"),
+              names_sep="-")
+
+table_pk <- bind_rows(
+  impfungen_tc %>% 
+    summarise(across(`Praxen-Erst`:`Gesamt-Viert`, sum, na.rm=TRUE)) %>% 
+    pivot_longer(cols = everything(),
+                 names_to = c(".value", "Impfserie"),
+                 names_pattern="(.*)-(.*)"),
+  impfungen_tc %>% 
+    summarise(across(`Praxen-Erst`:`Gesamt-Viert`, sum, na.rm=TRUE)) %>% 
+    pivot_longer(cols = everything(),
+                 names_to = c(".value", "Impfserie"),
+                 names_pattern="(.*)-(.*)") %>% 
+    summarise(Impfserie="Gesamt",
+              Praxen=sum(Praxen),
+              Gesamt=sum(Gesamt))) %>% 
+  mutate(`Anteil Praxen`=paste0(round(100*`Praxen`/`Gesamt`, 1), "%")) %>% 
   mutate(Praxen=format(Praxen, big.mark="."),
-         Gesamt=format(Gesamt, big.mark=".")) %>% 
-  mutate(Gesamt=ifelse(Impfserie=="Viert", "unbekannt", Gesamt)) %>% 
-  mutate(`Anteil Praxen`=ifelse(Impfserie=="Viert", "unbekannt", `Anteil Praxen`))
-
-anteil_viert <- impfungen_tc %>% 
-  filter(Datum>="2022-02-10") %>% 
-  summarise(across(contains("Praxen"), sum))
-
-for (i in 1:4) {
-  cat(anteil_viert[1, i]/anteil_viert[1, 5], "\n")
-}
+         Gesamt=format(Gesamt, big.mark="."))
 
 kbv_impfstoff <- tbl(conn,"kbv_impfstoff_kreise") %>% 
   collect()
