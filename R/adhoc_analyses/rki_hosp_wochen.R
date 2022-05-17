@@ -313,3 +313,115 @@ qberlin <- rki %>%
             .groups = "drop") %>% 
   filter(!(Jahr==2022&Quartal==2))
 write_csv(qberlin, "data/anzahlcovidfaelle_berlin.csv")
+
+# nur brandenburg
+mytree_brandenburg <- rpart(Anteil_Hosp_an_Faelle ~ Meldedatum + Altersgruppe, 
+                       data=full_data %>% 
+                         filter( Bundesland_Id==12 &
+                                   Altersgruppe!="alle" &
+                                   Meldedatum!=as_date(0) & 
+                                   Meldedatum<="2022-03-31") %>% 
+                         mutate(Anteil_Hosp_an_Faelle=pmin(1, Anteil_Hosp_an_Faelle)),
+                       control=rpart.control(xval=10, cp=0.008))
+plotdata_ag_hospquote_brandenburg <- full_data %>% 
+  filter(Bundesland_Id==12 & 
+           Altersgruppe!="alle" &
+           Meldedatum!=as_date(0) & 
+           Meldedatum<="2022-03-31") %>% 
+  mutate(treepred=predict(mytree, data.frame(Meldedatum=Meldedatum,
+                                             Altersgruppe=Altersgruppe)))
+
+ggplot(plotdata_ag_hospquote_brandenburg,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+savedata_anteil_hosp_brandenburg <- plotdata_ag_hospquote_brandenburg %>% 
+  bind_rows(plotdata_ag_hospquote_brandenburg %>% 
+              group_by(Meldedatum) %>% 
+              summarise(Anteil_Hosp_an_Faelle=sum(Anteil_Hosp_an_Faelle*Bev)/sum(Bev),
+                        treepred=sum(treepred*Bev)/sum(Bev),
+                        across(c(Hospitalisierung_Faelle:Bev), sum),
+                        Bundesland_Id=0,
+                        Altersgruppe="alle",
+                        Bundesland="Gesamt",
+                        Hosp_Inzidenz_100TEW=round(Hospitalisierung_Faelle/Bev*100000, 1)
+              ))
+
+ggplot(savedata_anteil_hosp_brandenburg,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+write_csv(savedata_anteil_hosp_brandenburg, "data/tree_prediction_hospquoten_brandenburg.csv")
+
+# quartale brandenburg
+qbrandenburg <- rki %>% 
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")) %>% 
+  mutate(Bundesland_Id=floor(IdLandkreis/1000),
+         Meldedatum=as_date(Meldedatum),
+         wtag=lubridate::wday(Meldedatum, week_start = 1),
+         Quartal=quarter(Meldedatum),
+         Jahr=year(Meldedatum)) %>% 
+  filter(Bundesland_Id==12) %>% 
+  group_by(Altersgruppe, Jahr, Quartal) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall[NeuerFall>=0], na.rm=TRUE),
+            .groups = "drop") %>% 
+  filter(!(Jahr==2022&Quartal==2))
+write_csv(qbrandenburg, "data/anzahlcovidfaelle_brandenburg.csv")
+
+# nur bayern
+mytree_bayern <- rpart(Anteil_Hosp_an_Faelle ~ Meldedatum + Altersgruppe, 
+                       data=full_data %>% 
+                         filter( Bundesland_Id==9 &
+                                   Altersgruppe!="alle" &
+                                   Meldedatum!=as_date(0) & 
+                                   Meldedatum<="2022-03-31") %>% 
+                         mutate(Anteil_Hosp_an_Faelle=pmin(1, Anteil_Hosp_an_Faelle)),
+                       control=rpart.control(xval=10, cp=0.008))
+plotdata_ag_hospquote_bayern <- full_data %>% 
+  filter(Bundesland_Id==9 & 
+           Altersgruppe!="alle" &
+           Meldedatum!=as_date(0) & 
+           Meldedatum<="2022-03-31") %>% 
+  mutate(treepred=predict(mytree, data.frame(Meldedatum=Meldedatum,
+                                             Altersgruppe=Altersgruppe)))
+
+ggplot(plotdata_ag_hospquote_bayern,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+savedata_anteil_hosp_bayern <- plotdata_ag_hospquote_bayern %>% 
+  bind_rows(plotdata_ag_hospquote_bayern %>% 
+              group_by(Meldedatum) %>% 
+              summarise(Anteil_Hosp_an_Faelle=sum(Anteil_Hosp_an_Faelle*Bev)/sum(Bev),
+                        treepred=sum(treepred*Bev)/sum(Bev),
+                        across(c(Hospitalisierung_Faelle:Bev), sum),
+                        Bundesland_Id=0,
+                        Altersgruppe="alle",
+                        Bundesland="Gesamt",
+                        Hosp_Inzidenz_100TEW=round(Hospitalisierung_Faelle/Bev*100000, 1)
+              ))
+
+ggplot(savedata_anteil_hosp_bayern,
+       aes(x=Meldedatum, y=Anteil_Hosp_an_Faelle, col=Altersgruppe)) +
+  geom_line(alpha=0.5) +
+  geom_line(aes(y=treepred))
+
+write_csv(savedata_anteil_hosp_bayern, "data/tree_prediction_hospquoten_bayern.csv")
+
+# quartale bayern
+qbayern <- rki %>% 
+  mutate(Altersgruppe=str_remove_all(Altersgruppe,"A")) %>% 
+  mutate(Bundesland_Id=floor(IdLandkreis/1000),
+         Meldedatum=as_date(Meldedatum),
+         wtag=lubridate::wday(Meldedatum, week_start = 1),
+         Quartal=quarter(Meldedatum),
+         Jahr=year(Meldedatum)) %>% 
+  filter(Bundesland_Id==9) %>% 
+  group_by(Altersgruppe, Jahr, Quartal) %>% 
+  summarise(AnzahlFall=sum(AnzahlFall[NeuerFall>=0], na.rm=TRUE),
+            .groups = "drop") %>% 
+  filter(!(Jahr==2022&Quartal==2))
+write_csv(qbayern, "data/anzahlcovidfaelle_bayern.csv")
