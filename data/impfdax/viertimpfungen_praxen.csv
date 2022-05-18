@@ -2736,7 +2736,7 @@ vacc_date,Bundesland,viert_praxen
 2022-05-11,Hessen,4838
 2022-05-11,Mecklenburg-Vorpommern,1699
 2022-05-11,Niedersachsen,7231
-2022-05-11,Nordrhein-Westfalen,16899
+2022-05-11,Nordrhein-Westfalen,NA
 2022-05-11,Rheinland-Pfalz,3364
 2022-05-11,Saarland,631
 2022-05-11,Sachsen,1343
@@ -2833,6 +2833,7 @@ vacc_date,Bundesland,viert_praxen
 2022-05-17,Berlin,1520
 2022-05-17,Brandenburg,1172
 2022-05-17,Bremen,382
+2022-05-17,Bundesressorts,NA
 2022-05-17,Hamburg,936
 2022-05-17,Hessen,3301
 2022-05-17,Mecklenburg-Vorpommern,1125
