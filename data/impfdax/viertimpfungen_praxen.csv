@@ -2507,7 +2507,7 @@ vacc_date,Bundesland,viert_praxen
 2022-04-27,Sachsen,1847
 2022-04-27,Sachsen-Anhalt,NA
 2022-04-27,Schleswig-Holstein,NA
-2022-04-27,Thüringen,904
+2022-04-27,Thüringen,NA
 2022-04-27,unbekannt,98
 2022-04-28,Baden-Württemberg,NA
 2022-04-28,Bayern,NA
@@ -2811,6 +2811,7 @@ vacc_date,Bundesland,viert_praxen
 2022-05-15,Sachsen,41
 2022-05-15,Sachsen-Anhalt,1
 2022-05-15,Schleswig-Holstein,57
+2022-05-15,Thüringen,NA
 2022-05-16,Baden-Württemberg,1583
 2022-05-16,Bayern,NA
 2022-05-16,Berlin,986
@@ -2854,7 +2855,7 @@ vacc_date,Bundesland,viert_praxen
 2022-05-18,Bremen,345
 2022-05-18,Bundesressorts,NA
 2022-05-18,Hamburg,1098
-2022-05-18,Hessen,4166
+2022-05-18,Hessen,NA
 2022-05-18,Mecklenburg-Vorpommern,1305
 2022-05-18,Niedersachsen,6215
 2022-05-18,Nordrhein-Westfalen,NA
@@ -2866,16 +2867,17 @@ vacc_date,Bundesland,viert_praxen
 2022-05-18,Thüringen,493
 2022-05-18,unbekannt,21
 2022-05-19,Baden-Württemberg,4939
-2022-05-19,Bayern,4892
+2022-05-19,Bayern,NA
 2022-05-19,Berlin,1830
 2022-05-19,Brandenburg,1334
 2022-05-19,Bremen,404
+2022-05-19,Bundesressorts,NA
 2022-05-19,Hamburg,1243
 2022-05-19,Hessen,3877
 2022-05-19,Mecklenburg-Vorpommern,1587
 2022-05-19,Niedersachsen,5870
 2022-05-19,Nordrhein-Westfalen,15385
-2022-05-19,Rheinland-Pfalz,2703
+2022-05-19,Rheinland-Pfalz,NA
 2022-05-19,Saarland,470
 2022-05-19,Sachsen,1337
 2022-05-19,Sachsen-Anhalt,1160
