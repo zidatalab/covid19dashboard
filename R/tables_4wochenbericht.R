@@ -1551,7 +1551,7 @@ rwert7ti <- tibble(
   ),
   dieseWoche=c(
     round(Nowcasting_Zahlen %>% 
-            filter(Datum==maxdate) %>% pull(PS_7_Tage_R_Wert), 2),
+            filter(Datum==maxdate-1) %>% pull(PS_7_Tage_R_Wert), 2),
     NA,
     round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw`)),
     # round(letzte_7_tage_altersgruppen_bund %>% pull(`Faelle_letzte_7_Tage_je100TsdEinw_0-14`)),
