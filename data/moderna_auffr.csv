@@ -27,6 +27,7 @@ Baden-Württemberg,23,2022,202223,756,1461
 Baden-Württemberg,24,2021,202124,0,28
 Baden-Württemberg,24,2022,202224,501,1167
 Baden-Württemberg,25,2021,202125,0,5
+Baden-Württemberg,25,2022,202225,89,0
 Baden-Württemberg,26,2021,202126,0,6
 Baden-Württemberg,27,2021,202127,0,11
 Baden-Württemberg,28,2021,202128,0,12
@@ -82,6 +83,7 @@ Bayern,23,2022,202223,370,1638
 Bayern,24,2021,202124,0,51
 Bayern,24,2022,202224,192,1981
 Bayern,25,2021,202125,0,26
+Bayern,25,2022,202225,65,0
 Bayern,26,2021,202126,0,20
 Bayern,27,2021,202127,0,23
 Bayern,28,2021,202128,0,12
@@ -135,6 +137,7 @@ Berlin,23,2021,202123,0,1
 Berlin,23,2022,202223,640,838
 Berlin,24,2022,202224,800,1166
 Berlin,25,2021,202125,0,1
+Berlin,25,2022,202225,51,0
 Berlin,26,2021,202126,0,4
 Berlin,27,2021,202127,0,1
 Berlin,28,2021,202128,0,1
@@ -189,6 +192,7 @@ Brandenburg,23,2022,202223,253,288
 Brandenburg,24,2021,202124,0,1
 Brandenburg,24,2022,202224,454,497
 Brandenburg,25,2021,202125,0,3
+Brandenburg,25,2022,202225,9,0
 Brandenburg,26,2021,202126,0,2
 Brandenburg,27,2021,202127,0,1
 Brandenburg,28,2021,202128,0,1
@@ -330,6 +334,7 @@ Hamburg,22,2022,202222,596,792
 Hamburg,23,2022,202223,333,448
 Hamburg,24,2021,202124,0,1
 Hamburg,24,2022,202224,770,911
+Hamburg,25,2022,202225,24,0
 Hamburg,26,2021,202126,0,1
 Hamburg,28,2021,202128,0,2
 Hamburg,29,2021,202129,0,1
@@ -382,6 +387,7 @@ Hessen,23,2022,202223,643,1331
 Hessen,24,2021,202124,0,8
 Hessen,24,2022,202224,662,1409
 Hessen,25,2021,202125,0,5
+Hessen,25,2022,202225,20,0
 Hessen,26,2021,202126,0,2
 Hessen,27,2021,202127,0,21
 Hessen,28,2021,202128,0,6
@@ -435,6 +441,7 @@ Mecklenburg-Vorpommern,22,2022,202222,202,342
 Mecklenburg-Vorpommern,23,2022,202223,120,214
 Mecklenburg-Vorpommern,24,2021,202124,0,2
 Mecklenburg-Vorpommern,24,2022,202224,250,523
+Mecklenburg-Vorpommern,25,2022,202225,25,0
 Mecklenburg-Vorpommern,28,2021,202128,0,1
 Mecklenburg-Vorpommern,33,2021,202133,0,36
 Mecklenburg-Vorpommern,34,2021,202134,0,1
@@ -484,6 +491,7 @@ Niedersachsen,23,2022,202223,1335,2958
 Niedersachsen,24,2021,202124,0,26
 Niedersachsen,24,2022,202224,1465,3824
 Niedersachsen,25,2021,202125,0,10
+Niedersachsen,25,2022,202225,217,0
 Niedersachsen,26,2021,202126,0,9
 Niedersachsen,27,2021,202127,0,11
 Niedersachsen,28,2021,202128,0,33
@@ -539,6 +547,7 @@ Nordrhein-Westfalen,23,2022,202223,4168,5945
 Nordrhein-Westfalen,24,2021,202124,0,60
 Nordrhein-Westfalen,24,2022,202224,3286,4383
 Nordrhein-Westfalen,25,2021,202125,0,58
+Nordrhein-Westfalen,25,2022,202225,484,0
 Nordrhein-Westfalen,26,2021,202126,0,50
 Nordrhein-Westfalen,27,2021,202127,0,77
 Nordrhein-Westfalen,28,2021,202128,0,65
@@ -594,6 +603,7 @@ Rheinland-Pfalz,23,2022,202223,499,751
 Rheinland-Pfalz,24,2021,202124,0,8
 Rheinland-Pfalz,24,2022,202224,498,746
 Rheinland-Pfalz,25,2021,202125,0,8
+Rheinland-Pfalz,25,2022,202225,60,0
 Rheinland-Pfalz,26,2021,202126,0,8
 Rheinland-Pfalz,27,2021,202127,0,13
 Rheinland-Pfalz,28,2021,202128,0,5
@@ -647,6 +657,7 @@ Saarland,23,2021,202123,0,1
 Saarland,23,2022,202223,95,230
 Saarland,24,2022,202224,38,254
 Saarland,25,2021,202125,0,1
+Saarland,25,2022,202225,5,0
 Saarland,35,2021,202135,1,0
 Saarland,36,2021,202136,0,15
 Saarland,37,2021,202137,0,2
@@ -693,6 +704,7 @@ Sachsen,23,2022,202223,190,318
 Sachsen,24,2021,202124,0,8
 Sachsen,24,2022,202224,254,459
 Sachsen,25,2021,202125,0,2
+Sachsen,25,2022,202225,83,0
 Sachsen,27,2021,202127,0,1
 Sachsen,28,2021,202128,0,3
 Sachsen,29,2021,202129,0,2
@@ -746,6 +758,7 @@ Sachsen-Anhalt,23,2021,202123,0,1
 Sachsen-Anhalt,23,2022,202223,191,280
 Sachsen-Anhalt,24,2021,202124,0,7
 Sachsen-Anhalt,24,2022,202224,283,360
+Sachsen-Anhalt,25,2022,202225,22,0
 Sachsen-Anhalt,27,2021,202127,0,5
 Sachsen-Anhalt,28,2021,202128,0,2
 Sachsen-Anhalt,30,2021,202130,0,1
@@ -799,6 +812,7 @@ Schleswig-Holstein,23,2022,202223,800,1884
 Schleswig-Holstein,24,2021,202124,0,1
 Schleswig-Holstein,24,2022,202224,1338,2479
 Schleswig-Holstein,25,2021,202125,0,1
+Schleswig-Holstein,25,2022,202225,90,0
 Schleswig-Holstein,26,2021,202126,0,4
 Schleswig-Holstein,27,2021,202127,0,4
 Schleswig-Holstein,28,2021,202128,0,3
