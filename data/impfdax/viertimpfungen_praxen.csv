@@ -3352,7 +3352,7 @@ vacc_date,Bundesland,viert_praxen
 2022-06-17,Nordrhein-Westfalen,3450
 2022-06-17,Rheinland-Pfalz,256
 2022-06-17,Saarland,30
-2022-06-17,Sachsen,440
+2022-06-17,Sachsen,NA
 2022-06-17,Sachsen-Anhalt,480
 2022-06-17,Schleswig-Holstein,1141
 2022-06-17,Thüringen,157
@@ -3366,11 +3366,11 @@ vacc_date,Bundesland,viert_praxen
 2022-06-18,Hessen,NA
 2022-06-18,Mecklenburg-Vorpommern,5
 2022-06-18,Niedersachsen,127
-2022-06-18,Nordrhein-Westfalen,213
+2022-06-18,Nordrhein-Westfalen,NA
 2022-06-18,Rheinland-Pfalz,33
 2022-06-18,Saarland,NA
 2022-06-18,Sachsen,NA
-2022-06-18,Sachsen-Anhalt,3
+2022-06-18,Sachsen-Anhalt,NA
 2022-06-18,Schleswig-Holstein,135
 2022-06-18,Thüringen,NA
 2022-06-18,unbekannt,14
@@ -3390,6 +3390,7 @@ vacc_date,Bundesland,viert_praxen
 2022-06-20,Bayern,598
 2022-06-20,Berlin,1005
 2022-06-20,Brandenburg,262
+2022-06-20,Bremen,NA
 2022-06-20,Hamburg,331
 2022-06-20,Hessen,685
 2022-06-20,Mecklenburg-Vorpommern,275
