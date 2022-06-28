@@ -29,6 +29,7 @@ Baden-Württemberg,24,2022,202224,501,1671
 Baden-Württemberg,25,2021,202125,0,5
 Baden-Württemberg,25,2022,202225,1370,2749
 Baden-Württemberg,26,2021,202126,0,6
+Baden-Württemberg,26,2022,202226,217,0
 Baden-Württemberg,27,2021,202127,0,11
 Baden-Württemberg,28,2021,202128,0,12
 Baden-Württemberg,29,2021,202129,0,8
@@ -85,6 +86,7 @@ Bayern,24,2022,202224,192,2304
 Bayern,25,2021,202125,0,26
 Bayern,25,2022,202225,729,3392
 Bayern,26,2021,202126,0,20
+Bayern,26,2022,202226,77,0
 Bayern,27,2021,202127,0,23
 Bayern,28,2021,202128,0,12
 Bayern,29,2021,202129,0,24
@@ -139,6 +141,7 @@ Berlin,24,2022,202224,800,1197
 Berlin,25,2021,202125,0,1
 Berlin,25,2022,202225,670,1174
 Berlin,26,2021,202126,0,4
+Berlin,26,2022,202226,147,0
 Berlin,27,2021,202127,0,1
 Berlin,28,2021,202128,0,1
 Berlin,29,2021,202129,0,2
@@ -194,6 +197,7 @@ Brandenburg,24,2022,202224,454,497
 Brandenburg,25,2021,202125,0,3
 Brandenburg,25,2022,202225,442,502
 Brandenburg,26,2021,202126,0,2
+Brandenburg,26,2022,202226,63,0
 Brandenburg,27,2021,202127,0,1
 Brandenburg,28,2021,202128,0,1
 Brandenburg,30,2021,202130,0,1
@@ -337,6 +341,7 @@ Hamburg,24,2021,202124,0,1
 Hamburg,24,2022,202224,770,955
 Hamburg,25,2022,202225,886,994
 Hamburg,26,2021,202126,0,1
+Hamburg,26,2022,202226,53,0
 Hamburg,28,2021,202128,0,2
 Hamburg,29,2021,202129,0,1
 Hamburg,30,2021,202130,0,1
@@ -390,6 +395,7 @@ Hessen,24,2022,202224,662,1721
 Hessen,25,2021,202125,0,5
 Hessen,25,2022,202225,921,2015
 Hessen,26,2021,202126,0,2
+Hessen,26,2022,202226,63,0
 Hessen,27,2021,202127,0,21
 Hessen,28,2021,202128,0,6
 Hessen,29,2021,202129,0,3
@@ -443,6 +449,7 @@ Mecklenburg-Vorpommern,23,2022,202223,120,214
 Mecklenburg-Vorpommern,24,2021,202124,0,2
 Mecklenburg-Vorpommern,24,2022,202224,250,536
 Mecklenburg-Vorpommern,25,2022,202225,203,450
+Mecklenburg-Vorpommern,26,2022,202226,14,0
 Mecklenburg-Vorpommern,28,2021,202128,0,1
 Mecklenburg-Vorpommern,33,2021,202133,0,36
 Mecklenburg-Vorpommern,34,2021,202134,0,1
@@ -494,6 +501,7 @@ Niedersachsen,24,2022,202224,1465,4526
 Niedersachsen,25,2021,202125,0,10
 Niedersachsen,25,2022,202225,1832,4032
 Niedersachsen,26,2021,202126,0,9
+Niedersachsen,26,2022,202226,55,0
 Niedersachsen,27,2021,202127,0,11
 Niedersachsen,28,2021,202128,0,33
 Niedersachsen,29,2021,202129,0,17
@@ -550,6 +558,7 @@ Nordrhein-Westfalen,24,2022,202224,3286,5485
 Nordrhein-Westfalen,25,2021,202125,0,58
 Nordrhein-Westfalen,25,2022,202225,6106,8174
 Nordrhein-Westfalen,26,2021,202126,0,50
+Nordrhein-Westfalen,26,2022,202226,573,0
 Nordrhein-Westfalen,27,2021,202127,0,77
 Nordrhein-Westfalen,28,2021,202128,0,65
 Nordrhein-Westfalen,29,2021,202129,0,26
@@ -606,6 +615,7 @@ Rheinland-Pfalz,24,2022,202224,498,845
 Rheinland-Pfalz,25,2021,202125,0,8
 Rheinland-Pfalz,25,2022,202225,515,1005
 Rheinland-Pfalz,26,2021,202126,0,8
+Rheinland-Pfalz,26,2022,202226,45,0
 Rheinland-Pfalz,27,2021,202127,0,13
 Rheinland-Pfalz,28,2021,202128,0,5
 Rheinland-Pfalz,29,2021,202129,0,13
@@ -706,6 +716,7 @@ Sachsen,24,2021,202124,0,8
 Sachsen,24,2022,202224,254,482
 Sachsen,25,2021,202125,0,2
 Sachsen,25,2022,202225,321,586
+Sachsen,26,2022,202226,31,0
 Sachsen,27,2021,202127,0,1
 Sachsen,28,2021,202128,0,3
 Sachsen,29,2021,202129,0,2
@@ -760,6 +771,7 @@ Sachsen-Anhalt,23,2022,202223,191,301
 Sachsen-Anhalt,24,2021,202124,0,7
 Sachsen-Anhalt,24,2022,202224,283,415
 Sachsen-Anhalt,25,2022,202225,329,423
+Sachsen-Anhalt,26,2022,202226,95,0
 Sachsen-Anhalt,27,2021,202127,0,5
 Sachsen-Anhalt,28,2021,202128,0,2
 Sachsen-Anhalt,30,2021,202130,0,1
@@ -815,6 +827,7 @@ Schleswig-Holstein,24,2022,202224,1338,3455
 Schleswig-Holstein,25,2021,202125,0,1
 Schleswig-Holstein,25,2022,202225,1310,3786
 Schleswig-Holstein,26,2021,202126,0,4
+Schleswig-Holstein,26,2022,202226,121,0
 Schleswig-Holstein,27,2021,202127,0,4
 Schleswig-Holstein,28,2021,202128,0,3
 Schleswig-Holstein,29,2021,202129,0,3
@@ -868,6 +881,7 @@ Thüringen,24,2022,202224,43,239
 Thüringen,25,2021,202125,0,1
 Thüringen,25,2022,202225,117,337
 Thüringen,26,2021,202126,0,2
+Thüringen,26,2022,202226,13,0
 Thüringen,28,2021,202128,0,1
 Thüringen,29,2021,202129,0,1
 Thüringen,30,2021,202130,0,1
