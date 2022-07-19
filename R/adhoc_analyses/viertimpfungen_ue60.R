@@ -12,9 +12,40 @@ conn <- DBI::dbConnect(RPostgres::Postgres(),
                        port     = 5432,
                        sslmode = 'require')
 
+DBI::dbListTables(conn)
 
 kbv_rki_age <- tbl(conn, "kbv_rki_altersgruppen_kreise") %>% 
   collect()
+
+rki_faelle <- tbl(conn, "rki") %>% collect()
+
+faelle_sommer2022 <- rki_faelle %>% 
+  filter(Meldedatum>="2022-03-01") %>% 
+  mutate(myage=case_when(
+    Altersgruppe %in% c("A60-A79", "A80+") ~ "60+",
+    TRUE ~ "unter 60"
+    ),
+    mydate=case_when(
+      Meldedatum<"2022-06-01" ~ "ab März",
+      Meldedatum>="2022-06-1" ~ "ab Juni"
+    )) %>% 
+  group_by(myage, mydate) %>% 
+  summarise(Faelle=sum(AnzahlFall[NeuerFall>=0]), 
+            .groups="drop")
+
+
+
+# new (für herbstwelle 2022)
+booster_nachalter_bydategesamt <- kbv_rki_age %>% 
+  filter(vacc_series>=2) %>% 
+  group_by(Altersgruppe, vacc_series) %>% 
+  summarise(anzahl=sum(anzahl_alleorte),
+            .groups = "drop")
+
+library(openxlsx)
+write.xlsx(booster_nachalter_bydategesamt, "data/impfungenbooster_standsommer2022.xlsx")
+
+# old:
 
 booster_ue60_bydateandkv <- kbv_rki_age %>% 
   filter(vacc_series==3 & Altersgruppe=="60+") %>% 
