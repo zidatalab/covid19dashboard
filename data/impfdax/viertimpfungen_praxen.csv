@@ -26,6 +26,7 @@ vacc_date,Bundesland,viert_praxen
 2021-09-07,Bayern,NA
 2021-09-07,Hessen,NA
 2021-09-07,Nordrhein-Westfalen,NA
+2021-09-07,Rheinland-Pfalz,NA
 2021-09-08,Baden-Württemberg,NA
 2021-09-08,Bayern,NA
 2021-09-08,Brandenburg,NA
@@ -4106,10 +4107,11 @@ vacc_date,Bundesland,viert_praxen
 2022-08-01,Thüringen,113
 2022-08-01,unbekannt,3
 2022-08-02,Baden-Württemberg,3278
-2022-08-02,Bayern,3976
+2022-08-02,Bayern,NA
 2022-08-02,Berlin,1012
 2022-08-02,Brandenburg,537
-2022-08-02,Bremen,157
+2022-08-02,Bremen,NA
+2022-08-02,Bundesressorts,NA
 2022-08-02,Hamburg,640
 2022-08-02,Hessen,2094
 2022-08-02,Mecklenburg-Vorpommern,187
