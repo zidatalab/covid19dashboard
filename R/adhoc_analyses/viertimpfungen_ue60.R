@@ -20,6 +20,7 @@ kbv_rki_age <- tbl(conn, "kbv_rki_altersgruppen_kreise") %>%
 rki_faelle <- tbl(conn, "rki") %>% collect()
 
 faelle_sommer2022 <- rki_faelle %>% 
+  mutate(Meldedatum=as_date(Meldedatum)) %>% 
   filter(Meldedatum>="2022-03-01") %>% 
   mutate(myage=case_when(
     Altersgruppe %in% c("A60-A79", "A80+") ~ "60+",
@@ -44,6 +45,11 @@ booster_nachalter_bydategesamt <- kbv_rki_age %>%
 
 library(openxlsx)
 write.xlsx(booster_nachalter_bydategesamt, "data/impfungenbooster_standsommer2022.xlsx")
+
+
+
+
+
 
 # old:
 
