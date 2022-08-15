@@ -34,18 +34,45 @@ faelle_sommer2022 <- rki_faelle %>%
   summarise(Faelle=sum(AnzahlFall[NeuerFall>=0]), 
             .groups="drop")
 
+faelle_abfeb <- rki_faelle %>% 
+  mutate(Meldedatum=as_date(Meldedatum)) %>% 
+  filter(Meldedatum>="2022-02-01") %>% 
+  mutate(Monat=month(Meldedatum),
+         myage=case_when(
+    Altersgruppe %in% c("A60-A79", "A80+") ~ "über 60",
+    TRUE ~ "unter 60"
+  )) %>% 
+  group_by(myage, Monat) %>% 
+  summarise(Faelle=sum(AnzahlFall[NeuerFall>=0]), 
+            .groups="drop") %>% 
+  pivot_wider(id_cols=myage, names_from=Monat, values_from=Faelle)
+
+library(openxlsx)
+write.xlsx(faelle_abfeb, "data/faelleabfebruar2022.xlsx")
+
 
 
 # new (für herbstwelle 2022)
 booster_nachalter_bydategesamt <- kbv_rki_age %>% 
   filter(vacc_series>=2) %>% 
-  group_by(Altersgruppe, vacc_series) %>% 
+  mutate(mydate=as_date(ifelse(
+    vacc_date<"2022-02-01", as_date("2022-01-31"), vacc_date)),
+         Monat=month(mydate),
+         myage=case_when(
+           Altersgruppe %in% c("60+") ~ "über 60",
+           TRUE ~ "unter 60"
+         )) %>% 
+  group_by(myage, Monat, vacc_series) %>%
   summarise(anzahl=sum(anzahl_alleorte),
             .groups = "drop")
+
+viertnachmonat_60plus <- booster_nachalter_bydategesamt %>% 
+  filter(myage=="über 60" & vacc_series==4)
 
 library(openxlsx)
 write.xlsx(booster_nachalter_bydategesamt, "data/impfungenbooster_standsommer2022.xlsx")
 
+write.xlsx(viertnachmonat_60plus, "data/viert_60plus_nach monat_2022.xlsx")
 
 
 
