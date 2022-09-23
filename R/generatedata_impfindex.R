@@ -8,10 +8,12 @@ library(ISOcodes)
 impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv") %>% 
   select(-1) %>% 
   rename(`BNT/Pfizer`=`BNT162b2`,
+         `BNT/Pfizer-Kinder`=`BNT162b2-Kinder`,
          `Moderna`=`mRNA-1273`,
          `Novavax`=`NVX-CoV2373`,
          `AZ`=`AZD1222`,
-         `J&J`=`Ad26.COV2.S`)
+         `J&J`=`Ad26.COV2.S`,
+         `Valneva`=`VLA2001`)
 
 ## static Bevoelkerung
 bev_kreise <- read_delim(
@@ -181,6 +183,7 @@ write_csv(impfdashboardde %>%
                 impfstoff=="astra" ~ "AZ",
                 impfstoff=="johnson" ~ "J&J",
                 impfstoff=="novavax" ~ "Novavax",
+                impfstoff=="valneva" ~ "Valneva",
                 TRUE ~ "error"),
               KW=isoweek(date),
               wochentag=lubridate::wday(date, week_start = 1),
@@ -205,6 +208,7 @@ bunddashboard_daten <- impfdashboardde %>%
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
       impfstoff=="novavax" ~ "Novavax",
+      impfstoff=="valneva" ~ "Valneva",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -379,6 +383,7 @@ fuerpraxen <- impfdashboardde %>%
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
       impfstoff=="novavax" ~ "Novavax",
+      impfstoff=="valneva" ~ "Valneva",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -414,6 +419,7 @@ fuerimpfzentren <- impfdashboardde %>%
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
       impfstoff=="novavax" ~ "Novavax",
+      impfstoff=="valneva" ~ "Valneva",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
@@ -451,6 +457,7 @@ fuerandere <- impfdashboardde %>%
       impfstoff=="astra" ~ "AZ",
       impfstoff=="johnson" ~ "J&J",
       impfstoff=="novavax" ~ "Novavax",
+      impfstoff=="valneva" ~ "Valneva",
       TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
