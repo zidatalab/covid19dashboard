@@ -81,6 +81,17 @@ rki_vacc_laender <- read_csv("https://raw.githubusercontent.com/robert-koch-inst
            TRUE ~ "ERROR"
          ),
          Impfdatum=as_date(Impfdatum)) %>% 
+  mutate(Impfstoff=case_when(
+    Impfstoff=="Comirnaty" ~ "Comirnaty",
+    Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "Comirnaty",
+    Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+    Impfstoff=="Spikevax" ~ "Moderna",
+    Impfstoff=="Vaxzevria" ~ "AstraZeneca",
+    Impfstoff=="Jcovden" ~ "Janssen",
+    Impfstoff=="Nuvaxovid" ~ "Novavax",
+    Impfstoff=="Valneva" ~ "Valneva",
+    TRUE ~ "ERROR"
+  )) %>% 
   select(vacc_date=Impfdatum, BundeslandId_Impfort,
          Bundesland,
          vacc_series=Impfserie,
@@ -187,6 +198,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
       vacc_product=="mRNA-1273" ~ "Moderna",
       vacc_product=="Ad26.COV2.S" ~ "Janssen",
       vacc_product=="NVX-CoV2373" ~ "Novavax",
+      vacc_product=="VLA2001" ~ "Valneva",
       TRUE ~ "ERROR"
     )) %>% 
     group_by(vacc_date, vacc_series, Impfstoff, Bundesland) %>% 

@@ -129,11 +129,14 @@ praxen_14tage_impfstoff <- impfungen_praxen_bl %>%
 alle_14tage_impfstoff <- rki_github_bl %>% 
   mutate(Impfstoff=case_when(
     Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
-    Impfstoff=="Janssen" ~ "J&J",
-    Impfstoff=="AstraZeneca" ~ "AZ",
-    Impfstoff=="Moderna" ~ "Moderna",
-    Impfstoff=="Novavax" ~ "Novavax",
-    TRUE ~ "error"
+    Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer",
+    Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+    Impfstoff=="Spikevax" ~ "Moderna",
+    Impfstoff=="Vaxzevria" ~ "AZ",
+    Impfstoff=="Jcovden" ~ "J&J",
+    Impfstoff=="Nuvaxovid" ~ "Novavax",
+    Impfstoff=="Valneva" ~ "Valneva",
+    TRUE ~ "ERROR"
   )) %>% 
   group_by(Impfdatum, Impfstoff) %>% 
   summarise(impfungen_alle=sum(Anzahl), .groups="drop") %>% 
@@ -242,11 +245,14 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                 filter(Impfdatum==max(Impfdatum)) %>% 
                                 mutate(Impfstoff=case_when(
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
-                                  Impfstoff=="Janssen" ~ "J&J",
-                                  Impfstoff=="AstraZeneca" ~ "AZ",
-                                  Impfstoff=="Moderna" ~ "Moderna",
-                                  Impfstoff=="Novavax" ~ "Novavax",
-                                  TRUE ~ "error"
+                                  Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer",
+                                  Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+                                  Impfstoff=="Spikevax" ~ "Moderna",
+                                  Impfstoff=="Vaxzevria" ~ "AZ",
+                                  Impfstoff=="Jcovden" ~ "J&J",
+                                  Impfstoff=="Nuvaxovid" ~ "Novavax",
+                                  Impfstoff=="Valneva" ~ "Valneva",
+                                  TRUE ~ "ERROR"
                                 )) %>% 
                                 group_by(Impfdatum, Impfstoff, Impfserie) %>% 
                                 summarise(BundeslandId_Impfort="00",
@@ -261,12 +267,21 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                 filter(Impfdatum==max(Impfdatum)) %>% 
                                 mutate(Impfstoff=case_when(
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
-                                  Impfstoff=="Janssen" ~ "J&J",
-                                  Impfstoff=="AstraZeneca" ~ "AZ",
-                                  Impfstoff=="Moderna" ~ "Moderna",
-                                  Impfstoff=="Novavax" ~ "Novavax",
-                                  TRUE ~ "error"
-                                )))
+                                  Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer",
+                                  Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+                                  Impfstoff=="Spikevax" ~ "Moderna",
+                                  Impfstoff=="Vaxzevria" ~ "AZ",
+                                  Impfstoff=="Jcovden" ~ "J&J",
+                                  Impfstoff=="Nuvaxovid" ~ "Novavax",
+                                  Impfstoff=="Valneva" ~ "Valneva",
+                                  TRUE ~ "ERROR"
+                                )) %>% 
+                                group_by(BundeslandId_Impfort,
+                                         blid,
+                                         Name,
+                                         Impfdatum, Impfstoff, Impfserie) %>% 
+                                summarise(Anzahl=sum(Anzahl, na.rm = TRUE),
+                                          .groups = "drop"))
 
 
 
@@ -319,7 +334,7 @@ dosen_verabreicht <- rki_vacc_lastday %>%
   #           by=c("hersteller"="Hersteller", "geo"="Bundesland")) %>%
   mutate(dosen_geliefert=ifelse(!is.na(dosen_geliefert), dosen_geliefert, 0),
          zugelassen=case_when(
-           Impfstoff%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J", "Novavax") ~ 1, # 
+           Impfstoff%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J", "Novavax", "Valneva") ~ 1, # 
            TRUE ~ 0
          )) %>%
   mutate(#Stand_letzteKW=isoweek(prognosestart-days(1)),
