@@ -11974,12 +11974,12 @@ date,impfstoff,impfstofftyp,region,dosen,einrichtung,geo,Hersteller,KW,wochentag
 2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-MV,16032,ohne_zuteilung,Mecklenburg-Vorpommern,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-NI,77838,ohne_zuteilung,Niedersachsen,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-NW,216864,ohne_zuteilung,Nordrhein-Westfalen,BNT/Pfizer,37,2,2022,9,202237
-2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-RP,32478,ohne_zuteilung,Rheinland-Pfalz,BNT/Pfizer,37,2,2022,9,202237
+2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-RP,41118,ohne_zuteilung,Rheinland-Pfalz,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-SL,12570,ohne_zuteilung,Saarland,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-SN,27000,ohne_zuteilung,Sachsen,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-ST,15234,ohne_zuteilung,Sachsen-Anhalt,BNT/Pfizer,37,2,2022,9,202237
-2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-SH,24558,ohne_zuteilung,Schleswig-Holstein,BNT/Pfizer,37,2,2022,9,202237
-2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-TH,14946,ohne_zuteilung,Thüringen,BNT/Pfizer,37,2,2022,9,202237
+2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-SH,33198,ohne_zuteilung,Schleswig-Holstein,BNT/Pfizer,37,2,2022,9,202237
+2022-09-13,comirnaty,bivalent Wildtyp/BA.1,DE-TH,23586,ohne_zuteilung,Thüringen,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,Wildtyp,DE-BW,2780,arztpraxen,Baden-Württemberg,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,Wildtyp,DE-BY,2390,arztpraxen,Bayern,BNT/Pfizer,37,2,2022,9,202237
 2022-09-13,comirnaty,Wildtyp,DE-BE,740,arztpraxen,Berlin,BNT/Pfizer,37,2,2022,9,202237
@@ -12071,12 +12071,12 @@ date,impfstoff,impfstofftyp,region,dosen,einrichtung,geo,Hersteller,KW,wochentag
 2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-MV,2580,ohne_zuteilung,Mecklenburg-Vorpommern,Moderna,37,2,2022,9,202237
 2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-NI,25940,ohne_zuteilung,Niedersachsen,Moderna,37,2,2022,9,202237
 2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-NW,74940,ohne_zuteilung,Nordrhein-Westfalen,Moderna,37,2,2022,9,202237
-2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-RP,4245,ohne_zuteilung,Rheinland-Pfalz,Moderna,37,2,2022,9,202237
+2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-RP,12645,ohne_zuteilung,Rheinland-Pfalz,Moderna,37,2,2022,9,202237
 2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-SL,4900,ohne_zuteilung,Saarland,Moderna,37,2,2022,9,202237
 2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-SN,3635,ohne_zuteilung,Sachsen,Moderna,37,2,2022,9,202237
 2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-ST,2935,ohne_zuteilung,Sachsen-Anhalt,Moderna,37,2,2022,9,202237
-2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-SH,6280,ohne_zuteilung,Schleswig-Holstein,Moderna,37,2,2022,9,202237
-2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-TH,2280,ohne_zuteilung,Thüringen,Moderna,37,2,2022,9,202237
+2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-SH,15880,ohne_zuteilung,Schleswig-Holstein,Moderna,37,2,2022,9,202237
+2022-09-13,moderna,bivalent Wildtyp/BA.1,DE-TH,9480,ohne_zuteilung,Thüringen,Moderna,37,2,2022,9,202237
 2022-09-13,johnson,Wildtyp,DE-BW,5,arztpraxen,Baden-Württemberg,J&J,37,2,2022,9,202237
 2022-09-13,johnson,Wildtyp,DE-BY,25,arztpraxen,Bayern,J&J,37,2,2022,9,202237
 2022-09-13,johnson,Wildtyp,DE-BE,0,arztpraxen,Berlin,J&J,37,2,2022,9,202237
@@ -12280,12 +12280,12 @@ date,impfstoff,impfstofftyp,region,dosen,einrichtung,geo,Hersteller,KW,wochentag
 2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-MV,15864,ohne_zuteilung,Mecklenburg-Vorpommern,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-NI,92700,ohne_zuteilung,Niedersachsen,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-NW,282510,ohne_zuteilung,Nordrhein-Westfalen,BNT/Pfizer,38,2,2022,9,202238
-2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-RP,46392,ohne_zuteilung,Rheinland-Pfalz,BNT/Pfizer,38,2,2022,9,202238
+2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-RP,75192,ohne_zuteilung,Rheinland-Pfalz,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-SL,18792,ohne_zuteilung,Saarland,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-SN,27534,ohne_zuteilung,Sachsen,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-ST,20850,ohne_zuteilung,Sachsen-Anhalt,BNT/Pfizer,38,2,2022,9,202238
-2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-SH,26886,ohne_zuteilung,Schleswig-Holstein,BNT/Pfizer,38,2,2022,9,202238
-2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-TH,13248,ohne_zuteilung,Thüringen,BNT/Pfizer,38,2,2022,9,202238
+2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-SH,44166,ohne_zuteilung,Schleswig-Holstein,BNT/Pfizer,38,2,2022,9,202238
+2022-09-20,comirnaty,bivalent Wildtyp/BA.1,DE-TH,33408,ohne_zuteilung,Thüringen,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,Wildtyp,DE-BW,2010,arztpraxen,Baden-Württemberg,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,Wildtyp,DE-BY,2030,arztpraxen,Bayern,BNT/Pfizer,38,2,2022,9,202238
 2022-09-20,comirnaty,Wildtyp,DE-BE,500,arztpraxen,Berlin,BNT/Pfizer,38,2,2022,9,202238
@@ -12527,3 +12527,424 @@ date,impfstoff,impfstofftyp,region,dosen,einrichtung,geo,Hersteller,KW,wochentag
 2022-09-20,valneva,Wildtyp,DE-ST,0,apotheken,Sachsen-Anhalt,Valneva,38,2,2022,9,202238
 2022-09-20,valneva,Wildtyp,DE-SH,0,apotheken,Schleswig-Holstein,Valneva,38,2,2022,9,202238
 2022-09-20,valneva,Wildtyp,DE-TH,0,apotheken,Thüringen,Valneva,38,2,2022,9,202238
+2022-09-27,comirnaty,Wildtyp,DE-Betriebe,486,betriebe,Betriebe,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BW,5034,arztpraxen,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BY,4740,arztpraxen,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BE,2370,arztpraxen,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BB,1950,arztpraxen,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HB,444,arztpraxen,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HH,1062,arztpraxen,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HE,2070,arztpraxen,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-MV,876,arztpraxen,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NI,3570,arztpraxen,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NW,9750,arztpraxen,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-RP,786,arztpraxen,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SL,300,arztpraxen,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SN,1530,arztpraxen,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-ST,1716,arztpraxen,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SH,756,arztpraxen,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-TH,1938,arztpraxen,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BW,762,oegd,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BY,2532,oegd,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BE,120,oegd,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BB,30,oegd,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HB,156,oegd,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HH,0,oegd,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HE,888,oegd,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-MV,144,oegd,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NI,2670,oegd,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NW,3450,oegd,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-RP,84,oegd,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SL,192,oegd,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SN,138,oegd,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-ST,90,oegd,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SH,156,oegd,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-TH,0,oegd,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BW,108,apotheken,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BY,48,apotheken,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BE,36,apotheken,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BB,102,apotheken,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HB,24,apotheken,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HH,18,apotheken,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HE,18,apotheken,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-MV,12,apotheken,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NI,84,apotheken,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NW,252,apotheken,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-RP,30,apotheken,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SL,0,apotheken,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SN,6,apotheken,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-ST,66,apotheken,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SH,24,apotheken,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-TH,12,apotheken,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BW,14688,arztpraxen,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BY,16644,arztpraxen,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BE,6864,arztpraxen,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BB,4914,arztpraxen,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HB,906,arztpraxen,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HH,2622,arztpraxen,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HE,7188,arztpraxen,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-MV,2388,arztpraxen,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-NI,10794,arztpraxen,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-NW,31320,arztpraxen,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-RP,3408,arztpraxen,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SL,1434,arztpraxen,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SN,2640,arztpraxen,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-ST,3414,arztpraxen,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SH,3720,arztpraxen,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-TH,2424,arztpraxen,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BW,1134,oegd,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BY,4830,oegd,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BE,66,oegd,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BB,252,oegd,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HB,0,oegd,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HH,0,oegd,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HE,0,oegd,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-MV,0,oegd,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-NI,3318,oegd,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-NW,3198,oegd,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-RP,30,oegd,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SL,48,oegd,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SN,0,oegd,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-ST,60,oegd,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SH,2034,oegd,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-TH,0,oegd,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BW,792,apotheken,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BY,1002,apotheken,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BE,1314,apotheken,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-BB,144,apotheken,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HB,60,apotheken,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HH,90,apotheken,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-HE,246,apotheken,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-MV,12,apotheken,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-NI,534,apotheken,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-NW,1548,apotheken,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-RP,180,apotheken,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SL,126,apotheken,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SN,246,apotheken,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-ST,54,apotheken,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-SH,174,apotheken,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,bivalent Wildtyp/BA.1,DE-TH,270,apotheken,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BW,173328,arztpraxen,Baden-Württemberg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BY,163248,arztpraxen,Bayern,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BE,52494,arztpraxen,Berlin,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BB,24108,arztpraxen,Brandenburg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HB,8076,arztpraxen,Bremen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HH,29586,arztpraxen,Hamburg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HE,98190,arztpraxen,Hessen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-MV,20550,arztpraxen,Mecklenburg-Vorpommern,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-NI,135066,arztpraxen,Niedersachsen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-NW,303462,arztpraxen,Nordrhein-Westfalen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-RP,50058,arztpraxen,Rheinland-Pfalz,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SL,20430,arztpraxen,Saarland,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SN,48540,arztpraxen,Sachsen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-ST,21048,arztpraxen,Sachsen-Anhalt,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SH,34776,arztpraxen,Schleswig-Holstein,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-TH,8382,arztpraxen,Thüringen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BW,38010,oegd,Baden-Württemberg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BY,46068,oegd,Bayern,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BE,9990,oegd,Berlin,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BB,834,oegd,Brandenburg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HB,1020,oegd,Bremen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HH,360,oegd,Hamburg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HE,142662,oegd,Hessen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-MV,0,oegd,Mecklenburg-Vorpommern,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-NI,20088,oegd,Niedersachsen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-NW,41028,oegd,Nordrhein-Westfalen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-RP,1392,oegd,Rheinland-Pfalz,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SL,12390,oegd,Saarland,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SN,11838,oegd,Sachsen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-ST,1428,oegd,Sachsen-Anhalt,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SH,10896,oegd,Schleswig-Holstein,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-TH,28830,oegd,Thüringen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BW,7686,apotheken,Baden-Württemberg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BY,11760,apotheken,Bayern,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BE,4266,apotheken,Berlin,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-BB,966,apotheken,Brandenburg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HB,150,apotheken,Bremen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HH,1902,apotheken,Hamburg,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-HE,3900,apotheken,Hessen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-MV,246,apotheken,Mecklenburg-Vorpommern,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-NI,5430,apotheken,Niedersachsen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-NW,15360,apotheken,Nordrhein-Westfalen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-RP,5514,apotheken,Rheinland-Pfalz,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SL,1356,apotheken,Saarland,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SN,3864,apotheken,Sachsen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-ST,234,apotheken,Sachsen-Anhalt,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SH,1842,apotheken,Schleswig-Holstein,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-TH,582,apotheken,Thüringen,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-RP,34560,oegd,Rheinland-Pfalz,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-SH,23040,oegd,Schleswig-Holstein,error,39,2,2022,9,202239
+2022-09-27,comirnaty BA.4/5,comirnaty BA.4/5,DE-TH,28800,oegd,Thüringen,error,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BW,1860,arztpraxen,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BY,1940,arztpraxen,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BE,840,arztpraxen,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BB,270,arztpraxen,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HB,0,arztpraxen,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HH,220,arztpraxen,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HE,930,arztpraxen,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-MV,220,arztpraxen,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NI,1120,arztpraxen,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NW,3090,arztpraxen,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-RP,300,arztpraxen,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SL,30,arztpraxen,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SN,240,arztpraxen,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-ST,100,arztpraxen,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SH,160,arztpraxen,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-TH,30,arztpraxen,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BW,890,oegd,Baden-Württemberg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BY,1840,oegd,Bayern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BE,520,oegd,Berlin,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-BB,0,oegd,Brandenburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HB,0,oegd,Bremen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HH,10,oegd,Hamburg,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-HE,470,oegd,Hessen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-MV,0,oegd,Mecklenburg-Vorpommern,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NI,1620,oegd,Niedersachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-NW,2180,oegd,Nordrhein-Westfalen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-RP,2420,oegd,Rheinland-Pfalz,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SL,0,oegd,Saarland,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SN,120,oegd,Sachsen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-ST,50,oegd,Sachsen-Anhalt,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-SH,0,oegd,Schleswig-Holstein,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,comirnaty,Wildtyp,DE-TH,0,oegd,Thüringen,BNT/Pfizer,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-Betriebe,430,betriebe,Betriebe,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BW,1280,arztpraxen,Baden-Württemberg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BY,780,arztpraxen,Bayern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BE,310,arztpraxen,Berlin,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BB,370,arztpraxen,Brandenburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HB,80,arztpraxen,Bremen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HH,360,arztpraxen,Hamburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HE,290,arztpraxen,Hessen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-MV,40,arztpraxen,Mecklenburg-Vorpommern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-NI,410,arztpraxen,Niedersachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-NW,1980,arztpraxen,Nordrhein-Westfalen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-RP,70,arztpraxen,Rheinland-Pfalz,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SL,0,arztpraxen,Saarland,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SN,210,arztpraxen,Sachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-ST,30,arztpraxen,Sachsen-Anhalt,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SH,20,arztpraxen,Schleswig-Holstein,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-TH,110,arztpraxen,Thüringen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BW,1120,oegd,Baden-Württemberg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BY,2020,oegd,Bayern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BE,70,oegd,Berlin,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BB,0,oegd,Brandenburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HB,150,oegd,Bremen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HH,0,oegd,Hamburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HE,2330,oegd,Hessen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-MV,150,oegd,Mecklenburg-Vorpommern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-NI,1270,oegd,Niedersachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-NW,2010,oegd,Nordrhein-Westfalen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-RP,90,oegd,Rheinland-Pfalz,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SL,0,oegd,Saarland,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SN,130,oegd,Sachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-ST,100,oegd,Sachsen-Anhalt,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SH,200,oegd,Schleswig-Holstein,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-TH,0,oegd,Thüringen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BW,40,apotheken,Baden-Württemberg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BY,50,apotheken,Bayern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BE,0,apotheken,Berlin,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-BB,10,apotheken,Brandenburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HB,0,apotheken,Bremen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HH,100,apotheken,Hamburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-HE,0,apotheken,Hessen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-MV,0,apotheken,Mecklenburg-Vorpommern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-NI,10,apotheken,Niedersachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-NW,0,apotheken,Nordrhein-Westfalen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-RP,0,apotheken,Rheinland-Pfalz,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SL,0,apotheken,Saarland,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SN,0,apotheken,Sachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-ST,40,apotheken,Sachsen-Anhalt,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-SH,0,apotheken,Schleswig-Holstein,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,Wildtyp,DE-TH,0,apotheken,Thüringen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BW,14688,arztpraxen,Baden-Württemberg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BY,16644,arztpraxen,Bayern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BE,6864,arztpraxen,Berlin,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BB,4914,arztpraxen,Brandenburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HB,906,arztpraxen,Bremen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HH,2622,arztpraxen,Hamburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HE,7188,arztpraxen,Hessen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-MV,2388,arztpraxen,Mecklenburg-Vorpommern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-NI,10794,arztpraxen,Niedersachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-NW,31320,arztpraxen,Nordrhein-Westfalen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-RP,3408,arztpraxen,Rheinland-Pfalz,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SL,1434,arztpraxen,Saarland,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SN,2640,arztpraxen,Sachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-ST,3414,arztpraxen,Sachsen-Anhalt,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SH,3720,arztpraxen,Schleswig-Holstein,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-TH,2424,arztpraxen,Thüringen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BW,1134,oegd,Baden-Württemberg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BY,4830,oegd,Bayern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BE,66,oegd,Berlin,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BB,252,oegd,Brandenburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HB,0,oegd,Bremen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HH,0,oegd,Hamburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HE,0,oegd,Hessen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-MV,0,oegd,Mecklenburg-Vorpommern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-NI,3318,oegd,Niedersachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-NW,3198,oegd,Nordrhein-Westfalen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-RP,30,oegd,Rheinland-Pfalz,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SL,48,oegd,Saarland,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SN,0,oegd,Sachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-ST,60,oegd,Sachsen-Anhalt,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SH,2034,oegd,Schleswig-Holstein,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-TH,0,oegd,Thüringen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BW,792,apotheken,Baden-Württemberg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BY,1002,apotheken,Bayern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BE,1314,apotheken,Berlin,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-BB,144,apotheken,Brandenburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HB,60,apotheken,Bremen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HH,90,apotheken,Hamburg,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-HE,246,apotheken,Hessen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-MV,12,apotheken,Mecklenburg-Vorpommern,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-NI,534,apotheken,Niedersachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-NW,1548,apotheken,Nordrhein-Westfalen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-RP,180,apotheken,Rheinland-Pfalz,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SL,126,apotheken,Saarland,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SN,246,apotheken,Sachsen,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-ST,54,apotheken,Sachsen-Anhalt,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-SH,174,apotheken,Schleswig-Holstein,Moderna,39,2,2022,9,202239
+2022-09-27,moderna,bivalent Wildtyp/BA.1,DE-TH,270,apotheken,Thüringen,Moderna,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BW,20,arztpraxen,Baden-Württemberg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BY,5,arztpraxen,Bayern,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BE,0,arztpraxen,Berlin,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BB,25,arztpraxen,Brandenburg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HB,0,arztpraxen,Bremen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HH,5,arztpraxen,Hamburg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HE,10,arztpraxen,Hessen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-MV,20,arztpraxen,Mecklenburg-Vorpommern,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-NI,0,arztpraxen,Niedersachsen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-NW,5,arztpraxen,Nordrhein-Westfalen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-RP,55,arztpraxen,Rheinland-Pfalz,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SL,0,arztpraxen,Saarland,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SN,5,arztpraxen,Sachsen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-ST,0,arztpraxen,Sachsen-Anhalt,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SH,0,arztpraxen,Schleswig-Holstein,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-TH,0,arztpraxen,Thüringen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BW,0,oegd,Baden-Württemberg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BY,5,oegd,Bayern,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BE,0,oegd,Berlin,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BB,0,oegd,Brandenburg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HB,0,oegd,Bremen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HH,0,oegd,Hamburg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HE,0,oegd,Hessen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-MV,0,oegd,Mecklenburg-Vorpommern,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-NI,0,oegd,Niedersachsen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-NW,0,oegd,Nordrhein-Westfalen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-RP,0,oegd,Rheinland-Pfalz,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SL,0,oegd,Saarland,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SN,0,oegd,Sachsen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-ST,0,oegd,Sachsen-Anhalt,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SH,0,oegd,Schleswig-Holstein,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-TH,0,oegd,Thüringen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BW,0,apotheken,Baden-Württemberg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BY,0,apotheken,Bayern,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BE,0,apotheken,Berlin,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-BB,0,apotheken,Brandenburg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HB,0,apotheken,Bremen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HH,0,apotheken,Hamburg,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-HE,0,apotheken,Hessen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-MV,0,apotheken,Mecklenburg-Vorpommern,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-NI,0,apotheken,Niedersachsen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-NW,0,apotheken,Nordrhein-Westfalen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-RP,0,apotheken,Rheinland-Pfalz,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SL,0,apotheken,Saarland,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SN,0,apotheken,Sachsen,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-ST,0,apotheken,Sachsen-Anhalt,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-SH,0,apotheken,Schleswig-Holstein,J&J,39,2,2022,9,202239
+2022-09-27,johnson,Wildtyp,DE-TH,0,apotheken,Thüringen,J&J,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BW,440,arztpraxen,Baden-Württemberg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BY,390,arztpraxen,Bayern,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BE,220,arztpraxen,Berlin,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BB,160,arztpraxen,Brandenburg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HB,0,arztpraxen,Bremen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HH,20,arztpraxen,Hamburg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HE,140,arztpraxen,Hessen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-MV,40,arztpraxen,Mecklenburg-Vorpommern,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-NI,200,arztpraxen,Niedersachsen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-NW,310,arztpraxen,Nordrhein-Westfalen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-RP,30,arztpraxen,Rheinland-Pfalz,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SL,30,arztpraxen,Saarland,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SN,190,arztpraxen,Sachsen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-ST,90,arztpraxen,Sachsen-Anhalt,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SH,60,arztpraxen,Schleswig-Holstein,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-TH,10,arztpraxen,Thüringen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BW,80,oegd,Baden-Württemberg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BY,860,oegd,Bayern,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BE,10,oegd,Berlin,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BB,0,oegd,Brandenburg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HB,0,oegd,Bremen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HH,0,oegd,Hamburg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HE,180,oegd,Hessen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-MV,70,oegd,Mecklenburg-Vorpommern,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-NI,620,oegd,Niedersachsen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-NW,570,oegd,Nordrhein-Westfalen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-RP,40,oegd,Rheinland-Pfalz,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SL,0,oegd,Saarland,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SN,400,oegd,Sachsen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-ST,0,oegd,Sachsen-Anhalt,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SH,0,oegd,Schleswig-Holstein,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-TH,0,oegd,Thüringen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BW,40,apotheken,Baden-Württemberg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BY,0,apotheken,Bayern,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BE,0,apotheken,Berlin,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-BB,0,apotheken,Brandenburg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HB,0,apotheken,Bremen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HH,0,apotheken,Hamburg,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-HE,0,apotheken,Hessen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-MV,0,apotheken,Mecklenburg-Vorpommern,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-NI,10,apotheken,Niedersachsen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-NW,70,apotheken,Nordrhein-Westfalen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-RP,10,apotheken,Rheinland-Pfalz,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SL,0,apotheken,Saarland,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SN,50,apotheken,Sachsen,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-ST,0,apotheken,Sachsen-Anhalt,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-SH,10,apotheken,Schleswig-Holstein,Novavax,39,2,2022,9,202239
+2022-09-27,novavax,Wildtyp,DE-TH,0,apotheken,Thüringen,Novavax,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BW,1000,arztpraxen,Baden-Württemberg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BY,500,arztpraxen,Bayern,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BE,170,arztpraxen,Berlin,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BB,100,arztpraxen,Brandenburg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HB,0,arztpraxen,Bremen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HH,310,arztpraxen,Hamburg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HE,320,arztpraxen,Hessen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-MV,990,arztpraxen,Mecklenburg-Vorpommern,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-NI,480,arztpraxen,Niedersachsen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-NW,660,arztpraxen,Nordrhein-Westfalen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-RP,40,arztpraxen,Rheinland-Pfalz,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SL,40,arztpraxen,Saarland,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SN,150,arztpraxen,Sachsen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-ST,60,arztpraxen,Sachsen-Anhalt,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SH,350,arztpraxen,Schleswig-Holstein,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-TH,130,arztpraxen,Thüringen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BW,110,oegd,Baden-Württemberg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BY,230,oegd,Bayern,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BE,0,oegd,Berlin,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BB,0,oegd,Brandenburg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HB,0,oegd,Bremen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HH,0,oegd,Hamburg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HE,0,oegd,Hessen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-MV,0,oegd,Mecklenburg-Vorpommern,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-NI,150,oegd,Niedersachsen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-NW,320,oegd,Nordrhein-Westfalen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-RP,0,oegd,Rheinland-Pfalz,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SL,0,oegd,Saarland,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SN,10,oegd,Sachsen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-ST,0,oegd,Sachsen-Anhalt,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SH,0,oegd,Schleswig-Holstein,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-TH,0,oegd,Thüringen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BW,0,apotheken,Baden-Württemberg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BY,10,apotheken,Bayern,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BE,30,apotheken,Berlin,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-BB,0,apotheken,Brandenburg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HB,0,apotheken,Bremen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HH,0,apotheken,Hamburg,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-HE,10,apotheken,Hessen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-MV,0,apotheken,Mecklenburg-Vorpommern,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-NI,20,apotheken,Niedersachsen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-NW,30,apotheken,Nordrhein-Westfalen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-RP,10,apotheken,Rheinland-Pfalz,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SL,0,apotheken,Saarland,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SN,0,apotheken,Sachsen,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-ST,20,apotheken,Sachsen-Anhalt,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-SH,0,apotheken,Schleswig-Holstein,Valneva,39,2,2022,9,202239
+2022-09-27,valneva,Wildtyp,DE-TH,0,apotheken,Thüringen,Valneva,39,2,2022,9,202239
