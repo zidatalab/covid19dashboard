@@ -83,8 +83,8 @@ rki_vacc_laender <- read_csv("https://raw.githubusercontent.com/robert-koch-inst
          Impfdatum=as_date(Impfdatum)) %>% 
   mutate(Impfstoff=case_when(
     Impfstoff=="Comirnaty" ~ "Comirnaty",
-    Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "Comirnaty",
-    Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+    Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "Comirnaty-Omikron",
+    Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
     Impfstoff=="Spikevax" ~ "Moderna",
     Impfstoff=="Vaxzevria" ~ "AstraZeneca",
     Impfstoff=="Jcovden" ~ "Janssen",
@@ -193,9 +193,11 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   
   kbv_impfstoff_laender <- kbv_impfstoff_kreise_kv_bl %>% 
     mutate(Impfstoff=case_when(
-      vacc_product=="BNT162b2" | vacc_product=="BNT162b2-Kinder" ~ "Comirnaty",
+      vacc_product %in% c("BNT162b2", "BNT162b2-Kinder") ~ "Comirnaty",
+      vacc_product=="BNT162b2-VA" ~ "Comirnaty-Omikron",
       vacc_product=="AZD1222" ~ "AstraZeneca",
       vacc_product=="mRNA-1273" ~ "Moderna",
+      vacc_product=="mRNA-1273-VA" ~ "Moderna-Omikron",
       vacc_product=="Ad26.COV2.S" ~ "Janssen",
       vacc_product=="NVX-CoV2373" ~ "Novavax",
       vacc_product=="VLA2001" ~ "Valneva",

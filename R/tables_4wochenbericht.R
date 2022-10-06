@@ -62,8 +62,20 @@ impfdashboardde <- read_tsv(
   left_join(ISOcodes::ISO_3166_2 %>% 
               select(region=Code,
                      geo=Name), by="region") %>% 
+  mutate(Hersteller=case_when(
+    impfstoff %in% c("comirnaty", "comirnaty BA.4/5") &
+      impfstofftyp %in% c("bivalent Wildtyp/BA.1",
+                          "comirnaty BA.4/5") ~ "BNT/Pfizer-Omikron",
+    impfstoff=="comirnaty" & impfstofftyp=="Wildtyp" ~ "BNT/Pfizer",
+    impfstoff=="moderna" & impfstofftyp=="Wildtyp" ~ "Moderna",
+    impfstoff=="moderna" & impfstofftyp=="bivalent Wildtyp/BA.1" ~ "Moderna-Omikron",
+    impfstoff=="astra" ~ "AZ",
+    impfstoff=="johnson" ~ "J&J",
+    impfstoff=="novavax" ~ "Novavax",
+    impfstoff=="valneva" ~ "Valneva",
+    TRUE ~ "error")) %>% 
   mutate(dosen=case_when(
-    impfstoff=="Moderna" & date>="2021-10-26" ~ dosen*2, # booster sind doppelt für moderna ab kw43 laut bmg
+    Hersteller=="Moderna" & date>="2021-10-26" & date<="2022-09-12" ~ dosen*2, # booster sind doppelt für moderna ab kw43 laut bmg
     TRUE ~ dosen
   ))
 
@@ -1247,228 +1259,132 @@ bl_impfungen <- bl_impfungen_ohneinzidenz %>%
 hersteller_brd <- vacc_brd
 hersteller_brd_vorwoche <- vacc_brd_vorwoche
 geliefert <- impfdashboardde %>% 
-  group_by(impfstoff) %>% 
+  group_by(Hersteller) %>% 
   summarise(dosen_geliefert=sum(dosen))
 geliefert_vorwoche <- impfdashboardde %>% 
   filter(date<=today()-14) %>% 
-  group_by(impfstoff) %>% 
+  group_by(Hersteller) %>% 
   summarise(dosen_geliefert=sum(dosen))
 
 # Impfstoffdosen
 hersteller_table <- tibble(
   "Impfstoffdosen"=c(
     "Biontech/Pfizer",
-    "Erstimpfungen",
-    "Zweitimpfungen",
-    "Booster",
-    "2. Booster",
-    "geliefert",
+    "Impfungen Original",
+    "Impfungen Omikron",
+    "geliefert Original",
+    "geliefert Omikron",
     "Moderna",
-    "Erstimpfungen",
-    "Zweitimpfungen",
-    "Booster",
-    "2. Booster",
-    "geliefert",
+    "Impfungen Original",
+    "Impfungen Omikron",
+    "geliefert Original",
+    "geliefert Omikron",
     "AstraZeneca",
-    "Erstimpfungen",
-    "Zweitimpfungen",
-    "Booster",
-    "2. Booster",
     "geliefert",
     "Johnson&Johnson",
-    "Erstimpfungen",
-    "Zweitimpfungen",
-    "Booster",
-    "2. Booster",
     "geliefert",
     "Novavax",
-    "Erstimpfungen",
-    "Zweitimpfungen",
-    "Booster",
-    "2. Booster",
+    "geliefert",
+    "Valneva",
     "geliefert"
   ),
   "Vorwoche"=c(
     sum(hersteller_brd_vorwoche %>% 
+          filter(Impfstoff %in% c("Comirnaty", "Comirnaty-Omikron")) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd_vorwoche %>% 
           filter(Impfstoff=="Comirnaty") %>%
           pull(anzahl_alleorte)),
     sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==1) %>%
+          filter(Impfstoff=="Comirnaty-Omikron") %>%
           pull(anzahl_alleorte)),
+    geliefert_vorwoche %>% filter(Hersteller=="BNT/Pfizer") %>% pull(dosen_geliefert),
+    geliefert_vorwoche %>% filter(Hersteller=="BNT/Pfizer-Omikron") %>% pull(dosen_geliefert),
     sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==2) %>%
+          filter(Impfstoff %in% c("Moderna", "Moderna-Omikron")) %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert_vorwoche %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     sum(hersteller_brd_vorwoche %>% 
           filter(Impfstoff=="Moderna") %>%
           pull(anzahl_alleorte)),
     sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==1) %>%
+          filter(Impfstoff=="Moderna-Omikron") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert_vorwoche %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
+    geliefert_vorwoche %>% filter(Hersteller=="Moderna") %>% pull(dosen_geliefert),
+    geliefert_vorwoche %>% filter(Hersteller=="Moderna-Omikron") %>% pull(dosen_geliefert),
     sum(hersteller_brd_vorwoche %>% 
           filter(Impfstoff=="AstraZeneca") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==1) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert_vorwoche %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
+    geliefert_vorwoche %>% filter(Hersteller=="AZ") %>% pull(dosen_geliefert),
     sum(hersteller_brd_vorwoche %>% 
           filter(Impfstoff=="Janssen") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==1) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert_vorwoche %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert),
+    geliefert_vorwoche %>% filter(Hersteller=="J&J") %>% pull(dosen_geliefert),
     sum(hersteller_brd_vorwoche %>% 
           filter(Impfstoff=="Novavax") %>%
           pull(anzahl_alleorte)),
+    geliefert_vorwoche %>% filter(Hersteller=="Novavax") %>% pull(dosen_geliefert),
     sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==1) %>%
+          filter(Impfstoff=="Valneva") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd_vorwoche %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert_vorwoche %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
+    geliefert_vorwoche %>% filter(Hersteller=="Valneva") %>% pull(dosen_geliefert)
   ),
   "dieseWoche"=c(
     sum(hersteller_brd %>% 
+          filter(Impfstoff %in% c("Comirnaty", "Comirnaty-Omikron")) %>%
+          pull(anzahl_alleorte)),
+    sum(hersteller_brd %>% 
           filter(Impfstoff=="Comirnaty") %>%
           pull(anzahl_alleorte)),
     sum(hersteller_brd %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==1) %>%
+          filter(Impfstoff=="Comirnaty-Omikron") %>%
           pull(anzahl_alleorte)),
+    geliefert %>% filter(Hersteller=="BNT/Pfizer") %>% pull(dosen_geliefert),
+    geliefert %>% filter(Hersteller=="BNT/Pfizer-Omikron") %>% pull(dosen_geliefert),
     sum(hersteller_brd %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==2) %>%
+          filter(Impfstoff %in% c("Moderna", "Moderna-Omikron")) %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Comirnaty" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert %>% filter(impfstoff=="comirnaty") %>% pull(dosen_geliefert),
     sum(hersteller_brd %>% 
           filter(Impfstoff=="Moderna") %>%
           pull(anzahl_alleorte)),
     sum(hersteller_brd %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==1) %>%
+          filter(Impfstoff=="Moderna-Omikron") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Moderna" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert %>% filter(impfstoff=="moderna") %>% pull(dosen_geliefert),
+    geliefert %>% filter(Hersteller=="Moderna") %>% pull(dosen_geliefert),
+    geliefert %>% filter(Hersteller=="Moderna-Omikron") %>% pull(dosen_geliefert),
     sum(hersteller_brd %>% 
           filter(Impfstoff=="AstraZeneca") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==1) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="AstraZeneca" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert %>% filter(impfstoff=="astra") %>% pull(dosen_geliefert),
+    geliefert %>% filter(Hersteller=="AZ") %>% pull(dosen_geliefert),
     sum(hersteller_brd %>% 
           filter(Impfstoff=="Janssen") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==1) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Janssen" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert %>% filter(impfstoff=="johnson") %>% pull(dosen_geliefert),
+    geliefert %>% filter(Hersteller=="J&J") %>% pull(dosen_geliefert),
     sum(hersteller_brd %>% 
           filter(Impfstoff=="Novavax") %>%
           pull(anzahl_alleorte)),
+    geliefert %>% filter(Hersteller=="Novavax") %>% pull(dosen_geliefert),
     sum(hersteller_brd %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==1) %>%
+          filter(Impfstoff=="Valneva") %>%
           pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==2) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==3) %>%
-          pull(anzahl_alleorte)),
-    sum(hersteller_brd %>% 
-          filter(Impfstoff=="Novavax" & vacc_series==4) %>%
-          pull(anzahl_alleorte)),
-    geliefert %>% filter(impfstoff=="novavax") %>% pull(dosen_geliefert)
-  ),
+    geliefert %>% filter(Hersteller=="Valneva") %>% pull(dosen_geliefert)
+  )
 ) %>%
   mutate(anteil_vorwoche=paste0(" (", 
-                       format(round(100*Vorwoche/(Vorwoche[1]+Vorwoche[7]+Vorwoche[13]+Vorwoche[18]+Vorwoche[23]), 
+                       format(round(100*Vorwoche/(Vorwoche[1]+Vorwoche[6]+Vorwoche[11]+Vorwoche[13]+Vorwoche[15]+Vorwoche[17]), 
                                     1), 
                               decimal.mark=","), 
                        " %)"),
          anteil=paste0(" (", 
-                       format(round(100*dieseWoche/(dieseWoche[1]+dieseWoche[7]+dieseWoche[13]+dieseWoche[18]+Vorwoche[23]), 
+                       format(round(100*dieseWoche/(dieseWoche[1]+dieseWoche[6]+dieseWoche[11]+dieseWoche[13]+dieseWoche[15]+dieseWoche[17]), 
                                     1), 
                               decimal.mark=","), 
                        " %)")) %>%
   mutate(Vorwoche=ifelse(
-    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson", "Novavax"), 
+    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson", "Novavax", "Valneva"), 
     paste0(Vorwoche, anteil_vorwoche),
     Vorwoche),
          dieseWoche=ifelse(
-    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson", "Novavax"), 
+    Impfstoffdosen%in%c("Biontech/Pfizer", "Moderna", "AstraZeneca", "Johnson&Johnson", "Novavax", "Valneva"), 
     paste0(dieseWoche, anteil),
     dieseWoche)) %>%
   select(-anteil, -anteil_vorwoche)

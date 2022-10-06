@@ -9,6 +9,8 @@ impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publ
   select(-1) %>% 
   rename(`BNT/Pfizer`=`BNT162b2`,
          `BNT/Pfizer-Kinder`=`BNT162b2-Kinder`,
+         `BNT/Pfizer-Omikron`=`BNT162b2-VA`,
+         `Moderna-Omikron`=`mRNA-1273-VA`,
          `Moderna`=`mRNA-1273`,
          `Novavax`=`NVX-CoV2373`,
          `AZ`=`AZD1222`,
@@ -129,8 +131,8 @@ praxen_14tage_impfstoff <- impfungen_praxen_bl %>%
 alle_14tage_impfstoff <- rki_github_bl %>% 
   mutate(Impfstoff=case_when(
     Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
-    Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer",
-    Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+    Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
+    Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
     Impfstoff=="Spikevax" ~ "Moderna",
     Impfstoff=="Vaxzevria" ~ "AZ",
     Impfstoff=="Jcovden" ~ "J&J",
@@ -170,24 +172,24 @@ impfdashboardde <- read_tsv(
 ) %>% 
   left_join(ISOcodes::ISO_3166_2 %>% 
               select(region=Code,
-                     geo=Name), by="region") #%>% 
-  # mutate(dosen=case_when(
-  #   impfstoff=="moderna" & date>="2021-10-26" ~ dosen*2, # booster moderna sind doppelt ab KW43 laut bmg
-  #   TRUE ~ dosen
-  # ))
+                     geo=Name), by="region") %>% 
+  mutate(Hersteller=case_when(
+    impfstoff %in% c("comirnaty", "comirnaty BA.4/5") &
+      impfstofftyp %in% c("bivalent Wildtyp/BA.1",
+                          "comirnaty BA.4/5") ~ "BNT/Pfizer-Omikron",
+    impfstoff=="comirnaty" & impfstofftyp=="Wildtyp" ~ "BNT/Pfizer",
+    impfstoff=="moderna" & impfstofftyp=="Wildtyp" ~ "Moderna",
+    impfstoff=="moderna" & impfstofftyp=="bivalent Wildtyp/BA.1" ~ "Moderna-Omikron",
+    impfstoff=="astra" ~ "AZ",
+    impfstoff=="johnson" ~ "J&J",
+    impfstoff=="novavax" ~ "Novavax",
+    impfstoff=="valneva" ~ "Valneva",
+    TRUE ~ "error"))
 
 write_csv(impfdashboardde %>%
             mutate(
               geo=ifelse(region=="DE-BUND", "Bund", geo),
               geo=ifelse(region=="DE-Betriebe", "Betriebe", geo),
-              Hersteller=case_when(
-                impfstoff=="comirnaty" ~ "BNT/Pfizer",
-                impfstoff=="moderna" ~ "Moderna",
-                impfstoff=="astra" ~ "AZ",
-                impfstoff=="johnson" ~ "J&J",
-                impfstoff=="novavax" ~ "Novavax",
-                impfstoff=="valneva" ~ "Valneva",
-                TRUE ~ "error"),
               KW=isoweek(date),
               wochentag=lubridate::wday(date, week_start = 1),
               KW=ifelse(wochentag>=5, KW+1, KW),
@@ -205,14 +207,6 @@ bunddashboard_daten <- impfdashboardde %>%
   #filter(date <= "2021-05-11") %>%
   mutate(
     geo=ifelse(region=="DE-BUND", "Zentren_Bund", geo),
-    Hersteller=case_when(
-      impfstoff=="comirnaty" ~ "BNT/Pfizer",
-      impfstoff=="moderna" ~ "Moderna",
-      impfstoff=="astra" ~ "AZ",
-      impfstoff=="johnson" ~ "J&J",
-      impfstoff=="novavax" ~ "Novavax",
-      impfstoff=="valneva" ~ "Valneva",
-      TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
@@ -245,8 +239,8 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                 filter(Impfdatum==max(Impfdatum)) %>% 
                                 mutate(Impfstoff=case_when(
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
-                                  Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer",
-                                  Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+                                  Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
+                                  Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
                                   Impfstoff=="Spikevax" ~ "Moderna",
                                   Impfstoff=="Vaxzevria" ~ "AZ",
                                   Impfstoff=="Jcovden" ~ "J&J",
@@ -267,8 +261,8 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                 filter(Impfdatum==max(Impfdatum)) %>% 
                                 mutate(Impfstoff=case_when(
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
-                                  Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer",
-                                  Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna",
+                                  Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
+                                  Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
                                   Impfstoff=="Spikevax" ~ "Moderna",
                                   Impfstoff=="Vaxzevria" ~ "AZ",
                                   Impfstoff=="Jcovden" ~ "J&J",
@@ -334,7 +328,9 @@ dosen_verabreicht <- rki_vacc_lastday %>%
   #           by=c("hersteller"="Hersteller", "geo"="Bundesland")) %>%
   mutate(dosen_geliefert=ifelse(!is.na(dosen_geliefert), dosen_geliefert, 0),
          zugelassen=case_when(
-           Impfstoff%in%c("AZ", "BNT/Pfizer", "Moderna", "J&J", "Novavax", "Valneva") ~ 1, # 
+           Impfstoff%in%c("AZ", "BNT/Pfizer", "Moderna", 
+                          "J&J", "Novavax", "Valneva",
+                          "BNT/Pfizer-Omikron", "Moderna-Omikron") ~ 1, # 
            TRUE ~ 0
          )) %>%
   mutate(#Stand_letzteKW=isoweek(prognosestart-days(1)),
@@ -392,14 +388,6 @@ fuerpraxen <- impfdashboardde %>%
   filter(einrichtung=="arztpraxen") %>%
   mutate(
     geo=ifelse(region=="DE-BUND", "Zentren_Bund", geo),
-    Hersteller=case_when(
-      impfstoff=="comirnaty" ~ "BNT/Pfizer",
-      impfstoff=="moderna" ~ "Moderna",
-      impfstoff=="astra" ~ "AZ",
-      impfstoff=="johnson" ~ "J&J",
-      impfstoff=="novavax" ~ "Novavax",
-      impfstoff=="valneva" ~ "Valneva",
-      TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
@@ -428,14 +416,6 @@ fuerimpfzentren <- impfdashboardde %>%
   filter(einrichtung=="impfzentren" | einrichtung=="oegd") %>%
   mutate(
     geo=ifelse(region=="DE-BUND", "Zentren_Bund", geo),
-    Hersteller=case_when(
-      impfstoff=="comirnaty" ~ "BNT/Pfizer",
-      impfstoff=="moderna" ~ "Moderna",
-      impfstoff=="astra" ~ "AZ",
-      impfstoff=="johnson" ~ "J&J",
-      impfstoff=="novavax" ~ "Novavax",
-      impfstoff=="valneva" ~ "Valneva",
-      TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
@@ -466,14 +446,6 @@ fuerandere <- impfdashboardde %>%
   mutate(
     geo=ifelse(region=="DE-BUND", "Bund", geo),
     geo=ifelse(region=="DE-Betriebe", "Betriebe", geo),
-    Hersteller=case_when(
-      impfstoff=="comirnaty" ~ "BNT/Pfizer",
-      impfstoff=="moderna" ~ "Moderna",
-      impfstoff=="astra" ~ "AZ",
-      impfstoff=="johnson" ~ "J&J",
-      impfstoff=="novavax" ~ "Novavax",
-      impfstoff=="valneva" ~ "Valneva",
-      TRUE ~ "error"),
     KW=isoweek(date),
     wochentag=lubridate::wday(date, week_start = 1),
     KW=ifelse(wochentag>=5, KW+1, KW),
@@ -513,7 +485,10 @@ impfungen_praxen_bl_kw <- impfungen_praxen_bl %>%
              JahrKW=Jahr*100+KW) %>% 
   group_by(KW, Jahr, JahrKW, Bundesland) %>% 
   summarise(Impfungen_Praxen_KW=sum(`BNT/Pfizer`+
+                                      `BNT/Pfizer-Kinder`+
+                                      `BNT/Pfizer-Omikron`+
                                       `Moderna`+
+                                      `Moderna-Omikron`+
                                       `AZ`+
                                       `J&J`+
                                       `Novavax`), .groups="drop") %>% 
