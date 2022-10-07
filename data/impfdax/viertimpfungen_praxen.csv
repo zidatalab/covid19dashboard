@@ -5187,7 +5187,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-05,Brandenburg,1778
 2022-10-05,Bremen,NA
 2022-10-05,Hamburg,NA
-2022-10-05,Hessen,4155
+2022-10-05,Hessen,NA
 2022-10-05,Mecklenburg-Vorpommern,NA
 2022-10-05,Niedersachsen,6247
 2022-10-05,Nordrhein-Westfalen,NA
@@ -5201,8 +5201,9 @@ vacc_date,Bundesland,viert_praxen
 2022-10-06,Baden-Württemberg,8528
 2022-10-06,Bayern,10680
 2022-10-06,Berlin,3873
-2022-10-06,Brandenburg,2336
+2022-10-06,Brandenburg,NA
 2022-10-06,Bremen,413
+2022-10-06,Bundesressorts,NA
 2022-10-06,Hamburg,1444
 2022-10-06,Hessen,5398
 2022-10-06,Mecklenburg-Vorpommern,1608
@@ -5212,6 +5213,6 @@ vacc_date,Bundesland,viert_praxen
 2022-10-06,Saarland,1307
 2022-10-06,Sachsen,3498
 2022-10-06,Sachsen-Anhalt,2426
-2022-10-06,Schleswig-Holstein,3380
+2022-10-06,Schleswig-Holstein,NA
 2022-10-06,Thüringen,1802
 2022-10-06,unbekannt,43
