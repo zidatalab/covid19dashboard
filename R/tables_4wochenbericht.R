@@ -312,7 +312,7 @@ divi_all <- tbl(conn,"divi_all") %>% collect() %>% mutate(daten_stand=as_date(da
 # takes a while ...
 rki <- tbl(conn,"rki") %>% collect()
 
-rki <- read_csv("~/Dokumente/Aktuell_Deutschland_SarsCov2_Infektionen.csv")
+# rki <- read_csv("~/Dokumente/Aktuell_Deutschland_SarsCov2_Infektionen.csv")
 
 # rki <- tbl(conn,"rki_archive") %>% filter(Datenstand=="2021-07-29") %>% collect()
 params <- tbl(conn,"params") %>% select(name, id, cases, R0, EW_insgesamt) %>% collect()
@@ -601,23 +601,23 @@ sterbetabelle <- tibble(
          !!paste0("KW ", sterbeKW-sterbeJahr*100), Veraenderung)
 
 
-divi <- read_csv("~/Dokumente/covid19dashboard/data/divi.csv", 
-                 col_types = cols(date = col_character(), 
-                                  bundesland = col_integer(), gemeindeschluessel = col_integer())) %>% 
-  mutate(daten_stand=as_date(date)) %>% 
-  bind_rows(read_csv("~/Dokumente/covid19dashboard/data/divi.csv", 
-                     col_types = cols(date = col_character(), 
-                                      bundesland = col_integer(), gemeindeschluessel = col_integer())) %>% 
-              mutate(daten_stand=as_date(date)) %>% 
-              group_by(date, daten_stand) %>% 
-              summarise(bundesland=0, gemeindeschluessel=0,
-                      across(anzahl_standorte:betten_frei_nur_erwachsen, ~ sum(., na.rm=TRUE),
-                             ), .groups="drop"
-                      )) %>% 
-  mutate(id=gemeindeschluessel,
-         ICU_Betten=betten_frei+betten_belegt)
+# divi <- read_csv("~/Dokumente/covid19dashboard/data/divi.csv", 
+#                  col_types = cols(date = col_character(), 
+#                                   bundesland = col_integer(), gemeindeschluessel = col_integer())) %>% 
+#   mutate(daten_stand=as_date(date)) %>% 
+#   bind_rows(read_csv("~/Dokumente/covid19dashboard/data/divi.csv", 
+#                      col_types = cols(date = col_character(), 
+#                                       bundesland = col_integer(), gemeindeschluessel = col_integer())) %>% 
+#               mutate(daten_stand=as_date(date)) %>% 
+#               group_by(date, daten_stand) %>% 
+#               summarise(bundesland=0, gemeindeschluessel=0,
+#                       across(anzahl_standorte:betten_frei_nur_erwachsen, ~ sum(., na.rm=TRUE),
+#                              ), .groups="drop"
+#                       )) %>% 
+#   mutate(id=gemeindeschluessel,
+#          ICU_Betten=betten_frei+betten_belegt)
 maxdividate <- maxdate # max(divi_all$daten_stand)
-divi0 <- divi %>%
+divi0 <- divi_all %>%
   filter(id==0) %>%
   mutate(auslastungcovid=faelle_covid_aktuell/ICU_Betten,
          quotefrei=betten_frei/ICU_Betten,
