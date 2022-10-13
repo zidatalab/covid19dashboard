@@ -3756,7 +3756,7 @@ vacc_date,Bundesland,viert_praxen
 2022-07-11,Mecklenburg-Vorpommern,169
 2022-07-11,Niedersachsen,1354
 2022-07-11,Nordrhein-Westfalen,3421
-2022-07-11,Rheinland-Pfalz,546
+2022-07-11,Rheinland-Pfalz,NA
 2022-07-11,Saarland,132
 2022-07-11,Sachsen,456
 2022-07-11,Sachsen-Anhalt,235
@@ -4919,7 +4919,7 @@ vacc_date,Bundesland,viert_praxen
 2022-09-19,Bayern,NA
 2022-09-19,Berlin,NA
 2022-09-19,Brandenburg,NA
-2022-09-19,Bremen,58
+2022-09-19,Bremen,NA
 2022-09-19,Bundesressorts,NA
 2022-09-19,Hamburg,NA
 2022-09-19,Hessen,NA
@@ -4991,7 +4991,7 @@ vacc_date,Bundesland,viert_praxen
 2022-09-23,Bayern,NA
 2022-09-23,Berlin,NA
 2022-09-23,Brandenburg,NA
-2022-09-23,Bremen,248
+2022-09-23,Bremen,NA
 2022-09-23,Bundesressorts,NA
 2022-09-23,Hamburg,NA
 2022-09-23,Hessen,NA
@@ -5107,7 +5107,7 @@ vacc_date,Bundesland,viert_praxen
 2022-09-30,Bayern,NA
 2022-09-30,Berlin,NA
 2022-09-30,Brandenburg,NA
-2022-09-30,Bremen,273
+2022-09-30,Bremen,NA
 2022-09-30,Hamburg,NA
 2022-09-30,Hessen,NA
 2022-09-30,Mecklenburg-Vorpommern,NA
@@ -5222,7 +5222,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-07,Brandenburg,1980
 2022-10-07,Bremen,NA
 2022-10-07,Bundesressorts,NA
-2022-10-07,Hamburg,1213
+2022-10-07,Hamburg,NA
 2022-10-07,Hessen,NA
 2022-10-07,Mecklenburg-Vorpommern,1140
 2022-10-07,Niedersachsen,5618
@@ -5275,7 +5275,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-10,Mecklenburg-Vorpommern,314
 2022-10-10,Niedersachsen,2687
 2022-10-10,Nordrhein-Westfalen,NA
-2022-10-10,Rheinland-Pfalz,1401
+2022-10-10,Rheinland-Pfalz,NA
 2022-10-10,Saarland,461
 2022-10-10,Sachsen,1707
 2022-10-10,Sachsen-Anhalt,NA
@@ -5296,7 +5296,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-11,Rheinland-Pfalz,NA
 2022-10-11,Saarland,1211
 2022-10-11,Sachsen,3253
-2022-10-11,Sachsen-Anhalt,2076
+2022-10-11,Sachsen-Anhalt,NA
 2022-10-11,Schleswig-Holstein,2485
 2022-10-11,Thüringen,NA
 2022-10-11,unbekannt,173
@@ -5305,11 +5305,12 @@ vacc_date,Bundesland,viert_praxen
 2022-10-12,Berlin,4348
 2022-10-12,Brandenburg,2726
 2022-10-12,Bremen,479
+2022-10-12,Bundesressorts,NA
 2022-10-12,Hamburg,1190
 2022-10-12,Hessen,6529
 2022-10-12,Mecklenburg-Vorpommern,666
 2022-10-12,Niedersachsen,8165
-2022-10-12,Nordrhein-Westfalen,11419
+2022-10-12,Nordrhein-Westfalen,NA
 2022-10-12,Rheinland-Pfalz,3924
 2022-10-12,Saarland,1142
 2022-10-12,Sachsen,3986

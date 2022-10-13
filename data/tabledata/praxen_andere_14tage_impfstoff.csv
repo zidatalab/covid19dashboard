@@ -1,10 +1,10 @@
 Impfstoff,impfungen_praxen,impfungen_zentrenetc,impfungen_alle
-AZ,0,0,0
-BNT/Pfizer,207068,40671,247739
+AZ,0,1,1
+BNT/Pfizer,207068,41965,249033
 BNT/Pfizer-Kinder,3321,0,3321
-BNT/Pfizer-Omikron,431318,82629,513947
+BNT/Pfizer-Omikron,431318,93895,525213
 J&J,521,14,535
-Moderna,7563,3648,11211
-Moderna-Omikron,7458,4165,11623
-Novavax,623,1231,1854
-Valneva,168,431,599
+Moderna,7563,3771,11334
+Moderna-Omikron,7458,4529,11987
+Novavax,623,1377,2000
+Valneva,168,473,641
