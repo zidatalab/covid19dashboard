@@ -61,7 +61,7 @@ Baden-Württemberg,40,2022,202240,264,603
 Baden-Württemberg,41,2021,202141,646,1171
 Baden-Württemberg,41,2022,202241,103,142
 Baden-Württemberg,42,2021,202142,1089,1788
-Baden-Württemberg,42,2022,202242,2,2
+Baden-Württemberg,42,2022,202242,10,2
 Baden-Württemberg,43,2021,202143,1364,2787
 Baden-Württemberg,44,2021,202144,1340,3236
 Baden-Württemberg,45,2021,202145,3170,6872
@@ -276,7 +276,7 @@ Brandenburg,40,2022,202240,8,11
 Brandenburg,41,2021,202141,68,93
 Brandenburg,41,2022,202241,48,56
 Brandenburg,42,2021,202142,57,87
-Brandenburg,42,2022,202242,4,4
+Brandenburg,42,2022,202242,9,4
 Brandenburg,43,2021,202143,320,373
 Brandenburg,44,2021,202144,765,696
 Brandenburg,45,2021,202145,1021,1192
@@ -594,7 +594,7 @@ Mecklenburg-Vorpommern,40,2022,202240,18,39
 Mecklenburg-Vorpommern,41,2021,202141,26,24
 Mecklenburg-Vorpommern,41,2022,202241,1,12
 Mecklenburg-Vorpommern,42,2021,202142,59,278
-Mecklenburg-Vorpommern,42,2022,202242,0,12
+Mecklenburg-Vorpommern,42,2022,202242,9,12
 Mecklenburg-Vorpommern,43,2021,202143,95,278
 Mecklenburg-Vorpommern,44,2021,202144,300,636
 Mecklenburg-Vorpommern,45,2021,202145,413,800
@@ -667,7 +667,7 @@ Niedersachsen,40,2022,202240,224,315
 Niedersachsen,41,2021,202141,429,457
 Niedersachsen,41,2022,202241,113,131
 Niedersachsen,42,2021,202142,271,305
-Niedersachsen,42,2022,202242,20,27
+Niedersachsen,42,2022,202242,22,27
 Niedersachsen,43,2021,202143,641,613
 Niedersachsen,44,2021,202144,989,1193
 Niedersachsen,45,2021,202145,1677,2237
@@ -740,7 +740,7 @@ Nordrhein-Westfalen,40,2022,202240,436,880
 Nordrhein-Westfalen,41,2021,202141,796,982
 Nordrhein-Westfalen,41,2022,202241,213,477
 Nordrhein-Westfalen,42,2021,202142,686,1101
-Nordrhein-Westfalen,42,2022,202242,108,141
+Nordrhein-Westfalen,42,2022,202242,125,141
 Nordrhein-Westfalen,43,2021,202143,2149,3605
 Nordrhein-Westfalen,44,2021,202144,2520,3928
 Nordrhein-Westfalen,45,2021,202145,3330,7856
@@ -946,7 +946,7 @@ Sachsen,40,2022,202240,6,9
 Sachsen,41,2021,202141,655,809
 Sachsen,41,2022,202241,29,39
 Sachsen,42,2021,202142,328,476
-Sachsen,42,2022,202242,2,2
+Sachsen,42,2022,202242,4,2
 Sachsen,43,2021,202143,330,1080
 Sachsen,44,2021,202144,1478,2384
 Sachsen,45,2021,202145,1814,4045
@@ -1089,7 +1089,7 @@ Schleswig-Holstein,40,2022,202240,256,263
 Schleswig-Holstein,41,2021,202141,167,299
 Schleswig-Holstein,41,2022,202241,50,52
 Schleswig-Holstein,42,2021,202142,532,845
-Schleswig-Holstein,42,2022,202242,26,26
+Schleswig-Holstein,42,2022,202242,32,26
 Schleswig-Holstein,43,2021,202143,754,1662
 Schleswig-Holstein,44,2021,202144,1138,2187
 Schleswig-Holstein,45,2021,202145,1505,3542
