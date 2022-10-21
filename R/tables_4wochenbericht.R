@@ -63,12 +63,12 @@ impfdashboardde <- read_tsv(
               select(region=Code,
                      geo=Name), by="region") %>% 
   mutate(Hersteller=case_when(
-    impfstoff %in% c("comirnaty", "comirnaty BA.4/5") &
-      impfstofftyp %in% c("bivalent Wildtyp/BA.1",
-                          "comirnaty BA.4/5") ~ "BNT/Pfizer-Omikron",
-    impfstoff=="comirnaty" & impfstofftyp=="Wildtyp" ~ "BNT/Pfizer",
-    impfstoff=="moderna" & impfstofftyp=="Wildtyp" ~ "Moderna",
-    impfstoff=="moderna" & impfstofftyp=="bivalent Wildtyp/BA.1" ~ "Moderna-Omikron",
+    impfstoff=="comirnaty" &
+      impfstofftyp %in% c("bivalent_wildtyp_ba1",
+                          "bivalent_wildtyp_ba4_ba5") ~ "BNT/Pfizer-Omikron",
+    impfstoff=="comirnaty" & impfstofftyp=="wildtyp" ~ "BNT/Pfizer",
+    impfstoff=="moderna" & impfstofftyp=="wildtyp" ~ "Moderna",
+    impfstoff=="moderna" & impfstofftyp=="bivalent_wildtyp_ba1" ~ "Moderna-Omikron",
     impfstoff=="astra" ~ "AZ",
     impfstoff=="johnson" ~ "J&J",
     impfstoff=="novavax" ~ "Novavax",
