@@ -5525,12 +5525,13 @@ vacc_date,Bundesland,viert_praxen
 2022-10-24,Schleswig-Holstein,969
 2022-10-24,Thüringen,446
 2022-10-24,unbekannt,65
-2022-10-25,Baden-Württemberg,11109
+2022-10-25,Baden-Württemberg,NA
 2022-10-25,Bayern,13033
 2022-10-25,Berlin,3510
 2022-10-25,Brandenburg,1883
-2022-10-25,Bremen,316
-2022-10-25,Hamburg,1708
+2022-10-25,Bremen,NA
+2022-10-25,Bundesressorts,NA
+2022-10-25,Hamburg,NA
 2022-10-25,Hessen,4515
 2022-10-25,Mecklenburg-Vorpommern,1632
 2022-10-25,Niedersachsen,5434
@@ -5538,7 +5539,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-25,Rheinland-Pfalz,3379
 2022-10-25,Saarland,843
 2022-10-25,Sachsen,2349
-2022-10-25,Sachsen-Anhalt,1307
+2022-10-25,Sachsen-Anhalt,NA
 2022-10-25,Schleswig-Holstein,3645
 2022-10-25,Thüringen,985
 2022-10-25,unbekannt,151
