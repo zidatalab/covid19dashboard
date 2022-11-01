@@ -5467,6 +5467,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-21,Berlin,4344
 2022-10-21,Brandenburg,2455
 2022-10-21,Bremen,NA
+2022-10-21,Bundesressorts,NA
 2022-10-21,Hamburg,1603
 2022-10-21,Hessen,5805
 2022-10-21,Mecklenburg-Vorpommern,NA
@@ -5515,6 +5516,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-24,Berlin,NA
 2022-10-24,Brandenburg,717
 2022-10-24,Bremen,148
+2022-10-24,Bundesressorts,NA
 2022-10-24,Hamburg,NA
 2022-10-24,Hessen,1963
 2022-10-24,Mecklenburg-Vorpommern,1489
@@ -5576,7 +5578,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-27,Nordrhein-Westfalen,NA
 2022-10-27,Rheinland-Pfalz,4577
 2022-10-27,Saarland,1087
-2022-10-27,Sachsen,3362
+2022-10-27,Sachsen,NA
 2022-10-27,Sachsen-Anhalt,1687
 2022-10-27,Schleswig-Holstein,6988
 2022-10-27,Thüringen,1570
@@ -5586,6 +5588,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-28,Berlin,NA
 2022-10-28,Brandenburg,1750
 2022-10-28,Bremen,NA
+2022-10-28,Bundesressorts,NA
 2022-10-28,Hamburg,1678
 2022-10-28,Hessen,NA
 2022-10-28,Mecklenburg-Vorpommern,1216
@@ -5612,7 +5615,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-29,Saarland,5
 2022-10-29,Sachsen,332
 2022-10-29,Sachsen-Anhalt,13
-2022-10-29,Schleswig-Holstein,600
+2022-10-29,Schleswig-Holstein,NA
 2022-10-29,Thüringen,NA
 2022-10-30,Baden-Württemberg,844
 2022-10-30,Bayern,NA
@@ -5625,18 +5628,19 @@ vacc_date,Bundesland,viert_praxen
 2022-10-30,Saarland,NA
 2022-10-30,Sachsen,52
 2022-10-30,Schleswig-Holstein,15
-2022-10-31,Baden-Württemberg,2183
-2022-10-31,Bayern,2755
+2022-10-31,Baden-Württemberg,NA
+2022-10-31,Bayern,NA
 2022-10-31,Berlin,1828
 2022-10-31,Brandenburg,100
+2022-10-31,Bundesressorts,NA
 2022-10-31,Hamburg,284
-2022-10-31,Hessen,2602
+2022-10-31,Hessen,NA
 2022-10-31,Mecklenburg-Vorpommern,66
 2022-10-31,Niedersachsen,174
 2022-10-31,Nordrhein-Westfalen,6946
-2022-10-31,Rheinland-Pfalz,688
-2022-10-31,Saarland,133
-2022-10-31,Sachsen,45
+2022-10-31,Rheinland-Pfalz,NA
+2022-10-31,Saarland,NA
+2022-10-31,Sachsen,NA
 2022-10-31,Sachsen-Anhalt,6
 2022-10-31,Schleswig-Holstein,178
 2022-10-31,unbekannt,9
