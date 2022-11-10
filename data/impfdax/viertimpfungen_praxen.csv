@@ -725,6 +725,7 @@ vacc_date,Bundesland,viert_praxen
 2022-01-08,Bayern,NA
 2022-01-08,Brandenburg,NA
 2022-01-08,Bremen,NA
+2022-01-08,Hamburg,NA
 2022-01-08,Hessen,NA
 2022-01-08,Mecklenburg-Vorpommern,NA
 2022-01-08,Niedersachsen,NA
@@ -5621,7 +5622,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-30,Bayern,NA
 2022-10-30,Berlin,71
 2022-10-30,Hamburg,NA
-2022-10-30,Hessen,17
+2022-10-30,Hessen,NA
 2022-10-30,Niedersachsen,NA
 2022-10-30,Nordrhein-Westfalen,NA
 2022-10-30,Rheinland-Pfalz,38
@@ -5787,13 +5788,14 @@ vacc_date,Bundesland,viert_praxen
 2022-11-09,Bayern,9049
 2022-11-09,Berlin,4700
 2022-11-09,Brandenburg,2720
-2022-11-09,Bremen,316
+2022-11-09,Bremen,NA
+2022-11-09,Bundesressorts,NA
 2022-11-09,Hamburg,1690
 2022-11-09,Hessen,6122
 2022-11-09,Mecklenburg-Vorpommern,1501
 2022-11-09,Niedersachsen,8165
 2022-11-09,Nordrhein-Westfalen,15960
-2022-11-09,Rheinland-Pfalz,4439
+2022-11-09,Rheinland-Pfalz,NA
 2022-11-09,Saarland,1165
 2022-11-09,Sachsen,5139
 2022-11-09,Sachsen-Anhalt,2881
