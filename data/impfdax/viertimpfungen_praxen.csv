@@ -240,6 +240,7 @@ vacc_date,Bundesland,viert_praxen
 2021-11-15,Bayern,NA
 2021-11-15,Berlin,NA
 2021-11-15,Nordrhein-Westfalen,NA
+2021-11-15,Sachsen,NA
 2021-11-16,Baden-Württemberg,NA
 2021-11-16,Bayern,NA
 2021-11-16,Nordrhein-Westfalen,NA
@@ -5629,6 +5630,7 @@ vacc_date,Bundesland,viert_praxen
 2022-10-30,Saarland,NA
 2022-10-30,Sachsen,52
 2022-10-30,Schleswig-Holstein,15
+2022-10-30,Thüringen,NA
 2022-10-31,Baden-Württemberg,NA
 2022-10-31,Bayern,NA
 2022-10-31,Berlin,1828
@@ -5841,7 +5843,7 @@ vacc_date,Bundesland,viert_praxen
 2022-11-12,Baden-Württemberg,NA
 2022-11-12,Bayern,NA
 2022-11-12,Berlin,NA
-2022-11-12,Brandenburg,271
+2022-11-12,Brandenburg,NA
 2022-11-12,Bremen,NA
 2022-11-12,Hamburg,NA
 2022-11-12,Hessen,NA
@@ -5880,7 +5882,7 @@ vacc_date,Bundesland,viert_praxen
 2022-11-14,Mecklenburg-Vorpommern,556
 2022-11-14,Niedersachsen,2892
 2022-11-14,Nordrhein-Westfalen,NA
-2022-11-14,Rheinland-Pfalz,1394
+2022-11-14,Rheinland-Pfalz,NA
 2022-11-14,Saarland,221
 2022-11-14,Sachsen,1830
 2022-11-14,Sachsen-Anhalt,960
@@ -5892,15 +5894,16 @@ vacc_date,Bundesland,viert_praxen
 2022-11-15,Berlin,3500
 2022-11-15,Brandenburg,2881
 2022-11-15,Bremen,215
+2022-11-15,Bundesressorts,NA
 2022-11-15,Hamburg,1597
 2022-11-15,Hessen,4530
 2022-11-15,Mecklenburg-Vorpommern,1128
-2022-11-15,Niedersachsen,6735
-2022-11-15,Nordrhein-Westfalen,15328
+2022-11-15,Niedersachsen,NA
+2022-11-15,Nordrhein-Westfalen,NA
 2022-11-15,Rheinland-Pfalz,3050
 2022-11-15,Saarland,761
 2022-11-15,Sachsen,3831
-2022-11-15,Sachsen-Anhalt,2327
-2022-11-15,Schleswig-Holstein,2996
-2022-11-15,Thüringen,1512
+2022-11-15,Sachsen-Anhalt,NA
+2022-11-15,Schleswig-Holstein,NA
+2022-11-15,Thüringen,NA
 2022-11-15,unbekannt,115
