@@ -84,6 +84,7 @@ rki_vacc_laender <- read_csv("https://raw.githubusercontent.com/robert-koch-inst
   mutate(Impfstoff=case_when(
     Impfstoff=="Comirnaty" ~ "Comirnaty",
     Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "Comirnaty-Omikron",
+    Impfstoff=="Comirnaty-Kleinkinder" ~ "Comirnaty",
     Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
     Impfstoff=="Spikevax" ~ "Moderna",
     Impfstoff=="Vaxzevria" ~ "AstraZeneca",
@@ -166,6 +167,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
       Altersgruppe=="1" ~ "60+",
       Altersgruppe=="2" ~ "12-17",
       Altersgruppe=="3" ~ "5-11",
+      Altersgruppe=="4" ~ "0-4",
       TRUE ~ "u"
     ))
   
@@ -193,7 +195,9 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   
   kbv_impfstoff_laender <- kbv_impfstoff_kreise_kv_bl %>% 
     mutate(Impfstoff=case_when(
-      vacc_product %in% c("BNT162b2", "BNT162b2-Kinder") ~ "Comirnaty",
+      vacc_product %in% c("BNT162b2", 
+                          "BNT162b2-Kinder",
+                          "BNT162b2-KK") ~ "Comirnaty",
       vacc_product=="BNT162b2-VA" ~ "Comirnaty-Omikron",
       vacc_product=="AZD1222" ~ "AstraZeneca",
       vacc_product=="mRNA-1273" ~ "Moderna",
@@ -224,10 +228,10 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
     full_join(
       kbv_age_kreise_kv_bl,
       rki_vacc_kreise %>% 
-        mutate(Altersgruppe=ifelse(
-          Altersgruppe=="05-11",
-          "5-11",
-          Altersgruppe
+        mutate(Altersgruppe=case_when(
+          Altersgruppe=="05-11" ~ "5-11",
+          Altersgruppe=="00-04" ~ "0-4",
+          TRUE ~ Altersgruppe
         )),
       by=c("vacc_date",
            "Kreis2016"="LandkreisId",
@@ -253,7 +257,7 @@ if (test_new_kbv_vacc>test_kbv_aggr_vacc | test_new_rki_vacc>test_old_rki_vacc) 
   write_csv(moderna_auffr, "../data/moderna_auffr.csv")
   
   viertimpfungen_praxen <- kbv_rki_impfstoff_laender %>% 
-    filter(vacc_series==4) %>% 
+    filter(vacc_series>=4) %>% 
     group_by(vacc_date, Bundesland) %>% 
     summarise(viert_praxen=sum(anzahl_praxen),
               .groups="drop")

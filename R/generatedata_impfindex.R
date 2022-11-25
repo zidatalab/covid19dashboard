@@ -9,6 +9,7 @@ impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publ
   select(-1) %>% 
   rename(`BNT/Pfizer`=`BNT162b2`,
          `BNT/Pfizer-Kinder`=`BNT162b2-Kinder`,
+         `BNT/Pfizer-Kleinkind`=`BNT162b2-KK`,
          `BNT/Pfizer-Omikron`=`BNT162b2-VA`,
          `Moderna-Omikron`=`mRNA-1273-VA`,
          `Moderna`=`mRNA-1273`,
@@ -103,16 +104,20 @@ bev_gesamt_laender <- bind_rows(
 #   mutate(geo=ifelse(region=="DE", "Germany", geo),
 #          geotype=ifelse(region=="DE", "nation", "state"))
 
-rki_github_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
-rki_github_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv")
-alle_tag_bl <- rki_github_bl %>% 
+rki_github_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv") %>% 
   mutate(Impfserie=case_when(
     Impfserie<=4 ~ Impfserie,
     Impfserie>4 ~ 4,
     TRUE ~ 999
-  )) %>%
+  ))
+rki_github_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv") %>% 
+  mutate(Impfschutz=case_when(
+    Impfschutz<=4 ~ Impfschutz,
+    Impfschutz>4 ~ 4,
+    TRUE ~ 999
+  ))
+alle_tag_bl <- rki_github_bl %>%
   mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
-  # filter(Impfserie==3) %>% 
   group_by(Impfdatum, blid, Impfserie) %>% 
   summarise(impfungen=sum(Anzahl), .groups="drop") %>% 
   left_join(bev_gesamt_laender %>% select(blid, Name), by="blid") %>% 
@@ -136,6 +141,7 @@ praxen_14tage_impfstoff <- impfungen_praxen_bl %>%
 alle_14tage_impfstoff <- rki_github_bl %>% 
   mutate(Impfstoff=case_when(
     Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
+    Impfstoff=="Comirnaty-Kleinkinder" ~ "BNT/Pfizer",
     Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
     Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
     Impfstoff=="Spikevax" ~ "Moderna",
@@ -244,6 +250,7 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                 filter(Impfdatum==max(Impfdatum)) %>% 
                                 mutate(Impfstoff=case_when(
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
+                                  Impfstoff=="Comirnaty-Kleinkinder" ~ "BNT/Pfizer",
                                   Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
                                   Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
                                   Impfstoff=="Spikevax" ~ "Moderna",
@@ -266,6 +273,7 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                 filter(Impfdatum==max(Impfdatum)) %>% 
                                 mutate(Impfstoff=case_when(
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
+                                  Impfstoff=="Comirnaty-Kleinkinder" ~ "BNT/Pfizer",
                                   Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
                                   Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
                                   Impfstoff=="Spikevax" ~ "Moderna",
@@ -491,6 +499,7 @@ impfungen_praxen_bl_kw <- impfungen_praxen_bl %>%
   group_by(KW, Jahr, JahrKW, Bundesland) %>% 
   summarise(Impfungen_Praxen_KW=sum(`BNT/Pfizer`+
                                       `BNT/Pfizer-Kinder`+
+                                      `BNT/Pfizer-Kleinkind`+
                                       `BNT/Pfizer-Omikron`+
                                       `Moderna`+
                                       `Moderna-Omikron`+
