@@ -106,6 +106,11 @@ bev_gesamt_laender <- bind_rows(
 rki_github_bl <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv")
 rki_github_kreise <- read_csv("https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv")
 alle_tag_bl <- rki_github_bl %>% 
+  mutate(Impfserie=case_when(
+    Impfserie<=4 ~ Impfserie,
+    Impfserie>4 ~ 4,
+    TRUE ~ 999
+  )) %>%
   mutate(blid=as.integer(BundeslandId_Impfort)) %>% 
   # filter(Impfserie==3) %>% 
   group_by(Impfdatum, blid, Impfserie) %>% 
