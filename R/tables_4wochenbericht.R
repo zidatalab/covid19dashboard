@@ -48,7 +48,7 @@ impfen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicd
          ),
          JahrKW=100*Jahr+KW) %>% 
   group_by(Jahr, KW, Bundesland) %>% 
-  summarise(Impfungen=sum(`Ad26.COV2.S`+`AZD1222`+`BNT162b2`+`mRNA-1273`))
+  summarise(Impfungen=sum(across(`Ad26.COV2.S`:`VLA2001`)))
 impfen_praxen_bl <- bind_rows(impfen_praxen_bl,
                               impfen_praxen_bl %>% 
                                 group_by(Jahr, KW) %>% 
