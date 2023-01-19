@@ -4,7 +4,7 @@ Baden-Württemberg,1,2023,202301,0,8
 Baden-Württemberg,2,2022,202202,116846,193329
 Baden-Württemberg,2,2023,202302,2,31
 Baden-Württemberg,3,2022,202203,75220,120691
-Baden-Württemberg,3,2023,202303,6,4
+Baden-Württemberg,3,2023,202303,6,12
 Baden-Württemberg,4,2022,202204,40015,65546
 Baden-Württemberg,5,2022,202205,21539,33620
 Baden-Württemberg,6,2022,202206,12696,21589
@@ -60,7 +60,7 @@ Baden-Württemberg,38,2022,202238,1435,3334
 Baden-Württemberg,39,2021,202139,138,1143
 Baden-Württemberg,39,2022,202239,1181,2119
 Baden-Württemberg,40,2021,202140,325,454
-Baden-Württemberg,40,2022,202240,264,603
+Baden-Württemberg,40,2022,202240,264,613
 Baden-Württemberg,41,2021,202141,646,1171
 Baden-Württemberg,41,2022,202241,103,144
 Baden-Württemberg,42,2021,202142,1089,1788
@@ -68,7 +68,7 @@ Baden-Württemberg,42,2022,202242,36,56
 Baden-Württemberg,43,2021,202143,1364,2787
 Baden-Württemberg,43,2022,202243,60,74
 Baden-Württemberg,44,2021,202144,1340,3236
-Baden-Württemberg,44,2022,202244,10,72
+Baden-Württemberg,44,2022,202244,10,75
 Baden-Württemberg,45,2021,202145,3170,6872
 Baden-Württemberg,45,2022,202245,49,58
 Baden-Württemberg,46,2021,202146,5761,14605
@@ -90,7 +90,7 @@ Bayern,1,2023,202301,0,1
 Bayern,2,2022,202202,119536,235446
 Bayern,2,2023,202302,1,7
 Bayern,3,2022,202203,85877,154568
-Bayern,3,2023,202303,0,2
+Bayern,3,2023,202303,0,3
 Bayern,4,2022,202204,49399,91956
 Bayern,5,2022,202205,22921,43380
 Bayern,6,2022,202206,14783,26502
@@ -450,7 +450,7 @@ Bundesressorts,43,2021,202143,0,28
 Bundesressorts,44,2021,202144,0,62
 Bundesressorts,45,2021,202145,0,141
 Bundesressorts,46,2021,202146,0,973
-Bundesressorts,47,2021,202147,0,2573
+Bundesressorts,47,2021,202147,0,2572
 Bundesressorts,48,2021,202148,0,6047
 Bundesressorts,49,2021,202149,0,7386
 Bundesressorts,50,2021,202150,0,7778
@@ -779,7 +779,7 @@ Nordrhein-Westfalen,1,2023,202301,0,3
 Nordrhein-Westfalen,2,2022,202202,213026,337297
 Nordrhein-Westfalen,2,2023,202302,293,300
 Nordrhein-Westfalen,3,2022,202203,147737,234385
-Nordrhein-Westfalen,3,2023,202303,14,4
+Nordrhein-Westfalen,3,2023,202303,14,16
 Nordrhein-Westfalen,4,2022,202204,91260,139990
 Nordrhein-Westfalen,5,2022,202205,49134,75951
 Nordrhein-Westfalen,6,2022,202206,36767,54509
@@ -863,7 +863,7 @@ Nordrhein-Westfalen,52,2022,202252,3,203
 Rheinland-Pfalz,1,2022,202201,57096,103958
 Rheinland-Pfalz,2,2022,202202,45835,75927
 Rheinland-Pfalz,3,2022,202203,30560,49976
-Rheinland-Pfalz,3,2023,202303,0,1
+Rheinland-Pfalz,3,2023,202303,0,2
 Rheinland-Pfalz,4,2022,202204,18855,27003
 Rheinland-Pfalz,5,2022,202205,9070,13757
 Rheinland-Pfalz,6,2022,202206,6285,9989
@@ -1175,7 +1175,7 @@ Schleswig-Holstein,1,2022,202201,40732,94295
 Schleswig-Holstein,1,2023,202301,0,2
 Schleswig-Holstein,2,2022,202202,47210,98822
 Schleswig-Holstein,3,2022,202203,31528,67520
-Schleswig-Holstein,3,2023,202303,2,0
+Schleswig-Holstein,3,2023,202303,2,2
 Schleswig-Holstein,4,2022,202204,18650,39208
 Schleswig-Holstein,5,2022,202205,9902,20589
 Schleswig-Holstein,6,2022,202206,9079,15669
