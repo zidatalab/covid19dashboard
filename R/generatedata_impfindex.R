@@ -5,18 +5,33 @@ library("jsonlite")
 library(ISOcodes)
 
 ## impfungen in praxen nach bundeslaendern von lars
-impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff.csv") %>% 
+impfungen_praxen_bl <- read_csv("https://ziwebstorage.blob.core.windows.net/publicdata/zeitreihe_impfungen_aerzte_bl_date_wirkstoff_long.csv")  %>% 
   select(-1) %>% 
-  rename(`BNT/Pfizer`=`BNT162b2`,
-         `BNT/Pfizer-Kinder`=`BNT162b2-Kinder`,
-         `BNT/Pfizer-Kleinkind`=`BNT162b2-KK`,
-         `BNT/Pfizer-Omikron`=`BNT162b2-VA`,
-         `Moderna-Omikron`=`mRNA-1273-VA`,
-         `Moderna`=`mRNA-1273`,
-         `Novavax`=`NVX-CoV2373`,
-         `AZ`=`AZD1222`,
-         `J&J`=`Ad26.COV2.S`,
-         `Valneva`=`VLA2001`)
+  rename(Impfstoff=vacc_product) %>% 
+  mutate(Impfstoff=case_when(
+    Impfstoff=="BNT162b2" ~ "BNT/Pfizer",
+    Impfstoff=="BNT162b2-Kinder" ~ "BNT/Pfizer-Kinder",
+    Impfstoff=="BNT162b2-KK" ~ "BNT/Pfizer-Kleinkind",
+    Impfstoff=="Ad26.COV2.S" ~ "J&J",
+    Impfstoff=="AZD1222" ~ "AZ",
+    Impfstoff=="BNT162b2-VA" ~ "BNT/Pfizer-Omikron",
+    Impfstoff=="BNT162b2-BA.1" ~ "BNT/Pfizer-Omikron",
+    Impfstoff=="BNT162b2-BA.4/5" ~ "BNT/Pfizer-Omikron",
+    Impfstoff=="BNT162b2-Kinder-VA" ~ "BNT/Pfizer-Omikron-Kinder",
+    Impfstoff=="mRNA-1273" ~ "Moderna",
+    Impfstoff=="mRNA-1273-BA.1" ~ "Moderna-Omikron",
+    Impfstoff=="mRNA-1273-BA.4/5" ~ "Moderna-Omikron",
+    Impfstoff=="mRNA-1273-VA" ~ "Moderna-Omikron",
+    Impfstoff=="NVX-CoV2373" ~ "Novavax",
+    Impfstoff=="VLA2001" ~ "Valneva",
+    Impfstoff=="VAT00008" ~ "Sanofi",
+    TRUE ~ "ERROR"
+  )) %>% 
+  group_by(Bundesland, Impfstoff, date) %>% 
+  summarise(impfungen=sum(impfungen, na.rm=TRUE), .groups="drop") %>% 
+  pivot_wider(id_cols=c(Bundesland, date),
+              names_from=Impfstoff, values_from = impfungen) %>% 
+  replace(is.na(.), 0)
 
 ## static Bevoelkerung
 bev_kreise <- read_delim(
@@ -143,12 +158,17 @@ alle_14tage_impfstoff <- rki_github_bl %>%
     Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
     Impfstoff=="Comirnaty-Kleinkinder" ~ "BNT/Pfizer",
     Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
+    Impfstoff=="Comirnaty Original/Omicron BA.1" ~ "BNT/Pfizer-Omikron",
+    Impfstoff=="Comirnaty Original/Omicron BA.4-5" ~ "BNT/Pfizer-Omikron",
     Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
+    Impfstoff=="Spikevax bivalent Original/Omicron BA.1" ~ "Moderna-Omikron",
+    Impfstoff=="Spikevax bivalent Original/Omicron BA.4-5" ~ "Moderna-Omikron",
     Impfstoff=="Spikevax" ~ "Moderna",
     Impfstoff=="Vaxzevria" ~ "AZ",
     Impfstoff=="Jcovden" ~ "J&J",
     Impfstoff=="Nuvaxovid" ~ "Novavax",
     Impfstoff=="Valneva" ~ "Valneva",
+    Impfstoff=="VidPrevtyn Beta" ~ "Sanofi",
     TRUE ~ "ERROR"
   )) %>% 
   group_by(Impfdatum, Impfstoff) %>% 
@@ -187,10 +207,12 @@ impfdashboardde <- read_tsv(
   mutate(Hersteller=case_when(
     impfstoff %in% c("comirnaty", "comirnaty BA.4/5") &
       impfstofftyp %in% c("bivalent Wildtyp/BA.1",
-                          "comirnaty BA.4/5") ~ "BNT/Pfizer-Omikron",
-    impfstoff=="comirnaty" & impfstofftyp=="Wildtyp" ~ "BNT/Pfizer",
-    impfstoff=="moderna" & impfstofftyp=="Wildtyp" ~ "Moderna",
-    impfstoff=="moderna" & impfstofftyp=="bivalent Wildtyp/BA.1" ~ "Moderna-Omikron",
+                          "comirnaty BA.4/5", "bivalent_wildtyp_ba1",
+                          "bivalent_wildtyp_ba4_ba5") ~ "BNT/Pfizer-Omikron",
+    impfstoff=="comirnaty" & impfstofftyp%in%c("Wildtyp", "wildtyp") ~ "BNT/Pfizer",
+    impfstoff=="moderna" & impfstofftyp%in%c("Wildtyp", "wildtyp") ~ "Moderna",
+    impfstoff=="moderna" & impfstofftyp%in% c("bivalent Wildtyp/BA.1", "bivalent_wildtyp_ba1",
+                                              "bivalent_wildtyp_ba4_ba5") ~ "Moderna-Omikron",
     impfstoff=="astra" ~ "AZ",
     impfstoff=="johnson" ~ "J&J",
     impfstoff=="novavax" ~ "Novavax",
@@ -252,12 +274,17 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
                                   Impfstoff=="Comirnaty-Kleinkinder" ~ "BNT/Pfizer",
                                   Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
+                                  Impfstoff=="Comirnaty Original/Omicron BA.1" ~ "BNT/Pfizer-Omikron",
+                                  Impfstoff=="Comirnaty Original/Omicron BA.4-5" ~ "BNT/Pfizer-Omikron",
                                   Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
+                                  Impfstoff=="Spikevax bivalent Original/Omicron BA.1" ~ "Moderna-Omikron",
+                                  Impfstoff=="Spikevax bivalent Original/Omicron BA.4-5" ~ "Moderna-Omikron",
                                   Impfstoff=="Spikevax" ~ "Moderna",
                                   Impfstoff=="Vaxzevria" ~ "AZ",
                                   Impfstoff=="Jcovden" ~ "J&J",
                                   Impfstoff=="Nuvaxovid" ~ "Novavax",
                                   Impfstoff=="Valneva" ~ "Valneva",
+                                  Impfstoff=="VidPrevtyn Beta" ~ "Sanofi",
                                   TRUE ~ "ERROR"
                                 )) %>% 
                                 group_by(Impfdatum, Impfstoff, Impfserie) %>% 
@@ -275,12 +302,17 @@ rki_vacc_lastday <- bind_rows(rki_github_bl %>%
                                   Impfstoff=="Comirnaty" ~ "BNT/Pfizer",
                                   Impfstoff=="Comirnaty-Kleinkinder" ~ "BNT/Pfizer",
                                   Impfstoff=="Comirnaty bivalent (Original/Omikron)" ~ "BNT/Pfizer-Omikron",
+                                  Impfstoff=="Comirnaty Original/Omicron BA.1" ~ "BNT/Pfizer-Omikron",
+                                  Impfstoff=="Comirnaty Original/Omicron BA.4-5" ~ "BNT/Pfizer-Omikron",
                                   Impfstoff=="Spikevax bivalent (Original/Omikron)" ~ "Moderna-Omikron",
+                                  Impfstoff=="Spikevax bivalent Original/Omicron BA.1" ~ "Moderna-Omikron",
+                                  Impfstoff=="Spikevax bivalent Original/Omicron BA.4-5" ~ "Moderna-Omikron",
                                   Impfstoff=="Spikevax" ~ "Moderna",
                                   Impfstoff=="Vaxzevria" ~ "AZ",
                                   Impfstoff=="Jcovden" ~ "J&J",
                                   Impfstoff=="Nuvaxovid" ~ "Novavax",
                                   Impfstoff=="Valneva" ~ "Valneva",
+                                  Impfstoff=="VidPrevtyn Beta" ~ "Sanofi",
                                   TRUE ~ "ERROR"
                                 )) %>% 
                                 group_by(BundeslandId_Impfort,
@@ -501,11 +533,14 @@ impfungen_praxen_bl_kw <- impfungen_praxen_bl %>%
                                       `BNT/Pfizer-Kinder`+
                                       `BNT/Pfizer-Kleinkind`+
                                       `BNT/Pfizer-Omikron`+
+                                      `BNT/Pfizer-Omikron-Kinder`+
                                       `Moderna`+
                                       `Moderna-Omikron`+
                                       `AZ`+
                                       `J&J`+
-                                      `Novavax`), .groups="drop") %>% 
+                                      `Novavax`+
+                                      `Valneva`+
+                                      `Sanofi`), .groups="drop") %>% 
   mutate(Impfungen_Praxen_KW=ifelse(is.na(Impfungen_Praxen_KW),
                                           0,
                                           Impfungen_Praxen_KW))
