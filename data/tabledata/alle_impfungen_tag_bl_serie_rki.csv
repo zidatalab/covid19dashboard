@@ -4815,7 +4815,7 @@ Niedersachsen,2021-10-11,2468,3408,3105,19
 Bremen,2021-10-11,626,543,281,NA
 Nordrhein-Westfalen,2021-10-11,6363,9634,4714,NA
 Hessen,2021-10-11,2397,3155,1574,NA
-Rheinland-Pfalz,2021-10-11,1322,1641,1172,NA
+Rheinland-Pfalz,2021-10-11,1341,1660,1172,NA
 Baden-Württemberg,2021-10-11,3235,4663,2584,1
 Bayern,2021-10-11,5799,8298,3729,2
 Saarland,2021-10-11,534,646,477,NA
@@ -5047,7 +5047,7 @@ Niedersachsen,2021-10-25,1450,2678,4348,NA
 Bremen,2021-10-25,292,441,306,NA
 Nordrhein-Westfalen,2021-10-25,5590,10274,10274,NA
 Hessen,2021-10-25,2005,3093,2412,NA
-Rheinland-Pfalz,2021-10-25,1048,1698,1984,NA
+Rheinland-Pfalz,2021-10-25,1048,1698,2058,NA
 Baden-Württemberg,2021-10-25,3324,4523,4281,NA
 Bayern,2021-10-25,5168,7486,7470,11
 Saarland,2021-10-25,339,410,486,NA
@@ -5096,7 +5096,7 @@ Schleswig-Holstein,2021-10-28,1679,2857,5835,1
 Hamburg,2021-10-28,1526,2492,3195,NA
 Niedersachsen,2021-10-28,4015,7050,12148,NA
 Bremen,2021-10-28,485,714,885,NA
-Nordrhein-Westfalen,2021-10-28,12100,23601,32760,NA
+Nordrhein-Westfalen,2021-10-28,12101,23600,32760,NA
 Hessen,2021-10-28,4459,7171,8508,NA
 Rheinland-Pfalz,2021-10-28,2739,4771,6532,1
 Baden-Württemberg,2021-10-28,8315,12666,14581,NA
@@ -5706,7 +5706,7 @@ Niedersachsen,2021-12-03,8407,6632,90896,3
 Bremen,2021-12-03,1129,782,6140,NA
 Nordrhein-Westfalen,2021-12-03,18241,12366,242359,2
 Hessen,2021-12-03,7948,5201,61289,2
-Rheinland-Pfalz,2021-12-03,5272,2681,46352,2
+Rheinland-Pfalz,2021-12-03,5272,2682,46351,2
 Baden-Württemberg,2021-12-03,13667,8415,119767,9
 Bayern,2021-12-03,16518,15668,139447,35
 Saarland,2021-12-03,1146,619,11715,2
@@ -8706,7 +8706,7 @@ Niedersachsen,2022-06-02,141,298,994,4492
 Bremen,2022-06-02,23,42,136,382
 Nordrhein-Westfalen,2022-06-02,350,764,3029,12675
 Hessen,2022-06-02,103,203,792,3340
-Rheinland-Pfalz,2022-06-02,78,105,512,2129
+Rheinland-Pfalz,2022-06-02,78,105,512,2137
 Baden-Württemberg,2022-06-02,136,368,1014,3799
 Bayern,2022-06-02,192,516,1625,4294
 Saarland,2022-06-02,21,49,164,455
@@ -10777,7 +10777,7 @@ Rheinland-Pfalz,2022-10-08,12,17,92,1577
 Baden-Württemberg,2022-10-08,133,179,459,5209
 Bayern,2022-10-08,87,97,507,4242
 Saarland,2022-10-08,2,7,34,391
-Berlin,2022-10-08,24,30,461,1772
+Berlin,2022-10-08,24,30,462,1771
 Brandenburg,2022-10-08,2,5,50,401
 Mecklenburg-Vorpommern,2022-10-08,NA,NA,7,76
 Sachsen,2022-10-08,4,7,38,503
@@ -12207,7 +12207,7 @@ Thüringen,2023-01-04,2,1,17,175
 NA,2023-01-04,NA,NA,17,10
 Schleswig-Holstein,2023-01-05,6,9,71,1419
 Hamburg,2023-01-05,7,13,32,586
-Niedersachsen,2023-01-05,8,13,104,1926
+Niedersachsen,2023-01-05,8,13,105,1928
 Bremen,2023-01-05,1,2,24,357
 Nordrhein-Westfalen,2023-01-05,21,43,216,4677
 Hessen,2023-01-05,66,35,98,1447
@@ -12414,7 +12414,7 @@ Thüringen,2023-01-17,1,2,12,237
 NA,2023-01-17,1,NA,NA,NA
 Schleswig-Holstein,2023-01-18,12,24,59,1722
 Hamburg,2023-01-18,2,6,41,585
-Niedersachsen,2023-01-18,8,7,94,2358
+Niedersachsen,2023-01-18,8,7,95,2361
 Bremen,2023-01-18,1,2,13,329
 Nordrhein-Westfalen,2023-01-18,65,104,265,4446
 Hessen,2023-01-18,10,13,97,1664
@@ -12544,7 +12544,7 @@ Schleswig-Holstein,2023-01-26,9,6,48,1266
 Hamburg,2023-01-26,1,4,23,414
 Niedersachsen,2023-01-26,11,11,115,2149
 Bremen,2023-01-26,21,3,12,234
-Nordrhein-Westfalen,2023-01-26,36,47,257,4460
+Nordrhein-Westfalen,2023-01-26,36,47,257,4463
 Hessen,2023-01-26,19,15,77,1428
 Rheinland-Pfalz,2023-01-26,7,4,35,899
 Baden-Württemberg,2023-01-26,82,87,213,1587
@@ -12603,7 +12603,7 @@ Sachsen,2023-01-29,NA,NA,NA,3
 Thüringen,2023-01-29,NA,NA,NA,4
 Schleswig-Holstein,2023-01-30,1,2,15,314
 Hamburg,2023-01-30,3,3,13,109
-Niedersachsen,2023-01-30,3,3,35,569
+Niedersachsen,2023-01-30,3,3,36,570
 Bremen,2023-01-30,1,NA,1,69
 Nordrhein-Westfalen,2023-01-30,17,13,86,1692
 Hessen,2023-01-30,23,19,264,958
@@ -12835,7 +12835,7 @@ Sachsen,2023-02-13,1,2,3,72
 Sachsen-Anhalt,2023-02-13,NA,2,6,68
 Thüringen,2023-02-13,NA,1,2,15
 NA,2023-02-13,NA,NA,NA,1
-Schleswig-Holstein,2023-02-14,12,2,31,531
+Schleswig-Holstein,2023-02-14,12,2,31,533
 Hamburg,2023-02-14,3,6,11,259
 Niedersachsen,2023-02-14,12,2,40,771
 Bremen,2023-02-14,6,3,2,57
@@ -12845,7 +12845,7 @@ Rheinland-Pfalz,2023-02-14,3,NA,21,416
 Baden-Württemberg,2023-02-14,35,60,102,595
 Bayern,2023-02-14,68,10,60,556
 Saarland,2023-02-14,NA,NA,1,19
-Berlin,2023-02-14,3,8,25,310
+Berlin,2023-02-14,3,8,25,313
 Brandenburg,2023-02-14,1,5,10,69
 Mecklenburg-Vorpommern,2023-02-14,NA,NA,6,27
 Sachsen,2023-02-14,1,NA,15,105
@@ -12857,7 +12857,7 @@ Niedersachsen,2023-02-15,3,10,41,859
 Bremen,2023-02-15,1,2,10,112
 Nordrhein-Westfalen,2023-02-15,10,39,67,1624
 Hessen,2023-02-15,4,NA,24,376
-Rheinland-Pfalz,2023-02-15,6,NA,23,351
+Rheinland-Pfalz,2023-02-15,6,1,26,351
 Baden-Württemberg,2023-02-15,29,43,129,571
 Bayern,2023-02-15,5,10,60,675
 Saarland,2023-02-15,NA,NA,5,32
@@ -12871,7 +12871,7 @@ Schleswig-Holstein,2023-02-16,2,5,17,561
 Hamburg,2023-02-16,30,12,42,311
 Niedersachsen,2023-02-16,10,14,45,1019
 Bremen,2023-02-16,5,1,4,117
-Nordrhein-Westfalen,2023-02-16,27,32,133,1625
+Nordrhein-Westfalen,2023-02-16,27,32,133,1628
 Hessen,2023-02-16,4,9,72,492
 Rheinland-Pfalz,2023-02-16,1,3,19,392
 Baden-Württemberg,2023-02-16,4,10,130,665
@@ -12904,7 +12904,7 @@ NA,2023-02-17,1,NA,2,1
 Schleswig-Holstein,2023-02-18,2,3,3,91
 Hamburg,2023-02-18,NA,NA,4,29
 Niedersachsen,2023-02-18,NA,1,4,42
-Nordrhein-Westfalen,2023-02-18,4,6,27,772
+Nordrhein-Westfalen,2023-02-18,4,6,28,772
 Hessen,2023-02-18,4,4,5,53
 Rheinland-Pfalz,2023-02-18,NA,1,1,55
 Baden-Württemberg,2023-02-18,5,1,81,200
@@ -12929,8 +12929,8 @@ Schleswig-Holstein,2023-02-20,NA,2,5,153
 Hamburg,2023-02-20,3,3,18,107
 Niedersachsen,2023-02-20,NA,3,15,263
 Bremen,2023-02-20,NA,NA,3,43
-Nordrhein-Westfalen,2023-02-20,2,3,22,495
-Hessen,2023-02-20,3,8,10,142
+Nordrhein-Westfalen,2023-02-20,2,3,22,496
+Hessen,2023-02-20,3,9,10,143
 Rheinland-Pfalz,2023-02-20,NA,NA,NA,18
 Baden-Württemberg,2023-02-20,NA,4,76,215
 Bayern,2023-02-20,22,18,22,161
@@ -12946,8 +12946,8 @@ Hamburg,2023-02-21,16,26,6,170
 Niedersachsen,2023-02-21,4,4,31,541
 Bremen,2023-02-21,NA,NA,8,92
 Nordrhein-Westfalen,2023-02-21,17,12,56,1143
-Hessen,2023-02-21,6,10,23,270
-Rheinland-Pfalz,2023-02-21,1,6,10,195
+Hessen,2023-02-21,6,11,23,271
+Rheinland-Pfalz,2023-02-21,1,6,10,198
 Baden-Württemberg,2023-02-21,NA,10,102,329
 Bayern,2023-02-21,3,11,22,241
 Saarland,2023-02-21,1,NA,NA,19
@@ -12961,11 +12961,11 @@ Schleswig-Holstein,2023-02-22,1,5,15,378
 Hamburg,2023-02-22,NA,2,12,213
 Niedersachsen,2023-02-22,10,3,29,605
 Bremen,2023-02-22,NA,1,10,100
-Nordrhein-Westfalen,2023-02-22,24,26,68,950
-Hessen,2023-02-22,11,3,26,427
-Rheinland-Pfalz,2023-02-22,NA,NA,9,96
+Nordrhein-Westfalen,2023-02-22,24,26,68,956
+Hessen,2023-02-22,11,3,26,428
+Rheinland-Pfalz,2023-02-22,1,1,13,130
 Baden-Württemberg,2023-02-22,17,39,95,411
-Bayern,2023-02-22,2,15,27,309
+Bayern,2023-02-22,2,15,32,312
 Saarland,2023-02-22,NA,2,1,11
 Berlin,2023-02-22,4,9,31,281
 Brandenburg,2023-02-22,NA,2,13,73
@@ -12974,3 +12974,19 @@ Sachsen,2023-02-22,NA,5,7,114
 Sachsen-Anhalt,2023-02-22,5,1,6,55
 Thüringen,2023-02-22,NA,2,6,67
 NA,2023-02-22,NA,NA,NA,1
+Schleswig-Holstein,2023-02-23,1,5,16,387
+Hamburg,2023-02-23,NA,1,20,214
+Niedersachsen,2023-02-23,10,12,67,879
+Bremen,2023-02-23,3,1,1,110
+Nordrhein-Westfalen,2023-02-23,15,43,112,1757
+Hessen,2023-02-23,4,8,26,417
+Rheinland-Pfalz,2023-02-23,1,4,11,284
+Baden-Württemberg,2023-02-23,NA,5,94,398
+Bayern,2023-02-23,16,83,39,578
+Saarland,2023-02-23,NA,NA,3,42
+Berlin,2023-02-23,2,4,27,234
+Brandenburg,2023-02-23,2,6,8,63
+Mecklenburg-Vorpommern,2023-02-23,1,1,7,50
+Sachsen,2023-02-23,NA,6,10,110
+Sachsen-Anhalt,2023-02-23,1,1,3,91
+Thüringen,2023-02-23,4,2,12,72
